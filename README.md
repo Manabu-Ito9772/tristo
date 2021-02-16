@@ -24,3 +24,5 @@
 20代〜40代の旅行好きな人
 ### 画面遷移図
 https://xd.adobe.com/view/5efbc08b-7cec-4877-890d-2135e91ce9e7-0ba8/
+### ER図
+https://drive.google.com/file/d/1InV-cTd3NcoE3zCl99PRF_6Szj68BB3r/view?usp=sharing
