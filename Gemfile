@@ -26,9 +26,31 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+# Avoid parser warning
+gem 'parser', '< 2.7.0.3'
+
+# Authentication
+gem 'jwt'
+gem 'sorcery'
+
+# Active Storage with amazon s3
+gem 'aws-sdk-s3', require: false
+gem 'mini_magick'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'faker'
+  gem 'factory_bot_rails'
+  gem 'rspec_junit_formatter'
+  gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', tag: 'v4.0.0.beta3'
+  gem 'rubocop', '< 0.80.0'
+  gem 'rubocop-checkstyle_formatter'
+  gem 'rubocop-rails', '< 2.5.0'
+
 end
 
 group :development do
@@ -40,6 +62,13 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  gem 'foreman'
+end
+
+group :test do
+  gem 'capybara'
+  gem 'webdrivers'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
