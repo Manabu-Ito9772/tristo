@@ -1,22 +1,21 @@
 <template>
   <div id="app">
-    <p>{{ message }}</p>
+    <TheHeader />
   </div>
 </template>
 
 <script>
+import TheHeader from './components/TheHeader'
+
 export default {
-  data: function () {
-    return {
-      message: "Hello Vue!"
-    }
+  components: {
+    TheHeader
   }
 }
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
+.background {
+  background-color: #F0F0F0;
 }
 </style>
