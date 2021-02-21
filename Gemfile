@@ -14,7 +14,7 @@ gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 5.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.7'
+# gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -28,6 +28,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 # Avoid parser warning
 gem 'parser', '< 2.7.0.3'
+
+# Build JSON APIs
+gem 'active_model_serializers'
 
 # Authentication
 gem 'jwt'
@@ -46,7 +49,7 @@ group :development, :test do
   gem 'faker'
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', tag: 'v4.0.0.beta3'
+  gem 'rspec-rails'
   gem 'rubocop', '< 0.80.0'
   gem 'rubocop-checkstyle_formatter'
   gem 'rubocop-rails', '< 2.5.0'
