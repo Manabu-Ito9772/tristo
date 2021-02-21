@@ -1,6 +1,12 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+    class="min-vh-100 background"
+  >
     <TheHeader />
+    <div class="header-adjust">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -16,6 +22,10 @@ export default {
 
 <style scoped>
 .background {
-  background-color: #F0F0F0;
+  background-color: #F8F8F8;
+}
+
+.header-adjust {
+  padding-top: 30px;
 }
 </style>

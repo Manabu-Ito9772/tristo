@@ -7,17 +7,33 @@
 
 import Vue from 'vue'
 import App from '../app.vue'
+import router from '../router'
+import axios from '../plugins/axios'
+import store from '../store'
+import VueMoment from 'vue-moment'
 import 'bootstrap/dist/css/bootstrap.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faHome, faPen, faUser, faBars } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faHome, faPen, faUser, faBars);
-Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.prototype.$axios = axios
+Vue.prototype.$moment = moment
 Vue.config.productionTip = false
+
+library.add(fas, faThumbsUp)
+Vue.component('FontAwesomeIcon', FontAwesomeIcon)
+
+const moment = require('moment')
+require('moment/locale/ja')
+Vue.use(require('vue-moment'), {
+  moment
+})
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
+    router,
+    store,
     render: h => h(App)
   }).$mount()
   document.body.appendChild(app.$el)
