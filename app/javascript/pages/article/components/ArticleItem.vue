@@ -62,15 +62,15 @@ import ArticleItem from './ArticleItem'
 
 export default {
   name: 'ArticleItem',
-  data() {
-    return {
-      date: this.$moment().format()
-    }
-  },
   props: {
     article: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      date: this.$moment().format()
     }
   },
   methods :{

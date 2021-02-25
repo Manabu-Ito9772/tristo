@@ -1,5 +1,5 @@
 <template>
-  <ArticleList :articles="articles"/>
+  <ArticleList :articles="articles" />
 </template>
 
 <script>

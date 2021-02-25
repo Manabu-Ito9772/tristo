@@ -9,7 +9,9 @@
           <div class="col-2 col-sm-1 pt-3 pb-3 pl-1 pr-1 info-block-left">
             <div class="row">
               <div class="col-12 text-center text-white">
-                <p class="col-12 p-0 mb-1 info-block-time">時間</p>
+                <p class="col-12 p-0 mb-1 info-block-time">
+                  時間
+                </p>
               </div>
               <div class="col-12 text-center text-dark">
                 <p class="col-12 p-0 mb-1">
@@ -17,7 +19,9 @@
                 </p>
               </div>
               <div class="col-12 text-center text-dark">
-                <p class="col-12 p-0 mb-1 time-wave">〜</p>
+                <p class="col-12 p-0 mb-1 time-wave">
+                  〜
+                </p>
               </div>
               <div class="col-12 text-center text-dark">
                 <p class="col-12 p-0 mb-0">
@@ -29,28 +33,32 @@
           <div class="col-10 col-sm-6 p-3 info-block-center">
             <div class="row mb-3">
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">イベント</p>
+                <p class="pl-3 info-block-main m-0">
+                  イベント
+                </p>
               </div>
               <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
                 {{ info_block.event }}
               </p>
             </div>
             <div
-              class="row mb-3"
               v-if="info_block.place"
+              class="row mb-3"
             >
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">場所</p>
+                <p class="pl-3 info-block-main m-0">
+                  場所
+                </p>
               </div>
               <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
                 {{ info_block.place }}
               </p>
               <div
-                class="col-12 pl-4 pt-1 m-0 text-dark"
                 v-if="info_block.place_info"
+                class="col-12 pl-4 pt-1 m-0 text-dark"
               >
                 <a
-                  v-bind:href="info_block.place_info"
+                  :href="info_block.place_info"
                   target="_blank"
                   class="word-break"
                 >
@@ -59,15 +67,18 @@
               </div>
             </div>
             <div
+              v-if="info_block.spendings.length"
               class="row mb-3"
-              v-if="info_block.spendings.length">
+            >
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">コスト</p>
+                <p class="pl-3 info-block-main m-0">
+                  コスト
+                </p>
               </div>
               <div
-                class="col-12 pt-1 m-0 text-dark"
                 v-for="spending in info_block.spendings"
                 :key="spending.id"
+                class="col-12 pt-1 m-0 text-dark"
               >
                 <div class="row ml-2 mr-2 cost-border">
                   <div class="col-8 p-0">
@@ -84,11 +95,13 @@
               </div>
             </div>
             <div
-              class="row"
               v-if="info_block.comment"
+              class="row"
             >
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">コメント</p>
+                <p class="pl-3 info-block-main m-0">
+                  コメント
+                </p>
               </div>
               <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
                 {{ info_block.comment }}
@@ -106,28 +119,32 @@
           <div class="col-12 col-sm-7 p-3 info-block-center">
             <div class="row mb-3">
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">イベント</p>
+                <p class="pl-3 info-block-main m-0">
+                  イベント
+                </p>
               </div>
               <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
                 {{ info_block.event }}
               </p>
             </div>
             <div
-              class="row mb-3"
               v-if="info_block.place"
+              class="row mb-3"
             >
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">場所</p>
+                <p class="pl-3 info-block-main m-0">
+                  場所
+                </p>
               </div>
               <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
                 {{ info_block.place }}
               </p>
               <div
-                class="col-12 pl-4 pt-1 m-0 text-dark"
                 v-if="info_block.place_info"
+                class="col-12 pl-4 pt-1 m-0 text-dark"
               >
                 <a
-                  v-bind:href="info_block.place_info"
+                  :href="info_block.place_info"
                   target="_blank"
                   class="word-break"
                 >
@@ -136,15 +153,18 @@
               </div>
             </div>
             <div
+              v-if="info_block.spendings.length"
               class="row mb-3"
-              v-if="info_block.spendings.length">
+            >
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">コスト</p>
+                <p class="pl-3 info-block-main m-0">
+                  コスト
+                </p>
               </div>
               <div
-                class="col-12 pt-1 m-0 text-dark"
                 v-for="spending in info_block.spendings"
                 :key="spending.id"
+                class="col-12 pt-1 m-0 text-dark"
               >
                 <div class="row ml-2 mr-2 cost-border">
                   <div class="col-8 p-0">
@@ -161,11 +181,13 @@
               </div>
             </div>
             <div
-              class="row"
               v-if="info_block.comment"
+              class="row"
             >
               <div class="col-12 text-white">
-                <p class="pl-3 info-block-main m-0">コメント</p>
+                <p class="pl-3 info-block-main m-0">
+                  コメント
+                </p>
               </div>
               <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
                 {{ info_block.comment }}
@@ -181,9 +203,9 @@
         </template>
       </div>
       <div
-        class="row ml-1 mr-1 mb-3"
         v-for="transportation in info_block.transportations"
         :key="transportation.id"
+        class="row ml-1 mr-1 mb-3"
       >
         <div class="col-1 p-0 d-flex justify-content-center align-items-center icon-size">
           <font-awesome-icon
@@ -210,16 +232,16 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'ArticleShow',
-  data() {
-    return {
-      tranport: 'walking',
-      date: this.$moment().format()
-    }
-  },
   props: {
     article: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      tranport: 'walking',
+      date: this.$moment().format()
     }
   },
   computed: {

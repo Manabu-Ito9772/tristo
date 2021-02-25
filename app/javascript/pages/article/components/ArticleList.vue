@@ -2,10 +2,10 @@
   <div class="container-fluid mt-4">
     <div
       v-for="article in articles"
+      :key="article.id"
       class="row mt-3"
     >
       <ArticleItem
-        :key="article.id"
         :article="article"
       />
     </div>

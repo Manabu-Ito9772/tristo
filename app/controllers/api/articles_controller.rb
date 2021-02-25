@@ -6,7 +6,7 @@ class Api::ArticlesController < ApplicationController
 
   def show
     @article = Article.find(params[:id])
-    render json: @article, include: { info_blocks: [:spendings, :transportations] }
+    render json: @article, include: { info_blocks: %i[spendings transportations] }
   end
 
   def create; end
