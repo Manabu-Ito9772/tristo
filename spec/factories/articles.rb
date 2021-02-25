@@ -3,8 +3,8 @@ FactoryBot.define do
     sequence(:title) { |n| "TestTitle#{n}" }
     sequence(:description) { |n| "TestDescription#{n}" }
     status { 0 }
-    start_date { Time.current }
-    end_date { Time.current.tomorrow }
+    start_date { Date.today }
+    end_date { Date.tomorrow }
     association :region
   end
 end

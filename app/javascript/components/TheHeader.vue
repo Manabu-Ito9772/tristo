@@ -4,10 +4,15 @@
       <span class="navbar-brand header-title">TriSto</span>
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <font-awesome-icon
-            :icon="['fas', 'home']"
-            class="fa-lg"
-          />
+          <router-link
+            :to="{ name: 'ArticleIndex' }"
+            class="icon-color"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'home']"
+              class="fa-lg"
+            />
+          </router-link>
         </li>
         <li class="nav-item active">
           <font-awesome-icon
@@ -33,7 +38,9 @@
 </template>
 
 <script>
-
+export default {
+  name: 'TheHeader'
+}
 </script>
 
 <style scoped>
@@ -49,5 +56,9 @@
 
 .nav-item {
   margin-left: 10px;
+}
+
+.icon-color {
+  color: black;
 }
 </style>

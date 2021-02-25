@@ -10,7 +10,6 @@ import App from '../app.vue'
 import router from '../router'
 import axios from '../plugins/axios'
 import store from '../store'
-import VueMoment from 'vue-moment'
 import 'bootstrap/dist/css/bootstrap.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -18,7 +17,6 @@ import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.prototype.$axios = axios
-Vue.prototype.$moment = moment
 Vue.config.productionTip = false
 
 library.add(fas, faThumbsUp)
