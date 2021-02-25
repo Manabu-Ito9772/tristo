@@ -3,7 +3,7 @@
     id="app"
     class="min-vh-100 background"
   >
-    <TheHeader />
+    <TheHeader/>
     <div class="header-adjust">
       <router-view />
     </div>
