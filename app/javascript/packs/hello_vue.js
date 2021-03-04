@@ -28,6 +28,17 @@ Vue.use(require('vue-moment'), {
   moment
 })
 
+import VueMq from 'vue-mq'
+
+Vue.use(VueMq, {
+  breakpoints: {
+    xs: 600,
+    sm: 900,
+    lg: Infinity
+  },
+  defaultBreakpoint: 'md'
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     router,

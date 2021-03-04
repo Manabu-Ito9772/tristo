@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_24_150134) do
+ActiveRecord::Schema.define(version: 2021_03_01_123035) do
 
   create_table "articles", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "region_id", null: false
@@ -31,19 +31,26 @@ ActiveRecord::Schema.define(version: 2021_02_24_150134) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "info_blocks", charset: "utf8mb4", force: :cascade do |t|
+  create_table "days", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "article_id", null: false
-    t.integer "day", null: false
-    t.datetime "arriving_time"
-    t.datetime "leaving_time"
+    t.integer "number", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["article_id"], name: "index_days_on_article_id"
+  end
+
+  create_table "info_blocks", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "day_id", null: false
     t.string "event", null: false
     t.string "place"
     t.string "place_info"
     t.text "comment"
     t.integer "position", null: false
+    t.datetime "arriving_time"
+    t.datetime "leaving_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["article_id"], name: "index_info_blocks_on_article_id"
+    t.index ["day_id"], name: "index_info_blocks_on_day_id"
   end
 
   create_table "regions", charset: "utf8mb4", force: :cascade do |t|
@@ -57,7 +64,7 @@ ActiveRecord::Schema.define(version: 2021_02_24_150134) do
   create_table "spendings", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "info_block_id", null: false
     t.integer "genre", null: false
-    t.string "description"
+    t.string "description", null: false
     t.string "cost"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -75,7 +82,8 @@ ActiveRecord::Schema.define(version: 2021_02_24_150134) do
   end
 
   add_foreign_key "articles", "regions"
-  add_foreign_key "info_blocks", "articles"
+  add_foreign_key "days", "articles"
+  add_foreign_key "info_blocks", "days"
   add_foreign_key "regions", "countries"
   add_foreign_key "spendings", "info_blocks"
   add_foreign_key "transportations", "info_blocks"
