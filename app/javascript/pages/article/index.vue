@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ArticleList from './components/ArticleList'
+import ArticleList from './components/index/ArticleList'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {

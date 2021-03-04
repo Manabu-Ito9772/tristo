@@ -1,7 +1,7 @@
 class ArticleSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :start_date, :end_date, :created_at
   has_one :region
-  has_many :info_blocks
+  has_many :days
 
   class RegionSerializer < ActiveModel::Serializer
     attributes :id, :name
@@ -12,17 +12,22 @@ class ArticleSerializer < ActiveModel::Serializer
     end
   end
 
-  class InfoBlockSerializer < ActiveModel::Serializer
-    attributes :id, :day, :arriving_time, :leaving_time, :event, :place, :place_info, :comment, :position
-    has_many :spendings
-    has_many :transportations
+  class DaySerializer < ActiveModel::Serializer
+    attributes :id, :number
+    has_many :info_blocks
 
-    class SpendingSerializer < ActiveModel::Serializer
-      attributes :id, :genre, :description, :cost
-    end
+    class InfoBlockSerializer < ActiveModel::Serializer
+      attributes :id, :arriving_time, :leaving_time, :event, :place, :place_info, :comment, :position
+      has_many :spendings
+      has_many :transportations
 
-    class TransportationSerializer < ActiveModel::Serializer
-      attributes :id, :means, :description, :cost
+      class SpendingSerializer < ActiveModel::Serializer
+        attributes :id, :genre, :description, :cost
+      end
+
+      class TransportationSerializer < ActiveModel::Serializer
+        attributes :id, :means, :description, :cost
+      end
     end
   end
 end

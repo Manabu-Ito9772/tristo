@@ -1,7 +1,9 @@
 <template>
   <header>
     <nav class="navbar navbar-expand bg-white justify-content-between fixed-top">
-      <span class="navbar-brand header-title">TriSto</span>
+      <router-link :to="{ name: 'ArticleIndex' }">
+        <span class="navbar-brand header-title">TriSto</span>
+      </router-link>
       <ul class="navbar-nav">
         <li class="nav-item active">
           <router-link
