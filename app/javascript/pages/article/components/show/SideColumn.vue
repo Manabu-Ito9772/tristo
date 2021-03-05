@@ -1,85 +1,41 @@
 <template>
   <div>
-    <template v-if="$mq == 'sm'">
-      <div class="row pl-3 pr-3 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
-        <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
-          {{ article.title }}
-        </h4>
-        <p class="col-12 text-muted text-center word-break article-info">
-          {{ article.region.country.name }}&nbsp;
-          {{ article.region.name }}&nbsp;
-          {{ article.start_date | moment('M/D(ddd)') }}〜{{ article.end_date | moment('M/D(ddd)') }}
+    <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
+      {{ article.title }}
+    </h4>
+    <p class="col-12 text-muted text-center word-break article-info">
+      {{ article.region.country.name }}&nbsp;
+      {{ article.region.name }}&nbsp;
+      {{ article.start_date | moment('M/D(ddd)') }}〜{{ article.end_date | moment('M/D(ddd)') }}
+    </p>
+    <template v-if="article.description">
+      <div class="col-12 p-0 mb-3">
+        <p class="text-center text-white m-0 description-label">
+          概要
         </p>
-        <template v-if="article.description">
-          <div class="col-12 p-0 mb-3">
-            <p class="text-center text-white m-0 description-label">
-              概要
-            </p>
-            <p class="text-dark bg-white p-2 m-0 word-break description-main">
-              {{ article.description }}
-            </p>
-          </div>
-        </template>
-        <div class="col-12 d-flex justify-content-center align-items-center user-name">
-          <img
-            src="../../../../images/sample.png"
-            class="user-icon"
-          >
-          <h4 class="float-right mb-0 pl-2 word-break">
-            Ito Manabu
-          </h4>
-          <div class="text-center pl-4">
-            <font-awesome-icon
-              :icon="['far', 'thumbs-up']"
-              class="fa-lg"
-            />
-            <p class="m-0 word-break">
-              100
-            </p>
-          </div>
-        </div>
+        <p class="d-flex justify-content-center text-dark bg-white p-2 m-0 word-break description-main">
+          {{ article.description }}
+        </p>
       </div>
     </template>
-    <template v-else>
-      <div class="row sidebar_fixed pl-3 pr-3">
-        <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
-          {{ article.title }}
-        </h4>
-        <p class="col-12 text-muted text-center word-break article-info">
-          {{ article.region.country.name }}&nbsp;
-          {{ article.region.name }}&nbsp;
-          {{ article.start_date | moment('M/D(ddd)') }}〜{{ article.end_date | moment('M/D(ddd)') }}
+    <div class="col-12 d-flex justify-content-center align-items-center user-name">
+      <img
+        src="../../../../images/sample.png"
+        class="user-icon"
+      >
+      <h4 class="float-right mb-0 pl-2 word-break">
+        Ito Manabu
+      </h4>
+      <div class="text-center pl-4">
+        <font-awesome-icon
+          :icon="['far', 'thumbs-up']"
+          class="fa-lg"
+        />
+        <p class="m-0 word-break">
+          100
         </p>
-        <template v-if="article.description">
-          <div class="col-12 p-0 mb-3">
-            <p class="text-center text-white m-0 description-label">
-              概要
-            </p>
-            <p class="text-dark bg-white p-2 m-0 word-break description-main">
-              {{ article.description }}
-            </p>
-          </div>
-        </template>
-        <div class="col-12 d-flex justify-content-center align-items-center user-name">
-          <img
-            src="../../../../images/sample.png"
-            class="user-icon"
-          >
-          <h4 class="float-right mb-0 pl-2 word-break">
-            Ito Manabu
-          </h4>
-          <div class="text-center pl-4">
-            <font-awesome-icon
-              :icon="['far', 'thumbs-up']"
-              class="fa-lg"
-            />
-            <p class="m-0 word-break">
-              100
-            </p>
-          </div>
-        </div>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 

@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import InfoBlock from './infoblock/InfoBlock'
-import InfoBlockSmall from './infoblock/InfoBlockSmall'
-import Transportation from './infoblock/Transportation'
+import InfoBlock from './maincolumn/InfoBlock'
+import InfoBlockSmall from './maincolumn/InfoBlockSmall'
+import Transportation from './maincolumn/Transportation'
 
 export default {
   name: 'MainColumn',

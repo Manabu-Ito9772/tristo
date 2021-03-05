@@ -13,7 +13,7 @@
 #   Country.first.regions.create!(name: prefecture)
 # end
 
-5.times do
+3.times do
   country = Country.create!(
     name: Faker::Nation.nationality,
     currency: Faker::Nation.language
@@ -27,6 +27,7 @@
     article = region.articles.create!(
       title: Faker::Movies::StarWars.character,
       description: Faker::Movies::BackToTheFuture.quote,
+      map: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>',
       start_date: Date.today,
       end_date: Date.tomorrow
     )
@@ -38,12 +39,12 @@
       m = rand(2..5)
       m.times do
         info_block = day.info_blocks.create(
-          arriving_time: Time.now,
-          leaving_time: Time.now + m.minutes,
           event: Faker::JapaneseMedia::DragonBall.character,
           place: Faker::JapaneseMedia::OnePiece.character,
           comment: Faker::Movies::BackToTheFuture.quote,
-          position: 1
+          position: 1,
+          arriving_time: Time.now,
+          leaving_time: Time.now + m.minutes,
         )
 
         x = rand(0..3)
@@ -58,7 +59,7 @@
         y = rand(1..2)
         y.times do
           info_block.transportations.create(
-            means: rand(0..8),
+            means: rand(0..9),
             description: Faker::JapaneseMedia::Doraemon.character,
             cost: rand(100..2000)
           )

@@ -81,7 +81,7 @@
 
 <script>
 export default {
-  name: 'InfoBlockCenter',
+  name: 'MainInfo',
   props: {
     block: {
       type: Object,

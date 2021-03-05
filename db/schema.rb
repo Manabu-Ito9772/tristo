@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2021_03_01_123035) do
     t.bigint "region_id", null: false
     t.string "title", null: false
     t.text "description"
+    t.string "map"
     t.integer "status", default: 0, null: false
     t.date "start_date"
     t.date "end_date"

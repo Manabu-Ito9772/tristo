@@ -1,13 +1,15 @@
 <template>
-  <div class="container-fluid mt-4">
+  <div>
     <div
       v-for="article in articles"
       :key="article.id"
-      class="row mt-3"
+      class="row"
     >
-      <ArticleItem
-        :article="article"
-      />
+      <div class="col-12">
+        <ArticleItem
+          :article="article"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -30,9 +32,4 @@ export default {
 </script>
 
 <style scoped>
-.container-fluid {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 800px;
-}
 </style>

@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  name: 'MainColumn',
+  name: 'Transportation',
   props: {
     block: {
       type: Object,

@@ -1,5 +1,5 @@
 class ArticleSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :start_date, :end_date, :created_at
+  attributes :id, :title, :description, :map, :start_date, :end_date, :created_at
   has_one :region
   has_many :days
 
