@@ -49,16 +49,11 @@
 
 <script>
 export default {
-  name: 'InfoBlockLeft',
+  name: 'TimeInfo',
   props: {
     block: {
       type: Object,
       required: true
-    }
-  },
-  data() {
-    return {
-      date: this.$moment().format()
     }
   },
 }

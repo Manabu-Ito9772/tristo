@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :article do
     sequence(:title) { |n| "TestTitle#{n}" }
     sequence(:description) { |n| "TestDescription#{n}" }
+    map { '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>' }
     status { 0 }
     start_date { Date.today }
     end_date { Date.tomorrow }

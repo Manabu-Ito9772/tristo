@@ -2,12 +2,12 @@
   <div class="row mt-3 mb-3 ml-1 mr-1 bg-white info-block">
     <template v-if="block.arriving_time || block.leaving_time">
       <div class="col-1 pt-3 pb-3 pl-1 pr-1 info-block-left">
-        <InfoBlockLeft
+        <TimeInfo
           :block="block"
         />
       </div>
       <div class="col-6 p-3 info-block-center">
-        <InfoBlockCenter
+        <MainInfo
           :block="block"
         />
       </div>
@@ -20,7 +20,7 @@
     </template>
     <template v-else>
       <div class="col-7 p-3 info-block-left">
-        <InfoBlockCenter
+        <MainInfo
           :block="block"
         />
       </div>
@@ -35,24 +35,19 @@
 </template>
 
 <script>
-import InfoBlockCenter from './parts/InfoBlockCenter'
-import InfoBlockLeft from './parts/InfoBlockLeft'
+import TimeInfo from './infoblock/TimeInfo'
+import MainInfo from './infoblock/MainInfo'
 
 export default {
   name: 'InfoBlock',
   components: {
-    InfoBlockLeft,
-    InfoBlockCenter
+    TimeInfo,
+    MainInfo
   },
   props: {
     block: {
       type: Object,
       required: true
-    }
-  },
-  data() {
-    return {
-      date: this.$moment().format()
     }
   },
 }

@@ -2,12 +2,12 @@
   <div class="row mb-3 bg-white">
     <template v-if="block.arriving_time || block.leaving_time">
       <div class="col-2 pt-3 pb-3 pl-2 pr-2 info-block-left">
-        <InfoBlockLeft
+        <TimeInfo
           :block="block"
         />
       </div>
       <div class="col-10 p-3 info-block-right">
-        <InfoBlockCenter
+        <MainInfo
           :block="block"
         />
       </div>
@@ -20,7 +20,7 @@
     </template>
     <template v-else>
       <div class="col-12 p-3 info-block-above-without-time">
-        <InfoBlockCenter
+        <MainInfo
           :block="block"
         />
       </div>
@@ -35,24 +35,19 @@
 </template>
 
 <script>
-import InfoBlockLeft from './parts/InfoBlockLeft'
-import InfoBlockCenter from './parts/InfoBlockCenter'
+import TimeInfo from './infoblock/TimeInfo'
+import MainInfo from './infoblock/MainInfo'
 
 export default {
   name: 'InfoBlockSmall',
   components: {
-    InfoBlockLeft,
-    InfoBlockCenter
+    TimeInfo,
+    MainInfo
   },
   props: {
     block: {
       type: Object,
       required: true
-    }
-  },
-  data() {
-    return {
-      date: this.$moment().format()
     }
   },
 }
@@ -61,13 +56,11 @@ export default {
 <style scoped>
 .info-block-left {
   border: solid #FF00EB;
-  /* border-color: #FF00EB #CBCBCB #CBCBCB #FF00EB; */
   border-width: 0.1px 0.1px 0.1px 0px;
 }
 
 .info-block-right {
   border: solid #FF00EB;
-  /* border-color: #FF00EB #FF00EB #CBCBCB #FF00EB; */
   border-width: 0.1px 0px 0.1px 0px;
 }
 
@@ -78,7 +71,6 @@ export default {
 
 .info-block-above-without-time {
   border: solid #FF00EB;
-  /* border-color: #FF00EB #FF00EB #CBCBCB #FF00EB; */
   border-width: 0.1px 0px 0.1px 0px;
 }
 
