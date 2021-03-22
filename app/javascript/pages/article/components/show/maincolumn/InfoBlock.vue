@@ -1,12 +1,12 @@
 <template>
-  <div class="row mt-3 mb-3 ml-1 mr-1 bg-white info-block">
+  <div class="row mt-4 mb-4 ml-0 mr-0 bg-white info-block">
     <template v-if="block.arriving_time || block.leaving_time">
       <div class="col-1 pt-3 pb-3 pl-1 pr-1 info-block-left">
         <TimeInfo
           :block="block"
         />
       </div>
-      <div class="col-6 p-3 info-block-center">
+      <div class="col-6 p-3">
         <MainInfo
           :block="block"
         />
@@ -19,7 +19,7 @@
       </div>
     </template>
     <template v-else>
-      <div class="col-7 p-3 info-block-left">
+      <div class="col-7 p-3">
         <MainInfo
           :block="block"
         />
@@ -55,24 +55,16 @@ export default {
 
 <style scoped>
 .info-block {
+  border: solid #FF00EB;
   border-radius: 6px;
 }
 
 .info-block-left {
-  border: solid #FF00EB;
-  border-width: 0.3rem 0rem 0.3rem 0.3rem;
-  border-radius: 6px 0px 0px 6px / 6px 0px 0px 6px;
-}
-
-.info-block-center {
-  border: solid #FF00EB;
-  border-width: 0.3rem 0rem 0.3rem 0.1rem;
+  border-right: solid thin #FF00EB;
 }
 
 .info-block-right {
-  border: solid #FF00EB;
-  border-width: 0.3rem 0.3rem 0.3rem 0.1rem;
-  border-radius: 0px 6px 6px 0px / 0px 6px 6px 0px;
+  border-left: solid thin #FF00EB;
 }
 
 .info-block-photo {

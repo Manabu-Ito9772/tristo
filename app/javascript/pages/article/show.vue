@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-8 text-center">
           <SwitchButton
-            :article="articleDetail"
+            :article="article"
             @showMainColumn="showMainColumn"
             @showCostColumn="showCostColumn"
             @showMapColumn="showMapColumn"
@@ -12,94 +12,122 @@
         </div>
         <div class="col-8">
           <div
-            v-for="day in articleDetail.days"
+            v-for="day in article.days"
             :key="day.id"
           >
             <MainColumn
               v-if="dayNumber == day.number"
-              :blocks="day.info_blocks"
+              :blocks="day.blocks"
             />
           </div>
         </div>
         <CostColumn
           v-if="isVisibleCostColumn"
-          :days="articleDetail.days"
+          :days="article.days"
           class="col-8"
         />
         <MapColumn
           v-if="isVisibleMapColumn"
-          :map="articleDetail.map"
+          :map="article.map"
           class="col-8"
         />
         <div class="col-4">
-          <div class="row pl-3 pr-3">
-            <SideColumn
-              :article="articleDetail"
-            />
+          <div class="sidebar-fixed">
+            <div class="row pl-3 pr-3">
+              <SideColumn
+                :article="article"
+                :countryname="countryname"
+              />
+            </div>
           </div>
         </div>
       </div>
     </template>
-    <template v-else>
+
+    <template v-else-if="$mq == 'sm'">
       <div class="row">
         <div class="col-12">
-          <template v-if="$mq == 'sm'">
-            <div class="row pl-3 pr-3 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
-              <SideColumn
-                :article="articleDetail"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <div class="row pl-3 pr-3">
-              <SideColumn
-                :article="articleDetail"
-              />
-            </div>
-          </template>
-        </div>
-        <div class="col-12 mt-4">
-          <div class="row">
-            <div class="col-12 text-center">
-              <SwitchButton
-                :article="articleDetail"
-                @showMainColumn="showMainColumn"
-                @showCostColumn="showCostColumn"
-                @showMapColumn="showMapColumn"
-              />
-            </div>
+          <div class="row d-flex justify-content-center pl-3 pr-3 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
+            <SideColumn
+              :article="article"
+              :countryname="countryname"
+            />
           </div>
+        </div>
+        <div class="col-12 text-center mt-4">
+          <SwitchButton
+            :article="article"
+            class="ml-5 mr-5 pl-5 pr-5"
+            @showMainColumn="showMainColumn"
+            @showCostColumn="showCostColumn"
+            @showMapColumn="showMapColumn"
+          />
         </div>
         <div class="col-12">
           <div
-            v-for="day in articleDetail.days"
+            v-for="day in article.days"
             :key="day.id"
           >
             <MainColumn
               v-if="dayNumber == day.number"
-              :blocks="day.info_blocks"
+              :blocks="day.blocks"
+              class="ml-5 mr-5 pl-5 pr-5"
             />
           </div>
         </div>
         <CostColumn
           v-if="isVisibleCostColumn"
-          :days="articleDetail.days"
+          :days="article.days"
           class="col-12"
         />
-        <template v-if="$mq == 'xs'">
-          <MapColumn
-            v-if="isVisibleMapColumn"
-            :map="articleDetail.map"
-            class="col-12 p-0"
+        <MapColumn
+          v-if="isVisibleMapColumn"
+          :map="article.map"
+          class="col-12"
+        />
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="row">
+        <div class="col-12">
+          <div class="row pl-3 pr-3">
+            <SideColumn
+              :article="article"
+              :countryname="countryname"
+            />
+          </div>
+        </div>
+        <div class="col-12 text-center mt-4">
+          <SwitchButton
+            :article="article"
+            @showMainColumn="showMainColumn"
+            @showCostColumn="showCostColumn"
+            @showMapColumn="showMapColumn"
           />
-        </template>
-        <template v-else>
-          <MapColumn
-            v-if="isVisibleMapColumn"
-            :map="articleDetail.map"
-            class="col-12"
-          />
-        </template>
+        </div>
+        <div class="col-12">
+          <div
+            v-for="day in article.days"
+            :key="day.id"
+          >
+            <MainColumn
+              v-if="dayNumber == day.number"
+              :blocks="day.blocks"
+              class="pb-4"
+            />
+          </div>
+        </div>
+        <CostColumn
+          v-if="isVisibleCostColumn"
+          :days="article.days"
+          class="col-12 mb-5 pb-5"
+        />
+        <MapColumn
+          v-if="isVisibleMapColumn"
+          :map="article.map"
+          class="col-12 mb-5 pb-5"
+        />
       </div>
     </template>
   </div>
@@ -111,7 +139,6 @@ import SideColumn from './components/show/SideColumn'
 import CostColumn from './components/show/CostColumn'
 import MapColumn from './components/show/MapColumn'
 import SwitchButton from './components/show/SwitchButton'
-import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'ArticleShow',
@@ -124,23 +151,28 @@ export default {
   },
   data() {
     return {
+      article: {},
+      countryname: '',
       dayNumber: 1,
       isVisibleCostColumn: false,
       isVisibleMapColumn: false
     }
   },
-  computed: {
-    ...mapGetters('articles', [
-      'articleDetail'
-    ]),
-  },
   created() {
-    this.getArticleDetail(this.$route.query.id)
+    this.getArticle()
   },
   methods :{
-    ...mapActions('articles', [
-      'getArticleDetail'
-    ]),
+    getArticle() {
+      this.$axios.get(`articles/${this.$route.query.id}`)
+        .then(res => {
+          this.article = res.data
+          this.countryname = res.data.country.name
+          for (let i = 0; i < this.article.days.length; i++) {
+            this.article.days[i].number = i + 1
+          }
+        })
+        .catch(err => console.log(err.response))
+    },
     showMainColumn(dayNumber) {
       this.dayNumber = dayNumber
       this.isVisibleCostColumn = false
@@ -165,5 +197,10 @@ export default {
   max-width: 1000px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.sidebar-fixed {
+  position: sticky;
+  top: 100px;
 }
 </style>

@@ -106,8 +106,8 @@ export default {
   methods :{
     classifyCost() {
       this.days.forEach(day => {
-        day.info_blocks.forEach(info_block => {
-          info_block.spendings.forEach(spending => {
+        day.blocks.forEach(block => {
+          block.spendings.forEach(spending => {
             if (spending.genre == 'touring') {
               this.tourings[1].push(spending)
               this.totalTouringCost += Number(spending.cost)
@@ -132,9 +132,13 @@ export default {
               this.others[1].push(spending)
               this.totalOtherCost += Number(spending.cost)
               this.totalCost += Number(spending.cost)
+            } else if (spending.genre == null) {
+              this.others[1].push(spending)
+              this.totalOtherCost += Number(spending.cost)
+              this.totalCost += Number(spending.cost)
             }
           })
-          info_block.transportations.forEach(transportation => {
+          block.transportations.forEach(transportation => {
             this.transportations[1].push(transportation)
             this.totalTransportationCost += Number(transportation.cost)
             this.totalCost += Number(transportation.cost)

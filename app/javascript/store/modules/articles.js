@@ -20,6 +20,9 @@ const mutations = {
   },
   setArticleDetail(state, article) {
     state.article = article
+  },
+  addArticle(state, article) {
+    state.articles.push(article)
   }
 }
 
@@ -38,6 +41,12 @@ const actions = {
         commit('setArticleDetail', res.data)
       })
       .catch(err => console.log(err.response));
+  },
+  createArticle({commit}, article) {
+    axios.post('articles', article)
+      .then(res => {
+        commit('addArticle', res.data)
+      })
   },
 }
 

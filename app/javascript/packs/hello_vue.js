@@ -9,45 +9,24 @@ import Vue from 'vue'
 import App from '../app.vue'
 import router from '../router'
 import axios from '../plugins/axios'
-import store from '../store'
+import FontAwesome from '../plugins/fontawesome'
+import VueMoment from '../plugins/vuemoment'
+import VueMq from '../plugins/vuemq'
+import Datepicker from '../plugins/datepicker'
+import Timepicker from '../plugins/timepicker'
+import vSelect from '../plugins/vueselect'
+import '../plugins/veevalidate'
 import 'bootstrap/dist/css/bootstrap.css'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-Vue.prototype.$axios = axios
 Vue.config.productionTip = false
-
-library.add(fas, faThumbsUp)
-Vue.component('FontAwesomeIcon', FontAwesomeIcon)
-
-const moment = require('moment')
-require('moment/locale/ja')
-Vue.use(require('vue-moment'), {
-  moment
-})
-
-import VueMq from 'vue-mq'
-
-Vue.use(VueMq, {
-  breakpoints: {
-    xs: 600,
-    sm: 900,
-    lg: Infinity
-  },
-  defaultBreakpoint: 'md'
-});
+Vue.prototype.$axios = axios
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     router,
-    store,
     render: h => h(App)
   }).$mount()
   document.body.appendChild(app.$el)
-
-  console.log(app)
 })
 
 
