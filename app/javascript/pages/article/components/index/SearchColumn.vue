@@ -1,9 +1,9 @@
 <template>
   <div>
     <template v-if="$mq == 'sm'">
-      <div class="pl-3 pr-3 mt-4 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
-        <div class="row bg-white search">
-          <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
+      <div class="mt-4 bg-white search">
+        <div class="row">
+          <h4 class="col-12 mb-1 text-center text-white font-weight-bold article-title word-break">
             hello
           </h4>
           <p class="col-12 text-muted text-center word-break article-info">
@@ -17,7 +17,7 @@
               hello
             </p>
           </div>
-          <div class="col-12 d-flex justify-content-center align-items-center user-name">
+          <div class="col-12 pl-0 pr-0 d-flex justify-content-center align-items-center user-name">
             <img
               src="../../../../images/sample.png"
               class="user-icon"
@@ -82,12 +82,6 @@
 <script>
 export default {
   name: 'SearchColumn',
-  props: {
-    article: {
-      type: Object,
-      required: true
-    }
-  }
 }
 </script>
 

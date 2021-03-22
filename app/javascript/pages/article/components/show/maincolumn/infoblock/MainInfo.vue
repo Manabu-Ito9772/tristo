@@ -7,7 +7,7 @@
         </p>
       </div>
       <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
-        {{ block.event }}
+        {{ block.title }}
       </p>
     </div>
     <div
@@ -51,12 +51,12 @@
       >
         <div class="row ml-2 mr-2 cost-border">
           <div class="col-8 p-0">
-            <p class="m-0 word-break font-small">
+            <p class="m-0 word-break">
               {{ spending.description }}
             </p>
           </div>
           <div class="col-4 p-0 text-right">
-            <p class="m-0 font-samll">
+            <p class="m-0">
               {{ separateWithComma(spending.cost) }}円
             </p>
           </div>
@@ -72,7 +72,7 @@
           コメント
         </p>
       </div>
-      <p class="col-12 pl-4 pt-1 m-0 text-dark word-break font-small">
+      <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
         {{ block.comment }}
       </p>
     </div>
@@ -100,10 +100,6 @@ export default {
 <style scoped>
 .word-break {
   word-break: break-word;
-}
-
-.font-small {
-  font-size: 14px;
 }
 
 .content-lavel {

@@ -5,11 +5,27 @@
       :key="article.id"
       class="row"
     >
-      <div class="col-12">
-        <ArticleItem
-          :article="article"
-        />
-      </div>
+      <template v-if="$mq == 'lg'">
+        <div class="col-12">
+          <ArticleItem
+            :article="article"
+          />
+        </div>
+      </template>
+      <template v-else-if="$mq == 'sm'">
+        <div class="col-12">
+          <ArticleItem
+            :article="article"
+          />
+        </div>
+      </template>
+      <template v-else>
+        <div class="col-12">
+          <ArticleItem
+            :article="article"
+          />
+        </div>
+      </template>
     </div>
   </div>
 </template>

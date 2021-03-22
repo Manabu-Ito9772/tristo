@@ -7,15 +7,20 @@
     <div class="header-adjust">
       <router-view />
     </div>
+    <template v-if="$mq == 'xs'">
+      <TheFooter />
+    </template>
   </div>
 </template>
 
 <script>
 import TheHeader from './components/TheHeader'
+import TheFooter from './components/TheFooter'
 
 export default {
   components: {
-    TheHeader
+    TheHeader,
+    TheFooter
   }
 }
 </script>

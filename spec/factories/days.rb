@@ -5,38 +5,38 @@ FactoryBot.define do
     trait :day_two do
       number { 2 }
       after(:build) do |day|
-        day.info_blocks << build(:info_block, :normal)
+        day.blocks << build(:block, :normal)
       end
     end
 
     trait :day_three do
       number { 3 }
       after(:build) do |day|
-        day.info_blocks << build(:info_block, :normal)
+        day.blocks << build(:block, :normal)
       end
     end
 
     trait :normal do
       after(:build) do |day|
-        day.info_blocks << build(:info_block, :normal)
+        day.blocks << build(:block, :normal)
       end
     end
 
     trait :only_with_event do
       after(:build) do |day|
-        day.info_blocks << build(:info_block, :only_with_event)
+        day.blocks << build(:block, :only_with_event)
       end
     end
 
     trait :without_transportation_cost do
       after(:build) do |day|
-        day.info_blocks << build(:info_block, :without_transportation_cost)
+        day.blocks << build(:block, :without_transportation_cost)
       end
     end
 
     trait :without_transportation_description do
       after(:build) do |day|
-        day.info_blocks << build(:info_block, :without_transportation_description)
+        day.blocks << build(:block, :without_transportation_description)
       end
     end
   end

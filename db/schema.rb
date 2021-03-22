@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_01_123035) do
+ActiveRecord::Schema.define(version: 2021_03_19_042002) do
 
-  create_table "articles", charset: "utf8mb4", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "article_regions", force: :cascade do |t|
+    t.bigint "article_id", null: false
     t.bigint "region_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["article_id", "region_id"], name: "index_article_regions_on_article_id_and_region_id", unique: true
+    t.index ["article_id"], name: "index_article_regions_on_article_id"
+    t.index ["region_id"], name: "index_article_regions_on_region_id"
+  end
+
+  create_table "article_tags", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["article_id", "tag_id"], name: "index_article_tags_on_article_id_and_tag_id", unique: true
+    t.index ["article_id"], name: "index_article_tags_on_article_id"
+    t.index ["tag_id"], name: "index_article_tags_on_tag_id"
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.bigint "country_id", null: false
     t.string "title", null: false
     t.text "description"
     t.string "map"
@@ -22,39 +45,38 @@ ActiveRecord::Schema.define(version: 2021_03_01_123035) do
     t.date "end_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["region_id"], name: "index_articles_on_region_id"
+    t.index ["country_id"], name: "index_articles_on_country_id"
   end
 
-  create_table "countries", charset: "utf8mb4", force: :cascade do |t|
+  create_table "blocks", force: :cascade do |t|
+    t.bigint "day_id", null: false
+    t.string "title", null: false
+    t.string "place"
+    t.string "place_info"
+    t.text "comment"
+    t.datetime "arriving_time"
+    t.datetime "leaving_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_id"], name: "index_blocks_on_day_id"
+  end
+
+  create_table "countries", force: :cascade do |t|
     t.string "name", null: false
     t.string "currency", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "days", charset: "utf8mb4", force: :cascade do |t|
+  create_table "days", force: :cascade do |t|
     t.bigint "article_id", null: false
-    t.integer "number", null: false
+    t.integer "number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["article_id"], name: "index_days_on_article_id"
   end
 
-  create_table "info_blocks", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "day_id", null: false
-    t.string "event", null: false
-    t.string "place"
-    t.string "place_info"
-    t.text "comment"
-    t.integer "position", null: false
-    t.datetime "arriving_time"
-    t.datetime "leaving_time"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["day_id"], name: "index_info_blocks_on_day_id"
-  end
-
-  create_table "regions", charset: "utf8mb4", force: :cascade do |t|
+  create_table "regions", force: :cascade do |t|
     t.bigint "country_id", null: false
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -62,30 +84,41 @@ ActiveRecord::Schema.define(version: 2021_03_01_123035) do
     t.index ["country_id"], name: "index_regions_on_country_id"
   end
 
-  create_table "spendings", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "info_block_id", null: false
-    t.integer "genre", null: false
+  create_table "spendings", force: :cascade do |t|
+    t.bigint "block_id", null: false
+    t.integer "genre"
     t.string "description", null: false
-    t.string "cost"
+    t.string "cost", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["info_block_id"], name: "index_spendings_on_info_block_id"
+    t.index ["block_id"], name: "index_spendings_on_block_id"
   end
 
-  create_table "transportations", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "info_block_id", null: false
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "transportations", force: :cascade do |t|
+    t.bigint "block_id", null: false
     t.integer "means", null: false
     t.string "description"
     t.string "cost"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["info_block_id"], name: "index_transportations_on_info_block_id"
+    t.index ["block_id"], name: "index_transportations_on_block_id"
   end
 
-  add_foreign_key "articles", "regions"
+  add_foreign_key "article_regions", "articles"
+  add_foreign_key "article_regions", "regions"
+  add_foreign_key "article_tags", "articles"
+  add_foreign_key "article_tags", "tags"
+  add_foreign_key "articles", "countries"
+  add_foreign_key "blocks", "days"
   add_foreign_key "days", "articles"
-  add_foreign_key "info_blocks", "days"
   add_foreign_key "regions", "countries"
-  add_foreign_key "spendings", "info_blocks"
-  add_foreign_key "transportations", "info_blocks"
+  add_foreign_key "spendings", "blocks"
+  add_foreign_key "transportations", "blocks"
 end

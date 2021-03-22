@@ -40,5 +40,7 @@ export default {
 .map-xs {
   width: 100%;
   height: 400px;
+  border: solid #FF990D;
+  border-radius: 6px;
 }
 </style>

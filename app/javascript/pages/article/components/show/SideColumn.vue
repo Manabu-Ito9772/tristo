@@ -1,23 +1,59 @@
 <template>
-  <div>
+  <div class="w-100">
     <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
       {{ article.title }}
     </h4>
-    <p class="col-12 text-muted text-center word-break article-info">
-      {{ article.region.country.name }}&nbsp;
-      {{ article.region.name }}&nbsp;
-      {{ article.start_date | moment('M/D(ddd)') }}〜{{ article.end_date | moment('M/D(ddd)') }}
-    </p>
+
+    <div class="col-12 mb-3 text-muted text-center word-break article-info">
+      <template v-if="countryname != '日本'">
+        <p class="d-inline">
+          【{{ countryname }}】
+        </p>
+      </template>
+      <p
+        v-for="region in article.regions"
+        :key="region.id"
+        class="d-inline pl-1 pr-1 article-region"
+      >
+        {{ region.name }}
+      </p>
+      <template v-if="article.start_date && article.end_date">
+        <p class="d-inline pl-1 pr-1 article-date">
+          {{ article.start_date | moment('M/D(ddd)') }}〜{{ article.end_date | moment('M/D(ddd)') }}
+        </p>
+      </template>
+      <template v-else-if="article.start_date && !article.end_date">
+        <p class="d-inline pl-1 pr-1 article-date">
+          {{ article.start_date | moment('M/D(ddd)') }}
+        </p>
+      </template>
+      <template v-else-if="!article.start_date && article.end_date">
+        <p class="d-inline pl-1 pr-1 article-date">
+          {{ article.end_date | moment('M/D(ddd)') }}
+        </p>
+      </template>
+      <div class="d-flex justify-content-center">
+        <p
+          v-for="article_tag in article.article_tags"
+          :key="article_tag.id"
+          class="m-0 pl-1 pr-1 text-primary article-tag"
+        >
+          #{{ article_tag.tag.name }}
+        </p>
+      </div>
+    </div>
+
     <template v-if="article.description">
-      <div class="col-12 p-0 mb-3">
+      <div class="col-12 p-0 mb-3 article-description">
         <p class="text-center text-white m-0 description-label">
-          概要
+          説明
         </p>
         <p class="d-flex justify-content-center text-dark bg-white p-2 m-0 word-break description-main">
           {{ article.description }}
         </p>
       </div>
     </template>
+
     <div class="col-12 d-flex justify-content-center align-items-center user-name">
       <img
         src="../../../../images/sample.png"
@@ -46,19 +82,24 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    countryname: {
+      type: String,
+      required: true
     }
-  }
+  },
+  data() {
+    return {
+      countryName: '',
+      tags: []
+    }
+  },
 }
 </script>
 
 <style scoped>
 .word-break {
   word-break: break-word;
-}
-
-.sidebar_fixed {
-  position: sticky;
-  top: 100px;
 }
 
 .article-title {
@@ -92,6 +133,6 @@ export default {
 }
 
 .article-info {
-  font-size: 13px;
+  font-size: 14px;
 }
 </style>
