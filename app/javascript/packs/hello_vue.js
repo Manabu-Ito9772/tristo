@@ -15,6 +15,7 @@ import VueMq from '../plugins/vuemq'
 import Datepicker from '../plugins/datepicker'
 import Timepicker from '../plugins/timepicker'
 import vSelect from '../plugins/vueselect'
+import VScrollLock from '../plugins/vscrolllock'
 import '../plugins/veevalidate'
 import 'bootstrap/dist/css/bootstrap.css'
 

@@ -19,6 +19,7 @@
                   placeholder=" "
                   hour-label="時"
                   minute-label="分"
+                  minute-interval="5"
                   close-on-complete
                   class="timepicker"
                 />
@@ -37,6 +38,7 @@
                   placeholder=" "
                   hour-label="時"
                   minute-label="分"
+                  minute-interval="5"
                   close-on-complete
                   class="timepicker"
                 />
@@ -101,7 +103,7 @@
                 </p>
                 <div
                   v-for="spending in blockEdit.spendings"
-                  :key="`first-${spending.index}`"
+                  :key="`e-${spending.index}`"
                 >
                   <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border spending">
                     <div class="row">
@@ -133,7 +135,7 @@
                         >
                           <option
                             v-for="spend in spendingGenre"
-                            :key="`third-${spend.id}`"
+                            :key="`f-${spend.id}`"
                             :value="spend.value"
                           >
                             {{ spend.name }}
@@ -190,7 +192,7 @@
                 </p>
                 <div
                   v-for="transportation in blockEdit.transportations"
-                  :key="`second-${transportation.index}`"
+                  :key="`g-${transportation.index}`"
                 >
                   <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border transport">
                     <div class="row">
@@ -226,7 +228,7 @@
                           >
                             <option
                               v-for="transport in transportationMeans"
-                              :key="`fourth-${transport.id}`"
+                              :key="`h-${transport.id}`"
                               :value="transport.value"
                             >
                               {{ transport.name }}
@@ -340,6 +342,7 @@
                   placeholder="到着時間"
                   hour-label="時"
                   minute-label="分"
+                  minute-interval="5"
                   close-on-complete
                 />
                 <h5 class="pl-2 pr-2 m-0">
@@ -353,6 +356,7 @@
                   placeholder="出発時間"
                   hour-label="時"
                   minute-label="分"
+                  minute-interval="5"
                   close-on-complete
                 />
               </div>
@@ -416,7 +420,7 @@
                 </p>
                 <div
                   v-for="spending in blockEdit.spendings"
-                  :key="`fifth-${spending.index}`"
+                  :key="`i-${spending.index}`"
                 >
                   <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border">
                     <div class="row">
@@ -447,7 +451,7 @@
                         >
                           <option
                             v-for="spend in spendingGenre"
-                            :key="`seventh-${spend.id}`"
+                            :key="`j-${spend.id}`"
                             :value="spend.value"
                           >
                             {{ spend.name }}
@@ -504,7 +508,7 @@
                 </p>
                 <div
                   v-for="transportation in blockEdit.transportations"
-                  :key="`sixth-${transportation.index}`"
+                  :key="`k-${transportation.index}`"
                 >
                   <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border">
                     <div class="row">
@@ -540,7 +544,7 @@
                           >
                             <option
                               v-for="transport in transportationMeans"
-                              :key="`eighth-${transport.id}`"
+                              :key="`l-${transport.id}`"
                               :value="transport.value"
                             >
                               {{ transport.name }}
@@ -687,6 +691,14 @@ export default {
     if (this.blockEdit.leaving_time == null) {
       this.blockEdit.leaving_time = ''
     }
+    for (let i = 0; i < this.blockEdit.spendings.length; i++) {
+      this.blockEdit.spendings[i].index = i
+    }
+    this.spendingsIndex = this.blockEdit.spendings.length
+    for (let i = 0; i < this.blockEdit.transportations.length; i++) {
+      this.blockEdit.transportations[i].index = i
+    }
+    this.transportationsIndex = this.blockEdit.transportations.length
   },
   methods :{
     updateBlock() {

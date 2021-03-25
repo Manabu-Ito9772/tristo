@@ -6,6 +6,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
   let(:article_wihout_info) { create(:article, :without_info) }
   let(:article_only_with_event) { create(:article, :only_with_event) }
   let(:article_without_transportation_cost) { create(:article, :without_transportation_cost) }
+  let(:article_without_transportation_cost_all) { create(:article, :without_transportation_cost_all) }
   let(:article_without_transportation_description) { create(:article, :without_transportation_description) }
 
   describe '記事一覧画面' do
@@ -178,7 +179,15 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to_not have_content('お土産代')
         expect(page).to_not have_content('宿泊費')
         expect(page).to_not have_content('その他')
+      end
 
+      it '全ての交通手段のコストの価格が0の場合は交通費のラベルと項目は表示されない' do
+        article_without_transportation_cost_all
+        visit root_path
+        click_on article_without_transportation_cost_all.title
+        click_on 'コスト'
+        expect(page).to have_content('観光費')
+        expect(page).to_not have_content('交通費')
       end
 
       it '交通手段のコストが保存されていない場合はコスト一覧に表示されない' do

@@ -29,7 +29,7 @@ class ArticleSerializer < ActiveModel::Serializer
 
   class DaySerializer < ActiveModel::Serializer
     attributes :id, :number
-    has_many :blocks
+    has_many :ordered_blocks
 
     class BlockSerializer < ActiveModel::Serializer
       attributes :id, :day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time

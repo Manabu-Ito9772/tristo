@@ -29,7 +29,10 @@ class Api::ArticlesController < ApplicationController
     end
   end
 
-  def destroy; end
+  def destroy
+    @article.destroy!
+    render json: @article
+  end
 
   private
 

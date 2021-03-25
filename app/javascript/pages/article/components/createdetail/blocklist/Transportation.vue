@@ -97,7 +97,7 @@
           />
         </div>
         <template v-if="transportation.means == 'other'">
-          <p class="col-11 d-flex align-items-center m-0 pl-3 pr-0 transportaion word-break">
+          <p class="col-11 d-flex align-items-center m-0 pl-0 pr-0 transportaion word-break">
             <template v-if="transportation.description">
               {{ transportation.description }}&nbsp;&nbsp;&nbsp;
             </template>

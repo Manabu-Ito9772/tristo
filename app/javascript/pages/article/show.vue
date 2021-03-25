@@ -1,7 +1,10 @@
 <template>
   <div class="container-fluid mt-4">
     <template v-if="$mq == 'lg'">
-      <div class="row">
+      <div
+        v-scroll-lock="fixScroll"
+        class="row"
+      >
         <div class="col-8 text-center">
           <SwitchButton
             :article="article"
@@ -17,26 +20,26 @@
           >
             <MainColumn
               v-if="dayNumber == day.number"
-              :blocks="day.blocks"
+              :blocks="day.ordered_blocks"
             />
           </div>
+          <CostColumn
+            v-if="isVisibleCostColumn"
+            :days="article.days"
+          />
+          <MapColumn
+            v-if="isVisibleMapColumn"
+            :map="article.map"
+          />
         </div>
-        <CostColumn
-          v-if="isVisibleCostColumn"
-          :days="article.days"
-          class="col-8"
-        />
-        <MapColumn
-          v-if="isVisibleMapColumn"
-          :map="article.map"
-          class="col-8"
-        />
         <div class="col-4">
           <div class="sidebar-fixed">
             <div class="row pl-3 pr-3">
               <SideColumn
                 :article="article"
                 :countryname="countryname"
+                @fixPage="fixPage"
+                @flowPage="flowPage"
               />
             </div>
           </div>
@@ -45,12 +48,18 @@
     </template>
 
     <template v-else-if="$mq == 'sm'">
-      <div class="row">
+      <div
+        v-scroll-lock="fixScroll"
+        class="row"
+      >
         <div class="col-12">
           <div class="row d-flex justify-content-center pl-3 pr-3 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
             <SideColumn
               :article="article"
               :countryname="countryname"
+              class="front-top"
+              @fixPage="fixPage"
+              @flowPage="flowPage"
             />
           </div>
         </div>
@@ -70,7 +79,7 @@
           >
             <MainColumn
               v-if="dayNumber == day.number"
-              :blocks="day.blocks"
+              :blocks="day.ordered_blocks"
               class="ml-5 mr-5 pl-5 pr-5"
             />
           </div>
@@ -89,12 +98,18 @@
     </template>
 
     <template v-else>
-      <div class="row">
+      <div
+        v-scroll-lock="fixScroll"
+        class="row"
+      >
         <div class="col-12">
           <div class="row pl-3 pr-3">
             <SideColumn
               :article="article"
               :countryname="countryname"
+              class="front-top"
+              @fixPage="fixPage"
+              @flowPage="flowPage"
             />
           </div>
         </div>
@@ -113,7 +128,7 @@
           >
             <MainColumn
               v-if="dayNumber == day.number"
-              :blocks="day.blocks"
+              :blocks="day.ordered_blocks"
               class="pb-4"
             />
           </div>
@@ -155,7 +170,8 @@ export default {
       countryname: '',
       dayNumber: 1,
       isVisibleCostColumn: false,
-      isVisibleMapColumn: false
+      isVisibleMapColumn: false,
+      fixScroll: false,
     }
   },
   created() {
@@ -188,6 +204,12 @@ export default {
       this.isVisibleCostColumn = false
       this.isVisibleMapColumn = true
     },
+    fixPage() {
+      this.fixScroll = true
+    },
+    flowPage() {
+      this.fixScroll = false
+    },
   }
 }
 </script>
@@ -202,5 +224,9 @@ export default {
 .sidebar-fixed {
   position: sticky;
   top: 100px;
+}
+
+.front-top {
+  z-index: 1;
 }
 </style>

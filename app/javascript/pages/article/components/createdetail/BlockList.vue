@@ -9,9 +9,9 @@
         class="mb-3"
       >
         <template v-if="$mq == 'xs'">
-          <div v-if="day.blocks.length">
+          <div v-if="day.ordered_blocks.length">
             <div
-              v-for="block in day.blocks"
+              v-for="block in day.ordered_blocks"
               :key="block.id"
             >
               <template v-if="block.id == blockId">
@@ -64,9 +64,9 @@
         </template>
 
         <template v-else>
-          <div v-if="day.blocks.length">
+          <div v-if="day.ordered_blocks.length">
             <div
-              v-for="block in day.blocks"
+              v-for="block in day.ordered_blocks"
               :key="block.id"
             >
               <template v-if="block.id == blockId">

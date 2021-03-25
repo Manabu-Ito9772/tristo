@@ -6,7 +6,10 @@
           イベント
         </p>
       </div>
-      <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
+      <p
+        id="event"
+        class="col-12 pl-4 pt-1 m-0 text-dark word-break"
+      >
         {{ block.title }}
       </p>
     </div>

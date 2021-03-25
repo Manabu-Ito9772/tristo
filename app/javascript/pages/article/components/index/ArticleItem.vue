@@ -185,15 +185,6 @@ export default {
       required: true
     }
   },
-  // created() {
-  //   this.article.article_tags.sort((a, b) => {
-  //     if (a.id < b.id) {
-  //        return -1;
-  //     } else {
-  //        return 1;
-  //     }
-  //   })
-  // },
 }
 </script>
 
