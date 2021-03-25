@@ -45,6 +45,13 @@ FactoryBot.define do
       end
     end
 
+    trait :without_transportation_cost_all do
+      association :country
+      after(:build) do |article|
+        article.days << build(:day, :without_transportation_cost_all)
+      end
+    end
+
     trait :without_transportation_description do
       association :country
       after(:build) do |article|

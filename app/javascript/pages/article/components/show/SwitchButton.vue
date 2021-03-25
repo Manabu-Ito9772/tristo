@@ -21,9 +21,19 @@
         </template>
       </template>
       <template v-else>
-        <div class="mb-2 ml-1 mr-1 p-1 text-white font-weight-bold day-trip">
-          日帰り
-        </div>
+        <template v-if="dayNumber">
+          <button class="btn mb-2 ml-1 mr-1 p-1 text-white font-weight-bold day-number-selected">
+            日帰り
+          </button>
+        </template>
+        <template v-else>
+          <button
+            class="btn mb-2 ml-1 mr-1 p-1 bg-white day-number"
+            @click="showMainColumn(1)"
+          >
+            日帰り
+          </button>
+        </template>
       </template>
     </div>
     <template v-if="costs.length">
@@ -80,7 +90,7 @@ export default {
     article: {
       handler() {
         for (let day of this.article.days) {
-          for (let block of day.blocks) {
+          for (let block of day.ordered_blocks) {
             for (let spending of block.spendings) {
               this.costs.push(spending)
             }
@@ -123,12 +133,6 @@ export default {
 .day-number-selected {
   background-color: #00D320;
   border: solid #00D320;
-}
-
-.day-trip {
-  background-color: #00D320;
-  border: solid #00D320;
-  border-radius: 4px;
 }
 
 .total-cost {

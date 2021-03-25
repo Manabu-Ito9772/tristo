@@ -25,21 +25,23 @@
       <template v-if="dayNumber == day.number">
         <button class="btn mb-2 ml-1 mr-1 p-1 d-flex align-items-center text-white font-weight-bold day-number-selected">
           {{ day.number }}日目&nbsp;
-          <div
-            class="p-0 m-0 btn btn-white"
-            @click="deleteDay(day)"
-          >
-            <font-awesome-icon
-              :icon="['far', 'times-circle']"
-              class="fa-lg"
-            />
-          </div>
+          <template v-if="days.length > 1">
+            <div
+              class="p-0 m-0 btn btn-white"
+              @click="deleteDay(day)"
+            >
+              <font-awesome-icon
+                :icon="['far', 'times-circle']"
+                class="fa-lg"
+              />
+            </div>
+          </template>
         </button>
       </template>
       <template v-else>
         <button
           class="btn mb-2 ml-1 mr-1 p-1 d-flex align-items-center bg-white day-number"
-          @click="showMainColumn(day)"
+          @click.self="showMainColumn(day)"
         >
           {{ day.number }}日目&nbsp;
           <div
@@ -94,10 +96,14 @@ export default {
       this.buttonUnselected = false
     },
     deleteDay(day) {
+      this.dayNumber = 1
       this.$emit('deleteDay', day)
     },
     addDay() {
       this.$emit('addDay')
+    },
+    resetDayNum() {
+      this.dayNumber = 1
     }
   }
 }

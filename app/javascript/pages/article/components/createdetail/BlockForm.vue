@@ -1,6 +1,9 @@
 <template>
   <div class="bg-white mt-4 mb-4 pt-3 pl-3 pr-3 info-block-form">
-    <ValidationObserver v-slot="{ handleSubmit }">
+    <ValidationObserver
+      v-slot="{ handleSubmit }"
+      ref="observer"
+    >
       <p class="p-0 mb-2 text-center text-white content-lavel">
         時間
       </p>
@@ -13,6 +16,7 @@
           placeholder="到着時間"
           hour-label="時"
           minute-label="分"
+          minute-interval="5"
           close-on-complete
         />
         <h5 class="pl-2 pr-2 m-0">
@@ -26,6 +30,7 @@
           placeholder="出発時間"
           hour-label="時"
           minute-label="分"
+          minute-interval="5"
           close-on-complete
         />
       </div>
@@ -82,7 +87,7 @@
       </p>
       <div
         v-for="spending in blockAndCost.spendings"
-        :key="`first-${spending.index}`"
+        :key="`a-${spending.index}`"
       >
         <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border cost-box spending">
           <div class="row">
@@ -115,7 +120,7 @@
               >
                 <option
                   v-for="spend in spendingGenre"
-                  :key="`third-${spend.id}`"
+                  :key="`b-${spend.id}`"
                   :value="spend.value"
                 >
                   {{ spend.name }}
@@ -170,7 +175,7 @@
       </p>
       <div
         v-for="transportation in blockAndCost.transportations"
-        :key="`second-${transportation.index}`"
+        :key="`c-${transportation.index}`"
       >
         <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border cost-box transport">
           <div class="row">
@@ -207,7 +212,7 @@
                 >
                   <option
                     v-for="transport in transportationMeans"
-                    :key="`fourth-${transport.id}`"
+                    :key="`d-${transport.id}`"
                     :value="transport.value"
                   >
                     {{ transport.name }}
@@ -363,19 +368,9 @@ export default {
         this.$emit('addBlock', this.blockAndCost)
         this.spendingsIndex = 0
         this.transportationsIndex = 0
-        this.resetInput()
+        this.$refs.observer.reset()
+        // Object.assign(this.$data, this.$options.data())
       }
-    },
-    resetInput() {
-      this.blockAndCost.block.day_id = ''
-      this.blockAndCost.block.title = ''
-      this.blockAndCost.block.place = ''
-      this.blockAndCost.block.place_info = ''
-      this.blockAndCost.block.comment = ''
-      this.blockAndCost.block.arriving_time = ''
-      this.blockAndCost.block.leaving_time = ''
-      this.blockAndCost.spendings = []
-      this.blockAndCost.transportations = []
     },
     addSpendingForm() {
       let additionalForm = {
@@ -427,7 +422,7 @@ export default {
       resetHeight.then(function(){
         textarea.style.height = textarea.scrollHeight + 'px'
       })
-    }
+    },
   }
 
 }

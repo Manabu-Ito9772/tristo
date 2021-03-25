@@ -37,13 +37,13 @@
             :currency="currency"
             @addBlock="addBlock"
           />
-          <PostButton />
+          <SaveButton />
         </div>
       </template>
 
       <template v-else-if="$mq == 'sm'">
         <div class="col-12 pt-1 pl-5 pr-5">
-          <PostButton
+          <SaveButton
             class="mt-4 ml-5 mr-5"
           />
           <BlockForm
@@ -84,7 +84,7 @@
 
       <template v-else>
         <div class="col-12 pt-1 pl-0 pr-0">
-          <PostButton
+          <SaveButton
             class="mt-4"
           />
           <BlockForm
@@ -130,16 +130,16 @@ import BlockList from './components/createdetail/BlockList'
 import Overview from './components/createdetail/Overview'
 import SwitchButton from './components/createdetail/SwitchButton'
 import BlockForm from './components/createdetail/BlockForm'
-import PostButton from './components/createdetail/PostButton'
+import SaveButton from './components/edit/SaveButton'
 
 export default {
-  name: 'ArticleCreateDetail',
+  name: 'ArticleEdit',
   components: {
     BlockList,
     Overview,
     SwitchButton,
     BlockForm,
-    PostButton
+    SaveButton
   },
   data() {
     return {
@@ -187,11 +187,6 @@ export default {
           for (let i = 0; i < this.article.days.length; i++) {
             this.article.days[i].number = i + 1
           }
-          // for (let day of this.article.days) {
-          //   for (let i = 0; i < day.blocks.length; i++) {
-          //     day.blocks[i].index = i
-          //   }
-          // }
         })
         .catch(err => console.log(err.response))
     },

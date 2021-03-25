@@ -7,36 +7,56 @@
           :key="costByGenre[0]"
         >
           <div v-if="costByGenre[1].length">
-            <div class="mb-3">
-              <p class="mb-0 text-center text-white content-label">
-                {{ labelOrCost(costByGenre[1][0].genre).label }}
-              </p>
-              <div
-                v-for="costInfo in costByGenre[1]"
-                :key="costInfo.id"
-              >
-                <template v-if="costInfo.means">
-                  <template v-if="costInfo.cost">
-                    <div class="row mt-2 ml-2 mr-2 cost-border">
-                      <div class="col-8 p-0">
-                        <p class="m-0 word-break">
-                          <template v-if="costInfo.description">
-                            {{ costInfo.description }}
-                          </template>
-                          <template v-else>
-                            {{ defaultTransportationDescription(costInfo.means) }}
-                          </template>
-                        </p>
+            <template v-if="costByGenre[0] == '6'">
+              <template v-if="checkTransportationCost(costByGenre[1])">
+                <div class="mb-3">
+                  <p class="mb-0 text-center text-white content-label">
+                    {{ labelOrCost(costByGenre[1][0].genre).label }}
+                  </p>
+                  <div
+                    v-for="costInfo in costByGenre[1]"
+                    :key="costInfo.id"
+                  >
+                    <template v-if="costInfo.cost">
+                      <div class="row mt-2 ml-2 mr-2 cost-border">
+                        <div class="col-8 p-0">
+                          <p class="m-0 word-break">
+                            <template v-if="costInfo.description">
+                              {{ costInfo.description }}
+                            </template>
+                            <template v-else>
+                              {{ defaultTransportationDescription(costInfo.means) }}
+                            </template>
+                          </p>
+                        </div>
+                        <div class="col-4 p-0 text-right">
+                          <p class="m-0">
+                            {{ separateWithComma(costInfo.cost) }}円
+                          </p>
+                        </div>
                       </div>
-                      <div class="col-4 p-0 text-right">
-                        <p class="m-0">
-                          {{ separateWithComma(costInfo.cost) }}円
-                        </p>
-                      </div>
+                    </template>
+                  </div>
+                  <div class="row mt-2 ml-2 mr-2 cost-border">
+                    <div class="col-12 p-0 text-right">
+                      <p class="m-0 font-weight-bold">
+                        合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}円
+                      </p>
                     </div>
-                  </template>
-                </template>
-                <template v-else>
+                  </div>
+                </div>
+              </template>
+            </template>
+
+            <template v-else>
+              <div class="mb-3">
+                <p class="mb-0 text-center text-white content-label">
+                  {{ labelOrCost(costByGenre[1][0].genre).label }}
+                </p>
+                <div
+                  v-for="costInfo in costByGenre[1]"
+                  :key="costInfo.id"
+                >
                   <div class="row mt-2 ml-2 mr-2 cost-border">
                     <div class="col-8 p-0">
                       <p class="m-0 word-break">
@@ -49,16 +69,16 @@
                       </p>
                     </div>
                   </div>
-                </template>
-              </div>
-              <div class="row mt-2 ml-2 mr-2 cost-border">
-                <div class="col-12 p-0 text-right">
-                  <p class="m-0 font-weight-bold">
-                    合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}円
-                  </p>
+                </div>
+                <div class="row mt-2 ml-2 mr-2 cost-border">
+                  <div class="col-12 p-0 text-right">
+                    <p class="m-0 font-weight-bold">
+                      合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}円
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
         <div class="mt-5 mb-5 ml-2 mr-2 text-center">
@@ -106,7 +126,7 @@ export default {
   methods :{
     classifyCost() {
       this.days.forEach(day => {
-        day.blocks.forEach(block => {
+        day.ordered_blocks.forEach(block => {
           block.spendings.forEach(spending => {
             if (spending.genre == 'touring') {
               this.tourings[1].push(spending)
@@ -207,6 +227,17 @@ export default {
       if (means == 'bicycle') return '自転車'
       if (means == 'motorcycle') return 'バイク'
       if (means == 'other') return 'その他'
+    },
+    checkTransportationCost(transportArray) {
+      let cost = 0
+      for (let transport of transportArray) {
+        cost += Number(transport.cost)
+      }
+      if (cost == 0) {
+        return false
+      } else {
+        return true
+      }
     }
   }
 }

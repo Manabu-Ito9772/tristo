@@ -34,6 +34,14 @@ FactoryBot.define do
       end
     end
 
+    trait :without_transportation_cost_all do
+      after(:build) do |block|
+        block.spendings << build(:spending)
+        block.transportations << build(:transportation, :walking)
+        block.transportations << build(:transportation, :walking)
+      end
+    end
+
     trait :without_transportation_description do
       after(:build) do |block|
         block.transportations << build(:transportation, :car, description: nil)

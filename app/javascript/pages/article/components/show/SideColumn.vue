@@ -54,15 +54,15 @@
       </div>
     </template>
 
-    <div class="col-12 d-flex justify-content-center align-items-center user-name">
+    <div class="col-12 p-0 d-flex justify-content-center align-items-center user-name">
       <img
         src="../../../../images/sample.png"
-        class="user-icon"
+        class="user-icon pr-1"
       >
-      <h4 class="float-right mb-0 pl-2 word-break">
+      <h5 class="float-right mb-0 pl-1 pr-1 word-break">
         Ito Manabu
-      </h4>
-      <div class="text-center pl-4">
+      </h5>
+      <div class="text-center pl-1 pr-1">
         <font-awesome-icon
           :icon="['far', 'thumbs-up']"
           class="fa-lg"
@@ -71,13 +71,49 @@
           100
         </p>
       </div>
+      <div class="pl-1">
+        <template v-if="isVisibleMenu">
+          <button
+            class="btn d-flex justify-content-center align-items-center edit-menu"
+            @click="closeMenu"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'ellipsis-h']"
+              class="fa-lg"
+            />
+          </button>
+        </template>
+        <template v-else>
+          <button
+            class="btn d-flex justify-content-center align-items-center edit-menu"
+            @click="showMenu"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'ellipsis-h']"
+              class="fa-lg"
+            />
+          </button>
+        </template>
+      </div>
     </div>
+
+    <transition name="fade">
+      <EditDeleteMenu
+        v-if="isVisibleMenu"
+        @closeMenu="closeMenu"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
+import EditDeleteMenu from './sidecolumn/EditDeleteMenu'
+
 export default {
   name: 'SideColumn',
+  components: {
+    EditDeleteMenu
+  },
   props: {
     article: {
       type: Object,
@@ -91,9 +127,20 @@ export default {
   data() {
     return {
       countryName: '',
-      tags: []
+      tags: [],
+      isVisibleMenu: false
     }
   },
+  methods: {
+    showMenu() {
+      this.isVisibleMenu = true
+      this.$emit('fixPage')
+    },
+    closeMenu() {
+      this.isVisibleMenu = false
+      this.$emit('flowPage')
+    }
+  }
 }
 </script>
 
@@ -134,5 +181,35 @@ export default {
 
 .article-info {
   font-size: 14px;
+}
+
+.edit-menu {
+  font-size: 12px;
+  width: 25px;
+	height: 25px;
+  border: solid thin #6A6A6A;
+  object-fit: cover;
+	border-radius: 50%;
+}
+
+.edit-box {
+  width: 110px;
+  border: solid thin #6A6A6A;
+  border-radius: 6px;
+}
+
+.font-small {
+  font-size: 13px;
+}
+
+.edit-button {
+  border-bottom: solid thin #6A6A6A;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
