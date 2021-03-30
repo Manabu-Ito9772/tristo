@@ -1,4 +1,5 @@
 class Api::ArticleTagsController < ApplicationController
+  before_action :authenticate!
   before_action :set_article_tag, only: %i[destroy]
   skip_before_action :verify_authenticity_token
 

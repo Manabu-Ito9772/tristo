@@ -1,10 +1,11 @@
 class Api::ArticlesController < ApplicationController
+  before_action :authenticate!, only: %i[create update destroy my_aritcles]
   before_action :set_article, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token
 
   def index
     @articles = Article.published
-    render json: @articles, include: [:country, :regions, article_tags: [:tag]]
+    render json: @articles, include: [:user, :country, :regions, article_tags: [:tag]]
   end
 
   def show
@@ -12,7 +13,7 @@ class Api::ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new(article_params)
+    @article = current_user.articles.build(article_params)
 
     if @article.save
       render json: @article
@@ -34,6 +35,16 @@ class Api::ArticlesController < ApplicationController
     render json: @article
   end
 
+  def my_aritcles
+    @articles = current_user.articles.order(created_at: :desc)
+    render json: @articles, include: [:user, :country, :regions, article_tags: [:tag]]
+  end
+
+  def user_articles
+    @articles = User.find(params[:id]).articles.order(created_at: :desc)
+    render json: @articles, include: [:user, :country, :regions, article_tags: [:tag]]
+  end
+
   private
 
   def set_article
@@ -41,6 +52,6 @@ class Api::ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:country_id, :title, :description, :map, :status, :start_date, :end_date)
+    params.require(:article).permit(:country_id, :title, :description, :map, :status, :start_date, :end_date, :created_at)
   end
 end

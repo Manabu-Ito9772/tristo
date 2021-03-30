@@ -68,9 +68,35 @@
               src="../../../../images/sample.png"
               class="user-icon"
             >
-            <h5 class="float-right mb-0 pl-3 word-break">
-              Ito Manabua
-            </h5>
+            <template v-if="authUser">
+              <template v-if="article.user.id == authUser.id">
+                <router-link
+                  :to="{ name: 'MyPage' }"
+                >
+                  <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
+                    {{ article.user.name }}
+                  </h5>
+                </router-link>
+              </template>
+              <template v-else>
+                <router-link
+                  :to="{ name: 'UserShow', query: {id: article.user.id} }"
+                >
+                  <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
+                    {{ article.user.name }}
+                  </h5>
+                </router-link>
+              </template>
+            </template>
+            <template v-else>
+              <router-link
+                :to="{ name: 'UserShow', query: {id: article.user.id} }"
+              >
+                <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
+                  {{ article.user.name }}
+                </h5>
+              </router-link>
+            </template>
             <div class="text-center pl-3">
               <font-awesome-icon
                 :icon="['far', 'thumbs-up']"
@@ -87,7 +113,7 @@
 
     <template v-else>
       <div class="pl-3 pr-3">
-        <div class="row mt-4 bg-white article">
+        <div class="row bg-white article">
           <div class="col-12">
             <div class="row pt-3 pl-3 pr-3">
               <div class="col-12">
@@ -156,9 +182,35 @@
                 src="../../../../images/sample.png"
                 class="user-icon"
               >
-              <h5 class="float-right mb-0 pl-3 word-break">
-                Ito Manabua
-              </h5>
+              <template v-if="authUser">
+                <template v-if="article.user.id == authUser.id">
+                  <router-link
+                    :to="{ name: 'MyPage' }"
+                  >
+                    <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
+                      {{ article.user.name }}
+                    </h5>
+                  </router-link>
+                </template>
+                <template v-else>
+                  <router-link
+                    :to="{ name: 'UserShow', query: {id: article.user.id} }"
+                  >
+                    <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
+                      {{ article.user.name }}
+                    </h5>
+                  </router-link>
+                </template>
+              </template>
+              <template v-else>
+                <router-link
+                  :to="{ name: 'UserShow', query: {id: article.user.id} }"
+                >
+                  <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
+                    {{ article.user.name }}
+                  </h5>
+                </router-link>
+              </template>
               <div class="text-center pl-3">
                 <font-awesome-icon
                   :icon="['far', 'thumbs-up']"
@@ -177,6 +229,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'ArticleItem',
   props: {
@@ -184,6 +238,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    ...mapGetters('users', ['authUser'])
   },
 }
 </script>
@@ -239,5 +296,9 @@ export default {
 	height: 40px;
 	object-fit: cover;
 	border-radius: 50%;
+}
+
+.user-name {
+  color: black;
 }
 </style>

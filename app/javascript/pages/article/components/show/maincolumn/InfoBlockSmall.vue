@@ -9,6 +9,7 @@
       <div class="col-10 p-3">
         <MainInfo
           :block="block"
+          :currency="currency"
         />
       </div>
       <div class="col-12 pt-3 pl-3 pr-3 info-block-below">
@@ -22,6 +23,7 @@
       <div class="col-12 p-3">
         <MainInfo
           :block="block"
+          :currency="currency"
         />
       </div>
       <div class="col-12 pl-3 pr-3">
@@ -48,7 +50,11 @@ export default {
     block: {
       type: Object,
       required: true
-    }
+    },
+    currency: {
+      type: String,
+      required: true
+    },
   },
 }
 </script>

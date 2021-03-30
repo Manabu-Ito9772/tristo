@@ -1,8 +1,83 @@
 require 'rails_helper'
 
 RSpec.describe "記事作成", type: :system do
+  let(:user) { create(:user) }
   let(:country) { create_list(:country, 3, :normal) }
   let(:country_japan) { create(:country, :japan_tokyo_kanagawa) }
+  let(:create_article_japan) {
+    country_japan
+    visit '/create_trip'
+    fill_in 'タイトル', with: 'TestTitle'
+    fill_in '説明', with: 'TestDescription'
+    within('.prefecture') do
+      find('.vs__search').set('東京')
+      find('.vs__dropdown-menu').click
+    end
+    find("input[name='旅行開始日']").click
+    page.all('.cell')[8].click
+    find("input[name='旅行終了日']").click
+    page.all('.cell')[10].click
+    fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
+    within('.tag') do
+      find('.vs__search').set('Tag')
+      find('.vs__dropdown-menu').click
+    end
+    click_on '詳細入力ページへ進む'
+    sleep 5
+  }
+  let(:create_article_overseas) {
+    country
+    visit '/create_trip'
+    click_on '海外'
+    fill_in 'タイトル', with: 'TestTitle'
+    fill_in '説明', with: 'TestDescription'
+    within('.country') do
+      find('.vs__search').set(country[1].name)
+      find('.vs__dropdown-menu').click
+    end
+    within('.region') do
+      find('.vs__search').set(country[1].regions.first.name)
+      find('.vs__dropdown-menu').click
+    end
+    find("input[name='旅行開始日']").click
+    page.all('.cell')[8].click
+    find("input[name='旅行終了日']").click
+    page.all('.cell')[10].click
+    fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
+    within('.tag') do
+      find('.vs__search').set('Tag')
+      find('.vs__dropdown-menu').click
+    end
+    click_on '詳細入力ページへ進む'
+    sleep 5
+  }
+  let(:create_block) {
+    find('.arriving_time').click
+    find('.hours').click
+    find('.minutes').click
+    find('.leaving_time').click
+    find('.hours').click
+    find('.minutes').click
+    fill_in 'イベント', with: 'TestEvent'
+    fill_in '場所', with: 'TestPlace'
+    fill_in 'ホームページURL', with: 'TestPlaceURL'
+    page.all('.save-button')[0].click
+    within('.spending') do
+      fill_in '内容', with: 'TestSpending'
+      select '観光費', from: 'ジャンル'
+      fill_in '価格', with: '500'
+    end
+    page.all('.save-button')[1].click
+    within('.transport') do
+      fill_in '内容', with: 'TestTransport'
+      select '電車', from: '手段'
+      fill_in '価格', with: '1000'
+    end
+    fill_in 'コメント', with: 'TestComment'
+    page.all('.save-button')[2].click
+    sleep 5
+  }
+  before { login_as(user) }
 
   describe '記事概要作成画面' do
     context '記事概要作成画面にアクセス' do
@@ -66,25 +141,7 @@ RSpec.describe "記事作成", type: :system do
 
     context '概要作成フォームを入力して「詳細入力ページへ進む」をクリック' do
       it '記事概要が作成され詳細作成ページが表示される（国内フォーム）' do
-        country_japan
-        visit '/create_trip'
-        fill_in 'タイトル', with: 'TestTitle'
-        fill_in '説明', with: 'TestDescription'
-        within('.prefecture') do
-          find('.vs__search').set('東京')
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[8].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[10].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__search').set('Tag')
-          find('.vs__dropdown-menu').click
-        end
-        click_on '詳細入力ページへ進む'
-        sleep 5
+        create_article_japan
         click_on '概要'
         expect(page).to have_content(country_japan.articles.first.title)
         expect(page).to have_content(country_japan.articles.first.description)
@@ -96,30 +153,7 @@ RSpec.describe "記事作成", type: :system do
       end
 
       it '記事概要が作成され詳細作成ページが表示される（海外フォーム）' do
-        country
-        visit '/create_trip'
-        click_on '海外'
-        fill_in 'タイトル', with: 'TestTitle'
-        fill_in '説明', with: 'TestDescription'
-        within('.country') do
-          find('.vs__search').set(country[1].name)
-          find('.vs__dropdown-menu').click
-        end
-        within('.region') do
-          find('.vs__search').set(country[1].regions.first.name)
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[8].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[10].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__search').set('Tag')
-          find('.vs__dropdown-menu').click
-        end
-        click_on '詳細入力ページへ進む'
-        sleep 5
+        create_article_overseas
         click_on '概要'
         expect(page).to have_content(country[1].articles.first.title)
         expect(page).to have_content(country[1].articles.first.description)
@@ -161,8 +195,9 @@ RSpec.describe "記事作成", type: :system do
         find("input[name='旅行開始日']").click
         page.all('.cell')[8].click
         click_on '詳細入力ページへ進む'
-        sleep 5
+        sleep 3
         expect(page).to have_content('1日目')
+        expect(page).to_not have_content('2日目')
       end
     end
 
@@ -178,8 +213,29 @@ RSpec.describe "記事作成", type: :system do
         find("input[name='旅行終了日']").click
         page.all('.cell')[10].click
         click_on '詳細入力ページへ進む'
-        sleep 5
+        sleep 3
         expect(page).to have_content('1日目')
+        expect(page).to_not have_content('2日目')
+      end
+    end
+
+    context '日程の旅行開始日と旅行終了日で同じ日付を選択して「詳細入力ページへ進む」をクリック' do
+      it '日付が1日だけ作成され詳細作成ページに遷移する' do
+        country_japan
+        visit '/create_trip'
+        fill_in 'タイトル', with: 'TestTitle'
+        within('.prefecture') do
+          find('.vs__search').set('東京')
+          find('.vs__dropdown-menu').click
+        end
+        find("input[name='旅行開始日']").click
+        page.all('.cell')[8].click
+        find("input[name='旅行終了日']").click
+        page.all('.cell')[8].click
+        click_on '詳細入力ページへ進む'
+        sleep 3
+        expect(page).to have_content('1日目')
+        expect(page).to_not have_content('2日目')
       end
     end
 
@@ -206,25 +262,7 @@ RSpec.describe "記事作成", type: :system do
   describe '記事詳細作成画面' do
     describe '記事概要蘭（国内）' do
       before {
-        country_japan
-        visit '/create_trip'
-        fill_in 'タイトル', with: 'TestTitle'
-        fill_in '説明', with: 'TestDescription'
-        within('.prefecture') do
-          find('.vs__search').set('東京')
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[8].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[10].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__search').set('Tag')
-          find('.vs__dropdown-menu').click
-        end
-        click_on '詳細入力ページへ進む'
-        sleep 5
+        create_article_japan
         click_on '概要'
       }
       context '概要ボタンをクリック' do
@@ -250,7 +288,7 @@ RSpec.describe "記事作成", type: :system do
           find('.prefecture').click
           find('.vs__dropdown-menu').click
           click_on '詳細入力ページへ進む'
-          sleep 5
+          sleep 3
           click_on '概要'
           expect(page).to_not have_content('説明')
           expect(page).to_not have_content('日程')
@@ -341,30 +379,7 @@ RSpec.describe "記事作成", type: :system do
 
     describe '記事概要蘭（海外）' do
       before {
-        country
-        visit '/create_trip'
-        click_on '海外'
-        fill_in 'タイトル', with: 'TestTitle'
-        fill_in '説明', with: 'TestDescription'
-        within('.country') do
-          find('.vs__search').set(country[1].name)
-          find('.vs__dropdown-menu').click
-        end
-        within('.region') do
-          find('.vs__search').set(country[1].regions.first.name)
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[8].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[10].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__search').set('Tag')
-          find('.vs__dropdown-menu').click
-        end
-        click_on '詳細入力ページへ進む'
-        sleep 5
+        create_article_overseas
         click_on '概要'
       }
       context '概要ボタンをクリック' do
@@ -391,7 +406,7 @@ RSpec.describe "記事作成", type: :system do
           find('.country').click
           find('.vs__dropdown-menu').click
           click_on '詳細入力ページへ進む'
-          sleep 5
+          sleep 3
           click_on '概要'
           expect(page).to_not have_content('説明')
           expect(page).to_not have_content('日程')
@@ -487,56 +502,10 @@ RSpec.describe "記事作成", type: :system do
       end
     end
 
-    describe '記事情報ブロック' do
+    describe '記事詳細ブロック' do
       before {
-        country
-        visit '/create_trip'
-        click_on '海外'
-        fill_in 'タイトル', with: 'TestTitle'
-        fill_in '説明', with: 'TestDescription'
-        within('.country') do
-          find('.vs__search').set(country[1].name)
-          find('.vs__dropdown-menu').click
-        end
-        within('.region') do
-          find('.vs__search').set(country[1].regions.first.name)
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[8].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[10].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__search').set('Tag')
-          find('.vs__dropdown-menu').click
-        end
-        click_on '詳細入力ページへ進む'
-        sleep 5
-        find('.arriving_time').click
-        find('.hours').click
-        find('.minutes').click
-        find('.leaving_time').click
-        find('.hours').click
-        find('.minutes').click
-        fill_in 'イベント', with: 'TestEvent'
-        fill_in '場所', with: 'TestPlace'
-        fill_in 'ホームページURL', with: 'TestPlaceURL'
-        page.all('.save-button')[0].click
-        within('.spending') do
-          fill_in '内容', with: 'TestSpending'
-          select '観光費', from: 'ジャンル'
-          fill_in '価格', with: '500'
-        end
-        page.all('.save-button')[1].click
-        within('.transport') do
-          fill_in '内容', with: 'TestTransport'
-          select '電車', from: '手段'
-          fill_in '価格', with: '1000'
-        end
-        fill_in 'コメント', with: 'TestComment'
-        page.all('.save-button')[2].click
-        sleep 5
+        create_article_overseas
+        create_block
       }
 
       describe 'ブロックフォーム' do
@@ -794,7 +763,7 @@ RSpec.describe "記事作成", type: :system do
           it '日付ボタンとその日付に紐付くブロックが削除される' do
             fill_in 'イベント', with: 'TestEvent'
             page.all('.save-button')[2].click
-            sleep 5
+            sleep 3
             page.accept_confirm do
               find('.btn-white').click
             end
@@ -839,56 +808,11 @@ RSpec.describe "記事作成", type: :system do
 
   describe '記事投稿' do
     context '記事概要・記事詳細を作成後「投稿する」をクリック' do
-      let(:create_block) {
-        find('.arriving_time').click
-        find('.hours').click
-        find('.minutes').click
-        find('.leaving_time').click
-        find('.hours').click
-        find('.minutes').click
-        fill_in 'イベント', with: 'TestEvent'
-        fill_in '場所', with: 'TestPlace'
-        fill_in 'ホームページURL', with: 'TestPlaceURL'
-        page.all('.save-button')[0].click
-        within('.spending') do
-          fill_in '内容', with: 'TestSpending'
-          select '観光費', from: 'ジャンル'
-          fill_in '価格', with: '500'
-        end
-        page.all('.save-button')[1].click
-        within('.transport') do
-          fill_in '内容', with: 'TestTransport'
-          select '電車', from: '手段'
-          fill_in '価格', with: '1000'
-        end
-        fill_in 'コメント', with: 'TestComment'
-        page.all('.save-button')[2].click
-        sleep 5
-      }
-
       it '記事がタイムラインに投稿される（国内）' do
-        country_japan
-        visit '/create_trip'
-        fill_in 'タイトル', with: 'TestTitle'
-        fill_in '説明', with: 'TestDescription'
-        within('.prefecture') do
-          find('.vs__search').set('東京')
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[8].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[10].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__search').set('Tag')
-          find('.vs__dropdown-menu').click
-        end
-        click_on '詳細入力ページへ進む'
-        sleep 5
+        create_article_japan
         create_block
         find('.post-button').click
-        sleep 5
+        sleep 3
 
         expect(page).to have_content(country_japan.articles.first.title)
         expect(page).to have_content(country_japan.articles.first.description)
@@ -896,6 +820,7 @@ RSpec.describe "記事作成", type: :system do
         expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
         expect(page).to have_content(country_japan.articles.first.tags.first.name)
+        expect(page).to have_content(user.name)
 
         click_on country_japan.articles.first.title
         expect(page).to have_content(country_japan.articles.first.title)
@@ -920,33 +845,10 @@ RSpec.describe "記事作成", type: :system do
       end
 
       it '記事がタイムラインに投稿される（海外）' do
-        country
-        visit '/create_trip'
-        click_on '海外'
-        fill_in 'タイトル', with: 'TestTitle'
-        fill_in '説明', with: 'TestDescription'
-        within('.country') do
-          find('.vs__search').set(country[1].name)
-          find('.vs__dropdown-menu').click
-        end
-        within('.region') do
-          find('.vs__search').set(country[1].regions.first.name)
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[8].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[10].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__search').set('Tag')
-          find('.vs__dropdown-menu').click
-        end
-        click_on '詳細入力ページへ進む'
-        sleep 5
+        create_article_overseas
         create_block
         find('.post-button').click
-        sleep 5
+        sleep 3
 
         expect(page).to have_content(country[1].articles.first.title)
         expect(page).to have_content(country[1].articles.first.description)
@@ -955,6 +857,7 @@ RSpec.describe "記事作成", type: :system do
         expect(page).to have_content(country[1].articles.first.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(country[1].articles.first.end_date.strftime("%-m/%-d"))
         expect(page).to have_content(country[1].articles.first.tags.first.name)
+        expect(page).to have_content(user.name)
 
         click_on country[1].articles.first.title
         expect(page).to have_content(country[1].articles.first.title)
@@ -977,8 +880,42 @@ RSpec.describe "記事作成", type: :system do
         expect(page).to have_content('3日目')
         expect(page).to have_content('コスト')
         expect(page).to have_content('マップ')
-        page.save_screenshot 'screenshot.png'
       end
+    end
+  end
+
+  describe '記事下書き保存' do
+    it 'マイページの下書き欄に記事が保存される（国内）' do
+      create_article_japan
+      create_block
+      find('.draft-button').click
+      sleep 3
+      within('.post-changer') do
+        expect(page).to have_content('下書き')
+      end
+      expect(page).to have_content(country_japan.articles.first.title)
+      expect(page).to have_content(country_japan.articles.first.description)
+      expect(page).to have_content(country_japan.regions.first.name)
+      expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
+      expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+      expect(page).to have_content(country_japan.articles.first.tags.first.name)
+      expect(page).to have_content(user.name)
+    end
+
+    it 'マイページの下書き欄に記事が保存される（海外）' do
+      create_article_overseas
+      create_block
+      find('.draft-button').click
+      sleep 3
+      expect(page).to have_content(country[1].articles.first.title)
+      expect(page).to have_content(country[1].articles.first.description)
+      expect(page).to have_content(country[1].name)
+      expect(page).to have_content(country[1].regions.first.name)
+      expect(page).to have_content(country[1].articles.first.start_date.strftime("%-m/%-d"))
+      expect(page).to have_content(country[1].articles.first.end_date.strftime("%-m/%-d"))
+      expect(page).to have_content(country[1].articles.first.tags.first.name)
+      expect(page).to have_content(user.name)
+      page.save_screenshot 'screenshot.png'
     end
   end
 end

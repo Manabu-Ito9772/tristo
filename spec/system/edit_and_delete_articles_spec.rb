@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "記事編集/削除", type: :system do
+  let(:user) { create(:user) }
   let(:country) { create_list(:country, 3, :normal) }
   let(:country_japan) { create(:country, :japan_tokyo_kanagawa) }
   let(:create_article_japan) {
@@ -76,6 +77,7 @@ RSpec.describe "記事編集/削除", type: :system do
     page.all('.save-button')[2].click
     sleep 5
   }
+  before { login_as(user) }
 
   describe '記事編集' do
     context '記事詳細のメニューボタンをクリックし、「旅行記録を編集」をクリック' do
@@ -721,72 +723,73 @@ RSpec.describe "記事編集/削除", type: :system do
     end
   end
 
-  describe '記事保存' do
+  describe '記事保存（国内）' do
+    before {
+      create_article_japan
+      create_block
+      find('.post-button').click
+      sleep 5
+      click_on country_japan.articles.first.title
+      find('.edit-menu').click
+      find('.edit-button').click
+
+      click_on '概要'
+      find('.edit-button').click
+      fill_in 'タイトル', with: 'UpdatedTitle'
+      fill_in '説明', with: 'UpdatedDescription'
+      within('.prefecture') do
+        find('.vs__deselect').click
+        find('.vs__search').set('神奈川')
+        find('.vs__dropdown-menu').click
+      end
+      find("input[name='旅行開始日']").click
+      page.all('.cell')[10].click
+      find("input[name='旅行終了日']").click
+      page.all('.cell')[12].click
+      fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
+      within('.tag') do
+        find('.vs__deselect').click
+        find('.vs__search').set('UpdatedTag')
+        find('.vs__dropdown-menu').click
+      end
+      find('.edit-button').click
+      sleep 5
+
+      click_on '1日目'
+      find('.fa-edit').click
+      within('.block-form-to-edit') do
+        page.all('.clear-btn')[0].click
+        page.all('.clear-btn')[0].click
+        fill_in 'イベント', with: 'UpdatedEvent'
+        fill_in '場所', with: 'UpdatedPlace'
+        fill_in 'ホームページURL', with: 'UpdatedPlaceURL'
+        within('.spending') do
+          fill_in '内容', with: 'UpdatedSpending'
+          select '食費', from: 'ジャンル'
+          fill_in '価格', with: '1000'
+        end
+        within('.transport') do
+          fill_in '内容', with: 'UpdatedTransport'
+          select '船', from: '手段'
+          fill_in '価格', with: '2000'
+        end
+        fill_in 'コメント', with: 'UpdatedComment'
+        page.all('.save-button')[2].click
+        sleep 5
+      end
+    }
+
     context '記事概要・記事詳細を編集後「保存する」をクリック' do
-      it '記事が更新され詳細ページに遷移（国内）' do
-        create_article_japan
-        create_block
+      it '記事が更新され詳細ページに遷移' do
         find('.post-button').click
-        sleep 5
-        click_on country_japan.articles.first.title
         sleep 3
-        find('.edit-menu').click
-        sleep 3
-        find('.edit-button').click
-
-        click_on '概要'
-        find('.edit-button').click
-        fill_in 'タイトル', with: 'UpdatedTitle'
-        fill_in '説明', with: 'UpdatedDescription'
-        within('.prefecture') do
-          find('.vs__deselect').click
-          find('.vs__search').set('神奈川')
-          find('.vs__dropdown-menu').click
-        end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[10].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[12].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__deselect').click
-          find('.vs__search').set('UpdatedTag')
-          find('.vs__dropdown-menu').click
-        end
-        find('.edit-button').click
-        sleep 5
-
-        click_on '1日目'
-        find('.fa-edit').click
-        within('.block-form-to-edit') do
-          page.all('.clear-btn')[0].click
-          page.all('.clear-btn')[0].click
-          fill_in 'イベント', with: 'UpdatedEvent'
-          fill_in '場所', with: 'UpdatedPlace'
-          fill_in 'ホームページURL', with: 'UpdatedPlaceURL'
-          within('.spending') do
-            fill_in '内容', with: 'UpdatedSpending'
-            select '食費', from: 'ジャンル'
-            fill_in '価格', with: '1000'
-          end
-          within('.transport') do
-            fill_in '内容', with: 'UpdatedTransport'
-            select '船', from: '手段'
-            fill_in '価格', with: '2000'
-          end
-          fill_in 'コメント', with: 'UpdatedComment'
-          page.all('.save-button')[2].click
-          sleep 5
-        end
-        find('.post-button').click
-        sleep 5
-
         expect(page).to have_content('UpdatedTitle')
         expect(page).to have_content('UpdatedDescription')
         expect(page).to have_content('神奈川')
         expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
         expect(page).to have_content('UpdatedTag')
+        expect(page).to have_content(user.name)
 
         expect(page).to have_content('UpdatedEvent')
         expect(page).to have_content('UpdatedPlace')
@@ -797,68 +800,132 @@ RSpec.describe "記事編集/削除", type: :system do
         expect(page).to have_content('1,000')
         expect(page).to have_content('2,000')
       end
+    end
 
-      it '記事が更新され詳細ページに遷移（国内）' do
-        create_article_overseas
-        create_block
-        find('.post-button').click
-        sleep 5
-        click_on country[1].articles.first.title
+    context '記事概要・記事詳細を編集後「下書き保存」をクリック' do
+      before {
+        find('.draft-button').click
         sleep 3
-        find('.edit-menu').click
-        sleep 3
-        find('.edit-button').click
+      }
 
-        click_on '概要'
-        find('.edit-button').click
-        fill_in 'タイトル', with: 'UpdatedTitle'
-        fill_in '説明', with: 'UpdatedDescription'
-        within('.country') do
-          find('.vs__search').set(country[2].name)
-          find('.vs__dropdown-menu').click
+      it '記事が下書き状態になりマイページに遷移' do
+        within('.post-changer') do
+          expect(page).to have_content('下書き')
         end
-        within('.region') do
-          find('.vs__search').set(country[2].regions.first.name)
-          find('.vs__dropdown-menu').click
+        expect(page).to have_content('UpdatedTitle')
+        expect(page).to have_content('UpdatedDescription')
+        expect(page).to have_content('神奈川')
+        expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
+        expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+        expect(page).to have_content('UpdatedTag')
+        expect(page).to have_content(user.name)
+      end
+
+      context '下書き状態の記事編集ページで「投稿する」をクリック' do
+        it '記事がタイムラインに投稿される' do
+          click_on 'UpdatedTitle'
+          find('.edit-menu').click
+          find('.edit-button').click
+          sleep 1
+          find('.post-button').click
+          expect(page).to_not have_content('投稿')
+          expect(page).to_not have_content('下書き')
+          expect(page).to_not have_content('いいね')
+          expect(page).to have_content('UpdatedTitle')
+          expect(page).to have_content('UpdatedDescription')
+          expect(page).to have_content('神奈川')
+          expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
+          expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_content('UpdatedTag')
+          expect(page).to have_content(user.name)
         end
-        find("input[name='旅行開始日']").click
-        page.all('.cell')[10].click
-        find("input[name='旅行終了日']").click
-        page.all('.cell')[12].click
-        fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
-        within('.tag') do
-          find('.vs__deselect').click
-          find('.vs__search').set('UpdatedTag')
-          find('.vs__dropdown-menu').click
+      end
+
+      context '下書き状態の記事編集ページで「下書き保存」をクリック' do
+        it '記事は下書き状態のままマイページに遷移' do
+          click_on 'UpdatedTitle'
+          find('.edit-menu').click
+          find('.edit-button').click
+          sleep 1
+          find('.draft-button').click
+          within('.post-changer') do
+            expect(page).to have_content('下書き')
+          end
+          expect(page).to have_content('UpdatedTitle')
+          expect(page).to have_content('UpdatedDescription')
+          expect(page).to have_content('神奈川')
+          expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
+          expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_content('UpdatedTag')
+          expect(page).to have_content(user.name)
         end
-        find('.edit-button').click
+      end
+    end
+  end
+
+  describe '記事保存（海外）' do
+    before {
+      create_article_overseas
+      create_block
+      find('.post-button').click
+      sleep 5
+      click_on country[1].articles.first.title
+      find('.edit-menu').click
+      find('.edit-button').click
+
+      click_on '概要'
+      find('.edit-button').click
+      fill_in 'タイトル', with: 'UpdatedTitle'
+      fill_in '説明', with: 'UpdatedDescription'
+      within('.country') do
+        find('.vs__search').set(country[2].name)
+        find('.vs__dropdown-menu').click
+      end
+      within('.region') do
+        find('.vs__search').set(country[2].regions.first.name)
+        find('.vs__dropdown-menu').click
+      end
+      find("input[name='旅行開始日']").click
+      page.all('.cell')[10].click
+      find("input[name='旅行終了日']").click
+      page.all('.cell')[12].click
+      fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
+      within('.tag') do
+        find('.vs__deselect').click
+        find('.vs__search').set('UpdatedTag')
+        find('.vs__dropdown-menu').click
+      end
+      find('.edit-button').click
+      sleep 5
+
+      click_on '1日目'
+      find('.fa-edit').click
+      within('.block-form-to-edit') do
+        page.all('.clear-btn')[0].click
+        page.all('.clear-btn')[0].click
+        fill_in 'イベント', with: 'UpdatedEvent'
+        fill_in '場所', with: 'UpdatedPlace'
+        fill_in 'ホームページURL', with: 'UpdatedPlaceURL'
+        within('.spending') do
+          fill_in '内容', with: 'UpdatedSpending'
+          select '食費', from: 'ジャンル'
+          fill_in '価格', with: '1000'
+        end
+        within('.transport') do
+          fill_in '内容', with: 'UpdatedTransport'
+          select '船', from: '手段'
+          fill_in '価格', with: '2000'
+        end
+        fill_in 'コメント', with: 'UpdatedComment'
+        page.all('.save-button')[2].click
         sleep 5
+      end
+    }
 
-        click_on '1日目'
-        find('.fa-edit').click
-        within('.block-form-to-edit') do
-          page.all('.clear-btn')[0].click
-          page.all('.clear-btn')[0].click
-          fill_in 'イベント', with: 'UpdatedEvent'
-          fill_in '場所', with: 'UpdatedPlace'
-          fill_in 'ホームページURL', with: 'UpdatedPlaceURL'
-          within('.spending') do
-            fill_in '内容', with: 'UpdatedSpending'
-            select '食費', from: 'ジャンル'
-            fill_in '価格', with: '1000'
-          end
-          within('.transport') do
-            fill_in '内容', with: 'UpdatedTransport'
-            select '船', from: '手段'
-            fill_in '価格', with: '2000'
-          end
-          fill_in 'コメント', with: 'UpdatedComment'
-          page.all('.save-button')[2].click
-          sleep 5
-        end
+    context '記事概要・記事詳細を編集後「保存する」をクリック' do
+      it '記事が更新され詳細ページに遷移' do
         find('.post-button').click
-        sleep 5
-
+        sleep 3
         expect(page).to have_content('UpdatedTitle')
         expect(page).to have_content('UpdatedDescription')
         expect(page).to have_content(country[2].name)
@@ -866,6 +933,7 @@ RSpec.describe "記事編集/削除", type: :system do
         expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
         expect(page).to have_content('UpdatedTag')
+        expect(page).to have_content(user.name)
 
         expect(page).to have_content('UpdatedEvent')
         expect(page).to have_content('UpdatedPlace')
@@ -875,7 +943,69 @@ RSpec.describe "記事編集/削除", type: :system do
         expect(page).to have_content('UpdatedTransport')
         expect(page).to have_content('1,000')
         expect(page).to have_content('2,000')
-        page.save_screenshot 'screenshot.png'
+      end
+    end
+
+    context '記事概要・記事詳細を編集後「下書き保存」をクリック' do
+      before {
+        find('.draft-button').click
+        sleep 3
+      }
+
+      it '記事が下書き状態になりマイページに遷移' do
+        within('.post-changer') do
+          expect(page).to have_content('下書き')
+        end
+        expect(page).to have_content('UpdatedTitle')
+        expect(page).to have_content('UpdatedDescription')
+        expect(page).to have_content(country[2].name)
+        expect(page).to have_content(country[2].regions.first.name)
+        expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
+        expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
+        expect(page).to have_content('UpdatedTag')
+        expect(page).to have_content(user.name)
+      end
+
+      context '下書き状態の記事編集ページで「投稿する」をクリック' do
+        it '記事がタイムラインに投稿される' do
+          click_on 'UpdatedTitle'
+          find('.edit-menu').click
+          find('.edit-button').click
+          sleep 1
+          find('.post-button').click
+          expect(page).to_not have_content('投稿')
+          expect(page).to_not have_content('下書き')
+          expect(page).to_not have_content('いいね')
+          expect(page).to have_content('UpdatedTitle')
+          expect(page).to have_content('UpdatedDescription')
+          expect(page).to have_content(country[2].name)
+          expect(page).to have_content(country[2].regions.first.name)
+          expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
+          expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_content('UpdatedTag')
+          expect(page).to have_content(user.name)
+        end
+      end
+
+      context '下書き状態の記事編集ページで「下書き保存」をクリック' do
+        it '記事は下書き状態のままマイページに遷移' do
+          click_on 'UpdatedTitle'
+          find('.edit-menu').click
+          find('.edit-button').click
+          sleep 1
+          find('.draft-button').click
+          within('.post-changer') do
+            expect(page).to have_content('下書き')
+          end
+          expect(page).to have_content('UpdatedTitle')
+          expect(page).to have_content('UpdatedDescription')
+          expect(page).to have_content(country[2].name)
+          expect(page).to have_content(country[2].regions.first.name)
+          expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
+          expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_content('UpdatedTag')
+          expect(page).to have_content(user.name)
+        end
       end
     end
   end

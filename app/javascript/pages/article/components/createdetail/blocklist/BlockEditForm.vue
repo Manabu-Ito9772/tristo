@@ -2,7 +2,7 @@
   <div>
     <ValidationObserver v-slot="{ handleSubmit }">
       <template v-if="$mq == 'lg'">
-        <div class="row bg-white mb-4 ml-0 mr-0 info-block-form block-form-to-edit">
+        <div class="row bg-white mb-1 ml-0 mr-0 info-block-form block-form-to-edit">
           <div class="col-2 p-3 info-block-left">
             <div class="row">
               <div class="col-12 text-center text-white">
@@ -290,12 +290,12 @@
                     コメント
                   </p>
                   <textarea
-                    ref="adjust_textarea"
+                    ref="area"
                     v-model="blockEdit.comment"
+                    :style="styles"
                     name="コメント"
                     class="form-control bg-light"
                     rows="2"
-                    @keydown="adjustHeight"
                   />
                   <span class="text-danger">{{ errors[0] }}</span>
                 </ValidationProvider>
@@ -310,22 +310,22 @@
             >
           </div>
 
-          <div class="col-12 pt-2 pb-3 pl-3 pr-3 text-center info-block-bottom">
-            <p class="m-0 text-secondary">
-              * 必須項目
-            </p>
+          <div class="col-12 p-3 text-center info-block-bottom">
             <button
-              class="btn d-inline-block pl-5 pr-5 mt-1 text-white font-weight-bold save-button"
+              class="btn d-inline-block pl-5 pr-5 text-white font-weight-bold save-button"
               @click="handleSubmit(updateBlock)"
             >
               保存
             </button>
           </div>
         </div>
+        <p class="mb-4 pr-1 text-secondary text-right font-small">
+          * 必須項目
+        </p>
       </template>
 
       <template v-else>
-        <div class="row bg-white mb-4 ml-0 mr-0 info-block-form">
+        <div class="row bg-white mb-1 ml-0 mr-0 info-block-form">
           <div class="col-12 pt-3 pb-0 pl-3 pr-3">
             <div class="row">
               <div class="col-12 text-center text-white">
@@ -606,12 +606,12 @@
                     コメント
                   </p>
                   <textarea
-                    ref="adjust_textarea"
+                    ref="area"
                     v-model="blockEdit.comment"
+                    :style="styles"
                     name="コメント"
                     class="form-control bg-light"
                     rows="2"
-                    @keydown="adjustHeight"
                   />
                   <span class="text-danger">{{ errors[0] }}</span>
                 </ValidationProvider>
@@ -626,18 +626,18 @@
             >
           </div>
 
-          <div class="col-12 pt-2 pb-3 pl-3 pr-3 text-center info-block-bottom">
-            <p class="m-0 text-secondary">
-              * 必須項目
-            </p>
+          <div class="col-12 p-3 text-center info-block-bottom">
             <button
-              class="btn d-inline-block pl-5 pr-5 mt-1 text-white font-weight-bold save-button"
+              class="btn d-inline-block pl-5 pr-5 text-white font-weight-bold save-button"
               @click="handleSubmit(updateBlock)"
             >
               保存
             </button>
           </div>
         </div>
+        <p class="mb-4 pr-1 text-secondary text-right font-small">
+          * 必須項目
+        </p>
       </template>
     </ValidationObserver>
   </div>
@@ -654,7 +654,7 @@ export default {
     currency: {
       type: String,
       required: true
-    }
+    },
   },
   data() {
     return {
@@ -681,7 +681,20 @@ export default {
       ],
       spendingsIndex: 0,
       transportationsIndex: 0,
+      height: '',
     }
+  },
+  computed: {
+    styles(){
+      return {
+        'height': this.height
+      }
+    }
+  },
+  watch:{
+    'blockEdit.comment'(){
+      this.resize()
+    },
   },
   created() {
     this.blockEdit = Object.assign({}, this.block)
@@ -699,6 +712,7 @@ export default {
       this.blockEdit.transportations[i].index = i
     }
     this.transportationsIndex = this.blockEdit.transportations.length
+    this.resize()
   },
   methods :{
     updateBlock() {
@@ -748,13 +762,10 @@ export default {
       }
       this.transportationsIndex = this.blockEdit.transportations.length
     },
-    adjustHeight(){
-      let textarea = this.$refs.adjust_textarea
-      let resetHeight = new Promise(function(resolve) {
-        resolve(textarea.style.height = 'auto')
-      })
-      resetHeight.then(function(){
-        textarea.style.height = textarea.scrollHeight + 'px'
+    resize(){
+      this.height = 'auto'
+      this.$nextTick(()=>{
+        this.height = this.$refs.area.scrollHeight + 'px'
       })
     }
   }
@@ -764,16 +775,16 @@ export default {
 
 <style scoped>
 .info-block-form {
-  border: solid #FF990D;
+  border: solid #FF00EB;
   border-radius: 6px;
 }
 
 .info-block-left {
-  border-right: solid thin #FF990D;
+  border-right: solid thin #FF00EB;
 }
 
 .info-block-bottom {
-  border-top: solid thin #FF990D;
+  border-top: solid thin #FF00EB;
 }
 
 .save-button {

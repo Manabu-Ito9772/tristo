@@ -1,10 +1,11 @@
 class Api::BlocksController < ApplicationController
+  before_action :authenticate!
   before_action :set_block, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token
 
-  def show
-    render json: @block
-  end
+  # def show
+  #   render json: @block
+  # end
 
   def create
     @block = Block.new(block_params)

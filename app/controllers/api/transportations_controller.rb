@@ -1,4 +1,5 @@
 class Api::TransportationsController < ApplicationController
+  before_action :authenticate!
   before_action :set_transportation, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token
 

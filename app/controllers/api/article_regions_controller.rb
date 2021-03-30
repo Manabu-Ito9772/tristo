@@ -1,4 +1,5 @@
 class Api::ArticleRegionsController < ApplicationController
+  before_action :authenticate!
   before_action :set_article_region, only: %i[destroy]
   skip_before_action :verify_authenticity_token
 

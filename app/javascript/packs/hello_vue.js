@@ -9,6 +9,7 @@ import Vue from 'vue'
 import App from '../app.vue'
 import router from '../router'
 import axios from '../plugins/axios'
+import store from '../store'
 import FontAwesome from '../plugins/fontawesome'
 import VueMoment from '../plugins/vuemoment'
 import VueMq from '../plugins/vuemq'
@@ -25,6 +26,7 @@ Vue.prototype.$axios = axios
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     router,
+    store,
     render: h => h(App)
   }).$mount()
   document.body.appendChild(app.$el)

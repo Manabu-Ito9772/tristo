@@ -29,12 +29,13 @@
             />
           </div>
         </div>
-        <div class="col-4 pt-5 pr-0 main">
+        <div class="col-4 mt-4 pt-5 pr-0 main">
           <BlockForm
             v-if="isVisibleForm"
             ref="form"
             :dayid="day_id"
             :currency="currency"
+            class="mb-3"
             @addBlock="addBlock"
           />
           <PostButton />
@@ -45,14 +46,6 @@
         <div class="col-12 pt-1 pl-5 pr-5">
           <PostButton
             class="mt-4 ml-5 mr-5"
-          />
-          <BlockForm
-            v-if="isVisibleForm"
-            ref="form"
-            :dayid="day_id"
-            :currency="currency"
-            class="ml-5 mr-5"
-            @addBlock="addBlock"
           />
         </div>
         <div class="col-12 pt-4 pl-5 pr-5">
@@ -80,19 +73,22 @@
             />
           </div>
         </div>
+        <div class="col-12 pt-1 pl-5 pr-5">
+          <BlockForm
+            v-if="isVisibleForm"
+            ref="form"
+            :dayid="day_id"
+            :currency="currency"
+            class="ml-5 mr-5"
+            @addBlock="addBlock"
+          />
+        </div>
       </template>
 
       <template v-else>
         <div class="col-12 pt-1 pl-0 pr-0">
           <PostButton
             class="mt-4"
-          />
-          <BlockForm
-            v-if="isVisibleForm"
-            ref="form"
-            :dayid="day_id"
-            :currency="currency"
-            @addBlock="addBlock"
           />
         </div>
         <div class="col-12 pt-4 pr-0 pl-0">
@@ -109,7 +105,6 @@
             ref="list"
             :days="days"
             :currency="currency"
-            class="mb-5"
             @getArticle="getArticle"
           />
           <div class="row d-flex justify-content-center pl-3 pr-3 mb-4">
@@ -119,6 +114,15 @@
               class="col-12 p-0"
             />
           </div>
+        </div>
+        <div class="col-12 mb-5 pb-3 pl-0 pr-0">
+          <BlockForm
+            v-if="isVisibleForm"
+            ref="form"
+            :dayid="day_id"
+            :currency="currency"
+            @addBlock="addBlock"
+          />
         </div>
       </template>
     </div>

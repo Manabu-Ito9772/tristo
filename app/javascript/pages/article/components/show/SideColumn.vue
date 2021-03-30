@@ -57,12 +57,38 @@
     <div class="col-12 p-0 d-flex justify-content-center align-items-center user-name">
       <img
         src="../../../../images/sample.png"
-        class="user-icon pr-1"
+        class="user-icon pr-2"
       >
-      <h5 class="float-right mb-0 pl-1 pr-1 word-break">
-        Ito Manabu
-      </h5>
-      <div class="text-center pl-1 pr-1">
+      <template v-if="authUser">
+        <template v-if="user.id == authUser.id">
+          <router-link
+            :to="{ name: 'MyPage' }"
+          >
+            <h5 class="float-right mb-0 pl-2 pr-2 text-dark font-weight-bold word-break user-link">
+              {{ user.name }}
+            </h5>
+          </router-link>
+        </template>
+        <template v-else>
+          <router-link
+            :to="{ name: 'UserShow', query: {id: user.id} }"
+          >
+            <h5 class="float-right mb-0 pl-2 pr-2 text-dark font-weight-bold word-break user-link">
+              {{ user.name }}
+            </h5>
+          </router-link>
+        </template>
+      </template>
+      <template v-else>
+        <router-link
+          :to="{ name: 'UserShow', query: {id: user.id} }"
+        >
+          <h5 class="float-right mb-0 pl-2 pr-2 text-dark font-weight-bold word-break user-link">
+            {{ user.name }}
+          </h5>
+        </router-link>
+      </template>
+      <div class="text-center pl-2">
         <font-awesome-icon
           :icon="['far', 'thumbs-up']"
           class="fa-lg"
@@ -71,19 +97,9 @@
           100
         </p>
       </div>
-      <div class="pl-1">
-        <template v-if="isVisibleMenu">
-          <button
-            class="btn d-flex justify-content-center align-items-center edit-menu"
-            @click="closeMenu"
-          >
-            <font-awesome-icon
-              :icon="['fas', 'ellipsis-h']"
-              class="fa-lg"
-            />
-          </button>
-        </template>
-        <template v-else>
+
+      <template v-if="isAuthUser">
+        <div class="pl-3">
           <button
             class="btn d-flex justify-content-center align-items-center edit-menu"
             @click="showMenu"
@@ -93,8 +109,8 @@
               class="fa-lg"
             />
           </button>
-        </template>
-      </div>
+        </div>
+      </template>
     </div>
 
     <transition name="fade">
@@ -108,6 +124,7 @@
 
 <script>
 import EditDeleteMenu from './sidecolumn/EditDeleteMenu'
+import { mapGetters } from "vuex"
 
 export default {
   name: 'SideColumn',
@@ -116,6 +133,10 @@ export default {
   },
   props: {
     article: {
+      type: Object,
+      required: true
+    },
+    user: {
       type: Object,
       required: true
     },
@@ -129,6 +150,20 @@ export default {
       countryName: '',
       tags: [],
       isVisibleMenu: false
+    }
+  },
+  computed: {
+    ...mapGetters("users", ["authUser"]),
+    isAuthUser() {
+      if (this.authUser != null) {
+        if (this.user.id == this.authUser.id) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -165,6 +200,10 @@ export default {
 	height: 40px;
 	object-fit: cover;
 	border-radius: 50%;
+}
+
+.user-link {
+  color: black;
 }
 
 .description-label {

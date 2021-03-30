@@ -21,6 +21,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.tags.first.name)
+        expect(page).to have_content(article_normal.user.name)
       end
 
       it '記事の説明、地域、日付、タグはデータがなければ表示されない' do
@@ -42,7 +43,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
   end
 
   describe '記事詳細画面' do
-    describe '記事情報ブロック' do
+    describe '記事詳細ブロック' do
       it '記事詳細ブロックが表示される' do
         article_normal
         visit root_path
@@ -85,6 +86,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.tags.first.name)
         expect(page).to have_content(article_normal.description)
+        expect(page).to have_content(article_normal.user.name)
       end
 
       it '説明、地域、日付、タグはデータがなければ表示されない' do

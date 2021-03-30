@@ -47,8 +47,15 @@ taiwan_regions.each do |region|
   Country.find_by(name: '台湾').regions.create!(name: region)
 end
 
+@user = User.create!(
+  name: 'Sample User',
+  email: 'sample@sample.com',
+  password: 'password'
+)
+
 5.times do
-  article = Country.find(1).articles.create!(
+  article = @user.articles.create!(
+    country_id: 1,
     title: Faker::Movies::StarWars.character,
     description: Faker::Movies::BackToTheFuture.quote,
     map: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>',
@@ -96,7 +103,8 @@ end
 end
 
 5.times do
-  article = Country.find(2).articles.create!(
+  article = @user.articles.create!(
+    country_id: 2,
     title: Faker::Movies::StarWars.character,
     description: Faker::Movies::BackToTheFuture.quote,
     map: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>',
@@ -144,7 +152,8 @@ end
 end
 
 5.times do
-  article = Country.find(3).articles.create!(
+  article = @user.articles.create!(
+    country_id: 3,
     title: Faker::Movies::StarWars.character,
     description: Faker::Movies::BackToTheFuture.quote,
     map: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>',

@@ -24,12 +24,12 @@
           説明
         </h5>
         <textarea
-          ref="adjust_textarea"
+          ref="area"
           v-model="articleEdit.description"
+          :style="styles"
           name="説明"
           class="mb-3 form-control bg-light"
           rows="1"
-          @keydown="adjustHeight"
         />
         <span class="text-danger">{{ errors[0] }}</span>
       </ValidationProvider>
@@ -199,6 +199,14 @@ export default {
           to: '',
         },
       },
+      height: '',
+    }
+  },
+  computed: {
+    styles(){
+      return {
+        'height': this.height
+      }
     }
   },
   watch: {
@@ -220,7 +228,10 @@ export default {
       } else {
         this.datepicker.disabledStartDates.from = ''
       }
-    }
+    },
+    'articleEdit.description'(){
+      this.resize()
+    },
   },
   created() {
     this.getCountries()
@@ -239,6 +250,7 @@ export default {
     for (let article_tag of this.articleEdit.article_tags) {
       this.tags.push(article_tag.tag.name)
     }
+    this.resize()
   },
   methods:{
     async getCountries() {
@@ -307,13 +319,10 @@ export default {
         })
         .catch(err => console.log(err.response))
     },
-    adjustHeight(){
-      let textarea = this.$refs.adjust_textarea
-      let resetHeight = new Promise(function(resolve) {
-        resolve(textarea.style.height = 'auto')
-      })
-      resetHeight.then(function(){
-        textarea.style.height = textarea.scrollHeight + 'px'
+    resize(){
+      this.height = 'auto'
+      this.$nextTick(()=>{
+        this.height = this.$refs.area.scrollHeight + 'px'
       })
     }
   }

@@ -57,7 +57,7 @@
           </div>
           <div class="col-4 p-0 text-right">
             <p class="m-0">
-              {{ separateWithComma(spending.cost) }}円
+              {{ separateWithComma(spending.cost) }}{{ currency }}
             </p>
           </div>
         </div>
@@ -86,7 +86,11 @@ export default {
     block: {
       type: Object,
       required: true
-    }
+    },
+    currency: {
+      type: String,
+      required: true
+    },
   },
   methods: {
     separateWithComma(num) {

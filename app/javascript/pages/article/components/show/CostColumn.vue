@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-4 p-0 text-right">
                           <p class="m-0">
-                            {{ separateWithComma(costInfo.cost) }}円
+                            {{ separateWithComma(costInfo.cost) }}{{ currency }}
                           </p>
                         </div>
                       </div>
@@ -40,7 +40,7 @@
                   <div class="row mt-2 ml-2 mr-2 cost-border">
                     <div class="col-12 p-0 text-right">
                       <p class="m-0 font-weight-bold">
-                        合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}円
+                        合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}{{ currency }}
                       </p>
                     </div>
                   </div>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-4 p-0 text-right">
                       <p class="m-0">
-                        {{ separateWithComma(costInfo.cost) }}円
+                        {{ separateWithComma(costInfo.cost) }}{{ currency }}
                       </p>
                     </div>
                   </div>
@@ -73,7 +73,7 @@
                 <div class="row mt-2 ml-2 mr-2 cost-border">
                   <div class="col-12 p-0 text-right">
                     <p class="m-0 font-weight-bold">
-                      合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}円
+                      合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}{{ currency }}
                     </p>
                   </div>
                 </div>
@@ -83,7 +83,7 @@
         </div>
         <div class="mt-5 mb-5 ml-2 mr-2 text-center">
           <h4 class="d-inline text-dark font-weight-bold toatal-cost-border">
-            総計：&nbsp;{{ separateWithComma(totalCost) }}円
+            総計：&nbsp;{{ separateWithComma(totalCost) }}{{ currency }}
           </h4>
         </div>
       </div>
@@ -97,6 +97,10 @@ export default {
   props: {
     days: {
       type: Array,
+      required: true
+    },
+    currency: {
+      type: String,
       required: true
     }
   },

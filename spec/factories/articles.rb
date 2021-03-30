@@ -6,6 +6,7 @@ FactoryBot.define do
     status { 'published' }
     start_date { Date.today }
     end_date { Date.tomorrow }
+    association :user
 
     trait :normal do
       association :country

@@ -1,4 +1,5 @@
 class Api::SpendingsController < ApplicationController
+  before_action :authenticate!
   before_action :set_spending, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token
 

@@ -1,9 +1,6 @@
 <template>
   <div v-if="isVisibleOverview">
-    <div
-      v-if="$mq == 'xs'"
-      class="mb-5 pb-3"
-    >
+    <div v-if="$mq == 'xs'">
       <PreviewOverview
         v-if="isVisiblePreviewOverview"
         :article="article"

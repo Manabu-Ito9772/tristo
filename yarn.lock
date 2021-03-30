@@ -872,6 +872,14 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/vue-fontawesome/-/vue-fontawesome-2.0.2.tgz#5b86cd2fb7b4c17e5dede722c1c2855c97eceaea"
   integrity sha512-ecpKSBUWXsxRJVi/dbOds4tkKwEcBQ1JSDZFzE2jTFpF8xIh3OgTX8POIor6bOltjibr3cdEyvnDjecMwUmxhQ==
 
+"@innologica/vue-dropdown-menu@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@innologica/vue-dropdown-menu/-/vue-dropdown-menu-0.1.4.tgz#504589fb0d8f143aa11ffbfe38aa5651e10d98ff"
+  integrity sha512-sNSdVqIOSxEIV5ePbo1mO4p1cE9z6ChpXjm2c1hTkajegwxklvii4QpGHnA57VnWj5aJaVRNoiSqlzofXV5euA==
+  dependencies:
+    core-js "^2.6.5"
+    vue "^2.6.10"
+
 "@npmcli/move-file@^1.0.1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@npmcli/move-file/-/move-file-1.1.2.tgz#1a82c3e372f7cae9253eb66d72543d6b8685c674"
@@ -2224,6 +2232,11 @@ core-js-compat@^3.8.0:
   dependencies:
     browserslist "^4.16.1"
     semver "7.0.0"
+
+core-js@^2.6.5:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
+  integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
 core-js@^3.6.5:
   version "3.8.3"
@@ -8019,7 +8032,7 @@ vue2-timepicker@^1.1.6:
   resolved "https://registry.yarnpkg.com/vue2-timepicker/-/vue2-timepicker-1.1.6.tgz#d74df71e3992c7073aa503d3e71d729d114be3da"
   integrity sha512-DhO2UH4CTer/lMWxg+jqxn/+h6g2vZrsM6vCe9u7/Ie+Pej9yA+8mQA3C3VPApZ+LauKc43WxCspOXb6SGBOTw==
 
-vue@^2.6.12, vue@^2.6.9:
+vue@^2.6.10, vue@^2.6.12, vue@^2.6.9:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
