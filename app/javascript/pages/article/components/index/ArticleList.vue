@@ -9,6 +9,7 @@
         <div class="col-12">
           <ArticleItem
             :article="article"
+            class="mt-4"
           />
         </div>
       </template>
@@ -16,6 +17,7 @@
         <div class="col-12">
           <ArticleItem
             :article="article"
+            class="mt-4"
           />
         </div>
       </template>

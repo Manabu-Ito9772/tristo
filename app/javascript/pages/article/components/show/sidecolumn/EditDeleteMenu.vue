@@ -41,9 +41,7 @@ export default {
       if (confirm('旅行記録を削除しますか？')) {
         await this.$axios.delete(`articles/${this.$route.query.id}`)
           .catch(err => console.log(err.response))
-        this.$router.push({
-          name: 'ArticleIndex'
-        })
+        this.$router.go(-1)
       }
     },
     showArticleEdit() {

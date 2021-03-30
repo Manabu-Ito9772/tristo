@@ -8,9 +8,11 @@
         >
           <InfoBlockSmall
             :block="block"
+            :currency="currency"
           />
           <Transportation
             :block="block"
+            :currency="currency"
             class="mt-5 mb-5"
           />
         </div>
@@ -34,9 +36,11 @@
           >
             <InfoBlockMiddle
               :block="block"
+              :currency="currency"
             />
             <Transportation
               :block="block"
+              :currency="currency"
             />
           </div>
         </template>
@@ -60,9 +64,11 @@
           >
             <InfoBlock
               :block="block"
+              :currency="currency"
             />
             <Transportation
               :block="block"
+              :currency="currency"
             />
           </div>
         </template>
@@ -97,7 +103,11 @@ export default {
     blocks: {
       type: Array,
       required: true
-    }
+    },
+    currency: {
+      type: String,
+      required: true
+    },
   }
 }
 </script>

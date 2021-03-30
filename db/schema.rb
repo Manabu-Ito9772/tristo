@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_042002) do
   end
 
   create_table "articles", force: :cascade do |t|
+    t.bigint "user_id", null: false
     t.bigint "country_id", null: false
     t.string "title", null: false
     t.text "description"
@@ -46,6 +47,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_042002) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["country_id"], name: "index_articles_on_country_id"
+    t.index ["user_id"], name: "index_articles_on_user_id"
   end
 
   create_table "blocks", force: :cascade do |t|
@@ -111,11 +113,23 @@ ActiveRecord::Schema.define(version: 2021_03_19_042002) do
     t.index ["block_id"], name: "index_transportations_on_block_id"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.text "description"
+    t.string "crypted_password"
+    t.string "salt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
   add_foreign_key "article_regions", "articles"
   add_foreign_key "article_regions", "regions"
   add_foreign_key "article_tags", "articles"
   add_foreign_key "article_tags", "tags"
   add_foreign_key "articles", "countries"
+  add_foreign_key "articles", "users"
   add_foreign_key "blocks", "days"
   add_foreign_key "days", "articles"
   add_foreign_key "regions", "countries"

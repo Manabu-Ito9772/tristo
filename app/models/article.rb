@@ -6,6 +6,7 @@ class Article < ApplicationRecord
   has_many :regions, through: :article_regions
   has_many :article_tags, dependent: :destroy
   has_many :tags, through: :article_tags
+  belongs_to :user
   belongs_to :country
 
   validates :title, presence: true, length: { maximum: 100 }

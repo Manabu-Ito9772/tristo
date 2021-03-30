@@ -56,7 +56,7 @@
           </div>
           <div v-else>
             <div class="d-flex align-items-center justify-content-center">
-              <h3 class="mt-2 mb-5 font-weight-bold text-secondary">
+              <h3 class="mt-3 mb-5 font-weight-bold text-secondary">
                 ブロックを追加してください
               </h3>
             </div>

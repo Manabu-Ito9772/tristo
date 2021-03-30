@@ -57,26 +57,6 @@
           </ValidationProvider>
         </div>
 
-        <div class="form-group mb-4">
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="max:3000"
-          >
-            <p class="p-1 mb-2 text-center text-white font-weight-bold form-label">
-              説明
-            </p>
-            <textarea
-              ref="adjust_textarea"
-              v-model="article.description"
-              name="説明"
-              class="form-control"
-              rows="1"
-              @keydown="adjustHeight"
-            />
-            <span class="text-danger">{{ errors[0] }}</span>
-          </ValidationProvider>
-        </div>
-
         <div
           v-if="isVisibleOverseas"
           class="form-group mb-4"
@@ -125,7 +105,7 @@
               rules="country"
             >
               <p class="p-1 mb-2 text-center text-white font-weight-bold form-label">
-                都道府県
+                * 都道府県
               </p>
               <v-select
                 v-model="regionIdArrayJapan"
@@ -139,6 +119,26 @@
             </ValidationProvider>
           </div>
         </template>
+
+        <div class="form-group mb-4">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="max:3000"
+          >
+            <p class="p-1 mb-2 text-center text-white font-weight-bold form-label">
+              説明
+            </p>
+            <textarea
+              ref="area"
+              v-model="article.description"
+              :style="styles"
+              name="説明"
+              class="form-control"
+              rows="1"
+            />
+            <span class="text-danger">{{ errors[0] }}</span>
+          </ValidationProvider>
+        </div>
 
         <div class="form-group mb-4">
           <p class="p-1 mb-2 text-center text-white font-weight-bold form-label">
@@ -285,6 +285,14 @@ export default {
       thirty_days: [
         { name: '日帰り', value: 1 },
       ],
+      height: '',
+    }
+  },
+  computed: {
+    styles(){
+      return {
+        'height': this.height
+      }
     }
   },
   watch: {
@@ -293,6 +301,9 @@ export default {
     },
     'article.end_date'() {
       this.datepicker.disabledStartDates.from = this.article.end_date
+    },
+    'article.description'(){
+      this.resize()
     },
     country() {
       this.regionIdArray.length = 0
@@ -394,13 +405,10 @@ export default {
       this.isVisibleDomestic = false
       this.isVisibleOverseas = true
     },
-    adjustHeight(){
-      let textarea = this.$refs.adjust_textarea
-      let resetHeight = new Promise(function(resolve) {
-        resolve(textarea.style.height = 'auto')
-      })
-      resetHeight.then(function(){
-        textarea.style.height = textarea.scrollHeight + 'px'
+    resize(){
+      this.height = 'auto'
+      this.$nextTick(()=>{
+        this.height = this.$refs.area.scrollHeight + 'px'
       })
     }
   }
@@ -411,7 +419,6 @@ export default {
 .top-title {
   border-bottom: solid #FF00EB;
   color: #FF00EB;
-  /* border-radius: 10px; */
 }
 
 .overview {

@@ -1,309 +1,334 @@
 <template>
-  <div class="bg-white mt-4 mb-4 pt-3 pl-3 pr-3 info-block-form">
+  <div>
     <ValidationObserver
       v-slot="{ handleSubmit }"
       ref="observer"
     >
-      <p class="p-0 mb-2 text-center text-white content-lavel">
-        時間
-      </p>
-      <div class="d-flex justify-content-between align-items-center text-dark">
-        <Timepicker
-          v-model="blockAndCost.block.arriving_time"
-          format="H:mm"
-          input-class="form-control p-1 text-center bg-light arriving_time"
-          input-width="100%"
-          placeholder="到着時間"
-          hour-label="時"
-          minute-label="分"
-          minute-interval="5"
-          close-on-complete
-        />
-        <h5 class="pl-2 pr-2 m-0">
-          〜
-        </h5>
-        <Timepicker
-          v-model="blockAndCost.block.leaving_time"
-          format="H:mm"
-          input-class="form-control p-1 text-center bg-light leaving_time"
-          input-width="100%"
-          placeholder="出発時間"
-          hour-label="時"
-          minute-label="分"
-          minute-interval="5"
-          close-on-complete
-        />
-      </div>
-
-      <ValidationProvider
-        v-slot="{ errors }"
-        rules="required|max:100"
-      >
-        <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
-          * イベント
-        </p>
-        <input
-          v-model="blockAndCost.block.title"
-          name="イベント"
-          placeholder="例）食べ歩き"
-          class="form-control bg-light"
-        >
-        <span class="text-danger">{{ errors[0] }}</span>
-      </ValidationProvider>
-
-      <ValidationProvider
-        v-slot="{ errors }"
-        rules="max:100"
-      >
-        <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
-          場所
-        </p>
-        <input
-          v-model="blockAndCost.block.place"
-          name="場所"
-          placeholder="例）〇〇通り"
-          class="mb-2 form-control bg-light"
-        >
-        <span class="text-danger">{{ errors[0] }}</span>
-      </ValidationProvider>
-
-      <ValidationProvider
-        v-slot="{ errors }"
-        rules="max:500"
-      >
-        <p class="m-0 text-center">
-          ホームページURL
-        </p>
-        <input
-          v-model="blockAndCost.block.place_info"
-          name="ホームページURL"
-          class="form-control bg-light"
-        >
-        <span class="text-danger">{{ errors[0] }}</span>
-      </ValidationProvider>
-
-      <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
-        コスト
-      </p>
-      <div
-        v-for="spending in blockAndCost.spendings"
-        :key="`a-${spending.index}`"
-      >
-        <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border cost-box spending">
-          <div class="row">
-            <div class="col-12 mb-2">
-              <ValidationProvider
-                v-slot="{ errors }"
-                rules="required|max:100"
-              >
-                <p class="pl-2 m-0">
-                  * 内容
-                </p>
-                <input
-                  v-model="spending.description"
-                  name="内容"
-                  placeholder="例）ソフトクリーム"
-                  class="form-control"
-                >
-                <span class="text-danger">{{ errors[0] }}</span>
-              </ValidationProvider>
-            </div>
-
-            <div class="col-6">
-              <p class="pl-2 m-0">
-                ジャンル
-              </p>
-              <select
-                v-model="spending.genre"
-                name="ジャンル"
-                class="form-control"
-              >
-                <option
-                  v-for="spend in spendingGenre"
-                  :key="`b-${spend.id}`"
-                  :value="spend.value"
-                >
-                  {{ spend.name }}
-                </option>
-              </select>
-            </div>
-
-            <div class="col-6">
-              <ValidationProvider
-                v-slot="{ errors }"
-                rules="required|max:50|numeric"
-              >
-                <p class="pl-2 m-0">
-                  * 価格({{ currency }})
-                </p>
-                <input
-                  v-model="spending.cost"
-                  name="価格"
-                  class="form-control"
-                >
-                <span class="text-danger">{{ errors[0] }}</span>
-              </ValidationProvider>
-            </div>
+      <template v-if="$mq == 'sm' || $mq == 'xs'">
+        <template v-if="isVisibleAddBlockButton">
+          <div
+            class="text-center text-dark icon-middle"
+            @click="handleSubmit(addBlock)"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'arrow-circle-up']"
+              class="fa-lg"
+            />
           </div>
-          <div class="mt-3 mb-2 text-right">
-            <div
-              class="pt-3 pr-1 btn d-inline icon-color"
-              @click="deleteSpending(spending)"
+          <div class="pt-2 pl-3 pr-3 text-center">
+            <button
+              class="btn d-inline-block pl-5 pr-5 mt-1 text-white font-weight-bold save-button"
+              @click="handleSubmit(addBlock)"
             >
-              <font-awesome-icon
-                :icon="['fas', 'trash-alt']"
-                class="fa-lg"
-              />
-            </div>
+              ブロックを追加
+            </button>
           </div>
-        </div>
-      </div>
-      <div class="mt-4 text-center">
-        <button
-          class="btn text-white font-weight-bold save-button"
-          @click="addSpendingForm"
+        </template>
+      </template>
+      <div class="bg-white mt-3 mb-1 pt-3 pl-3 pr-3 info-block-form">
+        <ValidationProvider
+          v-slot="{ errors }"
+          rules="required|max:100"
         >
-          <font-awesome-icon
-            :icon="['fas', 'plus-circle']"
-            class="fa-lg"
+          <p class="mb-2 text-center text-white content-lavel m-0">
+            * イベント
+          </p>
+          <input
+            v-model="blockAndCost.block.title"
+            name="イベント"
+            placeholder="例）食べ歩き"
+            class="form-control bg-light"
+          >
+          <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+
+        <p class="p-0 mt-4 mb-2 text-center text-white content-lavel">
+          時間
+        </p>
+        <div class="d-flex justify-content-between align-items-center text-dark">
+          <Timepicker
+            v-model="blockAndCost.block.arriving_time"
+            format="H:mm"
+            input-class="form-control p-1 text-center bg-light arriving_time"
+            input-width="100%"
+            placeholder="到着時間"
+            hour-label="時"
+            minute-label="分"
+            minute-interval="5"
+            close-on-complete
           />
-        </button>
-      </div>
+          <h5 class="pl-2 pr-2 m-0">
+            〜
+          </h5>
+          <Timepicker
+            v-model="blockAndCost.block.leaving_time"
+            format="H:mm"
+            input-class="form-control p-1 text-center bg-light leaving_time"
+            input-width="100%"
+            placeholder="出発時間"
+            hour-label="時"
+            minute-label="分"
+            minute-interval="5"
+            close-on-complete
+          />
+        </div>
 
-      <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
-        次のスポットまでの移動手段
-      </p>
-      <div
-        v-for="transportation in blockAndCost.transportations"
-        :key="`c-${transportation.index}`"
-      >
-        <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border cost-box transport">
-          <div class="row">
-            <div class="col-12 mb-2">
-              <ValidationProvider
-                v-slot="{ errors }"
-                rules="max:100"
-              >
-                <p class="pl-2 m-0">
-                  内容
-                </p>
-                <input
-                  v-model="transportation.description"
-                  name="内容"
-                  placeholder="例）原宿駅 〜 東京駅"
-                  class="form-control"
+        <ValidationProvider
+          v-slot="{ errors }"
+          rules="max:100"
+        >
+          <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+            場所
+          </p>
+          <input
+            v-model="blockAndCost.block.place"
+            name="場所"
+            placeholder="例）〇〇通り"
+            class="mb-2 form-control bg-light"
+          >
+          <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+
+        <ValidationProvider
+          v-slot="{ errors }"
+          rules="max:500"
+        >
+          <p class="m-0 text-center">
+            ホームページURL
+          </p>
+          <input
+            v-model="blockAndCost.block.place_info"
+            name="ホームページURL"
+            class="form-control bg-light"
+          >
+          <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+
+        <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+          コスト
+        </p>
+        <div
+          v-for="spending in blockAndCost.spendings"
+          :key="`a-${spending.index}`"
+        >
+          <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border cost-box spending">
+            <div class="row">
+              <div class="col-12 mb-2">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="required|max:100"
                 >
-                <span class="text-danger">{{ errors[0] }}</span>
-              </ValidationProvider>
-            </div>
+                  <p class="pl-2 m-0">
+                    * 内容
+                  </p>
+                  <input
+                    v-model="spending.description"
+                    name="内容"
+                    placeholder="例）ソフトクリーム"
+                    class="form-control"
+                  >
+                  <span class="text-danger">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </div>
 
-            <div class="col-6">
-              <ValidationProvider
-                v-slot="{ errors }"
-                rules="required"
-              >
+              <div class="col-6">
                 <p class="pl-2 m-0">
-                  * 手段
+                  ジャンル
                 </p>
                 <select
-                  v-model="transportation.means"
-                  name="手段"
+                  v-model="spending.genre"
+                  name="ジャンル"
                   class="form-control"
                 >
                   <option
-                    v-for="transport in transportationMeans"
-                    :key="`d-${transport.id}`"
-                    :value="transport.value"
+                    v-for="spend in spendingGenre"
+                    :key="`b-${spend.id}`"
+                    :value="spend.value"
                   >
-                    {{ transport.name }}
+                    {{ spend.name }}
                   </option>
                 </select>
-                <span class="text-danger">{{ errors[0] }}</span>
-              </ValidationProvider>
-            </div>
+              </div>
 
-            <div class="col-6">
-              <ValidationProvider
-                v-slot="{ errors }"
-                rules="max:50|numeric"
-              >
-                <p class="pl-2 m-0">
-                  価格({{ currency }})
-                </p>
-                <input
-                  v-model="transportation.cost"
-                  name="価格"
-                  class="form-control"
+              <div class="col-6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="required|max:50|numeric"
                 >
-                <span class="text-danger">{{ errors[0] }}</span>
-              </ValidationProvider>
+                  <p class="pl-2 m-0">
+                    * 価格({{ currency }})
+                  </p>
+                  <input
+                    v-model="spending.cost"
+                    name="価格"
+                    class="form-control"
+                  >
+                  <span class="text-danger">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </div>
             </div>
-          </div>
-          <div class="mt-3 mb-2 text-right">
-            <div
-              class="pt-3 pr-1 btn d-inline icon-color"
-              @click="deleteTransportation(transportation)"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'trash-alt']"
-                class="fa-lg"
-              />
+            <div class="mt-3 mb-2 text-right">
+              <div
+                class="pt-3 pr-1 btn d-inline icon-color"
+                @click="deleteSpending(spending)"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'trash-alt']"
+                  class="fa-lg"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="mt-4 text-center">
-        <button
-          class="btn text-white font-weight-bold save-button"
-          @click="addTransportationForm"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'plus-circle']"
-            class="fa-lg"
-          />
-        </button>
-      </div>
-
-      <ValidationProvider
-        v-slot="{ errors }"
-        rules="max:1000"
-      >
-        <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
-          コメント
-        </p>
-        <textarea
-          ref="adjust_textarea"
-          v-model="blockAndCost.block.comment"
-          name="コメント"
-          class="mb-4 form-control bg-light"
-          rows="2"
-          @keydown="adjustHeight"
-        />
-        <span class="text-danger">{{ errors[0] }}</span>
-      </ValidationProvider>
-
-      <p class="mt-4 text-center text-white content-lavel m-0">
-        アイキャッチ
-      </p>
-      <div class="pt-3 pl-3 pr-3">
-        <img
-          src="../../../../images/sample.png"
-          class="mb-3 info-block-photo"
-        >
-      </div>
-      <template v-if="isVisibleAddBlockButton">
-        <div class="pt-2 pb-3 pl-3 pr-3 text-center info-block-bottom">
-          <p class="m-0 text-secondary">
-            * 必須項目
-          </p>
+        <div class="mt-4 text-center">
           <button
-            class="btn d-inline-block pl-5 pr-5 mt-1 text-white font-weight-bold save-button"
-            @click="handleSubmit(addBlock)"
+            class="btn text-white font-weight-bold save-button"
+            @click="addSpendingForm"
           >
-            ブロックを追加
+            <font-awesome-icon
+              :icon="['fas', 'plus-circle']"
+              class="fa-lg"
+            />
           </button>
         </div>
-      </template>
+
+        <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+          次のスポットまでの移動手段
+        </p>
+        <div
+          v-for="transportation in blockAndCost.transportations"
+          :key="`c-${transportation.index}`"
+        >
+          <div class="mb-3 pt-2 pl-3 pr-3 pb-2 border bg-light info-border cost-box transport">
+            <div class="row">
+              <div class="col-12 mb-2">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="max:100"
+                >
+                  <p class="pl-2 m-0">
+                    内容
+                  </p>
+                  <input
+                    v-model="transportation.description"
+                    name="内容"
+                    placeholder="例）原宿駅 〜 東京駅"
+                    class="form-control"
+                  >
+                  <span class="text-danger">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </div>
+
+              <div class="col-6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="required"
+                >
+                  <p class="pl-2 m-0">
+                    * 手段
+                  </p>
+                  <select
+                    v-model="transportation.means"
+                    name="手段"
+                    class="form-control"
+                  >
+                    <option
+                      v-for="transport in transportationMeans"
+                      :key="`d-${transport.id}`"
+                      :value="transport.value"
+                    >
+                      {{ transport.name }}
+                    </option>
+                  </select>
+                  <span class="text-danger">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </div>
+
+              <div class="col-6">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  rules="max:50|numeric"
+                >
+                  <p class="pl-2 m-0">
+                    価格({{ currency }})
+                  </p>
+                  <input
+                    v-model="transportation.cost"
+                    name="価格"
+                    class="form-control"
+                  >
+                  <span class="text-danger">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="mt-3 mb-2 text-right">
+              <div
+                class="pt-3 pr-1 btn d-inline icon-color"
+                @click="deleteTransportation(transportation)"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'trash-alt']"
+                  class="fa-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 text-center">
+          <button
+            class="btn text-white font-weight-bold save-button"
+            @click="addTransportationForm"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'plus-circle']"
+              class="fa-lg"
+            />
+          </button>
+        </div>
+
+        <ValidationProvider
+          v-slot="{ errors }"
+          rules="max:1000"
+        >
+          <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+            コメント
+          </p>
+          <textarea
+            ref="area"
+            v-model="blockAndCost.block.comment"
+            :style="styles"
+            name="コメント"
+            class="mb-4 form-control bg-light"
+            rows="2"
+          />
+          <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+
+        <p class="mt-4 text-center text-white content-lavel m-0">
+          アイキャッチ
+        </p>
+        <div class="pt-3 pl-3 pr-3">
+          <img
+            src="../../../../images/sample.png"
+            class="mb-3 info-block-photo"
+          >
+        </div>
+        <template v-if="$mq == 'lg'">
+          <template v-if="isVisibleAddBlockButton">
+            <div class="pt-2 pb-3 pl-3 pr-3 text-center info-block-bottom">
+              <button
+                class="btn d-inline-block mt-1 text-white font-weight-bold save-button"
+                @click="handleSubmit(addBlock)"
+              >
+                ブロックを追加
+              </button>
+            </div>
+          </template>
+        </template>
+      </div>
+      <p class="pr-1 text-secondary text-right font-small">
+        * 必須項目
+      </p>
     </ValidationObserver>
   </div>
 </template>
@@ -358,8 +383,21 @@ export default {
       },
       spendingsIndex: 0,
       transportationsIndex: 0,
-      isVisibleAddBlockButton: true
+      isVisibleAddBlockButton: true,
+      height: '',
     }
+  },
+  computed: {
+    styles(){
+      return {
+        'height': this.height
+      }
+    }
+  },
+  watch:{
+    'blockAndCost.block.comment'(){
+      this.resize()
+    },
   },
   methods :{
     addBlock() {
@@ -414,15 +452,12 @@ export default {
     openAddBlockButton() {
       this.isVisibleAddBlockButton = true
     },
-    adjustHeight(){
-      let textarea = this.$refs.adjust_textarea
-      let resetHeight = new Promise(function(resolve) {
-        resolve(textarea.style.height = 'auto')
+    resize(){
+      this.height = 'auto'
+      this.$nextTick(()=>{
+        this.height = this.$refs.area.scrollHeight + 'px'
       })
-      resetHeight.then(function(){
-        textarea.style.height = textarea.scrollHeight + 'px'
-      })
-    },
+    }
   }
 
 }
@@ -465,5 +500,10 @@ export default {
 
 .cost-box {
   border-radius: 4px;
+}
+
+.icon-middle {
+  font-size: 30px;
+  cursor: pointer;
 }
 </style>

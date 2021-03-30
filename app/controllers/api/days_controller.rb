@@ -1,10 +1,11 @@
 class Api::DaysController < ApplicationController
+  before_action :authenticate!
   before_action :set_day, only: %i[show destroy]
   skip_before_action :verify_authenticity_token
 
-  def show
-    render json: @day
-  end
+  # def show
+  #   render json: @day
+  # end
 
   def create
     @day = Day.new(day_params)

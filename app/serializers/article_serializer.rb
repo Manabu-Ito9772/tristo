@@ -1,10 +1,15 @@
 class ArticleSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :map, :status, :start_date, :end_date
+  has_one :user
   has_one :country
   has_many :regions
   has_many :article_regions
   has_many :article_tags
   has_many :days
+
+  class UserSerializer < ActiveModel::Serializer
+    attributes :id, :name
+  end
 
   class CountrySerializer < ActiveModel::Serializer
     attributes :id, :name, :currency

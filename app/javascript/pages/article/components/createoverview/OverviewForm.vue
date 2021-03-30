@@ -58,29 +58,6 @@
           </ValidationProvider>
         </div>
 
-        <div class="form-group mt-4">
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="max:3000"
-          >
-            <h5
-              id="説明"
-              class="p-1 text-center text-white font-weight-bold form-label"
-            >
-              説明
-            </h5>
-            <textarea
-              ref="adjust_textarea"
-              v-model="article.description"
-              name="説明"
-              class="form-control bg-light"
-              rows="1"
-              @keydown="adjustHeight"
-            />
-            <span class="text-danger">{{ errors[0] }}</span>
-          </ValidationProvider>
-        </div>
-
         <div
           v-if="isVisibleOverseas"
           class="form-group mt-4"
@@ -147,6 +124,29 @@
             </ValidationProvider>
           </div>
         </template>
+
+        <div class="form-group mt-4">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="max:3000"
+          >
+            <h5
+              id="説明"
+              class="p-1 text-center text-white font-weight-bold form-label"
+            >
+              説明
+            </h5>
+            <textarea
+              ref="area"
+              v-model="article.description"
+              :style="styles"
+              name="説明"
+              class="form-control bg-light"
+              rows="1"
+            />
+            <span class="text-danger">{{ errors[0] }}</span>
+          </ValidationProvider>
+        </div>
 
         <div class="form-group mt-4">
           <h5 class="p-1 text-center text-white font-weight-bold form-label">
@@ -302,6 +302,14 @@ export default {
       thirty_days: [
         { name: '日帰り', value: 1 },
       ],
+      height: '',
+    }
+  },
+  computed: {
+    styles(){
+      return {
+        'height': this.height
+      }
     }
   },
   watch: {
@@ -310,6 +318,9 @@ export default {
     },
     'article.end_date'() {
       this.datepicker.disabledStartDates.from = this.article.end_date
+    },
+    'article.description'(){
+      this.resize()
     },
     country() {
       this.regionIdArray.length = 0
@@ -411,13 +422,10 @@ export default {
       this.isVisibleDomestic = false
       this.isVisibleOverseas = true
     },
-    adjustHeight(){
-      let textarea = this.$refs.adjust_textarea
-      let resetHeight = new Promise(function(resolve) {
-        resolve(textarea.style.height = 'auto')
-      })
-      resetHeight.then(function(){
-        textarea.style.height = textarea.scrollHeight + 'px'
+    resize(){
+      this.height = 'auto'
+      this.$nextTick(()=>{
+        this.height = this.$refs.area.scrollHeight + 'px'
       })
     }
   }
@@ -459,7 +467,6 @@ export default {
   border: solid #00D320;
   color: #00D320;
 }
-
 
 .form-label {
   background-color: #6A6A6A;

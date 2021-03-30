@@ -6,7 +6,10 @@
     >
       投稿する
     </h5>
-    <h5 class="p-2 text-center bg-white font-weight-bold draft-button">
+    <h5
+      class="p-2 text-center bg-white font-weight-bold draft-button"
+      @click="saveDraft"
+    >
       下書き保存
     </h5>
   </div>
@@ -27,6 +30,9 @@ export default {
       await this.$axios.patch(`articles/${this.$route.query.id}`, this.article)
         .catch(err => console.log(err.response))
       this.$router.push({ name: 'ArticleIndex' })
+    },
+    saveDraft() {
+      this.$router.push({ name: 'MyPage', params: { draft: true } })
     }
   }
 }

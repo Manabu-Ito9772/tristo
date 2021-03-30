@@ -21,11 +21,13 @@
             <MainColumn
               v-if="dayNumber == day.number"
               :blocks="day.ordered_blocks"
+              :currency="article.country.currency"
             />
           </div>
           <CostColumn
             v-if="isVisibleCostColumn"
             :days="article.days"
+            :currency="article.country.currency"
           />
           <MapColumn
             v-if="isVisibleMapColumn"
@@ -38,6 +40,7 @@
               <SideColumn
                 :article="article"
                 :countryname="countryname"
+                :user="user"
                 @fixPage="fixPage"
                 @flowPage="flowPage"
               />
@@ -57,6 +60,7 @@
             <SideColumn
               :article="article"
               :countryname="countryname"
+              :user="user"
               class="front-top"
               @fixPage="fixPage"
               @flowPage="flowPage"
@@ -80,6 +84,7 @@
             <MainColumn
               v-if="dayNumber == day.number"
               :blocks="day.ordered_blocks"
+              :currency="article.country.currency"
               class="ml-5 mr-5 pl-5 pr-5"
             />
           </div>
@@ -87,6 +92,7 @@
         <CostColumn
           v-if="isVisibleCostColumn"
           :days="article.days"
+          :currency="article.country.currency"
           class="col-12"
         />
         <MapColumn
@@ -107,6 +113,7 @@
             <SideColumn
               :article="article"
               :countryname="countryname"
+              :user="user"
               class="front-top"
               @fixPage="fixPage"
               @flowPage="flowPage"
@@ -129,6 +136,7 @@
             <MainColumn
               v-if="dayNumber == day.number"
               :blocks="day.ordered_blocks"
+              :currency="article.country.currency"
               class="pb-4"
             />
           </div>
@@ -136,6 +144,7 @@
         <CostColumn
           v-if="isVisibleCostColumn"
           :days="article.days"
+          :currency="article.country.currency"
           class="col-12 mb-5 pb-5"
         />
         <MapColumn
@@ -167,6 +176,7 @@ export default {
   data() {
     return {
       article: {},
+      user: {},
       countryname: '',
       dayNumber: 1,
       isVisibleCostColumn: false,
@@ -182,6 +192,7 @@ export default {
       this.$axios.get(`articles/${this.$route.query.id}`)
         .then(res => {
           this.article = res.data
+          this.user = res.data.user
           this.countryname = res.data.country.name
           for (let i = 0; i < this.article.days.length; i++) {
             this.article.days[i].number = i + 1

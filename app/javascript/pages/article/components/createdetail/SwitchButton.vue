@@ -57,7 +57,7 @@
       </template>
     </div>
     <div
-      class="p-1 d-inline-block add-day-button"
+      class="p-1 d-inline-block text-dark add-day-button"
       @click="addDay"
     >
       <font-awesome-icon
