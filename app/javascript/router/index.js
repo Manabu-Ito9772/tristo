@@ -13,6 +13,7 @@ import UserShow from '../pages/user/show'
 import MyPage from '../pages/user/mypage'
 import EditMyPage from '../pages/user/editmypage'
 import AccountSettings from '../pages/user/accountsettings'
+import Following from '../pages/user/following'
 
 Vue.use(Router)
 
@@ -86,6 +87,16 @@ const router = new Router({
       component: AccountSettings,
       name: 'AccountSettings',
       meta: { requiredAuth: true }
+    },
+    {
+      path: '/following',
+      component: Following,
+      name: 'Following',
+    },
+    {
+      path: '/followers',
+      component: Following,
+      name: 'Followers',
     },
   ]
 })

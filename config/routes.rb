@@ -9,15 +9,15 @@ Rails.application.routes.draw do
         delete 'destroy_current_user'
       end
     end
-    resources :sessions
-    resources :articles do
-      collection do
-        get 'my_aritcles'
-      end
+    resources :relationships do
       member do
-        get 'user_articles'
+        post 'follow'
+        get 'following'
+        get 'followers'
       end
     end
+    resources :sessions
+    resources :articles
     resources :article_regions, only: %i[create destroy]
     resources :tags, only: %i[create]
     resources :article_tags, only: %i[create destroy]

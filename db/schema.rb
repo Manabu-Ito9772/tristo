@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_042002) do
+ActiveRecord::Schema.define(version: 2021_03_30_124604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,16 @@ ActiveRecord::Schema.define(version: 2021_03_19_042002) do
     t.index ["country_id"], name: "index_regions_on_country_id"
   end
 
+  create_table "relationships", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "follow_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["follow_id"], name: "index_relationships_on_follow_id"
+    t.index ["user_id", "follow_id"], name: "index_relationships_on_user_id_and_follow_id", unique: true
+    t.index ["user_id"], name: "index_relationships_on_user_id"
+  end
+
   create_table "spendings", force: :cascade do |t|
     t.bigint "block_id", null: false
     t.integer "genre"
@@ -133,6 +143,8 @@ ActiveRecord::Schema.define(version: 2021_03_19_042002) do
   add_foreign_key "blocks", "days"
   add_foreign_key "days", "articles"
   add_foreign_key "regions", "countries"
+  add_foreign_key "relationships", "users"
+  add_foreign_key "relationships", "users", column: "follow_id"
   add_foreign_key "spendings", "blocks"
   add_foreign_key "transportations", "blocks"
 end

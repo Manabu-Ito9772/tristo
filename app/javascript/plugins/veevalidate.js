@@ -66,5 +66,5 @@ extend('password_format', {
     const regex = new RegExp(/^[0-9a-zA-Z]*$/)
     return regex.test(value)
   },
-  message: '半角英数字で入力してください'
+  message: '{_field_}は半角英数字で入力してください'
 })

@@ -392,9 +392,11 @@ RSpec.describe 'ユーザー', type: :system do
             fill_in 'ユーザーネーム', with: 'UpdatedUser'
             fill_in '説明', with: 'UpdatedDescription'
             click_on '保存'
+            sleep 2
             expect(current_path).to eq('/mypage')
             expect(page).to have_content('UpdatedUser')
             expect(page).to have_content('UpdatedDescription')
+            page.save_screenshot 'screenshot.png'
           end
         end
 

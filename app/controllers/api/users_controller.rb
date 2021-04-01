@@ -19,7 +19,7 @@ class Api::UsersController < ApplicationController
   end
 
   def me
-    render json: current_user
+    render json: current_user, include: {}
   end
 
   def update_current_user

@@ -29,7 +29,7 @@
             />
           </div>
         </div>
-        <div class="col-4 pr-0 main block-from">
+        <div class="col-4 pr-0 main block-form">
           <BlockForm
             v-if="isVisibleForm"
             ref="form"
@@ -287,7 +287,7 @@ export default {
   border-radius: 6px;
 }
 
-.block-from {
+.block-form {
   padding-top: 54px;
 }
 </style>

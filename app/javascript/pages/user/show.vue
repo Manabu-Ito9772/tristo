@@ -10,43 +10,75 @@
                 class="user-icon mr-4"
               >
               <div>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center align-items-center">
                   <h4 class="mb-0 pr-3 text-dark font-weight-bold word-break">
-                    {{ user.name }}
+                    {{ userName }}
                   </h4>
+                  <template v-if="authUser">
+                    <template v-if="notFollowing">
+                      <button
+                        class="btn bg-white font-weight-bold follow-button"
+                        @click="followUser"
+                      >
+                        フォロー
+                      </button>
+                    </template>
+                    <template v-if="following">
+                      <button
+                        class="btn text-white font-weight-bold unfollow-button"
+                        @click="unfollowUser"
+                      >
+                        フォロー中
+                      </button>
+                    </template>
+                  </template>
                 </div>
 
-                <div class="mt-2 d-flex justify-content-between text-muted">
-                  <div class="text-center">
-                    <p class="m-0 word-unbreak font-small">
-                      投稿
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="pl-4 pr-4 text-center">
-                    <p class="m-0 font-small">
-                      フォロー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="text-center">
-                    <p class="m-0 font-small">
-                      フォロワー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
+                <div class="mt-2 d-flex justify-content-center text-muted">
+                  <template v-if="articleLength != null">
+                    <div class="pr-3 text-center">
+                      <p class="m-0 word-unbreak font-small">
+                        投稿
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ articleLength }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followings != null">
+                    <div
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followings }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followers != null">
+                    <div
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロワー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followers }}
+                      </p>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
-            <template v-if="user.description">
+            <template v-if="userDescription">
               <p class="mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro">
-                {{ user.description }}
+                {{ userDescription }}
               </p>
             </template>
           </div>
@@ -125,43 +157,77 @@
                 class="user-icon mr-4"
               >
               <div>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center align-items-center">
                   <h3 class="mb-0 pr-3 text-dark font-weight-bold word-break">
-                    {{ user.name }}
+                    {{ userName }}
                   </h3>
+                  <template v-if="authUser">
+                    <template v-if="notFollowing">
+                      <button
+                        class="btn bg-white font-weight-bold follow-button"
+                        @click="followUser"
+                      >
+                        フォロー
+                      </button>
+                    </template>
+                    <template v-if="following">
+                      <button
+                        class="btn text-white font-weight-bold unfollow-button"
+                        @click="unfollowUser"
+                      >
+                        フォロー中
+                      </button>
+                    </template>
+                  </template>
                 </div>
 
-                <div class="mt-2 d-flex justify-content-between text-muted">
-                  <div class="text-center">
-                    <p class="m-0">
-                      投稿
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="pl-4 pr-4 text-center">
-                    <p class="m-0">
-                      フォロー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="text-center">
-                    <p class="m-0">
-                      フォロワー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
+                <div class="mt-2 d-flex justify-content-center text-muted">
+                  <template v-if="articleLength != null">
+                    <div class="pr-3 text-center">
+                      <p class="m-0">
+                        投稿
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ articleLength }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followings != null">
+                    <div
+                      id="following-count"
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0">
+                        フォロー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followings }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followers != null">
+                    <div
+                      id="followers-count"
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0">
+                        フォロワー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followers }}
+                      </p>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
-            <template v-if="user.description">
+            <template v-if="userDescription">
               <p class="ml-4 mr-4 mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro">
-                {{ user.description }}
+                {{ userDescription }}
               </p>
             </template>
           </div>
@@ -235,41 +301,88 @@
 
 <script>
 import ArticleItem from '../article/components/index/ArticleItem'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'UserShow',
   components: {
     ArticleItem
   },
+
   data() {
     return {
-      user: {},
+      userName: '',
+      userDescription: '',
+      followings: null,
+      followers: null,
+      articleLength: null,
       articles: [],
       published: true,
-      favorite: false,
       noPublished: false,
+      favorite: false,
       noFavorites: false,
+      following: null,
+      notFollowing: null,
     }
+  },
+  computed: {
+    ...mapGetters('users', ['authUser']),
   },
   created() {
     this.getUserAndArticles()
   },
   methods: {
-    async getUserAndArticles() {
-      await this.$axios.get(`users/${this.$route.query.id}`)
-        .then(res => this.user = res.data)
-        .catch(err => console.log(err.response))
-      await this.$axios.get(`articles/${this.$route.query.id}/user_articles`)
+    getUserAndArticles() {
+      this.$axios.get(`users/${this.$route.query.id}`)
         .then(res => {
-          for (let article of res.data) {
+          this.userName = res.data.name
+          this.userDescription = res.data.description
+          this.followings = res.data.followings.length
+          this.followers = res.data.followers.length
+          if (this.authUser) {
+            this.following = res.data.followers.some(user => {
+              return user.id == this.authUser.id
+            })
+            if (this.following == true) {
+              this.notFollowing = false
+            } else {
+              this.notFollowing = true
+            }
+          }
+          for (let article of res.data.ordered_articles) {
             if (article.status == 'published') {
               this.articles.push(article)
             }
           }
+          if (!res.data.ordered_articles.length) {
+            this.noPublished = true
+          }
+          this.articleLength = this.articles.length
         })
         .catch(err => console.log(err.response))
-      if (!this.articles.length) {
-        this.noPublished = true
+    },
+    followUser() {
+      this.following = true
+      this.notFollowing = false
+      this.followers += 1
+      this.$axios.post(`relationships/${this.$route.query.id}/follow`)
+        .catch(err => {
+          this.following = false
+          this.notFollowing = true
+          console.log(err.response)
+        })
+    },
+    unfollowUser() {
+      if (confirm(`${this.userName}さんのフォローを解除しますか？`)) {
+        this.notFollowing = true
+        this.following = false
+        this.followers -= 1
+        this.$axios.delete(`relationships/${this.$route.query.id}`)
+          .catch(err => {
+            this.notFollowing = false
+            this.following = true
+            console.log(err.response)
+          })
       }
     },
     showFavorites() {
@@ -279,6 +392,12 @@ export default {
     showPublished() {
       this.favorite = false
       this.published = true
+    },
+    toFollowingPage() {
+      this.$router.push({ name: 'Following', query: { user_id: this.$route.query.id } })
+    },
+    toFollowerPage() {
+      this.$router.push({ name: 'Followers', query: { user_id: this.$route.query.id } })
     }
   }
 }
@@ -323,6 +442,26 @@ export default {
   color: #6A6A6A;
   border: solid #6A6A6A;
   border-radius: 6px;
+  cursor: pointer;
+}
+
+.follow-button {
+  white-space: nowrap;
+  font-size: 13px;
+  color: #1D51FF;
+  border: solid thin #1D51FF;
+  border-radius: 20px;
+}
+
+.unfollow-button {
+  white-space: nowrap;
+  font-size: 13px;
+  border: solid thin #1D51FF;
+  border-radius: 20px;
+  background-color: #1D51FF;
+}
+
+.pointer {
   cursor: pointer;
 }
 </style>

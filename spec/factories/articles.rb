@@ -19,6 +19,18 @@ FactoryBot.define do
       end
     end
 
+    trait :another_user do
+      association :user, :another_user
+      association :country
+      after(:build) do |article|
+        article.regions << build(:region, :normal)
+        article.tags << build(:tag)
+        article.days << build(:day, :normal)
+        article.days << build(:day, :day_two)
+        article.days << build(:day, :day_three)
+      end
+    end
+
     trait :without_info do
       description { nil }
       start_date { nil }
