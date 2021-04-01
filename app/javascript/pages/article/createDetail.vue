@@ -29,13 +29,12 @@
             />
           </div>
         </div>
-        <div class="col-4 mt-4 pt-5 pr-0 main">
+        <div class="col-4 pr-0 main block-form">
           <BlockForm
             v-if="isVisibleForm"
             ref="form"
             :dayid="day_id"
             :currency="currency"
-            class="mb-3"
             @addBlock="addBlock"
           />
           <PostButton />
@@ -287,5 +286,9 @@ export default {
   background-color: white;
   border: solid #00D320;
   border-radius: 6px;
+}
+
+.block-form {
+  padding-top: 54px;
 }
 </style>

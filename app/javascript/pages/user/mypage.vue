@@ -23,31 +23,45 @@
                   </router-link>
                 </div>
 
-                <div class="mt-2 d-flex justify-content-between text-muted">
-                  <div class="text-center">
-                    <p class="m-0 word-unbreak font-small">
-                      投稿
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="pl-4 pr-4 text-center">
-                    <p class="m-0 font-small">
-                      フォロー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="text-center">
-                    <p class="m-0 font-small">
-                      フォロワー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
+                <div class="mt-2 d-flex justify-content-center text-muted">
+                  <template v-if="articleLength != null">
+                    <div class="pr-3 text-center">
+                      <p class="m-0 font-small">
+                        投稿
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ articleLength }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followings != null">
+                    <div
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followings }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followers != null">
+                    <div
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロワー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followers }}
+                      </p>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -212,31 +226,47 @@
                   </router-link>
                 </div>
 
-                <div class="mt-2 d-flex justify-content-between text-muted">
-                  <div class="text-center">
-                    <p class="m-0">
-                      投稿
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="pl-4 pr-4 text-center">
-                    <p class="m-0">
-                      フォロー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
-                  <div class="text-center">
-                    <p class="m-0">
-                      フォロワー
-                    </p>
-                    <p class="m-0 word-break">
-                      20
-                    </p>
-                  </div>
+                <div class="mt-2 d-flex justify-content-center text-muted">
+                  <template v-if="articleLength != null">
+                    <div class="pr-3 text-center">
+                      <p class="m-0">
+                        投稿
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ articleLength }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followings != null">
+                    <div
+                      id="following-count"
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0">
+                        フォロー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followings }}
+                      </p>
+                    </div>
+                  </template>
+
+                  <template v-if="followers != null">
+                    <div
+                      id="followers-count"
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0">
+                        フォロワー
+                      </p>
+                      <p class="m-0 word-break">
+                        {{ followers }}
+                      </p>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -383,8 +413,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import ArticleItem from '../article/components/index/ArticleItem'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'MyPage',
@@ -393,6 +423,9 @@ export default {
   },
   data() {
     return {
+      followings: null,
+      followers: null,
+      articleLength: null,
       publishedArticles: [],
       draftArticles: [],
       published: true,
@@ -413,24 +446,33 @@ export default {
     }
   },
   methods: {
-    async getCurrentUserArticles() {
-      await this.$axios.get('articles/my_aritcles')
+    getCurrentUserArticles() {
+      this.$axios.get(`users/${this.authUser.id}`)
         .then(res => {
-          for (let article of res.data) {
+          this.followings = res.data.followings.length
+          this.followers = res.data.followers.length
+          for (let article of res.data.ordered_articles) {
             if (article.status == 'published') {
               this.publishedArticles.push(article)
             } else {
               this.draftArticles.push(article)
             }
           }
+          if (!this.publishedArticles.length) {
+            this.noPublished = true
+          }
+          if (!this.draftArticles.length) {
+            this.noDraft = true
+          }
+          this.articleLength = this.publishedArticles.length
         })
         .catch(err => console.log(err.response))
-      if (!this.publishedArticles.length) {
-        this.noPublished = true
-      }
-      if (!this.draftArticles.length) {
-        this.noDraft = true
-      }
+    },
+    toFollowingPage() {
+      this.$router.push({ name: 'Following' })
+    },
+    toFollowerPage() {
+      this.$router.push({ name: 'Followers' })
     },
     showFavorites() {
       this.published = false
@@ -496,6 +538,10 @@ export default {
   color: #6A6A6A;
   border: solid #6A6A6A;
   border-radius: 6px;
+  cursor: pointer;
+}
+
+.pointer {
   cursor: pointer;
 }
 </style>

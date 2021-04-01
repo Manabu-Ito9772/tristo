@@ -50,6 +50,7 @@ end
 @user = User.create!(
   name: 'Sample User',
   email: 'sample@sample.com',
+  description: 'samplesamplesamplesamplesamplesamplesamplesample',
   password: 'password'
 )
 

@@ -1,5 +1,5 @@
 class Api::ArticlesController < ApplicationController
-  before_action :authenticate!, only: %i[create update destroy my_aritcles]
+  before_action :authenticate!, only: %i[create update destroy]
   before_action :set_article, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token
 
@@ -33,16 +33,6 @@ class Api::ArticlesController < ApplicationController
   def destroy
     @article.destroy!
     render json: @article
-  end
-
-  def my_aritcles
-    @articles = current_user.articles.order(created_at: :desc)
-    render json: @articles, include: [:user, :country, :regions, article_tags: [:tag]]
-  end
-
-  def user_articles
-    @articles = User.find(params[:id]).articles.order(created_at: :desc)
-    render json: @articles, include: [:user, :country, :regions, article_tags: [:tag]]
   end
 
   private

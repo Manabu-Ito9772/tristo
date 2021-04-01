@@ -14,9 +14,9 @@ RSpec.describe "記事編集/削除", type: :system do
       find('.vs__dropdown-menu').click
     end
     find("input[name='旅行開始日']").click
-    page.all('.cell')[8].click
+    page.all('.cell')[20].click
     find("input[name='旅行終了日']").click
-    page.all('.cell')[10].click
+    page.all('.cell')[22].click
     fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
     within('.tag') do
       find('.vs__search').set('Tag')
@@ -40,9 +40,9 @@ RSpec.describe "記事編集/削除", type: :system do
       find('.vs__dropdown-menu').click
     end
     find("input[name='旅行開始日']").click
-    page.all('.cell')[8].click
+    page.all('.cell')[20].click
     find("input[name='旅行終了日']").click
-    page.all('.cell')[10].click
+    page.all('.cell')[22].click
     fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
     within('.tag') do
       find('.vs__search').set('Tag')
@@ -173,9 +173,9 @@ RSpec.describe "記事編集/削除", type: :system do
                   find('.vs__dropdown-menu').click
                 end
                 find("input[name='旅行開始日']").click
-                page.all('.cell')[10].click
+                page.all('.cell')[23].click
                 find("input[name='旅行終了日']").click
-                page.all('.cell')[12].click
+                page.all('.cell')[25].click
                 fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
                 within('.tag') do
                   find('.vs__deselect').click
@@ -316,9 +316,9 @@ RSpec.describe "記事編集/削除", type: :system do
                   find('.vs__dropdown-menu').click
                 end
                 find("input[name='旅行開始日']").click
-                page.all('.cell')[10].click
+                page.all('.cell')[23].click
                 find("input[name='旅行終了日']").click
-                page.all('.cell')[12].click
+                page.all('.cell')[25].click
                 fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
                 within('.tag') do
                   find('.vs__deselect').click
@@ -743,9 +743,9 @@ RSpec.describe "記事編集/削除", type: :system do
         find('.vs__dropdown-menu').click
       end
       find("input[name='旅行開始日']").click
-      page.all('.cell')[10].click
+      page.all('.cell')[23].click
       find("input[name='旅行終了日']").click
-      page.all('.cell')[12].click
+      page.all('.cell')[25].click
       fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
       within('.tag') do
         find('.vs__deselect').click
@@ -886,9 +886,9 @@ RSpec.describe "記事編集/削除", type: :system do
         find('.vs__dropdown-menu').click
       end
       find("input[name='旅行開始日']").click
-      page.all('.cell')[10].click
+      page.all('.cell')[23].click
       find("input[name='旅行終了日']").click
-      page.all('.cell')[12].click
+      page.all('.cell')[25].click
       fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
       within('.tag') do
         find('.vs__deselect').click
