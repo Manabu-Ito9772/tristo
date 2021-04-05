@@ -29,9 +29,11 @@ export default {
     async postArticle() {
       await this.$axios.patch(`articles/${this.$route.query.id}`, this.article)
         .catch(err => console.log(err.response))
+      this.$store.commit('pages/setCurrentPage', 'home')
       this.$router.push({ name: 'ArticleIndex' })
     },
     saveDraft() {
+      this.$store.commit('pages/setCurrentPage', 'user')
       this.$router.push({ name: 'MyPage', params: { draft: true } })
     }
   }

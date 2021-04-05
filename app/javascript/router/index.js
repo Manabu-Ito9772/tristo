@@ -111,8 +111,4 @@ router.beforeEach((to, from, next) => {
   })
 })
 
-router.afterEach((to, from, next) => {
-  store.commit('router/setPrevRoute', from.path)
-})
-
 export default router

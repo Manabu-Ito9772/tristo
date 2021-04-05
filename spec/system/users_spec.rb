@@ -182,11 +182,11 @@ RSpec.describe 'ユーザー', type: :system do
         visit 'trips'
         expect(current_path).to eq('/trips')
         expect(page).to have_content(article_normal.title)
-        click_on article_normal.title
+        find("#article-item-#{article_normal.id}").click
         expect(current_path).to eq('/trip')
         expect(page).to have_content(article_normal.title)
         visit 'trips'
-        click_on article_normal.user.name
+        find("#article-user-#{article_normal.user.id}").click
         expect(current_path).to eq('/user')
         expect(page).to have_content(article_normal.user.name)
       end
@@ -272,7 +272,7 @@ RSpec.describe 'ユーザー', type: :system do
       end
 
       context '自分の投稿一覧の投稿をクリック' do
-        before { click_on 'TestTitle' }
+        before { find('.article-title').click }
 
         it '記事詳細ページに遷移する' do
           expect(current_path).to eq('/trip')
@@ -326,7 +326,7 @@ RSpec.describe 'ユーザー', type: :system do
         end
 
         context '自分の下書き一覧の下書きをクリック' do
-          before { click_on 'TestTitleDraft' }
+          before { find('.article-title').click }
 
           it '記事詳細ページに遷移する' do
             expect(current_path).to eq('/trip')
@@ -396,7 +396,6 @@ RSpec.describe 'ユーザー', type: :system do
             expect(current_path).to eq('/mypage')
             expect(page).to have_content('UpdatedUser')
             expect(page).to have_content('UpdatedDescription')
-            page.save_screenshot 'screenshot.png'
           end
         end
 
@@ -412,7 +411,7 @@ RSpec.describe 'ユーザー', type: :system do
 
     context '記事一覧の自分の記事のユーザー名をクリック' do
       it 'マイページに遷移' do
-        click_on user.name
+        find("#article-user-#{user.id}").click
         expect(page).to have_content(user.name)
         expect(page).to have_content(user.description)
         expect(page).to have_button('編集')
@@ -431,7 +430,7 @@ RSpec.describe 'ユーザー', type: :system do
       before {
         article_normal
         visit root_path
-        click_on article_normal.user.name
+        find("#article-user-#{article_normal.user.id}").click
       }
 
       it 'ユーザーページが表示される' do
@@ -449,7 +448,7 @@ RSpec.describe 'ユーザー', type: :system do
 
       context '投稿一覧の記事をクリック' do
         it '記事詳細が表示される' do
-          click_on article_normal.title
+          find("#article-item-#{article_normal.id}").click
           expect(current_path).to eq('/trip')
           expect(page).to have_content(article_normal.title)
         end
@@ -494,6 +493,8 @@ RSpec.describe 'ユーザー', type: :system do
         it 'メールアドレスがアップデートされる' do
           fill_in 'メールアドレス', with: 'update@update.com'
           click_on '保存'
+          sleep 2
+          find('.fa-bars').click
           page.all('.dropdown-item')[0].click
           expect(find_field('メールアドレス').value).to eq('update@update.com')
         end

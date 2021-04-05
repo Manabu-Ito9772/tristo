@@ -1,50 +1,51 @@
 <template>
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
     <template v-if="$mq == 'lg'">
       <div
         v-scroll-lock="fixScroll"
         class="row"
       >
-        <div class="col-8 text-center">
+        <div class="col-8 pb-4 main">
           <SwitchButton
             :article="article"
-            @showMainColumn="showMainColumn"
-            @showCostColumn="showCostColumn"
-            @showMapColumn="showMapColumn"
+            class="text-center mt-4"
+            @showBlockList="showBlockList"
+            @showCost="showCost"
+            @showGmap="showGmap"
+            @showComment="showComment"
           />
-        </div>
-        <div class="col-8">
           <div
             v-for="day in article.days"
             :key="day.id"
           >
-            <MainColumn
+            <BlockList
               v-if="dayNumber == day.number"
               :blocks="day.ordered_blocks"
               :currency="article.country.currency"
             />
           </div>
-          <CostColumn
-            v-if="isVisibleCostColumn"
+          <Cost
+            v-if="isVisibleCost"
             :days="article.days"
             :currency="article.country.currency"
           />
-          <MapColumn
-            v-if="isVisibleMapColumn"
+          <Gmap
+            v-if="isVisibleGmap"
             :map="article.map"
           />
+          <CommentArea
+            v-if="isVisibleComment"
+          />
         </div>
-        <div class="col-4">
-          <div class="sidebar-fixed">
-            <div class="row pl-3 pr-3">
-              <SideColumn
-                :article="article"
-                :countryname="countryname"
-                :user="user"
-                @fixPage="fixPage"
-                @flowPage="flowPage"
-              />
-            </div>
+        <div class="col-4 pb-5 main side-column">
+          <div class="row mt-4 pl-3 pr-3">
+            <Overview
+              :article="article"
+              :countryname="countryname"
+              :user="user"
+              @fixPage="fixPage"
+              @flowPage="flowPage"
+            />
           </div>
         </div>
       </div>
@@ -53,11 +54,11 @@
     <template v-else-if="$mq == 'sm'">
       <div
         v-scroll-lock="fixScroll"
-        class="row"
+        class="row mt-4 pb-4"
       >
         <div class="col-12">
           <div class="row d-flex justify-content-center pl-3 pr-3 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
-            <SideColumn
+            <Overview
               :article="article"
               :countryname="countryname"
               :user="user"
@@ -71,9 +72,10 @@
           <SwitchButton
             :article="article"
             class="ml-5 mr-5 pl-5 pr-5"
-            @showMainColumn="showMainColumn"
-            @showCostColumn="showCostColumn"
-            @showMapColumn="showMapColumn"
+            @showBlockList="showBlockList"
+            @showCost="showCost"
+            @showGmap="showGmap"
+            @showComment="showComment"
           />
         </div>
         <div class="col-12">
@@ -81,7 +83,7 @@
             v-for="day in article.days"
             :key="day.id"
           >
-            <MainColumn
+            <BlockList
               v-if="dayNumber == day.number"
               :blocks="day.ordered_blocks"
               :currency="article.country.currency"
@@ -89,15 +91,19 @@
             />
           </div>
         </div>
-        <CostColumn
-          v-if="isVisibleCostColumn"
+        <Cost
+          v-if="isVisibleCost"
           :days="article.days"
           :currency="article.country.currency"
           class="col-12"
         />
-        <MapColumn
-          v-if="isVisibleMapColumn"
+        <Gmap
+          v-if="isVisibleGmap"
           :map="article.map"
+          class="col-12"
+        />
+        <CommentArea
+          v-if="isVisibleComment"
           class="col-12"
         />
       </div>
@@ -106,11 +112,11 @@
     <template v-else>
       <div
         v-scroll-lock="fixScroll"
-        class="row"
+        class="row mt-4 pb-4"
       >
         <div class="col-12">
           <div class="row pl-3 pr-3">
-            <SideColumn
+            <Overview
               :article="article"
               :countryname="countryname"
               :user="user"
@@ -123,9 +129,10 @@
         <div class="col-12 text-center mt-4">
           <SwitchButton
             :article="article"
-            @showMainColumn="showMainColumn"
-            @showCostColumn="showCostColumn"
-            @showMapColumn="showMapColumn"
+            @showBlockList="showBlockList"
+            @showCost="showCost"
+            @showGmap="showGmap"
+            @showComment="showComment"
           />
         </div>
         <div class="col-12">
@@ -133,7 +140,7 @@
             v-for="day in article.days"
             :key="day.id"
           >
-            <MainColumn
+            <BlockList
               v-if="dayNumber == day.number"
               :blocks="day.ordered_blocks"
               :currency="article.country.currency"
@@ -141,16 +148,20 @@
             />
           </div>
         </div>
-        <CostColumn
-          v-if="isVisibleCostColumn"
+        <Cost
+          v-if="isVisibleCost"
           :days="article.days"
           :currency="article.country.currency"
           class="col-12 mb-5 pb-5"
         />
-        <MapColumn
-          v-if="isVisibleMapColumn"
+        <Gmap
+          v-if="isVisibleGmap"
           :map="article.map"
           class="col-12 mb-5 pb-5"
+        />
+        <CommentArea
+          v-if="isVisibleComment"
+          class="col-12 mb-5 pb-5 pl-4 pr-4"
         />
       </div>
     </template>
@@ -158,20 +169,22 @@
 </template>
 
 <script>
-import MainColumn from './components/show/MainColumn'
-import SideColumn from './components/show/SideColumn'
-import CostColumn from './components/show/CostColumn'
-import MapColumn from './components/show/MapColumn'
+import BlockList from './components/show/BlockList'
+import Overview from './components/show/Overview'
 import SwitchButton from './components/show/SwitchButton'
+import Cost from './components/show/Cost'
+import Gmap from './components/show/Gmap'
+import CommentArea from './components/show/CommentArea'
 
 export default {
   name: 'ArticleShow',
   components: {
-    MainColumn,
-    SideColumn,
-    CostColumn,
-    MapColumn,
-    SwitchButton
+    BlockList,
+    Overview,
+    SwitchButton,
+    Cost,
+    Gmap,
+    CommentArea
   },
   data() {
     return {
@@ -179,8 +192,9 @@ export default {
       user: {},
       countryname: '',
       dayNumber: 1,
-      isVisibleCostColumn: false,
-      isVisibleMapColumn: false,
+      isVisibleCost: false,
+      isVisibleGmap: false,
+      isVisibleComment: false,
       fixScroll: false,
     }
   },
@@ -200,20 +214,29 @@ export default {
         })
         .catch(err => console.log(err.response))
     },
-    showMainColumn(dayNumber) {
+    showBlockList(dayNumber) {
       this.dayNumber = dayNumber
-      this.isVisibleCostColumn = false
-      this.isVisibleMapColumn = false
+      this.isVisibleCost = false
+      this.isVisibleGmap = false
+      this.isVisibleComment = false
     },
-    showCostColumn() {
+    showCost() {
       this.dayNumber = null
-      this.isVisibleMapColumn = false
-      this.isVisibleCostColumn = true
+      this.isVisibleGmap = false
+      this.isVisibleComment = false
+      this.isVisibleCost = true
     },
-    showMapColumn() {
+    showGmap() {
       this.dayNumber = null
-      this.isVisibleCostColumn = false
-      this.isVisibleMapColumn = true
+      this.isVisibleCost = false
+      this.isVisibleComment = false
+      this.isVisibleGmap = true
+    },
+    showComment() {
+      this.dayNumber = null
+      this.isVisibleCost = false
+      this.isVisibleGmap = false
+      this.isVisibleComment = true
     },
     fixPage() {
       this.fixScroll = true
@@ -228,13 +251,15 @@ export default {
 <style scoped>
 .container-fluid {
   max-width: 1000px;
-  margin-right: auto;
-  margin-left: auto;
 }
 
-.sidebar-fixed {
-  position: sticky;
-  top: 100px;
+.main {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.side-column {
+  padding-top: 46px;
 }
 
 .front-top {

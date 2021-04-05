@@ -1,41 +1,20 @@
 <template>
   <div v-if="isVisibleOverview">
-    <div v-if="$mq == 'xs'">
-      <PreviewOverview
-        v-if="isVisiblePreviewOverview"
-        :article="article"
-        @showOverviewEdit="showOverviewEdit"
-      />
-      <PreviewOverview
-        v-if="isVisibleBeforePreviewOverview"
-        :article="articleShow"
-        @showOverviewEdit="showOverviewEdit"
-      />
-      <EditOverview
-        v-if="isVisibleEditOverview"
-        :article.sync="articleEdit"
-        @updateOverview="updateOverview"
-      />
-    </div>
-    <div
-      v-else
-    >
-      <PreviewOverview
-        v-if="isVisiblePreviewOverview"
-        :article="article"
-        @showOverviewEdit="showOverviewEdit"
-      />
-      <PreviewOverview
-        v-if="isVisibleBeforePreviewOverview"
-        :article="articleShow"
-        @showOverviewEdit="showOverviewEdit"
-      />
-      <EditOverview
-        v-if="isVisibleEditOverview"
-        :article.sync="articleEdit"
-        @updateOverview="updateOverview"
-      />
-    </div>
+    <PreviewOverview
+      v-if="isVisiblePreviewOverview"
+      :article="article"
+      @showOverviewEdit="showOverviewEdit"
+    />
+    <PreviewOverview
+      v-if="isVisibleBeforePreviewOverview"
+      :article="articleShow"
+      @showOverviewEdit="showOverviewEdit"
+    />
+    <EditOverview
+      v-if="isVisibleEditOverview"
+      :article.sync="articleEdit"
+      @updateOverview="updateOverview"
+    />
   </div>
 </template>
 

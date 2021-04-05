@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resources :blocks, only: %i[show create update destroy]
     resources :spendings, only: %i[create update destroy]
     resources :transportations, only: %i[create update destroy]
+    resources :comments, only: %i[show create update destroy]
   end
   get '*path', to: 'home#index', constraints: lambda { |req|
     req.path.exclude? 'rails/active_storage'

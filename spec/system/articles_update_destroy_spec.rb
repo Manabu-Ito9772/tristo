@@ -87,7 +87,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_block
           find('.post-button').click
           sleep 5
-          click_on country_japan.articles.first.title
+          find("#article-item-#{country_japan.articles.first.id}").click
           sleep 3
           find('.edit-menu').click
           sleep 3
@@ -122,7 +122,7 @@ RSpec.describe "記事編集/削除", type: :system do
             sleep 3
             find('.post-button').click
             sleep 3
-            click_on 'SmallData'
+            page.all('.article-title')[0].click
             sleep 3
             find('.edit-menu').click
             sleep 3
@@ -143,6 +143,7 @@ RSpec.describe "記事編集/削除", type: :system do
 
           context '編集ボタンをクリック' do
             before { find('.edit-button').click }
+
             it '概要編集フォームが表示される' do
               expect(page).to have_content('* タイトル')
               expect(page).to have_content('説明')
@@ -222,7 +223,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_block
           find('.post-button').click
           sleep 5
-          click_on country[1].articles.first.title
+          find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
           sleep 3
@@ -258,7 +259,7 @@ RSpec.describe "記事編集/削除", type: :system do
             sleep 3
             find('.post-button').click
             sleep 3
-            click_on 'SmallData'
+            page.all('.article-title')[0].click
             sleep 3
             find('.edit-menu').click
             sleep 3
@@ -366,7 +367,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_block
           find('.post-button').click
           sleep 5
-          click_on country[1].articles.first.title
+          find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
           sleep 3
@@ -497,7 +498,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_block
           find('.post-button').click
           sleep 5
-          click_on country[1].articles.first.title
+          find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
           sleep 3
@@ -626,7 +627,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_block
           find('.post-button').click
           sleep 5
-          click_on country[1].articles.first.title
+          find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
           sleep 3
@@ -729,7 +730,7 @@ RSpec.describe "記事編集/削除", type: :system do
       create_block
       find('.post-button').click
       sleep 5
-      click_on country_japan.articles.first.title
+      find("#article-item-#{country_japan.articles.first.id}").click
       find('.edit-menu').click
       find('.edit-button').click
 
@@ -823,7 +824,7 @@ RSpec.describe "記事編集/削除", type: :system do
 
       context '下書き状態の記事編集ページで「投稿する」をクリック' do
         it '記事がタイムラインに投稿される' do
-          click_on 'UpdatedTitle'
+          find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
           sleep 1
@@ -843,7 +844,7 @@ RSpec.describe "記事編集/削除", type: :system do
 
       context '下書き状態の記事編集ページで「下書き保存」をクリック' do
         it '記事は下書き状態のままマイページに遷移' do
-          click_on 'UpdatedTitle'
+          find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
           sleep 1
@@ -869,7 +870,7 @@ RSpec.describe "記事編集/削除", type: :system do
       create_block
       find('.post-button').click
       sleep 5
-      click_on country[1].articles.first.title
+      find("#article-item-#{country[1].articles.first.id}").click
       find('.edit-menu').click
       find('.edit-button').click
 
@@ -968,7 +969,7 @@ RSpec.describe "記事編集/削除", type: :system do
 
       context '下書き状態の記事編集ページで「投稿する」をクリック' do
         it '記事がタイムラインに投稿される' do
-          click_on 'UpdatedTitle'
+          find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
           sleep 1
@@ -989,7 +990,7 @@ RSpec.describe "記事編集/削除", type: :system do
 
       context '下書き状態の記事編集ページで「下書き保存」をクリック' do
         it '記事は下書き状態のままマイページに遷移' do
-          click_on 'UpdatedTitle'
+          find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
           sleep 1

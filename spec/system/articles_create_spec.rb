@@ -822,7 +822,7 @@ RSpec.describe "記事作成", type: :system do
         expect(page).to have_content(country_japan.articles.first.tags.first.name)
         expect(page).to have_content(user.name)
 
-        click_on country_japan.articles.first.title
+        find("#article-item-#{country_japan.articles.first.id}").click
         expect(page).to have_content(country_japan.articles.first.title)
         expect(page).to have_content(country_japan.articles.first.description)
         expect(page).to have_content(country_japan.regions.first.name)
@@ -859,7 +859,7 @@ RSpec.describe "記事作成", type: :system do
         expect(page).to have_content(country[1].articles.first.tags.first.name)
         expect(page).to have_content(user.name)
 
-        click_on country[1].articles.first.title
+        find("#article-item-#{country[1].articles.first.id}").click
         expect(page).to have_content(country[1].articles.first.title)
         expect(page).to have_content(country[1].articles.first.description)
         expect(page).to have_content(country[1].name)

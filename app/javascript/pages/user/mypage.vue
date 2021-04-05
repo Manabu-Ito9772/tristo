@@ -66,7 +66,7 @@
               </div>
             </div>
             <template v-if="authUser.description">
-              <p class="mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro">
+              <p class="mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro break-line remove-first-line">
                 {{ authUser.description }}
               </p>
             </template>
@@ -271,7 +271,7 @@
               </div>
             </div>
             <template v-if="authUser.description">
-              <p class="ml-4 mr-4 mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro">
+              <p class="ml-4 mr-4 mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro break-line remove-first-line">
                 {{ authUser.description }}
               </p>
             </template>
@@ -543,5 +543,13 @@ export default {
 
 .pointer {
   cursor: pointer;
+}
+
+.break-line {
+  white-space: pre-line;
+}
+
+.remove-first-line:first-line {
+  line-height: 0px;
 }
 </style>

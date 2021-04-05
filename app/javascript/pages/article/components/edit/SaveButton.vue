@@ -61,6 +61,7 @@ export default {
       this.article.created_at = new Date()
       await this.$axios.patch(`articles/${this.$route.query.id}`, this.article)
         .catch(err => console.log(err.response))
+      this.$store.commit('pages/setCurrentPage', 'home')
       this.$router.push({ name: 'ArticleIndex' })
     },
     async unPublish() {
@@ -68,6 +69,7 @@ export default {
       this.article.created_at = new Date()
       await this.$axios.patch(`articles/${this.$route.query.id}`, this.article)
         .catch(err => console.log(err.response))
+      this.$store.commit('pages/setCurrentPage', 'user')
       this.$router.push({ name: 'MyPage', params: { draft: true } })
     },
     saveDraft() {

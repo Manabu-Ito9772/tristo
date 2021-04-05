@@ -1,14 +1,18 @@
 <template>
   <div class="w-100">
-    <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
-      {{ article.title }}
-    </h4>
+    <template v-if="article.title">
+      <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
+        {{ article.title }}
+      </h4>
+    </template>
 
     <div class="col-12 mb-3 text-muted text-center word-break article-info">
-      <template v-if="countryname != '日本'">
-        <p class="d-inline">
-          【{{ countryname }}】
-        </p>
+      <template v-if="countryname">
+        <template v-if="countryname != '日本'">
+          <p class="d-inline">
+            【{{ countryname }}】
+          </p>
+        </template>
       </template>
       <p
         v-for="region in article.regions"
@@ -48,7 +52,7 @@
         <p class="text-center text-white m-0 description-label">
           説明
         </p>
-        <p class="d-flex justify-content-center text-dark bg-white p-2 m-0 word-break description-main">
+        <p class="text-dark bg-white pt-2 pb-2 pl-3 pr-3 m-0 word-break description-main break-line remove-first-line">
           {{ article.description }}
         </p>
       </div>
@@ -57,43 +61,20 @@
     <div class="col-12 p-0 d-flex justify-content-center align-items-center user-name">
       <img
         src="../../../../images/sample.png"
-        class="user-icon pr-2"
+        class="user-icon"
       >
-      <template v-if="authUser">
-        <template v-if="user.id == authUser.id">
-          <router-link
-            :to="{ name: 'MyPage' }"
-          >
-            <h5 class="float-right mb-0 pl-2 pr-2 text-dark font-weight-bold word-break user-link">
-              {{ user.name }}
-            </h5>
-          </router-link>
-        </template>
-        <template v-else>
-          <router-link
-            :to="{ name: 'UserShow', query: {id: user.id} }"
-          >
-            <h5 class="float-right mb-0 pl-2 pr-2 text-dark font-weight-bold word-break user-link">
-              {{ user.name }}
-            </h5>
-          </router-link>
-        </template>
-      </template>
-      <template v-else>
-        <router-link
-          :to="{ name: 'UserShow', query: {id: user.id} }"
-        >
-          <h5 class="float-right mb-0 pl-2 pr-2 text-dark font-weight-bold word-break user-link">
-            {{ user.name }}
-          </h5>
-        </router-link>
-      </template>
-      <div class="text-center pl-2">
+      <h5
+        class="float-right mb-0 pl-3 pr-3 text-dark font-weight-bold word-break user-link"
+        @click="toUserPage(user.id)"
+      >
+        {{ user.name }}
+      </h5>
+      <div class="text-center">
         <font-awesome-icon
           :icon="['far', 'thumbs-up']"
           class="fa-lg"
         />
-        <p class="m-0 word-break">
+        <p class="m-0 word-break favorites">
           100
         </p>
       </div>
@@ -153,7 +134,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("users", ["authUser"]),
+    ...mapGetters('users', ['authUser']),
     isAuthUser() {
       if (this.authUser != null) {
         if (this.user.id == this.authUser.id) {
@@ -174,7 +155,15 @@ export default {
     closeMenu() {
       this.isVisibleMenu = false
       this.$emit('flowPage')
-    }
+    },
+    toUserPage(user_id) {
+      if (this.authUser && this.authUser.id == user_id) {
+        this.$store.commit('pages/setCurrentPage', 'user')
+        this.$router.push({ name: 'MyPage' })
+      } else {
+        this.$router.push({ name: 'UserShow', query: { id: user_id } })
+      }
+    },
   }
 }
 </script>
@@ -193,11 +182,12 @@ export default {
 .user-name {
   display: inline-block;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .user-icon {
-  width: 40px;
-	height: 40px;
+  width: 50px;
+	height: 50px;
 	object-fit: cover;
 	border-radius: 50%;
 }
@@ -245,9 +235,22 @@ export default {
   border-bottom: solid thin #6A6A6A;
 }
 
+.favorites {
+  white-space: nowrap;
+}
+
+.break-line {
+  white-space: pre-line;
+}
+
+.remove-first-line:first-line {
+  line-height: 0px;
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s;
 }
+
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }

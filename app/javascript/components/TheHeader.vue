@@ -21,7 +21,7 @@
                 <div slot="dropdown">
                   <template v-if="this.$route.path == '/account_settings'">
                     <div
-                      class="dropdown-item"
+                      class="dropdown-item text-dark"
                       @click="logout"
                     >
                       ログアウト
@@ -29,13 +29,13 @@
                   </template>
                   <template v-else>
                     <div
-                      class="dropdown-item"
+                      class="dropdown-item text-dark"
                       @click="accouSettings"
                     >
                       アカウント設定
                     </div>
                     <div
-                      class="dropdown-item"
+                      class="dropdown-item text-dark"
                       @click="logout"
                     >
                       ログアウト
@@ -100,57 +100,7 @@
           <template v-if="authUser">
             <li class="nav-item active">
               <!-- HOME ICON -->
-              <template v-if="this.$route.path == '/trips' || this.$route.path == '/user'">
-                <router-link
-                  :to="{ name: 'ArticleIndex' }"
-                  class="icon-selected"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'home']"
-                    class="fa-lg"
-                  />
-                </router-link>
-              </template>
-
-              <template v-else-if="this.$route.path == '/trip'">
-                <template v-if="prevRoute == '/trips' || prevRoute == '/user'">
-                  <router-link
-                    :to="{ name: 'ArticleIndex' }"
-                    class="icon-selected"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'home']"
-                      class="fa-lg"
-                    />
-                  </router-link>
-                </template>
-
-                <template v-else-if="prevRoute == '/edit_trip' && prePrePrevRoute == '/trips'">
-                  <router-link
-                    :to="{ name: 'ArticleIndex' }"
-                    class="icon-selected"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'home']"
-                      class="fa-lg"
-                    />
-                  </router-link>
-                </template>
-
-                <template v-else>
-                  <router-link
-                    :to="{ name: 'ArticleIndex' }"
-                    class="icon-color"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'home']"
-                      class="fa-lg"
-                    />
-                  </router-link>
-                </template>
-              </template>
-
-              <template v-else-if="this.$route.path == '/edit_trip' && prePrevRoute == '/trips'">
+              <template v-if="currentPage == 'home'">
                 <router-link
                   :to="{ name: 'ArticleIndex' }"
                   class="icon-selected"
@@ -167,10 +117,12 @@
                   :to="{ name: 'ArticleIndex' }"
                   class="icon-color"
                 >
-                  <font-awesome-icon
-                    :icon="['fas', 'home']"
-                    class="fa-lg"
-                  />
+                  <div @click="setCurrentPage('home')">
+                    <font-awesome-icon
+                      :icon="['fas', 'home']"
+                      class="fa-lg"
+                    />
+                  </div>
                 </router-link>
               </template>
             </li>
@@ -178,19 +130,7 @@
 
             <!-- PEN ICON -->
             <li class="nav-item active">
-              <template v-if="this.$route.path == '/create_trip'">
-                <router-link
-                  :to="{ name: 'ArticleCreateOverview' }"
-                  class="icon-selected"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'pen']"
-                    class="fa-lg"
-                  />
-                </router-link>
-              </template>
-
-              <template v-else-if="this.$route.path == '/create_trip_detail'">
+              <template v-if="currentPage == 'create'">
                 <router-link
                   :to="{ name: 'ArticleCreateOverview' }"
                   class="icon-selected"
@@ -207,10 +147,12 @@
                   :to="{ name: 'ArticleCreateOverview' }"
                   class="icon-color"
                 >
-                  <font-awesome-icon
-                    :icon="['fas', 'pen']"
-                    class="fa-lg"
-                  />
+                  <div @click="setCurrentPage('create')">
+                    <font-awesome-icon
+                      :icon="['fas', 'pen']"
+                      class="fa-lg"
+                    />
+                  </div>
                 </router-link>
               </template>
             </li>
@@ -218,57 +160,7 @@
 
             <!-- USER ICON -->
             <li class="nav-item active">
-              <template v-if="this.$route.path == '/mypage' || this.$route.path == '/edit_mypage'">
-                <router-link
-                  :to="{ name: 'MyPage' }"
-                  class="icon-selected"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'user']"
-                    class="fa-lg"
-                  />
-                </router-link>
-              </template>
-
-              <template v-else-if="this.$route.path == '/trip'">
-                <template v-if="prevRoute == '/mypage'">
-                  <router-link
-                    :to="{ name: 'MyPage' }"
-                    class="icon-selected"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'user']"
-                      class="fa-lg"
-                    />
-                  </router-link>
-                </template>
-
-                <template v-else-if="prevRoute == '/edit_trip' && prePrePrevRoute == '/mypage'">
-                  <router-link
-                    :to="{ name: 'MyPage' }"
-                    class="icon-selected"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'user']"
-                      class="fa-lg"
-                    />
-                  </router-link>
-                </template>
-
-                <template v-else>
-                  <router-link
-                    :to="{ name: 'MyPage' }"
-                    class="icon-color"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'user']"
-                      class="fa-lg"
-                    />
-                  </router-link>
-                </template>
-              </template>
-
-              <template v-else-if="this.$route.path == '/edit_trip' && prePrevRoute == '/mypage'">
+              <template v-if="currentPage == 'user'">
                 <router-link
                   :to="{ name: 'MyPage' }"
                   class="icon-selected"
@@ -285,17 +177,19 @@
                   :to="{ name: 'MyPage' }"
                   class="icon-color"
                 >
-                  <font-awesome-icon
-                    :icon="['fas', 'user']"
-                    class="fa-lg"
-                  />
+                  <div @click="setCurrentPage('user')">
+                    <font-awesome-icon
+                      :icon="['fas', 'user']"
+                      class="fa-lg"
+                    />
+                  </div>
                 </router-link>
               </template>
             </li>
             <!-- USER ICON -->
 
             <!-- MENU ICON -->
-            <template v-if="this.$route.path == '/account_settings'">
+            <template v-if="currentPage == 'menu'">
               <li class="nav-item active menu-bar icon-selected">
                 <DropdownMenu
                   v-model="show"
@@ -310,7 +204,7 @@
                   <div slot="dropdown">
                     <template v-if="this.$route.path == '/account_settings'">
                       <div
-                        class="dropdown-item"
+                        class="dropdown-item text-dark"
                         @click="logout"
                       >
                         ログアウト
@@ -318,13 +212,13 @@
                     </template>
                     <template v-else>
                       <div
-                        class="dropdown-item"
+                        class="dropdown-item text-dark"
                         @click="accouSettings"
                       >
                         アカウント設定
                       </div>
                       <div
-                        class="dropdown-item"
+                        class="dropdown-item text-dark"
                         @click="logout"
                       >
                         ログアウト
@@ -350,7 +244,7 @@
                   <div slot="dropdown">
                     <template v-if="this.$route.path == '/account_settings'">
                       <div
-                        class="dropdown-item"
+                        class="dropdown-item text-dark"
                         @click="logout"
                       >
                         ログアウト
@@ -358,13 +252,13 @@
                     </template>
                     <template v-else>
                       <div
-                        class="dropdown-item"
+                        class="dropdown-item text-dark"
                         @click="accouSettings"
                       >
                         アカウント設定
                       </div>
                       <div
-                        class="dropdown-item"
+                        class="dropdown-item text-dark"
                         @click="logout"
                       >
                         ログアウト
@@ -426,14 +320,10 @@
 </template>
 
 <script>
-import DropdownMenu from '@innologica/vue-dropdown-menu'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'TheHeader',
-  components: {
-    DropdownMenu
-  },
   data() {
     return {
       show: false,
@@ -444,17 +334,14 @@ export default {
   },
   computed: {
     ...mapGetters('users', ['authUser']),
-    ...mapGetters('router', [
-      'prevRoute',
-      'prePrevRoute',
-      'prePrePrevRoute'
-    ])
+    ...mapGetters('pages', ['currentPage'])
   },
   methods: {
     ...mapActions('users', ['logoutUser']),
     async logout() {
       try {
         await this.logoutUser()
+        await this.$store.commit('pages/setCurrentPage', 'home')
         await this.$router.push({ name: 'Login' })
         this.$router.go({path: this.$router.currentRoute.path, force: true})
       } catch (error) {
@@ -462,8 +349,12 @@ export default {
       }
     },
     accouSettings() {
+      this.$store.commit('pages/setCurrentPage', 'menu')
       this.$router.push({ name: 'AccountSettings' })
     },
+    setCurrentPage(page) {
+      this.$store.commit('pages/setCurrentPage', page)
+    }
   },
 }
 </script>
@@ -489,7 +380,7 @@ export default {
 }
 
 .icon-selected {
-  color: black;
+  color: #343a40;
   font-size: 19px;
 }
 

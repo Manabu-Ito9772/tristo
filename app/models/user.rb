@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   has_many :articles, dependent: :destroy
   has_many :ordered_articles, -> { order('created_at desc') }, class_name: :Article, dependent: :destroy
-
+  has_many :comments, dependent: :destroy
   has_many :relationships, dependent: :destroy
   has_many :followings, through: :relationships, source: :follow
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'follow_id', dependent: :destroy
@@ -12,9 +12,6 @@ class User < ApplicationRecord
 
   validates :password, length: { minimum: 5 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, presence: true, if: -> { new_record? || changes[:crypted_password] }
-  # validates :password_confirmation, presence: true,
-  #           if: -> { new_record? || changes[:crypted_password] }
-
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :description, length: { maximum: 1_000 }
