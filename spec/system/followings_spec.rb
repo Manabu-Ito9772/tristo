@@ -11,13 +11,13 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       another_user_article
       login_as(another_user_article.user)
       sleep 2
-      click_on article_normal.user.name
+      find("#article-user-#{article_normal.user.id}").click
       click_on 'フォロー'
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(article_normal.user)
       sleep 2
-      click_on another_user_article.user.name
+      find("#article-user-#{another_user_article.user.id}").click
       click_on 'フォロー'
       find('.fa-user').click
     }
@@ -160,18 +160,18 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       another_user_article
       login_as(article_normal.user)
       sleep 2
-      click_on another_user_article.user.name
+      find("#article-user-#{another_user_article.user.id}").click
       click_on 'フォロー'
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(another_user_article.user)
       sleep 2
-      click_on article_normal.user.name
+      find("#article-user-#{article_normal.user.id}").click
       click_on 'フォロー'
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(user)
-      click_on another_user_article.user.name
+      find("#article-user-#{another_user_article.user.id}").click
     }
 
     context 'フォローボタンをクリック' do

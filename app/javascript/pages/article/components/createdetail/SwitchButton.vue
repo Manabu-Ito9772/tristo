@@ -3,7 +3,7 @@
     <div class="d-inline-block">
       <template v-if="buttonUnselected">
         <button
-          class="btn mb-2 ml-1 mr-1 pl-2 pr-2 pt-1 pb-1 d-flex align-items-center font-weight-bold text-dark bg-white overview"
+          class="btn mb-2 ml-1 pl-2 pr-2 pt-1 pb-1 d-flex align-items-center font-weight-bold text-muted bg-white overview"
           @click="showOverview"
         >
           概要
@@ -11,7 +11,7 @@
       </template>
       <template v-else>
         <button
-          class="btn mb-2 ml-1 mr-1 pl-2 pr-2 pt-1 pb-1 d-flex align-items-center font-weight-bold text-white overview-selected"
+          class="btn mb-2 ml-1 pl-2 pr-2 pt-1 pb-1 d-flex align-items-center font-weight-bold text-white overview-selected"
         >
           概要
         </button>
@@ -40,7 +40,7 @@
       </template>
       <template v-else>
         <button
-          class="btn mb-2 ml-1 mr-1 p-1 d-flex align-items-center bg-white day-number"
+          class="btn mb-2 ml-1 mr-1 p-1 d-flex align-items-center font-weight-bold text-muted bg-white day-number"
           @click.self="showMainColumn(day)"
         >
           {{ day.number }}日目&nbsp;

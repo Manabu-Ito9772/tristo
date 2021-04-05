@@ -11,58 +11,82 @@
             {{ day.number }}日目
           </button>
         </template>
+
         <template v-else>
           <button
-            class="btn mb-2 ml-1 mr-1 p-1 bg-white day-number"
-            @click="showMainColumn(day.number)"
+            class="btn mb-2 ml-1 mr-1 p-1 bg-white text-muted font-weight-bold day-number"
+            @click="showBlockList(day.number)"
           >
             {{ day.number }}日目
           </button>
         </template>
       </template>
+
       <template v-else>
         <template v-if="dayNumber">
           <button class="btn mb-2 ml-1 mr-1 p-1 text-white font-weight-bold day-number-selected">
             日帰り
           </button>
         </template>
+
         <template v-else>
           <button
-            class="btn mb-2 ml-1 mr-1 p-1 bg-white day-number"
-            @click="showMainColumn(1)"
+            class="btn mb-2 ml-1 mr-1 p-1 bg-white text-muted font-weight-bold day-number"
+            @click="showBlockList(1)"
           >
             日帰り
           </button>
         </template>
       </template>
     </div>
+
     <template v-if="costs.length">
       <template v-if="costButtonSelected">
-        <button class="btn mb-2 ml-1 mr-1 p-1 text-white font-weight-bold total-cost-selected">
+        <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold total-cost-selected">
           コスト
         </button>
       </template>
+
       <template v-else>
         <button
-          class="btn mb-2 ml-1 mr-1 p-1 bg-white total-cost"
-          @click="showCostColumn"
+          class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold total-cost"
+          @click="showCost"
         >
           コスト
         </button>
       </template>
     </template>
+
     <template v-if="article.map">
       <template v-if="mapButtonSelected">
-        <button class="btn mb-2 ml-1 mr-1 p-1 text-white font-weight-bold map-selected">
+        <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold map-selected">
           マップ
         </button>
       </template>
+
       <template v-else>
         <button
-          class="btn mb-2 ml-1 mr-1 p-1 bg-white map"
-          @click="showMapColumn"
+          class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold map"
+          @click="showGmap"
         >
           マップ
+        </button>
+      </template>
+    </template>
+
+    <template v-if="article.days">
+      <template v-if="commentButtonSelected">
+        <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
+          コメント
+        </button>
+      </template>
+
+      <template v-else>
+        <button
+          class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
+          @click="showComment"
+        >
+          コメント
         </button>
       </template>
     </template>
@@ -83,7 +107,8 @@ export default {
       costs: [],
       dayNumber: 1,
       costButtonSelected: false,
-      mapButtonSelected: false
+      mapButtonSelected: false,
+      commentButtonSelected: false
     }
   },
   watch: {
@@ -103,24 +128,34 @@ export default {
     }
   },
   methods :{
-    showMainColumn(dayNumber) {
-      this.$emit('showMainColumn', dayNumber)
+    showBlockList(dayNumber) {
+      this.$emit('showBlockList', dayNumber)
       this.dayNumber = dayNumber
       this.costButtonSelected = false
       this.mapButtonSelected = false
+      this.commentButtonSelected = false
     },
-    showCostColumn() {
-      this.$emit('showCostColumn')
+    showCost() {
+      this.$emit('showCost')
       this.dayNumber = null
       this.mapButtonSelected = false
+      this.commentButtonSelected = false
       this.costButtonSelected = true
     },
-    showMapColumn() {
-      this.$emit('showMapColumn')
+    showGmap() {
+      this.$emit('showGmap')
       this.dayNumber = null
       this.costButtonSelected = false
+      this.commentButtonSelected = false
       this.mapButtonSelected = true
     },
+    showComment() {
+      this.$emit('showComment')
+      this.dayNumber = null
+      this.costButtonSelected = false
+      this.mapButtonSelected = false
+      this.commentButtonSelected = true
+    }
   }
 }
 </script>
@@ -151,5 +186,14 @@ export default {
 .map-selected {
   background-color: #FF990D;
   border: solid #FF990D;
+}
+
+.comment {
+  border: solid #6A6A6A;
+}
+
+.comment-selected {
+  background-color: #6A6A6A;
+  border: solid #6A6A6A;
 }
 </style>

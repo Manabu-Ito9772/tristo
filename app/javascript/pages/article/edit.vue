@@ -2,131 +2,137 @@
   <div class="container-fluid">
     <div class="row pl-3 pr-3">
       <template v-if="$mq == 'lg'">
-        <div class="col-8 pt-4 main">
-          <SwitchButton
-            ref="button"
-            :days="days"
-            class="text-center"
-            @showMainColumn="showMainColumn"
-            @deleteDay="deleteDay"
-            @addDay="addDay"
-            @showOverview="showOverview"
-          />
-          <div class="row pr-3">
+        <template v-if="days.length">
+          <div class="col-8 pt-4 pl-0 main">
+            <SwitchButton
+              ref="button"
+              :days="days"
+              class="text-center"
+              @showMainColumn="showMainColumn"
+              @deleteDay="deleteDay"
+              @addDay="addDay"
+              @showOverview="showOverview"
+            />
+            <div class="row pl-3 pr-3">
+              <BlockList
+                ref="list"
+                :days="days"
+                :currency="currency"
+                class="col-12 pt-4 pb-2 pl-4 pr-4 main-column"
+                @getArticle="getArticle"
+              />
+            </div>
+            <div class="d-flex justify-content-center pl-3 pr-3 mb-4">
+              <Overview
+                ref="overview"
+                :article="article"
+                class="overview-column"
+              />
+            </div>
+          </div>
+          <div class="col-4 pr-0 main block-form">
+            <BlockForm
+              v-if="isVisibleForm"
+              ref="form"
+              :dayid="day_id"
+              :currency="currency"
+              @addBlock="addBlock"
+            />
+            <SaveButton
+              :state="article.status"
+            />
+          </div>
+        </template>
+      </template>
+
+      <template v-else-if="$mq == 'sm'">
+        <template v-if="days.length">
+          <div class="col-12 pt-1 pl-5 pr-5">
+            <SaveButton
+              :state="article.status"
+              class="mt-4 ml-5 mr-5"
+            />
+          </div>
+          <div class="col-12 pt-4 pl-5 pr-5">
+            <SwitchButton
+              ref="button"
+              :days="days"
+              class="ml-5 mr-5 text-center"
+              @showMainColumn="showMainColumn"
+              @deleteDay="deleteDay"
+              @addDay="addDay"
+              @showOverview="showOverview"
+            />
             <BlockList
               ref="list"
               :days="days"
               :currency="currency"
-              class="col-12 pt-4 pb-2 pl-4 pr-4 main-column"
+              class="ml-5 mr-5 pt-4 pb-2 pr-4 pl-4 main-column"
               @getArticle="getArticle"
             />
+            <div class="d-flex justify-content-center pl-3 pr-3 mb-4">
+              <Overview
+                ref="overview"
+                :article="article"
+                class="overview-column"
+              />
+            </div>
           </div>
-          <div class="d-flex justify-content-center pl-3 pr-3 mb-4">
-            <Overview
-              ref="overview"
-              :article="article"
-              class="overview-column"
+          <div class="col-12 pt-1 pl-5 pr-5">
+            <BlockForm
+              v-if="isVisibleForm"
+              ref="form"
+              :dayid="day_id"
+              :currency="currency"
+              class="ml-5 mr-5"
+              @addBlock="addBlock"
             />
           </div>
-        </div>
-        <div class="col-4 pr-0 main block-form">
-          <BlockForm
-            v-if="isVisibleForm"
-            ref="form"
-            :dayid="day_id"
-            :currency="currency"
-            @addBlock="addBlock"
-          />
-          <SaveButton
-            :state="article.status"
-          />
-        </div>
-      </template>
-
-      <template v-else-if="$mq == 'sm'">
-        <div class="col-12 pt-1 pl-5 pr-5">
-          <SaveButton
-            :state="article.status"
-            class="mt-4 ml-5 mr-5"
-          />
-        </div>
-        <div class="col-12 pt-4 pl-5 pr-5">
-          <SwitchButton
-            ref="button"
-            :days="days"
-            class="ml-5 mr-5 text-center"
-            @showMainColumn="showMainColumn"
-            @deleteDay="deleteDay"
-            @addDay="addDay"
-            @showOverview="showOverview"
-          />
-          <BlockList
-            ref="list"
-            :days="days"
-            :currency="currency"
-            class="ml-5 mr-5 pt-4 pb-2 pr-4 pl-4 main-column"
-            @getArticle="getArticle"
-          />
-          <div class="d-flex justify-content-center pl-3 pr-3 mb-4">
-            <Overview
-              ref="overview"
-              :article="article"
-              class="overview-column"
-            />
-          </div>
-        </div>
-        <div class="col-12 pt-1 pl-5 pr-5">
-          <BlockForm
-            v-if="isVisibleForm"
-            ref="form"
-            :dayid="day_id"
-            :currency="currency"
-            class="ml-5 mr-5"
-            @addBlock="addBlock"
-          />
-        </div>
+        </template>
       </template>
 
       <template v-else>
-        <div class="col-12 pt-1 pl-0 pr-0">
-          <SaveButton
-            :state="article.status"
-            class="mt-4"
-          />
-        </div>
-        <div class="col-12 pt-4 pr-0 pl-0">
-          <SwitchButton
-            ref="button"
-            :days="days"
-            class="text-center"
-            @showMainColumn="showMainColumn"
-            @deleteDay="deleteDay"
-            @addDay="addDay"
-            @showOverview="showOverview"
-          />
-          <BlockList
-            ref="list"
-            :days="days"
-            :currency="currency"
-            @getArticle="getArticle"
-          />
-          <div class="row d-flex justify-content-center pl-3 pr-3 mb-4">
-            <Overview
-              ref="overview"
-              :article="article"
-              class="col-12 p-0"
+        <template v-if="days.length">
+          <div class="col-12 pt-1 pl-0 pr-0">
+            <SaveButton
+              :state="article.status"
+              class="mt-4"
             />
           </div>
-        </div>
-        <div class="col-12 mb-5 pb-3 pl-0 pr-0">
-          <BlockForm
-            v-if="isVisibleForm"
-            ref="form"
-            :dayid="day_id"
-            :currency="currency"
-            @addBlock="addBlock"
-          />
-        </div>
+          <div class="col-12 pt-4 pr-0 pl-0">
+            <SwitchButton
+              ref="button"
+              :days="days"
+              class="text-center"
+              @showMainColumn="showMainColumn"
+              @deleteDay="deleteDay"
+              @addDay="addDay"
+              @showOverview="showOverview"
+            />
+            <BlockList
+              ref="list"
+              :days="days"
+              :currency="currency"
+              @getArticle="getArticle"
+            />
+            <div class="row pl-3 pr-3 mb-4">
+              <Overview
+                ref="overview"
+                :article="article"
+                class="col-12 p-0"
+              />
+            </div>
+          </div>
+          <div class="col-12 mb-5 pb-3 pl-0 pr-0">
+            <BlockForm
+              v-if="isVisibleForm"
+              ref="form"
+              :dayid="day_id"
+              :currency="currency"
+              @addBlock="addBlock"
+            />
+          </div>
+        </template>
       </template>
     </div>
   </div>

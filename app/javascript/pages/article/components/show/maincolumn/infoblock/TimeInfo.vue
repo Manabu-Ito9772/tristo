@@ -61,6 +61,7 @@ export default {
 
 <style scoped>
 .info-block-time {
+  white-space: nowrap;
   background-color: #00D320;
   border-radius: 8px;
 }

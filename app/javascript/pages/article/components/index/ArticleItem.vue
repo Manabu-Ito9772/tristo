@@ -4,17 +4,18 @@
       <div class="row bg-white article-xs">
         <div class="col-12">
           <div class="row pt-4 pl-4 pr-4">
-            <div class="col-12">
-              <router-link :to="{ name: 'ArticleShow', query: {id: article.id} }">
-                <h4 class="m-0 pt-1 pb-1 text-center text-white font-weight-bold article-title word-break">
-                  {{ article.title }}
-                </h4>
-                <template v-if="article.description">
-                  <p class="mt-3 mb-0 p-2 d-flex justify-content-center bg-light text-dark article-description word-break">
-                    {{ article.description }}
-                  </p>
-                </template>
-              </router-link>
+            <div
+              class="col-12 pointer"
+              @click="toArticleShow(article.id)"
+            >
+              <h4 class="m-0 pt-1 pb-1 text-center text-white font-weight-bold article-title word-break">
+                {{ article.title }}
+              </h4>
+              <template v-if="article.description">
+                <p class="mt-3 mb-0 pt-2 pb-2 pl-3 pr-3 bg-light text-dark word-break article-description break-line remove-first-line">
+                  {{ article.description }}
+                </p>
+              </template>
             </div>
             <div class="col-12 m-0 pt-2 pb-0 text-center text-muted article-info word-break">
               <template v-if="article.country.name != '日本'">
@@ -68,35 +69,12 @@
               src="../../../../images/sample.png"
               class="user-icon"
             >
-            <template v-if="authUser">
-              <template v-if="article.user.id == authUser.id">
-                <router-link
-                  :to="{ name: 'MyPage' }"
-                >
-                  <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
-                    {{ article.user.name }}
-                  </h5>
-                </router-link>
-              </template>
-              <template v-else>
-                <router-link
-                  :to="{ name: 'UserShow', query: {id: article.user.id} }"
-                >
-                  <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
-                    {{ article.user.name }}
-                  </h5>
-                </router-link>
-              </template>
-            </template>
-            <template v-else>
-              <router-link
-                :to="{ name: 'UserShow', query: {id: article.user.id} }"
-              >
-                <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
-                  {{ article.user.name }}
-                </h5>
-              </router-link>
-            </template>
+            <h5
+              class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name"
+              @click="toUserPage(article.user.id)"
+            >
+              {{ article.user.name }}
+            </h5>
             <div class="text-center pl-3">
               <font-awesome-icon
                 :icon="['far', 'thumbs-up']"
@@ -116,17 +94,19 @@
         <div class="row bg-white article">
           <div class="col-12">
             <div class="row pt-3 pl-3 pr-3">
-              <div class="col-12">
-                <router-link :to="{ name: 'ArticleShow', query: {id: article.id} }">
-                  <h4 class="mb-0 pt-1 pb-1 text-center text-white font-weight-bold article-title word-break">
-                    {{ article.title }}
-                  </h4>
-                  <template v-if="article.description">
-                    <p class="mt-3 mb-0 p-2 d-flex justify-content-center bg-light text-dark article-description word-break">
-                      {{ article.description }}
-                    </p>
-                  </template>
-                </router-link>
+              <div
+                :id="'article-item-' + article.id"
+                class="col-12 pointer"
+                @click="toArticleShow(article.id)"
+              >
+                <h4 class="mb-0 pt-1 pb-1 text-center text-white font-weight-bold article-title word-break">
+                  {{ article.title }}
+                </h4>
+                <template v-if="article.description">
+                  <p class="mt-3 mb-0 pt-2 pb-2 pl-3 pr-3 bg-light text-dark article-description word-break break-line remove-first-line">
+                    {{ article.description }}
+                  </p>
+                </template>
               </div>
               <div class="col-12 mt-2 mb-2 text-muted word-break article-info">
                 <div class="text-center text-muted word-break">
@@ -182,35 +162,13 @@
                 src="../../../../images/sample.png"
                 class="user-icon"
               >
-              <template v-if="authUser">
-                <template v-if="article.user.id == authUser.id">
-                  <router-link
-                    :to="{ name: 'MyPage' }"
-                  >
-                    <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
-                      {{ article.user.name }}
-                    </h5>
-                  </router-link>
-                </template>
-                <template v-else>
-                  <router-link
-                    :to="{ name: 'UserShow', query: {id: article.user.id} }"
-                  >
-                    <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
-                      {{ article.user.name }}
-                    </h5>
-                  </router-link>
-                </template>
-              </template>
-              <template v-else>
-                <router-link
-                  :to="{ name: 'UserShow', query: {id: article.user.id} }"
-                >
-                  <h5 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name">
-                    {{ article.user.name }}
-                  </h5>
-                </router-link>
-              </template>
+              <h5
+                :id="'article-user-' + article.user.id"
+                class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name"
+                @click="toUserPage(article.user.id)"
+              >
+                {{ article.user.name }}
+              </h5>
               <div class="text-center pl-3">
                 <font-awesome-icon
                   :icon="['far', 'thumbs-up']"
@@ -242,6 +200,19 @@ export default {
   computed: {
     ...mapGetters('users', ['authUser'])
   },
+  methods: {
+    toArticleShow(article_id) {
+      this.$router.push({ name: 'ArticleShow', query: {id: article_id} })
+    },
+    toUserPage(user_id) {
+      if (this.authUser && this.authUser.id == user_id) {
+        this.$store.commit('pages/setCurrentPage', 'user')
+        this.$router.push({ name: 'MyPage' })
+      } else {
+        this.$router.push({ name: 'UserShow', query: { id: user_id } })
+      }
+    },
+  }
 }
 </script>
 
@@ -300,5 +271,18 @@ export default {
 
 .user-name {
   color: black;
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.break-line {
+  white-space: pre-line;
+}
+
+.remove-first-line:first-line {
+  line-height: 0px;
 }
 </style>

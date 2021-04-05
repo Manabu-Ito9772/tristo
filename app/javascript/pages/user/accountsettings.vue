@@ -236,6 +236,7 @@ export default {
       if (confirm('本当に退会しますか？')) {
         try {
           this.deleteUser()
+          this.$store.commit('pages/setCurrentPage', 'home')
           this.$router.push({ name: 'ArticleIndex' })
         } catch (error) {
           console.log(error)

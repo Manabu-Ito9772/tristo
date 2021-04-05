@@ -33,199 +33,99 @@
         </div>
       </template>
 
-      <!-- screen xs   -->
-      <template v-if="$mq == 'xs'">
-        <template v-if="following">
-          <div class="col-12 mt-1 p-0">
-            <template v-if="followings != 0">
-              <div class="users">
-                <div
-                  v-for="relationship in followings"
-                  :key="relationship.id"
-                >
-                  <div class="pt-2 pb-2 pl-3 pr-3 d-flex justify-content-between align-items-center each-user">
-                    <div
-                      class="d-flex justify-content-center align-items-center pointer"
-                      @click="toUserPage(relationship.follow.id)"
+      <template v-if="following">
+        <div class="col-12 mt-1">
+          <template v-if="followings != 0">
+            <div class="users">
+              <div
+                v-for="relationship in followings"
+                :key="relationship.id"
+              >
+                <div class="pt-2 pb-2 pl-3 pr-3 d-flex justify-content-between align-items-center each-user">
+                  <div
+                    id="user-info"
+                    class="d-flex justify-content-center align-items-center pointer"
+                    @click="toUserPage(relationship.follow.id)"
+                  >
+                    <img
+                      src="../../images/sample.png"
+                      class="user-icon"
                     >
-                      <img
-                        src="../../images/sample.png"
-                        class="user-icon"
-                      >
-                      <h5 class="ml-3 mr-3 m-0 text-dark word-break">
-                        {{ relationship.follow.name }}
-                      </h5>
-                    </div>
-                    <template v-if="followButton">
-                      <template v-if="relationship.index == 0">
-                        <button
-                          class="btn text-white font-weight-bold unfollow-button"
-                          @click="unfollowUserFromFollowing(relationship.follow)"
-                        >
-                          フォロー中
-                        </button>
-                      </template>
-                      <template v-else>
-                        <button
-                          class="btn bg-white font-weight-bold follow-button"
-                          @click="followUserFromFollowing(relationship.follow.id)"
-                        >
-                          フォロー
-                        </button>
-                      </template>
-                    </template>
+                    <h5 class="ml-3 mr-3 m-0 text-dark word-break">
+                      {{ relationship.follow.name }}
+                    </h5>
                   </div>
+                  <template v-if="followButton">
+                    <template v-if="relationship.index == 0">
+                      <button
+                        class="btn text-white font-weight-bold unfollow-button"
+                        @click="unfollowUserFromFollowing(relationship.follow)"
+                      >
+                        フォロー中
+                      </button>
+                    </template>
+                    <template v-else>
+                      <button
+                        class="btn bg-white font-weight-bold follow-button"
+                        @click="followUserFromFollowing(relationship.follow.id)"
+                      >
+                        フォロー
+                      </button>
+                    </template>
+                  </template>
                 </div>
               </div>
-            </template>
-          </div>
-        </template>
-
-        <template v-else>
-          <div class="col-12 mt-1 p-0">
-            <template v-if="followers != 0">
-              <div class="users">
-                <div
-                  v-for="relationship in followers"
-                  :key="relationship.id"
-                >
-                  <div class="pt-2 pb-2 pl-3 pr-3 d-flex justify-content-between align-items-center each-user">
-                    <div
-                      class="d-flex justify-content-center align-items-center pointer"
-                      @click="toUserPage(relationship.user.id)"
-                    >
-                      <img
-                        src="../../images/sample.png"
-                        class="user-icon"
-                      >
-                      <h5 class="ml-3 mr-3 m-0 text-dark word-break">
-                        {{ relationship.user.name }}
-                      </h5>
-                    </div>
-                    <template v-if="followButton">
-                      <template v-if="relationship.index == 0">
-                        <button
-                          class="btn text-white font-weight-bold unfollow-button"
-                          @click="unfollowUserFromFollowers(relationship.user)"
-                        >
-                          フォロー中
-                        </button>
-                      </template>
-                      <template v-else>
-                        <button
-                          class="btn bg-white font-weight-bold follow-button"
-                          @click="followUserFromFollowers(relationship.user.id)"
-                        >
-                          フォロー
-                        </button>
-                      </template>
-                    </template>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </div>
-        </template>
+            </div>
+          </template>
+        </div>
       </template>
-      <!-- screen xs -->
 
-      <!-- screen else -->
       <template v-else>
-        <template v-if="following">
-          <div class="col-12 mt-1">
-            <template v-if="followings != 0">
-              <div class="users">
-                <div
-                  v-for="relationship in followings"
-                  :key="relationship.id"
-                >
-                  <div class="pt-2 pb-2 pl-3 pr-3 d-flex justify-content-between align-items-center each-user">
-                    <div
-                      id="user-info"
-                      class="d-flex justify-content-center align-items-center pointer"
-                      @click="toUserPage(relationship.follow.id)"
+        <div class="col-12 mt-1">
+          <template v-if="followers != 0">
+            <div class="users">
+              <div
+                v-for="relationship in followers"
+                :key="relationship.id"
+              >
+                <div class="pt-2 pb-2 pl-3 pr-3 d-flex justify-content-between align-items-center each-user">
+                  <div
+                    id="user-info"
+                    class="d-flex justify-content-center align-items-center pointer"
+                    @click="toUserPage(relationship.user.id)"
+                  >
+                    <img
+                      src="../../images/sample.png"
+                      class="user-icon"
                     >
-                      <img
-                        src="../../images/sample.png"
-                        class="user-icon"
-                      >
-                      <h5 class="ml-3 mr-3 m-0 text-dark word-break">
-                        {{ relationship.follow.name }}
-                      </h5>
-                    </div>
-                    <template v-if="followButton">
-                      <template v-if="relationship.index == 0">
-                        <button
-                          class="btn text-white font-weight-bold unfollow-button"
-                          @click="unfollowUserFromFollowing(relationship.follow)"
-                        >
-                          フォロー中
-                        </button>
-                      </template>
-                      <template v-else>
-                        <button
-                          class="btn bg-white font-weight-bold follow-button"
-                          @click="followUserFromFollowing(relationship.follow.id)"
-                        >
-                          フォロー
-                        </button>
-                      </template>
-                    </template>
+                    <h5 class="ml-3 mr-3 m-0 text-dark word-break">
+                      {{ relationship.user.name }}
+                    </h5>
                   </div>
+                  <template v-if="followButton">
+                    <template v-if="relationship.index == 0">
+                      <button
+                        class="btn text-white font-weight-bold unfollow-button"
+                        @click="unfollowUserFromFollowers(relationship.user)"
+                      >
+                        フォロー中
+                      </button>
+                    </template>
+                    <template v-else>
+                      <button
+                        class="btn bg-white font-weight-bold follow-button"
+                        @click="followUserFromFollowers(relationship.user.id)"
+                      >
+                        フォロー
+                      </button>
+                    </template>
+                  </template>
                 </div>
               </div>
-            </template>
-          </div>
-        </template>
-
-        <template v-else>
-          <div class="col-12 mt-1">
-            <template v-if="followers != 0">
-              <div class="users">
-                <div
-                  v-for="relationship in followers"
-                  :key="relationship.id"
-                >
-                  <div class="pt-2 pb-2 pl-3 pr-3 d-flex justify-content-between align-items-center each-user">
-                    <div
-                      id="user-info"
-                      class="d-flex justify-content-center align-items-center pointer"
-                      @click="toUserPage(relationship.user.id)"
-                    >
-                      <img
-                        src="../../images/sample.png"
-                        class="user-icon"
-                      >
-                      <h5 class="ml-3 mr-3 m-0 text-dark word-break">
-                        {{ relationship.user.name }}
-                      </h5>
-                    </div>
-                    <template v-if="followButton">
-                      <template v-if="relationship.index == 0">
-                        <button
-                          class="btn text-white font-weight-bold unfollow-button"
-                          @click="unfollowUserFromFollowers(relationship.user)"
-                        >
-                          フォロー中
-                        </button>
-                      </template>
-                      <template v-else>
-                        <button
-                          class="btn bg-white font-weight-bold follow-button"
-                          @click="followUserFromFollowers(relationship.user.id)"
-                        >
-                          フォロー
-                        </button>
-                      </template>
-                    </template>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </div>
-        </template>
+            </div>
+          </template>
+        </div>
       </template>
-    <!-- screen else -->
     </div>
   </div>
 </template>
@@ -369,7 +269,8 @@ export default {
       }
     },
     toUserPage(user_id) {
-      if (this.authUser.id == user_id) {
+      if (this.authUser && this.authUser.id == user_id) {
+        this.$store.commit('pages/setCurrentPage', 'user')
         this.$router.push({ name: 'MyPage' })
       } else {
         this.$router.push({ name: 'UserShow', query: { id: user_id } })

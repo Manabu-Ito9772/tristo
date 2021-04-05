@@ -102,7 +102,7 @@
           <div class="form-group mb-4">
             <ValidationProvider
               v-slot="{ errors }"
-              rules="country"
+              rules="prefecture"
             >
               <p class="p-1 mb-2 text-center text-white font-weight-bold form-label">
                 * 都道府県

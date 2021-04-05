@@ -56,7 +56,7 @@
             </p>
           </div>
           <div class="col-4 p-0 text-right">
-            <p class="m-0">
+            <p class="m-0 word-break">
               {{ separateWithComma(spending.cost) }}{{ currency }}
             </p>
           </div>
@@ -72,7 +72,7 @@
           コメント
         </p>
       </div>
-      <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
+      <p class="col-12 pl-4 pt-1 m-0 text-dark word-break break-line remove-first-line">
         {{ block.comment }}
       </p>
     </div>
@@ -113,5 +113,13 @@ export default {
 
 .cost-border {
   border-bottom: solid thin #CBCBCB;
+}
+
+.break-line {
+  white-space: pre-line;
+}
+
+.remove-first-line:first-line {
+  line-height: 0px;
 }
 </style>

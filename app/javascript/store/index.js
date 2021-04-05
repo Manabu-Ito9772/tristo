@@ -1,13 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 import users from './modules/users'
-import router from './modules/router'
+import pages from './modules/pages'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     users,
-    router
+    pages
   },
+  plugins: [createPersistedState(
+    {
+      paths: ['pages.currentPage'],
+      storage: window.sessionStorage
+    }
+  )]
 })

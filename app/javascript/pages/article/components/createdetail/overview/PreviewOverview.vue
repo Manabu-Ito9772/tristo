@@ -11,7 +11,7 @@
       <h5 class="col-12 mb-1 p-1 text-center text-white font-weight-bold article-title">
         説明
       </h5>
-      <p class="pl-1 d-flex justify-content-center text-dark word-break">
+      <p class="mb-3 pb-2 pl-2 pr-2 text-dark word-break break-line remove-first-line">
         {{ article.description }}
       </p>
     </template>
@@ -178,5 +178,13 @@ export default {
   color: #6A6A6A;
   border: solid thin #6A6A6A;
   border-radius: 6px;
+}
+
+.break-line {
+  white-space: pre-line;
+}
+
+.remove-first-line:first-line {
+  line-height: 0px;
 }
 </style>
