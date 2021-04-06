@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :followings, through: :relationships, source: :follow
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'follow_id', dependent: :destroy
   has_many :followers, through: :passive_relationships, source: :user
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_articles, through: :favorites, source: :article
 
   validates :password, length: { minimum: 5 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, presence: true, if: -> { new_record? || changes[:crypted_password] }
@@ -29,5 +31,17 @@ class User < ApplicationRecord
 
   def following?(other_user_id)
     followings.include?(User.find(other_user_id))
+  end
+
+  def favorite(article_id)
+    favorites.find_or_create_by(article_id: article_id)
+  end
+
+  def unfavorite(article_id)
+    favorites.find_by(article_id: article_id).destroy!
+  end
+
+  def favorite?(article)
+    favorite_articles.include?(article)
   end
 end

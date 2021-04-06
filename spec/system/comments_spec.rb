@@ -90,6 +90,54 @@ RSpec.describe 'コメント', type: :system do
     end
   end
 
+  describe '未ログイン状態' do
+    it 'コメントフォーム、投稿ボタン、編集ボタン、ゴミ箱ボタンが表示されない' do
+      click_on 'コメント'
+      fill_in 'コメント', with: 'Comment'
+      click_on '投稿'
+      find('.fa-bars').click
+      page.all('.dropdown-item')[1].click
+      sleep 2
+      visit root_path
+      find("#article-item-#{article_normal.id}").click
+      click_on 'コメント'
+      expect(page).to_not have_field('コメント')
+      expect(page).to_not have_button('投稿')
+      expect(page).to have_content(user.name)
+      expect(page).to have_content('Comment')
+      expect(page).to_not have_content('.fa-edit')
+      expect(page).to_not have_content('.fa-trash-alt')
+    end
+
+    it 'コメントがない場合はコメントボタンが表示されない' do
+      find('.fa-bars').click
+      page.all('.dropdown-item')[1].click
+      sleep 2
+      visit root_path
+      find("#article-item-#{article_normal.id}").click
+      expect(page).to_not have_css('.comment')
+      expect(page).to_not have_button('コメント')
+    end
+
+    context 'コメントのユーザー名もしくはユーザーアイコンをクリック' do
+      it 'ユーザー詳細ページに遷移' do
+        click_on 'コメント'
+        fill_in 'コメント', with: 'Comment'
+        click_on '投稿'
+        find('.fa-bars').click
+        page.all('.dropdown-item')[1].click
+        visit root_path
+        find("#article-item-#{article_normal.id}").click
+        click_on 'コメント'
+        find("#user-name-#{user.id}").click
+        sleep 2
+        expect(current_path).to eq('/user')
+        expect(page).to have_content(user.name)
+        expect(page).to have_content(user.description)
+      end
+    end
+  end
+
   it '他人のコメントは編集/削除できない' do
     click_on 'コメント'
     fill_in 'コメント', with: 'Comment'
@@ -100,24 +148,6 @@ RSpec.describe 'コメント', type: :system do
     sleep 2
     find("#article-item-#{article_normal.id}").click
     click_on 'コメント'
-    expect(page).to have_content(user.name)
-    expect(page).to have_content('Comment')
-    expect(page).to_not have_content('.fa-edit')
-    expect(page).to_not have_content('.fa-trash-alt')
-  end
-
-  it 'ログアウト後はコメントフォーム、投稿ボタン、編集ボタン、ゴミ箱ボタンが表示されない' do
-    click_on 'コメント'
-    fill_in 'コメント', with: 'Comment'
-    click_on '投稿'
-    find('.fa-bars').click
-    page.all('.dropdown-item')[1].click
-    sleep 2
-    visit root_path
-    find("#article-item-#{article_normal.id}").click
-    click_on 'コメント'
-    expect(page).to_not have_field('コメント')
-    expect(page).to_not have_button('投稿')
     expect(page).to have_content(user.name)
     expect(page).to have_content('Comment')
     expect(page).to_not have_content('.fa-edit')

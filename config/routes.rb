@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :api do
+    get 'favorites/create'
+    get 'favorites/destroy'
+  end
   root to: 'home#index'
   namespace :api, format: 'json' do
     resources :countries, only: %i[index show]
@@ -26,6 +30,11 @@ Rails.application.routes.draw do
     resources :spendings, only: %i[create update destroy]
     resources :transportations, only: %i[create update destroy]
     resources :comments, only: %i[show create update destroy]
+    resources :favorites do
+      member do
+        post 'favorite'
+      end
+    end
   end
   get '*path', to: 'home#index', constraints: lambda { |req|
     req.path.exclude? 'rails/active_storage'

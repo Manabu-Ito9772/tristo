@@ -8,8 +8,8 @@
     <div class="ml-3 w-100">
       <div class="d-flex justify-content-between align-items-center">
         <p
-          class="m-0 text-muted word-break user-name"
           :id="'user-name-' + comment.user.id"
+          class="m-0 text-muted word-break user-name"
           @click="toUserPage(comment.user.id)"
         >
           {{ comment.user.name }}
@@ -156,7 +156,7 @@ export default {
   },
   methods :{
     toUserPage(user_id) {
-      if (this.authUser.id == user_id) {
+      if (this.authUser && this.authUser.id == user_id) {
         this.$router.push({ name: 'MyPage' })
       } else {
         this.$router.push({ name: 'UserShow', query: { id: user_id } })

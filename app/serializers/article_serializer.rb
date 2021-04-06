@@ -5,6 +5,7 @@ class ArticleSerializer < ActiveModel::Serializer
   has_many :regions
   has_many :article_regions
   has_many :article_tags
+  has_many :favorites
   has_many :days
 
   class UserSerializer < ActiveModel::Serializer
@@ -30,6 +31,10 @@ class ArticleSerializer < ActiveModel::Serializer
     class TagSerializer < ActiveModel::Serializer
       attributes :name
     end
+  end
+
+  class FavoriteSerializer < ActiveModel::Serializer
+    attributes :user_id
   end
 
   class DaySerializer < ActiveModel::Serializer
