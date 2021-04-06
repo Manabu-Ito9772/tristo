@@ -1,8 +1,6 @@
-class UserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :email, :description
-  has_many :ordered_articles
-  has_many :followings
-  has_many :followers
+class FavoriteSerializer < ActiveModel::Serializer
+  attributes :id
+  has_one :article
 
   class ArticleSerializer < ActiveModel::Serializer
     attributes :id, :title, :description, :status, :start_date, :end_date
@@ -36,13 +34,5 @@ class UserSerializer < ActiveModel::Serializer
     class FavoriteSerializer < ActiveModel::Serializer
       attributes :user_id
     end
-  end
-
-  class UserSerializer < ActiveModel::Serializer
-    attributes :id
-  end
-
-  class UserSerializer < ActiveModel::Serializer
-    attributes :id
   end
 end

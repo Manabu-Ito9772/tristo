@@ -75,15 +75,49 @@
             >
               {{ article.user.name }}
             </h5>
-            <div class="text-center pl-3">
-              <font-awesome-icon
-                :icon="['far', 'thumbs-up']"
-                class="fa-lg"
-              />
-              <p class="m-0 word-break">
-                100
-              </p>
-            </div>
+            <template v-if="article.status == 'published'">
+              <div class="pl-3">
+                <template v-if="authUser">
+                  <template v-if="favorited">
+                    <div
+                      class="heart"
+                      @click="unfavoriteArticle"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'heart']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
+
+                  <template v-else>
+                    <div
+                      class="heart"
+                      @click="favoriteArticle"
+                    >
+                      <font-awesome-icon
+                        :icon="['far', 'heart']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
+                </template>
+
+                <template v-else>
+                  <div class="text-muted">
+                    <font-awesome-icon
+                      :icon="['far', 'heart']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
+              </div>
+              <template v-if="favoritesCount != 0">
+                <p class="m-0 pl-1 text-muted word-break">
+                  {{ favoritesCount }}
+                </p>
+              </template>
+            </template>
           </div>
         </div>
       </div>
@@ -157,7 +191,7 @@
             >
           </div>
           <div class="col-12">
-            <div class="pt-1 pb-1 d-flex justify-content-center align-items-center user">
+            <div class="p-2 d-flex justify-content-center align-items-center user">
               <img
                 src="../../../../images/sample.png"
                 class="user-icon"
@@ -169,15 +203,54 @@
               >
                 {{ article.user.name }}
               </h5>
-              <div class="text-center pl-3">
-                <font-awesome-icon
-                  :icon="['far', 'thumbs-up']"
-                  class="fa-lg"
-                />
-                <p class="m-0 word-break">
-                  100
-                </p>
-              </div>
+              <template v-if="article.status == 'published'">
+                <div class="pl-3">
+                  <template v-if="authUser">
+                    <template v-if="favorited">
+                      <div
+                        id="heart-favorited"
+                        class="heart-favorited"
+                        @click="unfavoriteArticle"
+                      >
+                        <font-awesome-icon
+                          :icon="['fas', 'heart']"
+                          class="fa-lg"
+                        />
+                      </div>
+                    </template>
+
+                    <template v-else>
+                      <div
+                        id="heart"
+                        class="heart"
+                        @click="favoriteArticle"
+                      >
+                        <font-awesome-icon
+                          :icon="['far', 'heart']"
+                          class="fa-lg"
+                        />
+                      </div>
+                    </template>
+                  </template>
+
+                  <template v-else>
+                    <div
+                      id="heart-notlogin"
+                      class="text-muted"
+                    >
+                      <font-awesome-icon
+                        :icon="['far', 'heart']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
+                </div>
+                <template v-if="favoritesCount != 0">
+                  <p class="m-0 pl-1 text-muted word-break favorite-count">
+                    {{ favoritesCount }}
+                  </p>
+                </template>
+              </template>
             </div>
           </div>
         </div>
@@ -197,10 +270,48 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      favoritesCount: null,
+      favorited: null
+    }
+  },
   computed: {
     ...mapGetters('users', ['authUser'])
   },
+  created() {
+    this.favoritesCount = this.article.favorites.length
+    this.favoriteOrNot()
+  },
   methods: {
+    favoriteArticle() {
+      this.$axios.post(`favorites/${this.article.id}/favorite`)
+        .then(res => {
+          this.favoritesCount += 1
+          this.favorited = true
+        })
+        .catch(err => console.log(err.response))
+    },
+    unfavoriteArticle() {
+      this.$axios.delete(`favorites/${this.article.id}`)
+        .then(res => {
+          this.favoritesCount -= 1
+          this.favorited = false
+        })
+        .catch(err => console.log(err.response))
+    },
+    favoriteOrNot() {
+      if (this.authUser) {
+        let result = this.article.favorites.some(favorite => {
+          return favorite.user_id == this.authUser.id
+        })
+        if (result == true) {
+          this.favorited = true
+        } else {
+          this.favorited = false
+        }
+      }
+    },
     toArticleShow(article_id) {
       this.$router.push({ name: 'ArticleShow', query: {id: article_id} })
     },
@@ -275,6 +386,16 @@ export default {
 }
 
 .pointer {
+  cursor: pointer;
+}
+
+.heart {
+  color: #FF00EB;
+  cursor: pointer;
+}
+
+.heart-favorited {
+  color: #FF00EB;
   cursor: pointer;
 }
 

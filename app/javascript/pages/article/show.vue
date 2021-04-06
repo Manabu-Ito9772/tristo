@@ -43,8 +43,12 @@
               :article="article"
               :countryname="countryname"
               :user="user"
+              :favorites="favorites"
+              :favorited="favorited"
               @fixPage="fixPage"
               @flowPage="flowPage"
+              @favoriteArticle="favoriteArticle"
+              @unfavoriteArticle="unfavoriteArticle"
             />
           </div>
         </div>
@@ -62,9 +66,13 @@
               :article="article"
               :countryname="countryname"
               :user="user"
+              :favorites="favorites"
+              :favorited="favorited"
               class="front-top"
               @fixPage="fixPage"
               @flowPage="flowPage"
+              @favoriteArticle="favoriteArticle"
+              @unfavoriteArticle="unfavoriteArticle"
             />
           </div>
         </div>
@@ -120,9 +128,13 @@
               :article="article"
               :countryname="countryname"
               :user="user"
+              :favorites="favorites"
+              :favorited="favorited"
               class="front-top"
               @fixPage="fixPage"
               @flowPage="flowPage"
+              @favoriteArticle="favoriteArticle"
+              @unfavoriteArticle="unfavoriteArticle"
             />
           </div>
         </div>
@@ -175,6 +187,7 @@ import SwitchButton from './components/show/SwitchButton'
 import Cost from './components/show/Cost'
 import Gmap from './components/show/Gmap'
 import CommentArea from './components/show/CommentArea'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ArticleShow',
@@ -191,12 +204,17 @@ export default {
       article: {},
       user: {},
       countryname: '',
+      favorites: 0,
+      favorited: null,
       dayNumber: 1,
       isVisibleCost: false,
       isVisibleGmap: false,
       isVisibleComment: false,
       fixScroll: false,
     }
+  },
+  computed: {
+    ...mapGetters('users', ['authUser']),
   },
   created() {
     this.getArticle()
@@ -208,6 +226,17 @@ export default {
           this.article = res.data
           this.user = res.data.user
           this.countryname = res.data.country.name
+          this.favorites = res.data.favorites.length
+          if (this.authUser) {
+            let result = res.data.favorites.some(favorite => {
+              return favorite.user_id == this.authUser.id
+            })
+            if (result == true) {
+              this.favorited = true
+            } else {
+              this.favorited = false
+            }
+          }
           for (let i = 0; i < this.article.days.length; i++) {
             this.article.days[i].number = i + 1
           }
@@ -243,6 +272,14 @@ export default {
     },
     flowPage() {
       this.fixScroll = false
+    },
+    favoriteArticle() {
+      this.favorites += 1
+      this.favorited = true
+    },
+    unfavoriteArticle() {
+      this.favorites -= 1
+      this.favorited = false
     },
   }
 }

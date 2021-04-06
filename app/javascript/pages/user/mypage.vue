@@ -1,413 +1,464 @@
 <template>
   <div class="container-fluid d-flex justify-content-center mt-4">
     <template v-if="$mq == 'xs'">
-      <div class="row">
-        <div class="col-12 mt-3">
-          <div class="m-0">
-            <div class="pb-3 d-flex justify-content-center align-items-center">
-              <img
-                src="../../images/sample.png"
-                class="user-icon mr-4"
-              >
-              <div>
-                <div class="d-flex justify-content-center align-items-center">
-                  <h4 class="mb-0 pr-3 text-dark font-weight-bold word-break">
-                    {{ authUser.name }}
-                  </h4>
-                  <router-link
-                    :to="{ name: 'EditMyPage' }"
+      <template v-if="articleLength != null">
+        <div class="row">
+          <div class="col-12 mt-3">
+            <div class="m-0">
+              <div class="pb-3 d-flex justify-content-center align-items-center">
+                <img
+                  src="../../images/sample.png"
+                  class="user-icon mr-4"
+                >
+                <div>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <h4 class="mb-0 pr-3 text-dark font-weight-bold word-break">
+                      {{ authUser.name }}
+                    </h4>
+                    <router-link
+                      :to="{ name: 'EditMyPage' }"
+                    >
+                      <button class="btn text-muted button">
+                        編集
+                      </button>
+                    </router-link>
+                  </div>
+
+                  <div class="mt-2 d-flex justify-content-center text-muted">
+                    <template v-if="articleLength != null">
+                      <div class="pr-3 text-center">
+                        <p class="m-0 font-small">
+                          投稿
+                        </p>
+                        <p class="m-0 word-break">
+                          {{ articleLength }}
+                        </p>
+                      </div>
+                    </template>
+
+                    <template v-if="followings != null">
+                      <div
+                        class="pl-4 pr-4 text-center pointer"
+                        @click="toFollowingPage"
+                      >
+                        <p class="m-0 font-small">
+                          フォロー
+                        </p>
+                        <p class="m-0 word-break">
+                          {{ followings }}
+                        </p>
+                      </div>
+                    </template>
+
+                    <template v-if="followers != null">
+                      <div
+                        class="text-center pointer"
+                        @click="toFollowerPage"
+                      >
+                        <p class="m-0 font-small">
+                          フォロワー
+                        </p>
+                        <p class="m-0 word-break">
+                          {{ followers }}
+                        </p>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              <template v-if="authUser.description">
+                <p class="mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro break-line remove-first-line">
+                  {{ authUser.description }}
+                </p>
+              </template>
+            </div>
+          </div>
+
+          <div class="col-12 mt-3 mb-3">
+            <div class="row">
+              <template v-if="published">
+                <div class="col-4">
+                  <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
+                    投稿
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showDrafts"
                   >
-                    <button class="btn text-muted button">
-                      編集
-                    </button>
-                  </router-link>
+                    下書き
+                  </h5>
                 </div>
 
-                <div class="mt-2 d-flex justify-content-center text-muted">
-                  <template v-if="articleLength != null">
-                    <div class="pr-3 text-center">
-                      <p class="m-0 font-small">
-                        投稿
-                      </p>
-                      <p class="m-0 word-break">
-                        {{ articleLength }}
-                      </p>
-                    </div>
-                  </template>
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showFavorites"
+                  >
+                    いいね
+                  </h5>
+                </div>
+              </template>
 
-                  <template v-if="followings != null">
-                    <div
-                      class="pl-4 pr-4 text-center pointer"
-                      @click="toFollowingPage"
-                    >
-                      <p class="m-0 font-small">
-                        フォロー
-                      </p>
-                      <p class="m-0 word-break">
-                        {{ followings }}
-                      </p>
-                    </div>
-                  </template>
+              <template v-if="draft">
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showPublished"
+                  >
+                    投稿
+                  </h5>
+                </div>
 
-                  <template v-if="followers != null">
-                    <div
-                      class="text-center pointer"
-                      @click="toFollowerPage"
-                    >
-                      <p class="m-0 font-small">
-                        フォロワー
-                      </p>
-                      <p class="m-0 word-break">
-                        {{ followers }}
-                      </p>
-                    </div>
-                  </template>
+                <div class="col-4">
+                  <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
+                    下書き
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showFavorites"
+                  >
+                    いいね
+                  </h5>
+                </div>
+              </template>
+
+              <template v-if="favorite">
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showPublished"
+                  >
+                    投稿
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showDrafts"
+                  >
+                    下書き
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
+                    いいね
+                  </h5>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <template v-if="published">
+            <template v-if="publishedArticles.length">
+              <div class="col-12 mb-5">
+                <div
+                  v-for="article in publishedArticles"
+                  :key="article.id"
+                >
+                  <ArticleItem
+                    :article="article"
+                  />
                 </div>
               </div>
-            </div>
-            <template v-if="authUser.description">
-              <p class="mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro break-line remove-first-line">
-                {{ authUser.description }}
-              </p>
             </template>
-          </div>
+
+            <template v-if="noPublished">
+              <div class="col-12 mt-3 mb-5">
+                <h3 class="text-center font-weight-bold text-secondary">
+                  投稿がありません
+                </h3>
+              </div>
+            </template>
+          </template>
+
+          <template v-if="draft">
+            <template v-if="draftArticles.length">
+              <div class="col-12 mb-5">
+                <div
+                  v-for="article in draftArticles"
+                  :key="article.id"
+                >
+                  <ArticleItem
+                    :article="article"
+                  />
+                </div>
+              </div>
+            </template>
+
+            <template v-if="noDraft">
+              <div class="col-12 mt-3 mb-5">
+                <h3 class="text-center font-weight-bold text-secondary">
+                  下書きがありません
+                </h3>
+              </div>
+            </template>
+          </template>
+
+          <template v-if="favorite">
+            <template v-if="favoriteArticles.length">
+              <div class="col-12 mb-5">
+                <div
+                  v-for="favo in favoriteArticles"
+                  :key="favo.id"
+                >
+                  <ArticleItem
+                    :article="favo.article"
+                  />
+                </div>
+              </div>
+            </template>
+
+            <template v-if="noFavorites">
+              <div class="col-12 mt-3 mb-5">
+                <h3 class="text-center font-weight-bold text-secondary">
+                  いいねした投稿がありません
+                </h3>
+              </div>
+            </template>
+          </template>
         </div>
-
-        <div class="col-12 mt-3 mb-3">
-          <div class="row">
-            <template v-if="published">
-              <div class="col-4">
-                <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                  投稿
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showDrafts"
-                >
-                  下書き
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showFavorites"
-                >
-                  いいね
-                </h5>
-              </div>
-            </template>
-
-            <template v-if="draft">
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showPublished"
-                >
-                  投稿
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                  下書き
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showFavorites"
-                >
-                  いいね
-                </h5>
-              </div>
-            </template>
-
-            <template v-if="favorite">
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showPublished"
-                >
-                  投稿
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showDrafts"
-                >
-                  下書き
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                  いいね
-                </h5>
-              </div>
-            </template>
-          </div>
-        </div>
-
-        <template v-if="published">
-          <template v-if="publishedArticles.length">
-            <div class="col-12 mb-5">
-              <div
-                v-for="article in publishedArticles"
-                :key="article.id"
-              >
-                <ArticleItem
-                  :article="article"
-                />
-              </div>
-            </div>
-          </template>
-
-          <template v-if="noPublished">
-            <div class="col-12 mt-3 mb-5">
-              <h3 class="text-center font-weight-bold text-secondary">
-                投稿がありません
-              </h3>
-            </div>
-          </template>
-        </template>
-
-        <template v-if="draft">
-          <template v-if="draftArticles.length">
-            <div class="col-12 mb-5">
-              <div
-                v-for="article in draftArticles"
-                :key="article.id"
-              >
-                <ArticleItem
-                  :article="article"
-                />
-              </div>
-            </div>
-          </template>
-
-          <template v-if="noDraft">
-            <div class="col-12 mt-3 mb-5">
-              <h3 class="text-center font-weight-bold text-secondary">
-                下書きがありません
-              </h3>
-            </div>
-          </template>
-        </template>
-      </div>
+      </template>
     </template>
 
     <template v-else>
-      <div class="row column-width">
-        <div class="col-12 mt-3 p-0">
-          <div class="m-0">
-            <div class="pb-3 d-flex justify-content-center align-items-center">
-              <img
-                src="../../images/sample.png"
-                class="user-icon mr-4"
-              >
-              <div>
-                <div class="d-flex justify-content-center align-items-center">
-                  <h3 class="mb-0 pr-3 text-dark font-weight-bold word-break">
-                    {{ authUser.name }}
-                  </h3>
-                  <router-link
-                    :to="{ name: 'EditMyPage' }"
+      <template v-if="articleLength != null">
+        <div class="row column-width">
+          <div class="col-12 mt-3 p-0">
+            <div class="m-0">
+              <div class="pb-3 d-flex justify-content-center align-items-center">
+                <img
+                  src="../../images/sample.png"
+                  class="user-icon mr-4"
+                >
+                <div>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <h3 class="mb-0 pr-3 text-dark font-weight-bold word-break">
+                      {{ authUser.name }}
+                    </h3>
+                    <router-link
+                      :to="{ name: 'EditMyPage' }"
+                    >
+                      <button class="btn text-muted button">
+                        編集
+                      </button>
+                    </router-link>
+                  </div>
+
+                  <div class="mt-2 d-flex justify-content-center text-muted">
+                    <template v-if="articleLength != null">
+                      <div class="pr-3 text-center">
+                        <p class="m-0">
+                          投稿
+                        </p>
+                        <p class="m-0 word-break">
+                          {{ articleLength }}
+                        </p>
+                      </div>
+                    </template>
+
+                    <template v-if="followings != null">
+                      <div
+                        id="following-count"
+                        class="pl-4 pr-4 text-center pointer"
+                        @click="toFollowingPage"
+                      >
+                        <p class="m-0">
+                          フォロー
+                        </p>
+                        <p class="m-0 word-break">
+                          {{ followings }}
+                        </p>
+                      </div>
+                    </template>
+
+                    <template v-if="followers != null">
+                      <div
+                        id="followers-count"
+                        class="text-center pointer"
+                        @click="toFollowerPage"
+                      >
+                        <p class="m-0">
+                          フォロワー
+                        </p>
+                        <p class="m-0 word-break">
+                          {{ followers }}
+                        </p>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              <template v-if="authUser.description">
+                <p class="ml-4 mr-4 mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro break-line remove-first-line">
+                  {{ authUser.description }}
+                </p>
+              </template>
+            </div>
+          </div>
+
+          <div class="col-12 mt-3 mb-3 p-0">
+            <div class="row">
+              <template v-if="published">
+                <div class="col-4">
+                  <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
+                    投稿
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showDrafts"
                   >
-                    <button class="btn text-muted button">
-                      編集
-                    </button>
-                  </router-link>
+                    下書き
+                  </h5>
                 </div>
 
-                <div class="mt-2 d-flex justify-content-center text-muted">
-                  <template v-if="articleLength != null">
-                    <div class="pr-3 text-center">
-                      <p class="m-0">
-                        投稿
-                      </p>
-                      <p class="m-0 word-break">
-                        {{ articleLength }}
-                      </p>
-                    </div>
-                  </template>
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showFavorites"
+                  >
+                    いいね
+                  </h5>
+                </div>
+              </template>
 
-                  <template v-if="followings != null">
-                    <div
-                      id="following-count"
-                      class="pl-4 pr-4 text-center pointer"
-                      @click="toFollowingPage"
-                    >
-                      <p class="m-0">
-                        フォロー
-                      </p>
-                      <p class="m-0 word-break">
-                        {{ followings }}
-                      </p>
-                    </div>
-                  </template>
+              <template v-if="draft">
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showPublished"
+                  >
+                    投稿
+                  </h5>
+                </div>
 
-                  <template v-if="followers != null">
-                    <div
-                      id="followers-count"
-                      class="text-center pointer"
-                      @click="toFollowerPage"
-                    >
-                      <p class="m-0">
-                        フォロワー
-                      </p>
-                      <p class="m-0 word-break">
-                        {{ followers }}
-                      </p>
-                    </div>
-                  </template>
+                <div class="col-4">
+                  <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
+                    下書き
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showFavorites"
+                  >
+                    いいね
+                  </h5>
+                </div>
+              </template>
+
+              <template v-if="favorite">
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showPublished"
+                  >
+                    投稿
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5
+                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    @click="showDrafts"
+                  >
+                    下書き
+                  </h5>
+                </div>
+
+                <div class="col-4">
+                  <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
+                    いいね
+                  </h5>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <template v-if="published">
+            <template v-if="publishedArticles.length">
+              <div class="col-12 p-0">
+                <div
+                  v-for="article in publishedArticles"
+                  :key="article.id"
+                >
+                  <ArticleItem
+                    :article="article"
+                    class="mb-4"
+                  />
                 </div>
               </div>
-            </div>
-            <template v-if="authUser.description">
-              <p class="ml-4 mr-4 mb-0 pt-2 pl-2 pr-2 pb-0 text-dark word-break self-intro break-line remove-first-line">
-                {{ authUser.description }}
-              </p>
             </template>
-          </div>
+
+            <template v-if="noPublished">
+              <div class="col-12 mt-3 mb-5">
+                <h3 class="text-center font-weight-bold text-secondary">
+                  投稿がありません
+                </h3>
+              </div>
+            </template>
+          </template>
+
+          <template v-if="draft">
+            <template v-if="draftArticles.length">
+              <div class="col-12 p-0">
+                <div
+                  v-for="article in draftArticles"
+                  :key="article.id"
+                >
+                  <ArticleItem
+                    :article="article"
+                    class="mb-4"
+                  />
+                </div>
+              </div>
+            </template>
+
+            <template v-if="noDraft">
+              <div class="col-12 mt-3 mb-5">
+                <h3 class="text-center font-weight-bold text-secondary">
+                  下書きがありません
+                </h3>
+              </div>
+            </template>
+          </template>
+
+          <template v-if="favorite">
+            <template v-if="favoriteArticles.length">
+              <div class="col-12 p-0">
+                <div
+                  v-for="favo in favoriteArticles"
+                  :key="favo.id"
+                >
+                  <ArticleItem
+                    :article="favo.article"
+                    class="mb-4"
+                  />
+                </div>
+              </div>
+            </template>
+
+            <template v-if="noFavorites">
+              <div class="col-12 mt-3 mb-5">
+                <h3 class="text-center font-weight-bold text-secondary">
+                  いいねした投稿がありません
+                </h3>
+              </div>
+            </template>
+          </template>
         </div>
-
-        <div class="col-12 mt-3 mb-3 p-0">
-          <div class="row">
-            <template v-if="published">
-              <div class="col-4">
-                <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                  投稿
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showDrafts"
-                >
-                  下書き
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showFavorites"
-                >
-                  いいね
-                </h5>
-              </div>
-            </template>
-
-            <template v-if="draft">
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showPublished"
-                >
-                  投稿
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                  下書き
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showFavorites"
-                >
-                  いいね
-                </h5>
-              </div>
-            </template>
-
-            <template v-if="favorite">
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showPublished"
-                >
-                  投稿
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5
-                  class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                  @click="showDrafts"
-                >
-                  下書き
-                </h5>
-              </div>
-
-              <div class="col-4">
-                <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                  いいね
-                </h5>
-              </div>
-            </template>
-          </div>
-        </div>
-
-        <template v-if="published">
-          <template v-if="publishedArticles.length">
-            <div class="col-12 p-0">
-              <div
-                v-for="article in publishedArticles"
-                :key="article.id"
-              >
-                <ArticleItem
-                  :article="article"
-                  class="mb-4"
-                />
-              </div>
-            </div>
-          </template>
-
-          <template v-if="noPublished">
-            <div class="col-12 mt-3 mb-5">
-              <h3 class="text-center font-weight-bold text-secondary">
-                投稿がありません
-              </h3>
-            </div>
-          </template>
-        </template>
-
-        <template v-if="draft">
-          <template v-if="draftArticles.length">
-            <div class="col-12 p-0">
-              <div
-                v-for="article in draftArticles"
-                :key="article.id"
-              >
-                <ArticleItem
-                  :article="article"
-                  class="mb-4"
-                />
-              </div>
-            </div>
-          </template>
-
-          <template v-if="noDraft">
-            <div class="col-12 mt-3 mb-5">
-              <h3 class="text-center font-weight-bold text-secondary">
-                下書きがありません
-              </h3>
-            </div>
-          </template>
-        </template>
-      </div>
+      </template>
     </template>
   </div>
 </template>
@@ -428,6 +479,7 @@ export default {
       articleLength: null,
       publishedArticles: [],
       draftArticles: [],
+      favoriteArticles: [],
       published: true,
       draft: false,
       favorite: false,
@@ -441,6 +493,7 @@ export default {
   },
   created() {
     this.getCurrentUserArticles()
+    this.getFavoriteArticles()
     if (this.$route.params['draft']) {
       this.showDrafts()
     }
@@ -468,6 +521,17 @@ export default {
         })
         .catch(err => console.log(err.response))
     },
+    getFavoriteArticles() {
+      this.$axios.get(`favorites/${this.authUser.id}`)
+        .then(res => {
+          if (res.data.length) {
+            this.favoriteArticles = res.data
+          } else {
+            this.noFavorites = true
+          }
+        })
+        .catch(err => console.log(err.response))
+    },
     toFollowingPage() {
       this.$router.push({ name: 'Following' })
     },
@@ -488,7 +552,7 @@ export default {
       this.favorite = false
       this.draft = false
       this.published = true
-    }
+    },
   }
 }
 </script>

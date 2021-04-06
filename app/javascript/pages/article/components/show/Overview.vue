@@ -58,39 +58,140 @@
       </div>
     </template>
 
-    <div class="col-12 p-0 d-flex justify-content-center align-items-center user-name">
+    <div class="col-12 mb-3 p-0 d-flex justify-content-center align-items-center user-name">
       <img
         src="../../../../images/sample.png"
         class="user-icon"
+        @click="toUserPage(user.id)"
       >
       <h5
-        class="float-right mb-0 pl-3 pr-3 text-dark font-weight-bold word-break user-link"
+        class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-link"
         @click="toUserPage(user.id)"
       >
         {{ user.name }}
       </h5>
-      <div class="text-center">
-        <font-awesome-icon
-          :icon="['far', 'thumbs-up']"
-          class="fa-lg"
-        />
-        <p class="m-0 word-break favorites">
-          100
-        </p>
-      </div>
 
-      <template v-if="isAuthUser">
-        <div class="pl-3">
-          <button
-            class="btn d-flex justify-content-center align-items-center edit-menu"
-            @click="showMenu"
-          >
-            <font-awesome-icon
-              :icon="['fas', 'ellipsis-h']"
-              class="fa-lg"
-            />
-          </button>
-        </div>
+      <template v-if="authUser && authUser.id == user.id">
+        <button
+          class="ml-3 btn d-flex justify-content-center align-items-center edit-menu"
+          @click="showMenu"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'ellipsis-h']"
+            class="fa-lg"
+          />
+        </button>
+      </template>
+
+      <template v-if="authUser">
+        <template v-if="$mq == 'lg'">
+          <div class="pl-3 text-center">
+            <template v-if="favorited != null">
+              <template v-if="favorited">
+                <div
+                  id="heart-favorited"
+                  class="heart-favorited"
+                  @click="unfavoriteArticle"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'heart']"
+                    class="fa-lg"
+                  />
+                </div>
+              </template>
+
+              <template v-else>
+                <div
+                  id="heart"
+                  class="heart"
+                  @click="favoriteArticle"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'heart']"
+                    class="fa-lg"
+                  />
+                </div>
+              </template>
+            </template>
+            <template v-if="favorites != 0">
+              <p class="m-0 text-muted word-break favorites">
+                {{ favorites }}
+              </p>
+            </template>
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="pl-3 d-flex justify-content-center align-items-center">
+            <template v-if="favorited != null">
+              <template v-if="favorited">
+                <div
+                  class="heart"
+                  @click="unfavoriteArticle"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'heart']"
+                    class="fa-lg"
+                  />
+                </div>
+              </template>
+
+              <template v-else>
+                <div
+                  class="heart"
+                  @click="favoriteArticle"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'heart']"
+                    class="fa-lg"
+                  />
+                </div>
+              </template>
+            </template>
+            <template v-if="favorites != 0">
+              <p class="m-0 pl-1 text-muted word-break favorites">
+                {{ favorites }}
+              </p>
+            </template>
+          </div>
+        </template>
+      </template>
+
+      <template v-else>
+        <template v-if="$mq == 'lg'">
+          <div class="pl-3 text-center">
+            <div
+              id="heart-notlogin"
+              class="text-muted"
+            >
+              <font-awesome-icon
+                :icon="['far', 'heart']"
+                class="fa-lg"
+              />
+            </div>
+            <template v-if="favorites != 0">
+              <p class="m-0 text-muted word-break favorites">
+                {{ favorites }}
+              </p>
+            </template>
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="pl-3 d-flex justify-content-center align-items-center">
+            <div class="text-muted">
+              <font-awesome-icon
+                :icon="['far', 'heart']"
+                class="fa-lg"
+              />
+            </div>
+            <template v-if="favorites != 0">
+              <p class="m-0 pl-1 text-muted word-break favorites">
+                {{ favorites }}
+              </p>
+            </template>
+          </div>
+        </template>
       </template>
     </div>
 
@@ -105,10 +206,10 @@
 
 <script>
 import EditDeleteMenu from './sidecolumn/EditDeleteMenu'
-import { mapGetters } from "vuex"
+import { mapGetters } from 'vuex'
 
 export default {
-  name: 'SideColumn',
+  name: 'Overview',
   components: {
     EditDeleteMenu
   },
@@ -124,30 +225,41 @@ export default {
     countryname: {
       type: String,
       required: true
+    },
+    favorites: {
+      type: Number,
+      required: true
+    },
+    favorited: {
+      type: Boolean,
+      required: false
     }
   },
   data() {
     return {
       countryName: '',
       tags: [],
-      isVisibleMenu: false
+      isVisibleMenu: false,
     }
   },
   computed: {
     ...mapGetters('users', ['authUser']),
-    isAuthUser() {
-      if (this.authUser != null) {
-        if (this.user.id == this.authUser.id) {
-          return true
-        } else {
-          return false
-        }
-      } else {
-        return false
-      }
-    }
   },
   methods: {
+    favoriteArticle() {
+      this.$axios.post(`favorites/${this.article.id}/favorite`)
+        .then(res => {
+          this.$emit('favoriteArticle')
+        })
+        .catch(err => console.log(err.response))
+    },
+    unfavoriteArticle() {
+      this.$axios.delete(`favorites/${this.article.id}`)
+        .then(res => {
+          this.$emit('unfavoriteArticle')
+        })
+        .catch(err => console.log(err.response))
+    },
     showMenu() {
       this.isVisibleMenu = true
       this.$emit('fixPage')
@@ -163,7 +275,7 @@ export default {
       } else {
         this.$router.push({ name: 'UserShow', query: { id: user_id } })
       }
-    },
+    }
   }
 }
 </script>
@@ -182,7 +294,6 @@ export default {
 .user-name {
   display: inline-block;
   vertical-align: middle;
-  cursor: pointer;
 }
 
 .user-icon {
@@ -190,10 +301,11 @@ export default {
 	height: 50px;
 	object-fit: cover;
 	border-radius: 50%;
+  cursor: pointer;
 }
 
 .user-link {
-  color: black;
+  cursor: pointer;
 }
 
 .description-label {
@@ -245,6 +357,16 @@ export default {
 
 .remove-first-line:first-line {
   line-height: 0px;
+}
+
+.heart {
+  color: #FF00EB;
+  cursor: pointer;
+}
+
+.heart-favorited {
+  color: #FF00EB;
+  cursor: pointer;
 }
 
 .fade-enter-active, .fade-leave-active {

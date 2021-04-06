@@ -5,7 +5,7 @@ class Api::ArticlesController < ApplicationController
 
   def index
     @articles = Article.published
-    render json: @articles, include: [:user, :country, :regions, article_tags: [:tag]]
+    render json: @articles, include: [:user, :country, :regions, :favorites, article_tags: [:tag]]
   end
 
   def show

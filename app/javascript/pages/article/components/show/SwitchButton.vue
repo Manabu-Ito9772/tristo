@@ -74,42 +74,69 @@
       </template>
     </template>
 
-    <template v-if="article.days">
-      <template v-if="commentButtonSelected">
-        <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
-          コメント
-        </button>
-      </template>
+    <template v-if="authUser">
+      <template v-if="article.days">
+        <template v-if="commentButtonSelected">
+          <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
+            コメント
+          </button>
+        </template>
 
-      <template v-else>
-        <button
-          class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
-          @click="showComment"
-        >
-          コメント
-        </button>
+        <template v-else>
+          <button
+            class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
+            @click="showComment"
+          >
+            コメント
+          </button>
+        </template>
+      </template>
+    </template>
+
+    <template v-if="!authUser && comments != 0">
+      <template v-if="article.days">
+        <template v-if="commentButtonSelected">
+          <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
+            コメント
+          </button>
+        </template>
+
+        <template v-else>
+          <button
+            class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
+            @click="showComment"
+          >
+            コメント
+          </button>
+        </template>
       </template>
     </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'SwitchButton',
   props: {
     article: {
       type: Object,
       required: true
-    }
+    },
   },
   data() {
     return {
       costs: [],
+      comments: 0,
       dayNumber: 1,
       costButtonSelected: false,
       mapButtonSelected: false,
       commentButtonSelected: false
     }
+  },
+  computed: {
+    ...mapGetters('users', ['authUser'])
   },
   watch: {
     article: {
@@ -126,6 +153,9 @@ export default {
         }
       },
     }
+  },
+  created() {
+    this.getComments()
   },
   methods :{
     showBlockList(dayNumber) {
@@ -155,7 +185,16 @@ export default {
       this.costButtonSelected = false
       this.mapButtonSelected = false
       this.commentButtonSelected = true
-    }
+    },
+    getComments() {
+      if (!this.authUser) {
+        this.$axios.get(`comments/${this.$route.query.id}`)
+          .then(res => {
+            this.comments = res.data.length
+          })
+          .catch(err => console.log(err.response))
+      }
+    },
   }
 }
 </script>
