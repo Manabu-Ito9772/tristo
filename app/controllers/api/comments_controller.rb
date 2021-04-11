@@ -3,9 +3,13 @@ class Api::CommentsController < ApplicationController
   before_action :set_comment, only: %i[update destroy]
   skip_before_action :verify_authenticity_token
 
+  include Pagination
+
   def show
-    comments = Article.find(params[:id]).comments.order(created_at: :asc)
-    render json: comments
+    comments = Article.find(params[:id]).comments.includes(:user).page(params[:page]).per(20).order(created_at: :asc)
+    pagenation = resources_with_pagination(comments)
+    @comments = Comment.change_to_json(comments)
+    render json: { comments: @comments, kaminari: pagenation }
   end
 
   def create

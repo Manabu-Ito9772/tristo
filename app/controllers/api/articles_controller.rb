@@ -3,9 +3,57 @@ class Api::ArticlesController < ApplicationController
   before_action :set_article, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token
 
+  include Pagination
+
   def index
-    @articles = Article.published
-    render json: @articles, include: [:user, :country, :regions, :favorites, article_tags: [:tag]]
+    articles = Article.published.world.page(params[:page]).per(10).order(created_at: :desc)
+    pagenation = resources_with_pagination(articles)
+    @articles = Article.change_to_json(articles)
+    render json: { articles: @articles, kaminari: pagenation }
+  end
+
+  def japan
+    articles = Article.published.japan.page(params[:page]).per(10).order(created_at: :desc)
+    pagenation = resources_with_pagination(articles)
+    @articles = Article.change_to_json(articles)
+    render json: { articles: @articles, kaminari: pagenation }
+  end
+
+  def user_articles
+    articles = User.find(params[:id]).articles.published.page(params[:page]).per(10).order(created_at: :desc)
+    pagenation = resources_with_pagination(articles)
+    @articles = Article.change_to_json(articles)
+    render json: { articles: @articles, kaminari: pagenation }
+  end
+
+  def user_articles_draft
+    articles = User.find(params[:id]).articles.draft.page(params[:page]).per(10).order(created_at: :desc)
+    pagenation = resources_with_pagination(articles)
+    @articles = Article.change_to_json(articles)
+    render json: { articles: @articles, kaminari: pagenation }
+  end
+
+  def user_favorites
+    favorites = User.find(params[:id]).favorites.includes(:article).order(created_at: :desc)
+    articles_array = Favorite.get_favorite_articles(favorites)
+    articles = Kaminari.paginate_array(articles_array).page(params[:page]).per(10)
+    pagenation = resources_with_pagination(articles)
+    @articles = Article.change_to_json(articles)
+    render json: { articles: @articles, kaminari: pagenation }
+  end
+
+  def search
+    @search_articles_form = SearchArticlesForm.new(search_params)
+    articles_array = @search_articles_form.search
+    articles = Kaminari.paginate_array(articles_array).page(params[:page]).per(10)
+    pagenation = resources_with_pagination(articles)
+    @articles = Article.change_to_json(articles)
+    render json: { articles: @articles, kaminari: pagenation }
+  end
+
+  def user_articles_count
+    @articles_count = User.find(params[:id]).articles.published.count
+    render json: @articles_count
   end
 
   def show
@@ -43,5 +91,9 @@ class Api::ArticlesController < ApplicationController
 
   def article_params
     params.require(:article).permit(:country_id, :title, :description, :map, :status, :start_date, :end_date, :created_at)
+  end
+
+  def search_params
+    params[:q]&.permit(:japan, :user_id, :country_id, :regions, :tags, :words, :sort)
   end
 end

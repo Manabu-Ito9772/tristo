@@ -1,15 +1,21 @@
 class Api::RelationshipsController < ApplicationController
-  before_action :authenticate!, only: %i[follow destroy]
+  before_action :authenticate!, only: %i[follow destroy get_following_ids]
   skip_before_action :verify_authenticity_token
 
+  include Pagination
+
   def following
-    @relationship = Relationship.where(user_id: params[:id]).order(created_at: :desc)
-    render json: @relationship, include: :follow
+    relationships = Relationship.includes(:follow).where(user_id: params[:id]).page(params[:page]).per(20).order(created_at: :desc)
+    pagenation = resources_with_pagination(relationships)
+    @relationships = Relationship.change_following_to_json(relationships)
+    render json: { relationships: @relationships, kaminari: pagenation }
   end
 
   def followers
-    @relationship = Relationship.where(follow_id: params[:id]).order(created_at: :desc)
-    render json: @relationship, include: :user
+    relationships = Relationship.includes(:user).where(follow_id: params[:id]).page(params[:page]).per(20).order(created_at: :desc)
+    pagenation = resources_with_pagination(relationships)
+    @relationships = Relationship.change_followers_to_json(relationships)
+    render json: { relationships: @relationships, kaminari: pagenation }
   end
 
   def follow
@@ -20,5 +26,18 @@ class Api::RelationshipsController < ApplicationController
   def destroy
     old_following = current_user.unfollow(params[:id])
     render json: old_following
+  end
+
+  def count
+    user = User.find(params[:id])
+    following = user.followings.count
+    followers = user.followers.count
+    render json: { following: following, followers: followers }
+  end
+
+  def get_following_ids
+    followings = current_user.followings
+    following_ids = followings.to_json(only: :id)
+    render json: following_ids
   end
 end

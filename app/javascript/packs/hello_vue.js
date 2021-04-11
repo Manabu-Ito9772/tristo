@@ -18,6 +18,8 @@ import Timepicker from '../plugins/timepicker'
 import vSelect from '../plugins/vueselect'
 import VScrollLock from '../plugins/vscrolllock'
 import DropdownMenu from '../plugins/dropdownmenu'
+import InfiniteLoading from '../plugins/infiniteloading'
+import VueLoading from '../plugins/vueloading'
 import '../plugins/veevalidate'
 import 'bootstrap/dist/css/bootstrap.css'
 

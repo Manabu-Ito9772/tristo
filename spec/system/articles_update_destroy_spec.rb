@@ -23,7 +23,7 @@ RSpec.describe "記事編集/削除", type: :system do
       find('.vs__dropdown-menu').click
     end
     click_on '詳細入力ページへ進む'
-    sleep 5
+    sleep 3
   }
   let(:create_article_overseas) {
     country
@@ -49,7 +49,7 @@ RSpec.describe "記事編集/削除", type: :system do
       find('.vs__dropdown-menu').click
     end
     click_on '詳細入力ページへ進む'
-    sleep 5
+    sleep 3
   }
   let(:create_block) {
     find('.arriving_time').click
@@ -75,9 +75,12 @@ RSpec.describe "記事編集/削除", type: :system do
     end
     fill_in 'コメント', with: 'TestComment'
     page.all('.save-button')[2].click
-    sleep 5
+    sleep 3
   }
-  before { login_as(user) }
+  before {
+    login_as(user)
+    sleep 3
+  }
 
   describe '記事編集' do
     context '記事詳細のメニューボタンをクリックし、「旅行記録を編集」をクリック' do
@@ -86,7 +89,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_article_japan
           create_block
           find('.post-button').click
-          sleep 5
+          sleep 3
           find("#article-item-#{country_japan.articles.first.id}").click
           sleep 3
           find('.edit-menu').click
@@ -222,7 +225,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_article_overseas
           create_block
           find('.post-button').click
-          sleep 5
+          sleep 3
           find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
@@ -366,7 +369,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_article_overseas
           create_block
           find('.post-button').click
-          sleep 5
+          sleep 3
           find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
@@ -497,7 +500,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_article_overseas
           create_block
           find('.post-button').click
-          sleep 5
+          sleep 3
           find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
@@ -626,7 +629,7 @@ RSpec.describe "記事編集/削除", type: :system do
           create_article_overseas
           create_block
           find('.post-button').click
-          sleep 5
+          sleep 3
           find("#article-item-#{country[1].articles.first.id}").click
           sleep 3
           find('.edit-menu').click
@@ -729,7 +732,7 @@ RSpec.describe "記事編集/削除", type: :system do
       create_article_japan
       create_block
       find('.post-button').click
-      sleep 5
+      sleep 3
       find("#article-item-#{country_japan.articles.first.id}").click
       find('.edit-menu').click
       find('.edit-button').click
@@ -754,7 +757,7 @@ RSpec.describe "記事編集/削除", type: :system do
         find('.vs__dropdown-menu').click
       end
       find('.edit-button').click
-      sleep 5
+      sleep 3
 
       click_on '1日目'
       find('.fa-edit').click
@@ -776,7 +779,7 @@ RSpec.describe "記事編集/削除", type: :system do
         end
         fill_in 'コメント', with: 'UpdatedComment'
         page.all('.save-button')[2].click
-        sleep 5
+        sleep 3
       end
     }
 
@@ -827,11 +830,10 @@ RSpec.describe "記事編集/削除", type: :system do
           find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
-          sleep 1
+          sleep 2
           find('.post-button').click
-          expect(page).to_not have_content('投稿')
-          expect(page).to_not have_content('下書き')
-          expect(page).to_not have_content('いいね')
+          sleep 3
+          expect(current_path).to eq('/trips')
           expect(page).to have_content('UpdatedTitle')
           expect(page).to have_content('UpdatedDescription')
           expect(page).to have_content('神奈川')
@@ -847,7 +849,7 @@ RSpec.describe "記事編集/削除", type: :system do
           find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
-          sleep 1
+          sleep 2
           find('.draft-button').click
           within('.post-changer') do
             expect(page).to have_content('下書き')
@@ -869,7 +871,7 @@ RSpec.describe "記事編集/削除", type: :system do
       create_article_overseas
       create_block
       find('.post-button').click
-      sleep 5
+      sleep 3
       find("#article-item-#{country[1].articles.first.id}").click
       find('.edit-menu').click
       find('.edit-button').click
@@ -897,7 +899,7 @@ RSpec.describe "記事編集/削除", type: :system do
         find('.vs__dropdown-menu').click
       end
       find('.edit-button').click
-      sleep 5
+      sleep 3
 
       click_on '1日目'
       find('.fa-edit').click
@@ -919,7 +921,7 @@ RSpec.describe "記事編集/削除", type: :system do
         end
         fill_in 'コメント', with: 'UpdatedComment'
         page.all('.save-button')[2].click
-        sleep 5
+        sleep 3
       end
     }
 
@@ -972,11 +974,10 @@ RSpec.describe "記事編集/削除", type: :system do
           find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
-          sleep 1
+          sleep 2
           find('.post-button').click
-          expect(page).to_not have_content('投稿')
-          expect(page).to_not have_content('下書き')
-          expect(page).to_not have_content('いいね')
+          sleep 3
+          expect(current_path).to eq('/trips')
           expect(page).to have_content('UpdatedTitle')
           expect(page).to have_content('UpdatedDescription')
           expect(page).to have_content(country[2].name)
@@ -993,7 +994,7 @@ RSpec.describe "記事編集/削除", type: :system do
           find('.article-title').click
           find('.edit-menu').click
           find('.edit-button').click
-          sleep 1
+          sleep 2
           find('.draft-button').click
           within('.post-changer') do
             expect(page).to have_content('下書き')

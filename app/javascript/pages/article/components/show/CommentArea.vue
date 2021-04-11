@@ -29,7 +29,7 @@
       </ValidationObserver>
     </template>
 
-    <template v-if="comments.length">
+    <div v-show="comments.length">
       <div class="d-flex justify-content-center">
         <div class="mt-4 comment-area mx-auto">
           <div class="comment-all">
@@ -38,13 +38,29 @@
               :key="comme.id"
             >
               <EachComment
+                v-if="isVisibleComment"
                 :commentprop="comme"
-                @getComments="getComments"
+                @deleteComment="deleteComment"
               />
             </div>
+            <infinite-loading
+              spinner="circles"
+              @infinite="infiniteHandler"
+            />
           </div>
         </div>
       </div>
+    </div>
+
+    <template v-if="!comments.length">
+      <template v-if="loading">
+        <vue-loading
+          type="spiningDubbles"
+          color="#FF00EB"
+          :size="{ width: '60px' }"
+          class="mt-5"
+        />
+      </template>
     </template>
   </div>
 </template>
@@ -66,6 +82,10 @@ export default {
         body: ''
       },
       height: '',
+      page: 1,
+      loading: true,
+      isVisibleComment: true,
+      show: false
     }
   },
   computed: {
@@ -84,15 +104,33 @@ export default {
     },
   },
   created() {
-    this.getComments()
+    this.infiniteHandler()
   },
   methods :{
-    getComments() {
-      this.$axios.get(`comments/${this.$route.query.id}`)
+    infiniteHandler($state) {
+      this.$axios.get(`comments/${this.$route.query.id}`, { params: { page: this.page }})
         .then(res => {
-          this.comments = res.data
-          for (let comment of this.comments) {
-            comment.editable = false
+          if (res.data.comments.length) {
+            setTimeout(() => {
+              if (this.page <= res.data.kaminari.pagenation.pages) {
+                this.page += 1
+                this.comments.push(...res.data.comments)
+                this.comments.forEach((comment, index) => {
+                  comment.editable = false
+                  comment.index = index
+                })
+                if (this.page != 2) {
+                  $state.loaded()
+                }
+              } else {
+                $state.complete()
+              }
+            }, 800)
+          } else {
+            setTimeout(() => {
+              this.loading = false
+            }, 800)
+            $state.complete()
           }
         })
         .catch(err => console.log(err.response))
@@ -101,9 +139,22 @@ export default {
       this.$axios.post('comments', this.comment)
         .then(res => {
           this.comment.body = ''
-          this.getComments()
+          this.comments.push(res.data)
+          this.comments.forEach((comment, index) => {
+            comment.editable = false
+            comment.index = index
+          })
         })
         .catch(err => console.log(err.response))
+    },
+    deleteComment(index) {
+      this.comments.splice(index, 1)
+      this.comments.forEach((comment, index) => {
+        comment.index = index
+      })
+      this.loading = false
+      this.isVisibleComment = false
+      this.$nextTick(() => (this.isVisibleComment = true))
     },
     resize(){
       this.height = 'auto'

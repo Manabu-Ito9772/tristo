@@ -9,6 +9,8 @@ RSpec.describe 'コメント', type: :system do
     article_normal
     login_as(user)
     sleep 2
+    find('.area-changer-unselected').click
+    sleep 2
     find("#article-item-#{article_normal.id}").click
   }
 
@@ -78,6 +80,7 @@ RSpec.describe 'コメント', type: :system do
         expect(page).to have_content(user.name)
         expect(page).to have_content(user.description)
         visit root_path
+        sleep 2
         find("#article-item-#{article_normal.id}").click
         click_on 'コメント'
         fill_in 'コメント', with: 'MyComment'
@@ -99,6 +102,7 @@ RSpec.describe 'コメント', type: :system do
       page.all('.dropdown-item')[1].click
       sleep 2
       visit root_path
+      sleep 2
       find("#article-item-#{article_normal.id}").click
       click_on 'コメント'
       expect(page).to_not have_field('コメント')
@@ -114,6 +118,7 @@ RSpec.describe 'コメント', type: :system do
       page.all('.dropdown-item')[1].click
       sleep 2
       visit root_path
+      sleep 2
       find("#article-item-#{article_normal.id}").click
       expect(page).to_not have_css('.comment')
       expect(page).to_not have_button('コメント')
@@ -127,6 +132,7 @@ RSpec.describe 'コメント', type: :system do
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
         visit root_path
+        sleep 2
         find("#article-item-#{article_normal.id}").click
         click_on 'コメント'
         find("#user-name-#{user.id}").click

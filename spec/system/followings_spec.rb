@@ -11,6 +11,8 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       another_user_article
       login_as(another_user_article.user)
       sleep 2
+      find('.area-changer-unselected').click
+      sleep 2
       find("#article-user-#{article_normal.user.id}").click
       click_on 'フォロー'
       find('.fa-bars').click
@@ -160,6 +162,8 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       another_user_article
       login_as(article_normal.user)
       sleep 2
+      find('.area-changer-unselected').click
+      sleep 2
       find("#article-user-#{another_user_article.user.id}").click
       click_on 'フォロー'
       find('.fa-bars').click
@@ -171,6 +175,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(user)
+      sleep 2
       find("#article-user-#{another_user_article.user.id}").click
     }
 

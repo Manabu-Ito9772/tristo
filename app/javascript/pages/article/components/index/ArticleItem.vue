@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="$mq == 'xs'">
-      <div class="row bg-white article-xs">
+      <div class="row bg-white border-bottom">
         <div class="col-12">
           <div class="row pt-4 pl-4 pr-4">
             <div
@@ -337,10 +337,6 @@ export default {
   border-radius: 6px;
 }
 
-.article-xs {
-  border-top: solid thin #CBCBCB;
-}
-
 .article-title {
   background-color: #FF00EB;
   border-radius: 6px;
@@ -405,5 +401,9 @@ export default {
 
 .remove-first-line:first-line {
   line-height: 0px;
+}
+
+.bottom-border {
+  border-bottom: solid thin #CBCBCB;
 }
 </style>

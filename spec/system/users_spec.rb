@@ -180,12 +180,15 @@ RSpec.describe 'ユーザー', type: :system do
       it 'アクセスできる' do
         article_normal
         visit 'trips'
+        sleep 2
+        find('.area-changer-unselected').click
         expect(current_path).to eq('/trips')
         expect(page).to have_content(article_normal.title)
         find("#article-item-#{article_normal.id}").click
         expect(current_path).to eq('/trip')
         expect(page).to have_content(article_normal.title)
         visit 'trips'
+        sleep 3
         find("#article-user-#{article_normal.user.id}").click
         expect(current_path).to eq('/user')
         expect(page).to have_content(article_normal.user.name)
@@ -250,7 +253,10 @@ RSpec.describe 'ユーザー', type: :system do
     }
 
     context 'ヘッダーのユーザーアイコンをクリック' do
-      before { find('.fa-user').click }
+      before {
+        find('.fa-user').click
+        sleep 3
+      }
 
       it 'マイページが表示される' do
         expect(page).to have_content(user.name)
@@ -316,7 +322,10 @@ RSpec.describe 'ユーザー', type: :system do
       end
 
       context '「下書き」をクリック' do
-        before { page.all('.post-changer-unselect')[0].click }
+        before {
+          page.all('.post-changer-unselect')[0].click
+          sleep 3
+        }
 
         it '自分の下書き一覧が表示される' do
           within('.post-changer') do
@@ -430,6 +439,9 @@ RSpec.describe 'ユーザー', type: :system do
       before {
         article_normal
         visit root_path
+        sleep 3
+        find('.area-changer-unselected').click
+        sleep 3
         find("#article-user-#{article_normal.user.id}").click
       }
 

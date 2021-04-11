@@ -26,12 +26,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'EditDeleteMenu',
-  data() {
-    return {
-
-    }
+  computed: {
+    ...mapGetters('pages', ['currentPage']),
   },
   methods: {
     closeMenu() {
@@ -41,7 +41,11 @@ export default {
       if (confirm('旅行記録を削除しますか？')) {
         await this.$axios.delete(`articles/${this.$route.query.id}`)
           .catch(err => console.log(err.response))
-        this.$router.go(-1)
+        if (this.currentPage == 'home') {
+          this.$router.push({ name: 'ArticleIndex' })
+        } else if (this.currentPage == 'user') {
+          this.$router.push({ name: 'MyPage' })
+        }
       }
     },
     showArticleEdit() {

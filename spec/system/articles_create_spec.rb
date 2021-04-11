@@ -23,7 +23,7 @@ RSpec.describe "記事作成", type: :system do
       find('.vs__dropdown-menu').click
     end
     click_on '詳細入力ページへ進む'
-    sleep 5
+    sleep 3
   }
   let(:create_article_overseas) {
     country
@@ -49,7 +49,7 @@ RSpec.describe "記事作成", type: :system do
       find('.vs__dropdown-menu').click
     end
     click_on '詳細入力ページへ進む'
-    sleep 5
+    sleep 3
   }
   let(:create_block) {
     find('.arriving_time').click
@@ -75,9 +75,12 @@ RSpec.describe "記事作成", type: :system do
     end
     fill_in 'コメント', with: 'TestComment'
     page.all('.save-button')[2].click
-    sleep 5
+    sleep 3
   }
-  before { login_as(user) }
+  before {
+    login_as(user)
+    sleep 3
+  }
 
   describe '記事概要作成画面' do
     context '記事概要作成画面にアクセス' do

@@ -9,11 +9,17 @@ RSpec.describe "記事一覧/詳細", type: :system do
   let(:article_without_transportation_cost_all) { create(:article, :without_transportation_cost_all) }
   let(:article_without_transportation_description) { create(:article, :without_transportation_description) }
 
+  let(:article_normal_set) {
+    article_normal
+    visit root_path
+    sleep 2
+    find('.area-changer-unselected').click
+  }
+
   describe '記事一覧画面' do
     context '記事一覧画面にアクセス' do
       it '記事が表示される' do
-        article_normal
-        visit root_path
+        article_normal_set
         expect(page).to have_content(article_normal.title)
         expect(page).to have_content(article_normal.description)
         expect(page).to have_content(article_normal.country.name)
@@ -27,6 +33,8 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '記事の説明、地域、日付、タグはデータがなければ表示されない' do
         article_wihout_info
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         expect(page).to_not have_css('.article-description')
         expect(page).to_not have_css('.article-region')
         expect(page).to_not have_css('.article-date')
@@ -36,6 +44,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '国が日本の場合は都道府県のみ表示される' do
         country_japan
         visit root_path
+        sleep 2
         expect(page).to_not have_content('日本')
         expect(page).to have_content('東京')
       end
@@ -45,8 +54,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
   describe '記事詳細画面' do
     describe '記事詳細ブロック' do
       it '記事詳細ブロックが表示される' do
-        article_normal
-        visit root_path
+        article_normal_set
         find("#article-item-#{article_normal.id}").click
         expect(page).to have_content('時間')
         expect(page).to have_content('イベント')
@@ -66,6 +74,8 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it 'データがない場合はラベルが表示されない' do
         article_only_with_event
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_only_with_event.id}").click
         within('.info-block') do
           expect(page).to_not have_content('時間')
@@ -78,8 +88,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
 
     describe '記事概要' do
       it '記事概要が表示される' do
-        article_normal
-        visit root_path
+        article_normal_set
         find("#article-item-#{article_normal.id}").click
         expect(page).to have_content(article_normal.title)
         expect(page).to have_content(article_normal.country.name)
@@ -94,6 +103,8 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '説明、地域、日付、タグはデータがなければ表示されない' do
         article_wihout_info
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_wihout_info.id}").click
         expect(page).to_not have_css('.article-description')
         expect(page).to_not have_css('.article-region')
@@ -104,6 +115,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '国が日本の場合は都道府県のみ表示される' do
         country_japan
         visit root_path
+        sleep 2
         find("#article-item-#{country_japan.articles.first.id}").click
         expect(page).to_not have_content('日本')
         expect(page).to have_content('東京')
@@ -112,8 +124,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
 
     describe '日付ボタン' do
       it '日付ボタンが表示される' do
-        article_normal
-        visit root_path
+        article_normal_set
         find("#article-item-#{article_normal.id}").click
         expect(page).to have_content('1日目')
         expect(page).to have_content('2日目')
@@ -123,14 +134,15 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '日付が１日しか登録されていない場合は「日帰り」と表示される' do
         article_only_with_event
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_only_with_event.id}").click
         expect(page).to have_content('日帰り')
       end
 
       context '日付ボタンを押す' do
         it '記事情報ブロックカラムが切り替わる' do
-          article_normal
-          visit root_path
+          article_normal_set
           find("#article-item-#{article_normal.id}").click
           click_on '2日目'
           expect(page).to have_content(article_normal.days.second.blocks.first.title)
@@ -142,8 +154,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
 
     describe 'コスト' do
       it 'コストボタンが表示されている' do
-        article_normal
-        visit root_path
+        article_normal_set
         find("#article-item-#{article_normal.id}").click
         expect(page).to have_content('コスト')
       end
@@ -151,14 +162,15 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it 'コストが保存されていない場合はコストボタンが表示されない' do
         article_only_with_event
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_only_with_event.id}").click
         expect(page).to_not have_content('コスト')
       end
 
       context 'コストボタンを押す' do
         it 'コスト一覧が表示される' do
-          article_normal
-          visit root_path
+          article_normal_set
           find("#article-item-#{article_normal.id}").click
           click_on 'コスト'
           expect(page).to have_content('観光費')
@@ -175,6 +187,8 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it 'データのない項目のラベルはコスト一覧に表示されない' do
         article_without_transportation_cost
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_cost.id}").click
         click_on 'コスト'
         expect(page).to_not have_content('観光費')
@@ -188,6 +202,8 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '全ての交通手段のコストの価格が0の場合は交通費のラベルと項目は表示されない' do
         article_without_transportation_cost_all
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_cost_all.id}").click
         click_on 'コスト'
         expect(page).to have_content('観光費')
@@ -197,6 +213,8 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '交通手段のコストが保存されていない場合はコスト一覧に表示されない' do
         article_without_transportation_cost
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_cost.id}").click
         click_on 'コスト'
         expect(page).to_not have_content(
@@ -207,6 +225,8 @@ RSpec.describe "記事一覧/詳細", type: :system do
       it '交通手段の説明が保存されていない場合は交通手段の名前が説明として総コストに表示される' do
         article_without_transportation_description
         visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_description.id}").click
         click_on 'コスト'
         expect(page).to have_content('車')
@@ -223,16 +243,14 @@ RSpec.describe "記事一覧/詳細", type: :system do
 
     describe 'マップ' do
       it 'マップボタンが表示されている' do
-        article_normal
-        visit root_path
+        article_normal_set
         find("#article-item-#{article_normal.id}").click
         expect(page).to have_content('マップ')
       end
 
       context 'マップボタンを押す' do
         it 'マップが表示される' do
-          article_normal
-          visit root_path
+          article_normal_set
           find("#article-item-#{article_normal.id}").click
           click_on 'マップ'
           expect(page).to have_css('.map')

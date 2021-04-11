@@ -5,4 +5,18 @@ class Relationship < ApplicationRecord
   validates :user_id, presence: true
   validates :follow_id, presence: true
   validates :user_id, uniqueness: { scope: :follow_id }
+
+  def self.change_following_to_json(relationships)
+    relationships.as_json(
+      only: :id,
+      include: [{ follow: { only: %i[id name] } }]
+    )
+  end
+
+  def self.change_followers_to_json(relationships)
+    relationships.as_json(
+      only: :id,
+      include: [{ user: { only: %i[id name] } }]
+    )
+  end
 end

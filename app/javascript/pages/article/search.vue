@@ -1,56 +1,9 @@
 <template>
   <div class="container-fluid mt-2">
-    <template v-if="$mq == 'lg'">
-      <div class="row">
-        <template v-if="articles.length">
-          <div class="col-8 mb-5">
-            <div
-              v-for="article in articles"
-              :key="article.id"
-            >
-              <ArticleList
-                :article="article"
-              />
-            </div>
-            <infinite-loading
-              spinner="circles"
-              @infinite="infiniteHandler"
-            />
-          </div>
-        </template>
-
-        <template v-else>
-          <template v-if="loading">
-            <vue-loading
-              type="spiningDubbles"
-              color="#FF00EB"
-              :size="{ width: '100px' }"
-              class="mt-4 pt-5"
-            />
-          </template>
-          <template v-else>
-            <div class="col-8 mt-5 pt-5 mb-5">
-              <h3 class="text-center font-weight-bold text-secondary">
-                投稿がありません
-              </h3>
-            </div>
-          </template>
-        </template>
-        <SearchForm
-          :article="presence"
-          :loading="loading"
-          class="col-4"
-          @resetPageJapan="resetPageJapan"
-          @resetPageWorld="resetPageWorld"
-          @setSearch="setSearch"
-        />
-      </div>
-    </template>
-
-    <template v-else-if="$mq == 'sm'">
+    <template v-if="$mq == 'sm'">
       <div class="row">
         <div class="col-12 search-form">
-          <AreaChanger
+          <SearchForm
             :article="presence"
             :loading="loading"
             class="ml-5 mr-5 pl-5 pr-5"
@@ -82,13 +35,13 @@
                 <vue-loading
                   type="spiningDubbles"
                   color="#FF00EB"
-                  :size="{ width: '80px' }"
+                  :size="{ width: '100px' }"
                 />
               </div>
             </template>
 
             <template v-else>
-              <div class="mt-5 pt-3 mb-5">
+              <div class="mt-5 mb-5">
                 <h3 class="text-center font-weight-bold text-secondary">
                   投稿がありません
                 </h3>
@@ -99,10 +52,10 @@
       </div>
     </template>
 
-    <template v-else>
+    <template v-if="$mq == 'xs'">
       <div class="row">
         <div class="col-12">
-          <AreaChanger
+          <SearchForm
             :article="presence"
             :loading="loading"
             class="mb-4 search-form"
@@ -143,7 +96,7 @@
           </template>
 
           <template v-else>
-            <div class="col-12 mt-4 pt-2">
+            <div class="col-12 mt-4">
               <h3 class="text-center font-weight-bold text-secondary">
                 投稿がありません
               </h3>
@@ -157,16 +110,14 @@
 
 <script>
 import ArticleList from './components/index/ArticleList'
-import SearchForm from './components/index/SearchForm'
-import AreaChanger from './components/index/AreaChanger'
+import SearchForm from './components/search/SearchForm'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'ArticleIndex',
   components: {
     ArticleList,
-    SearchForm,
-    AreaChanger
+    SearchForm
   },
   data() {
     return {
@@ -193,7 +144,6 @@ export default {
   },
   created() {
     this.infiniteHandler()
-    this.$store.commit('pages/setCurrentPage', 'home')
   },
   methods: {
     async infiniteHandler($state) {

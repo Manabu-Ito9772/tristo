@@ -16,8 +16,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'PostButton',
+  props: {
+    country: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       article: {
@@ -26,9 +34,18 @@ export default {
     }
   },
   methods: {
+    ...mapActions('articles', [
+      'getArticlesJapan',
+      'getArticlesWorld',
+    ]),
     async postArticle() {
       await this.$axios.patch(`articles/${this.$route.query.id}`, this.article)
         .catch(err => console.log(err.response))
+      if (this.country == '日本') {
+        this.$store.commit('articles/articleJapanTrue')
+      } else {
+        this.$store.commit('articles/articleJapanFalse')
+      }
       this.$store.commit('pages/setCurrentPage', 'home')
       this.$router.push({ name: 'ArticleIndex' })
     },

@@ -75,7 +75,9 @@
               label="name"
               :clearable="false"
               class="bg-white"
-            />
+            >
+              <span slot="no-options">該当する国がありません</span>
+            </v-select>
             <span class="text-danger">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
@@ -94,7 +96,7 @@
               multiple
               class="bg-white"
             >
-              <span slot="no-options">国を選択してください</span>
+              <span slot="no-options">該当する地域がありません</span>
             </v-select>
           </div>
         </template>
@@ -114,7 +116,9 @@
                 label="name"
                 multiple
                 class="bg-white"
-              />
+              >
+                <span slot="no-options">該当する都道府県がありません</span>
+              </v-select>
               <span class="text-danger">{{ errors[0] }}</span>
             </ValidationProvider>
           </div>
@@ -417,7 +421,7 @@ export default {
 
 <style scoped>
 .top-title {
-  border-bottom: solid #FF00EB;
+  /* border-bottom: solid #FF00EB; */
   color: #FF00EB;
 }
 

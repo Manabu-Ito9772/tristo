@@ -7,6 +7,7 @@ import ArticleShow from '../pages/article/show'
 import ArticleCreateOverview from '../pages/article/createOverview'
 import ArticleCreateDetail from '../pages/article/createDetail'
 import ArticleEdit from '../pages/article/edit'
+import ArticleSearch from '../pages/article/search'
 import Register from '../pages/register/register'
 import Login from '../pages/session/login'
 import UserShow from '../pages/user/show'
@@ -14,6 +15,7 @@ import MyPage from '../pages/user/mypage'
 import EditMyPage from '../pages/user/editmypage'
 import AccountSettings from '../pages/user/accountsettings'
 import Following from '../pages/user/following'
+import Followers from '../pages/user/followers'
 
 Vue.use(Router)
 
@@ -53,6 +55,11 @@ const router = new Router({
       component: ArticleEdit,
       name: 'ArticleEdit',
       meta: { requiredAuth: true },
+    },
+    {
+      path: '/search_trips',
+      component: ArticleSearch,
+      name: 'ArticleSearch',
     },
     {
       path: '/register',
@@ -95,7 +102,7 @@ const router = new Router({
     },
     {
       path: '/followers',
-      component: Following,
+      component: Followers,
       name: 'Followers',
     },
   ]

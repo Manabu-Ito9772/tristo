@@ -40,6 +40,7 @@
             />
             <SaveButton
               :state="article.status"
+              :country="article.country.name"
             />
           </div>
         </template>
@@ -50,6 +51,7 @@
           <div class="col-12 pt-1 pl-5 pr-5">
             <SaveButton
               :state="article.status"
+              :country="article.country.name"
               class="mt-4 ml-5 mr-5"
             />
           </div>
@@ -96,6 +98,7 @@
           <div class="col-12 pt-1 pl-0 pr-0">
             <SaveButton
               :state="article.status"
+              :country="article.country.name"
               class="mt-4"
             />
           </div>

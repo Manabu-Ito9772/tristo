@@ -1,9 +1,9 @@
 class Api::UsersController < ApplicationController
   before_action :authenticate!, only: %i[update_current_user destroy_current_user]
-  before_action :set_user, only: %i[show update destroy]
   skip_before_action :verify_authenticity_token
 
   def show
+    @user = User.find(params[:id])
     render json: @user
   end
 
@@ -36,10 +36,6 @@ class Api::UsersController < ApplicationController
   end
 
   private
-
-  def set_user
-    @user = User.find(params[:id])
-  end
 
   def user_params
     params.permit(:name, :email, :description, :password)
