@@ -72,18 +72,6 @@
                 </p>
               </router-link>
             </li>
-
-            <li class="nav-item active">
-              <router-link
-                :to="{ name: 'ArticleIndex' }"
-                class="icon-selected"
-              >
-                <font-awesome-icon
-                  :icon="['fas', 'home']"
-                  class="fa-lg"
-                />
-              </router-link>
-            </li>
           </template>
         </ul>
       </nav>
@@ -98,8 +86,8 @@
         <ul class="navbar-nav d-flex align-items-center">
           <!-- AUTH USER -->
           <template v-if="authUser">
+            <!-- HOME ICON -->
             <li class="nav-item active">
-              <!-- HOME ICON -->
               <template v-if="currentPage == 'home'">
                 <router-link
                   :to="{ name: 'ArticleIndex' }"
@@ -127,6 +115,38 @@
               </template>
             </li>
             <!-- HOME ICON -->
+
+            <!-- SEARCH ICON -->
+            <template v-if="$mq == 'sm'">
+              <li class="nav-item active">
+                <template v-if="currentPage == 'search'">
+                  <router-link
+                    :to="{ name: 'ArticleSearch' }"
+                    class="icon-selected"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'search']"
+                      class="fa-lg"
+                    />
+                  </router-link>
+                </template>
+
+                <template v-else>
+                  <router-link
+                    :to="{ name: 'ArticleSearch' }"
+                    class="icon-color"
+                  >
+                    <div @click="setCurrentPage('search')">
+                      <font-awesome-icon
+                        :icon="['fas', 'search']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </router-link>
+                </template>
+              </li>
+            </template>
+            <!-- SEARCH ICON -->
 
             <!-- PEN ICON -->
             <li class="nav-item active">
@@ -268,7 +288,7 @@
                 </DropdownMenu>
               </li>
             </template>
-          <!-- MENU ICON -->
+            <!-- MENU ICON -->
           </template>
           <!-- AUTH USER -->
 

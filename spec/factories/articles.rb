@@ -44,6 +44,12 @@ FactoryBot.define do
       end
     end
 
+    trait :kanagawa do
+      after(:build) do |article|
+        article.regions << build(:region, :kanagawa)
+      end
+    end
+
     trait :only_with_event do
       association :country
       after(:build) do |article|

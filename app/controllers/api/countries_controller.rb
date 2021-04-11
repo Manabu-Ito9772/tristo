@@ -2,7 +2,7 @@ class Api::CountriesController < ApplicationController
   before_action :set_country, only: %i[show]
 
   def index
-    @countries = Country.all
+    @countries = Country.includes(:regions).all
     render json: @countries
   end
 

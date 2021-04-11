@@ -48,8 +48,10 @@
             :options="countries"
             :get-option-label="country => country.name"
             :clearable="false"
-            class="bg-light country"
-          />
+            class="bg-light country v-select"
+          >
+            <span slot="no-options">該当する国がありません</span>
+          </v-select>
           <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
@@ -63,8 +65,10 @@
           :reduce="region => region.id"
           :get-option-label="region => region.name"
           multiple
-          class="mb-3 bg-light region"
-        />
+          class="mb-3 bg-light region v-select"
+        >
+          <span slot="no-options">該当する地域がありません</span>
+        </v-select>
       </template>
 
       <template v-if="countryName == '日本'">
@@ -82,8 +86,10 @@
             :reduce="region => region.id"
             :get-option-label="region => region.name"
             multiple
-            class="bg-light prefecture"
-          />
+            class="bg-light prefecture v-select"
+          >
+            <span slot="no-options">該当する都道府県がありません</span>
+          </v-select>
           <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
       </template>
@@ -126,7 +132,7 @@
         v-model="tags"
         multiple
         taggable
-        class="mb-3 bg-light tag"
+        class="mb-3 bg-light tag v-select"
       >
         <span slot="no-options">タグを登録できます</span>
       </v-select>
@@ -374,5 +380,10 @@ export default {
 
 .font-small {
   font-size: 13px;
+}
+
+.v-select {
+  border-radius: 4px;
+  background-color: #f8f9fa;
 }
 </style>

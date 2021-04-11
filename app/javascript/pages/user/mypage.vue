@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid d-flex justify-content-center mt-4">
     <template v-if="$mq == 'xs'">
-      <template v-if="articleLength != null">
+      <template v-if="numOfArticles != null">
         <div class="row">
           <div class="col-12 mt-3">
             <div class="m-0">
@@ -25,13 +25,13 @@
                   </div>
 
                   <div class="mt-2 d-flex justify-content-center text-muted">
-                    <template v-if="articleLength != null">
+                    <template v-if="numOfArticles != null">
                       <div class="pr-3 text-center">
                         <p class="m-0 font-small">
                           投稿
                         </p>
                         <p class="m-0 word-break">
-                          {{ articleLength }}
+                          {{ numOfArticles }}
                         </p>
                       </div>
                     </template>
@@ -84,32 +84,59 @@
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showDrafts"
-                  >
-                    下書き
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showDrafts"
+                    >
+                      下書き
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      下書き
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showFavorites"
-                  >
-                    いいね
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showFavorites"
+                    >
+                      いいね
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      いいね
+                    </h5>
+                  </template>
                 </div>
               </template>
 
               <template v-if="draft">
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showPublished"
-                  >
-                    投稿
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showPublished"
+                    >
+                      投稿
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      投稿
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
@@ -119,32 +146,59 @@
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showFavorites"
-                  >
-                    いいね
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showFavorites"
+                    >
+                      いいね
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      いいね
+                    </h5>
+                  </template>
                 </div>
               </template>
 
               <template v-if="favorite">
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showPublished"
-                  >
-                    投稿
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showPublished"
+                    >
+                      投稿
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      投稿
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showDrafts"
-                  >
-                    下書き
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showDrafts"
+                    >
+                      下書き
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      下書き
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
@@ -156,71 +210,50 @@
             </div>
           </div>
 
-          <template v-if="published">
-            <template v-if="publishedArticles.length">
-              <div class="col-12 mb-5">
-                <div
-                  v-for="article in publishedArticles"
-                  :key="article.id"
-                >
-                  <ArticleItem
-                    :article="article"
-                  />
-                </div>
+          <template v-if="articles.length">
+            <div class="col-12 border-top">
+              <div
+                v-for="article in articles"
+                :key="article.id"
+              >
+                <ArticleItem
+                  :article="article"
+                />
               </div>
-            </template>
-
-            <template v-if="noPublished">
-              <div class="col-12 mt-3 mb-5">
-                <h3 class="text-center font-weight-bold text-secondary">
-                  投稿がありません
-                </h3>
-              </div>
-            </template>
+              <template v-if="page <= kaminariPage">
+                <infinite-loading
+                  spinner="circles"
+                  class="mb-4"
+                  @infinite="infiniteHandler"
+                />
+              </template>
+            </div>
           </template>
 
-          <template v-if="draft">
-            <template v-if="draftArticles.length">
-              <div class="col-12 mb-5">
-                <div
-                  v-for="article in draftArticles"
-                  :key="article.id"
-                >
-                  <ArticleItem
-                    :article="article"
-                  />
-                </div>
+          <template v-else>
+            <template v-if="loading">
+              <div class="col-12 mt-4 mb-5">
+                <vue-loading
+                  type="spiningDubbles"
+                  color="#FF00EB"
+                  :size="{ width: '80px' }"
+                />
               </div>
             </template>
 
-            <template v-if="noDraft">
-              <div class="col-12 mt-3 mb-5">
-                <h3 class="text-center font-weight-bold text-secondary">
-                  下書きがありません
-                </h3>
-              </div>
-            </template>
-          </template>
-
-          <template v-if="favorite">
-            <template v-if="favoriteArticles.length">
-              <div class="col-12 mb-5">
-                <div
-                  v-for="favo in favoriteArticles"
-                  :key="favo.id"
-                >
-                  <ArticleItem
-                    :article="favo.article"
-                  />
-                </div>
-              </div>
-            </template>
-
-            <template v-if="noFavorites">
-              <div class="col-12 mt-3 mb-5">
-                <h3 class="text-center font-weight-bold text-secondary">
-                  いいねした投稿がありません
-                </h3>
+            <template v-else>
+              <div class="col-12 mt-5 mb-5">
+                <h4 class="text-center font-weight-bold text-secondary">
+                  <template v-if="published">
+                    投稿がありません
+                  </template>
+                  <template v-else-if="draft">
+                    下書きがありません
+                  </template>
+                  <template v-else>
+                    いいねした投稿がありません
+                  </template>
+                </h4>
               </div>
             </template>
           </template>
@@ -229,7 +262,7 @@
     </template>
 
     <template v-else>
-      <template v-if="articleLength != null">
+      <template v-if="numOfArticles != null">
         <div class="row column-width">
           <div class="col-12 mt-3 p-0">
             <div class="m-0">
@@ -253,13 +286,13 @@
                   </div>
 
                   <div class="mt-2 d-flex justify-content-center text-muted">
-                    <template v-if="articleLength != null">
+                    <template v-if="numOfArticles != null">
                       <div class="pr-3 text-center">
                         <p class="m-0">
                           投稿
                         </p>
                         <p class="m-0 word-break">
-                          {{ articleLength }}
+                          {{ numOfArticles }}
                         </p>
                       </div>
                     </template>
@@ -314,32 +347,59 @@
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showDrafts"
-                  >
-                    下書き
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showDrafts"
+                    >
+                      下書き
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      下書き
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showFavorites"
-                  >
-                    いいね
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showFavorites"
+                    >
+                      いいね
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      いいね
+                    </h5>
+                  </template>
                 </div>
               </template>
 
               <template v-if="draft">
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showPublished"
-                  >
-                    投稿
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showPublished"
+                    >
+                      投稿
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      投稿
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
@@ -349,32 +409,59 @@
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showFavorites"
-                  >
-                    いいね
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showFavorites"
+                    >
+                      いいね
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      いいね
+                    </h5>
+                  </template>
                 </div>
               </template>
 
               <template v-if="favorite">
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showPublished"
-                  >
-                    投稿
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showPublished"
+                    >
+                      投稿
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      投稿
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
-                  <h5
-                    class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
-                    @click="showDrafts"
-                  >
-                    下書き
-                  </h5>
+                  <template v-if="presence || !loading">
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      @click="showDrafts"
+                    >
+                      下書き
+                    </h5>
+                  </template>
+                  <template v-else>
+                    <h5
+                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                    >
+                      下書き
+                    </h5>
+                  </template>
                 </div>
 
                 <div class="col-4">
@@ -386,73 +473,47 @@
             </div>
           </div>
 
-          <template v-if="published">
-            <template v-if="publishedArticles.length">
-              <div class="col-12 p-0">
-                <div
-                  v-for="article in publishedArticles"
-                  :key="article.id"
-                >
-                  <ArticleItem
-                    :article="article"
-                    class="mb-4"
-                  />
-                </div>
+          <template v-if="articles.length">
+            <div class="col-12 mb-5 p-0">
+              <div
+                v-for="article in articles"
+                :key="article.id"
+              >
+                <ArticleItem
+                  :article="article"
+                  class="mb-4"
+                />
               </div>
-            </template>
-
-            <template v-if="noPublished">
-              <div class="col-12 mt-3 mb-5">
-                <h3 class="text-center font-weight-bold text-secondary">
-                  投稿がありません
-                </h3>
-              </div>
-            </template>
+              <infinite-loading
+                spinner="circles"
+                @infinite="infiniteHandler"
+              />
+            </div>
           </template>
 
-          <template v-if="draft">
-            <template v-if="draftArticles.length">
-              <div class="col-12 p-0">
-                <div
-                  v-for="article in draftArticles"
-                  :key="article.id"
-                >
-                  <ArticleItem
-                    :article="article"
-                    class="mb-4"
-                  />
-                </div>
+          <template v-else>
+            <template v-if="loading">
+              <div class="col-12 mt-5 mb-5">
+                <vue-loading
+                  type="spiningDubbles"
+                  color="#FF00EB"
+                  :size="{ width: '100px' }"
+                />
               </div>
             </template>
 
-            <template v-if="noDraft">
-              <div class="col-12 mt-3 mb-5">
+            <template v-else>
+              <div class="col-12 mt-5 pt-3 mb-5">
                 <h3 class="text-center font-weight-bold text-secondary">
-                  下書きがありません
-                </h3>
-              </div>
-            </template>
-          </template>
-
-          <template v-if="favorite">
-            <template v-if="favoriteArticles.length">
-              <div class="col-12 p-0">
-                <div
-                  v-for="favo in favoriteArticles"
-                  :key="favo.id"
-                >
-                  <ArticleItem
-                    :article="favo.article"
-                    class="mb-4"
-                  />
-                </div>
-              </div>
-            </template>
-
-            <template v-if="noFavorites">
-              <div class="col-12 mt-3 mb-5">
-                <h3 class="text-center font-weight-bold text-secondary">
-                  いいねした投稿がありません
+                  <template v-if="published">
+                    投稿がありません
+                  </template>
+                  <template v-else-if="draft">
+                    下書きがありません
+                  </template>
+                  <template v-else>
+                    いいねした投稿がありません
+                  </template>
                 </h3>
               </div>
             </template>
@@ -476,82 +537,124 @@ export default {
     return {
       followings: null,
       followers: null,
-      articleLength: null,
-      publishedArticles: [],
-      draftArticles: [],
-      favoriteArticles: [],
+      numOfArticles: null,
       published: true,
       draft: false,
       favorite: false,
-      noPublished: false,
-      noDraft: false,
-      noFavorites: false,
+      articles: [],
+      url: null,
+      page: 1,
+      kaminariPage: null,
+      loading: true,
+      presence: false
     }
   },
   computed: {
     ...mapGetters('users', ['authUser']),
   },
+  watch: {
+    articles() {
+      if (this.articles.length) {
+        this.presence = true
+      } else {
+        this.presence = false
+      }
+    }
+  },
   created() {
-    this.getCurrentUserArticles()
-    this.getFavoriteArticles()
+    this.getFollowCount()
+    this.getNumOfArticles()
     if (this.$route.params['draft']) {
       this.showDrafts()
+    } else {
+      this.infiniteHandler()
     }
   },
   methods: {
-    getCurrentUserArticles() {
-      this.$axios.get(`users/${this.authUser.id}`)
+    getFollowCount() {
+      this.$axios.get(`relationships/${this.authUser.id}/count`)
         .then(res => {
-          this.followings = res.data.followings.length
-          this.followers = res.data.followers.length
-          for (let article of res.data.ordered_articles) {
-            if (article.status == 'published') {
-              this.publishedArticles.push(article)
-            } else {
-              this.draftArticles.push(article)
-            }
-          }
-          if (!this.publishedArticles.length) {
-            this.noPublished = true
-          }
-          if (!this.draftArticles.length) {
-            this.noDraft = true
-          }
-          this.articleLength = this.publishedArticles.length
+          this.followings = res.data.following
+          this.followers = res.data.followers
         })
         .catch(err => console.log(err.response))
     },
-    getFavoriteArticles() {
-      this.$axios.get(`favorites/${this.authUser.id}`)
+    getNumOfArticles() {
+      this.$axios.get(`articles/${this.authUser.id}/user_articles_count`)
         .then(res => {
-          if (res.data.length) {
-            this.favoriteArticles = res.data
+          this.numOfArticles = res.data
+        })
+        .catch(err => console.log(err.response))
+    },
+    async infiniteHandler($state) {
+      if (this.published) {
+        this.url = `articles/${this.authUser.id}/user_articles`
+        await this.getArticles($state)
+      } else if (this.draft) {
+        this.url = `articles/${this.authUser.id}/user_articles_draft`
+        await this.getArticles($state)
+      } else {
+        this.url = `articles/${this.authUser.id}/user_favorites`
+        await this.getArticles($state)
+      }
+    },
+    getArticles($state) {
+      this.$axios.get(`${this.url}`, { params: { page: this.page }})
+        .then(res => {
+          if (res.data.articles.length) {
+            setTimeout(() => {
+              if (this.page <= res.data.kaminari.pagenation.pages) {
+                this.kaminariPage = res.data.kaminari.pagenation.pages
+                this.page += 1
+                this.articles.push(...res.data.articles)
+                if (this.page != 2) {
+                  $state.loaded()
+                }
+              } else {
+                $state.complete()
+              }
+            }, 800)
           } else {
-            this.noFavorites = true
+            setTimeout(() => {
+              this.loading = false
+            }, 800)
+            $state.complete()
           }
         })
         .catch(err => console.log(err.response))
+    },
+    async showPublished() {
+      this.favorite = false
+      this.draft = false
+      this.published = true
+      this.articles = []
+      this.page = 1
+      this.loading = true
+      await this.infiniteHandler()
+    },
+    async showDrafts() {
+      this.published = false
+      this.favorite = false
+      this.draft = true
+      this.articles = []
+      this.page = 1
+      this.loading = true
+      await this.infiniteHandler()
+    },
+    async showFavorites() {
+      this.published = false
+      this.draft = false
+      this.favorite = true
+      this.articles = []
+      this.page = 1
+      this.loading = true
+      await this.infiniteHandler()
     },
     toFollowingPage() {
       this.$router.push({ name: 'Following' })
     },
     toFollowerPage() {
       this.$router.push({ name: 'Followers' })
-    },
-    showFavorites() {
-      this.published = false
-      this.draft = false
-      this.favorite = true
-    },
-    showDrafts() {
-      this.published = false
-      this.favorite = false
-      this.draft = true
-    },
-    showPublished() {
-      this.favorite = false
-      this.draft = false
-      this.published = true
     },
   }
 }
@@ -615,5 +718,10 @@ export default {
 
 .remove-first-line:first-line {
   line-height: 0px;
+}
+
+.border-top {
+  border-top: solid thin #CBCBCB;
+  padding-bottom: 70px;
 }
 </style>

@@ -38,7 +38,9 @@
               :currency="currency"
               @addBlock="addBlock"
             />
-            <PostButton />
+            <PostButton
+              :country="article.country.name"
+            />
           </div>
         </template>
       </template>
@@ -47,6 +49,7 @@
         <template v-if="days.length">
           <div class="col-12 pt-1 pl-5 pr-5">
             <PostButton
+              :country="article.country.name"
               class="mt-4 ml-5 mr-5"
             />
           </div>
@@ -92,6 +95,7 @@
         <template v-if="days.length">
           <div class="col-12 pt-1 pl-0 pr-0">
             <PostButton
+              :country="article.country.name"
               class="mt-4"
             />
           </div>

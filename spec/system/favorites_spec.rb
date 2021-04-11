@@ -12,7 +12,9 @@ RSpec.describe 'いいね', type: :system do
       before {
         article_normal
         login_as(user)
-        sleep 2
+        sleep 3
+        find('.area-changer-unselected').click
+        sleep 3
         find('.heart').click
       }
 
@@ -56,7 +58,9 @@ RSpec.describe 'いいね', type: :system do
       before {
         article_normal
         login_as(user)
-        sleep 2
+        sleep 3
+        find('.area-changer-unselected').click
+        sleep 3
         find("#article-item-#{article_normal.id}").click
         find('.heart').click
       }
@@ -102,13 +106,16 @@ RSpec.describe 'いいね', type: :system do
       article_normal
       another_user_article
       login_as(article_normal.user)
-      sleep 2
+      sleep 3
+      find('.area-changer-unselected').click
+      sleep 3
       page.all('.heart')[0].click
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(user)
-      sleep 2
+      sleep 3
       find("#article-user-#{article_normal.user.id}").click
+      sleep 3
     }
 
     describe '投稿記事' do
@@ -139,6 +146,7 @@ RSpec.describe 'いいね', type: :system do
             find('.fa-bars').click
             page.all('.dropdown-item')[1].click
             visit root_path
+            sleep 3
             find("#article-user-#{article_normal.user.id}").click
             within('#heart-notlogin') do
               expect(page).to have_css('.fa-heart')
@@ -152,7 +160,10 @@ RSpec.describe 'いいね', type: :system do
     end
 
     describe 'いいねした記事' do
-      before { find('.post-changer-unselect').click }
+      before {
+        find('.post-changer-unselect').click
+        sleep 3
+      }
 
       context '記事のハートボタンをクリック' do
         before{ find('.heart').click }
@@ -183,7 +194,9 @@ RSpec.describe 'いいね', type: :system do
             find('.fa-bars').click
             page.all('.dropdown-item')[1].click
             visit root_path
+            sleep 3
             find("#article-user-#{article_normal.user.id}").click
+            sleep 3
             find('.post-changer-unselect').click
             within('#heart-notlogin') do
               expect(page).to have_css('.fa-heart')
@@ -203,7 +216,9 @@ RSpec.describe 'いいね', type: :system do
       article_normal
       another_user_article
       login_as(article_normal.user)
-      sleep 2
+      sleep 3
+      find('.area-changer-unselected').click
+      sleep 3
       page.all('.heart')[0].click
       visit '/create_trip'
       fill_in 'タイトル', with: 'TestTitle'
@@ -212,9 +227,11 @@ RSpec.describe 'いいね', type: :system do
         find('.vs__dropdown-menu').click
       end
       click_on '詳細入力ページへ進む'
-      sleep 2
+      sleep 3
       find('.draft-button').click
+      sleep 3
       page.all('.post-changer-unselect')[0].click
+      sleep 3
     }
 
     describe '投稿記事' do
@@ -243,7 +260,10 @@ RSpec.describe 'いいね', type: :system do
     end
 
     describe '下書き記事' do
-      before { page.all('.post-changer-unselect')[0].click }
+      before {
+        page.all('.post-changer-unselect')[0].click
+        sleep 3
+      }
 
       it 'ハートボタンが表示されない' do
         expect(page).to_not have_css('.fa-heart')
@@ -253,7 +273,10 @@ RSpec.describe 'いいね', type: :system do
     end
 
     describe '投稿記事' do
-      before { page.all('.post-changer-unselect')[1].click }
+      before {
+        page.all('.post-changer-unselect')[1].click
+        sleep 3
+      }
 
       context '記事のハートボタンをクリック' do
         before{ find('.heart-favorited').click }
@@ -264,7 +287,9 @@ RSpec.describe 'いいね', type: :system do
           end
           expect(page).to_not have_css('.favorite-count')
           visit '/mypage'
+          sleep 3
           page.all('.post-changer-unselect')[1].click
+          sleep 3
           expect(page).to have_content('いいねした投稿がありません')
         end
       end

@@ -2,15 +2,15 @@
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-6 pr-0">
-        <h5 class="font-weight-bold text-center text-white follow-selected">
+        <h5
+          class="font-weight-bold text-center text-muted follow-unselected"
+          @click="toFollowing"
+        >
           フォロー
         </h5>
       </div>
       <div class="col-6 pl-0">
-        <h5
-          class="font-weight-bold text-center text-muted follow-unselected"
-          @click="toFollowers"
-        >
+        <h5 class="font-weight-bold text-center text-white follow-selected">
           フォロワー
         </h5>
       </div>
@@ -26,14 +26,14 @@
                 <div
                   id="user-info"
                   class="d-flex justify-content-center align-items-center pointer"
-                  @click="toUserPage(relationship.follow.id)"
+                  @click="toUserPage(relationship.user.id)"
                 >
                   <img
                     src="../../images/sample.png"
                     class="user-icon"
                   >
                   <h5 class="ml-3 mr-3 m-0 text-dark word-break">
-                    {{ relationship.follow.name }}
+                    {{ relationship.user.name }}
                   </h5>
                 </div>
                 <template v-if="followButton">
@@ -71,7 +71,7 @@ import FollowButton from './components/following/FollowButton'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Following',
+  name: 'Followers',
   components: {
     FollowButton
   },
@@ -79,6 +79,7 @@ export default {
     return {
       followButton: false,
       relationships: [],
+      followingIDs: [],
       page: 1,
       url: null,
       loading: true,
@@ -88,20 +89,25 @@ export default {
     ...mapGetters('users', ['authUser']),
   },
   created() {
-    this.infiniteHandler()
+    this.setInfiniteHandler()
   },
   methods: {
-    async infiniteHandler($state) {
-      if (this.$route.query.user_id) {
-        this.url = `relationships/${this.$route.query.user_id}/following`
-        await this.getFollowing($state)
-      } else {
+    async setInfiniteHandler() {
+      if (!this.$route.query.user_id) {
         this.followButton = true
-        this.url = `relationships/${this.authUser.id}/following`
-        await this.getFollowing($state)
+        this.url = `relationships/${this.authUser.id}/followers`
+        await this.$axios.get('relationships/get_following_ids')
+          .then(res => {
+            this.followingIDs = res.data
+          })
+          .catch(err => console.log(err.response))
+        await this.infiniteHandler()
+      } else {
+        this.url = `relationships/${this.$route.query.user_id}/followers`
+        await this.infiniteHandler()
       }
     },
-    getFollowing($state) {
+    infiniteHandler($state) {
       this.$axios.get(`${this.url}`, { params: { page: this.page }})
         .then(res => {
           if (res.data.relationships.length) {
@@ -110,8 +116,15 @@ export default {
                 this.page += 1
                 this.relationships.push(...res.data.relationships)
                 if (!this.$route.query.user_id) {
-                  for (let relationship of this.relationships) {
-                    relationship.index = 0
+                  for (let passive_relation of this.relationships) {
+                    let result = this.followingIDs.some(following => {
+                      return following.id == passive_relation.user.id
+                    })
+                    if (result == true) {
+                      passive_relation.index = 0
+                    } else {
+                      passive_relation.index = 1
+                    }
                   }
                 }
                 if (this.page != 2) {
@@ -138,16 +151,16 @@ export default {
         this.$router.push({ name: 'UserShow', query: { id: user_id } })
       }
     },
-    toFollowers() {
+    toFollowing() {
       this.relationships = []
       this.page = 1
       if (this.$route.query.user_id) {
         this.$router.push({
-          name: 'Followers',
+          name: 'Following',
           query: { user_id: this.$route.query.user_id }
         })
       } else {
-        this.$router.push({ name: 'Followers' })
+        this.$router.push({ name: 'Following' })
       }
     },
   }
@@ -192,21 +205,5 @@ export default {
 	height: 50px;
 	object-fit: cover;
 	border-radius: 50%;
-}
-
-.follow-button {
-  white-space: nowrap;
-  font-size: 12px;
-  color: #1D51FF;
-  border: solid thin #1D51FF;
-  border-radius: 20px;
-}
-
-.unfollow-button {
-  white-space: nowrap;
-  font-size: 12px;
-  border: solid thin #1D51FF;
-  border-radius: 20px;
-  background-color: #1D51FF;
 }
 </style>

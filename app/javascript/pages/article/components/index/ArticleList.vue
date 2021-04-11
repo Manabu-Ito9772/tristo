@@ -1,34 +1,28 @@
 <template>
-  <div>
-    <div
-      v-for="article in articles"
-      :key="article.id"
-      class="row"
-    >
-      <template v-if="$mq == 'lg'">
-        <div class="col-12">
-          <ArticleItem
-            :article="article"
-            class="mt-4"
-          />
-        </div>
-      </template>
-      <template v-else-if="$mq == 'sm'">
-        <div class="col-12">
-          <ArticleItem
-            :article="article"
-            class="mt-4"
-          />
-        </div>
-      </template>
-      <template v-else>
-        <div class="col-12">
-          <ArticleItem
-            :article="article"
-          />
-        </div>
-      </template>
-    </div>
+  <div class="row">
+    <template v-if="$mq == 'lg'">
+      <div class="col-12">
+        <ArticleItem
+          :article="article"
+          class="mt-4"
+        />
+      </div>
+    </template>
+    <template v-else-if="$mq == 'sm'">
+      <div class="col-12">
+        <ArticleItem
+          :article="article"
+          class="mt-4"
+        />
+      </div>
+    </template>
+    <template v-else>
+      <div class="col-12">
+        <ArticleItem
+          :article="article"
+        />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -41,8 +35,8 @@ export default {
     ArticleItem
   },
   props: {
-    articles: {
-      type: Array,
+    article: {
+      type: Object,
       required: true
     }
   },

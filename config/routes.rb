@@ -18,10 +18,26 @@ Rails.application.routes.draw do
         post 'follow'
         get 'following'
         get 'followers'
+        get 'count'
+        get 'get_following_ids'
+      end
+      collection do
+        get 'get_following_ids'
       end
     end
     resources :sessions
-    resources :articles
+    resources :articles do
+      collection do
+        get 'japan'
+        post 'search'
+      end
+      member do
+        get 'user_articles'
+        get 'user_articles_draft'
+        get 'user_favorites'
+        get 'user_articles_count'
+      end
+    end
     resources :article_regions, only: %i[create destroy]
     resources :tags, only: %i[create]
     resources :article_tags, only: %i[create destroy]

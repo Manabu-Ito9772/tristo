@@ -174,16 +174,13 @@ export default {
     updateComment(comment_id) {
       this.comment.editable = false
       this.$axios.patch(`comments/${comment_id}`, this.comment)
-        .then(res => {
-          this.$emit('getComments')
-        })
         .catch(err => console.log(err.response))
     },
     deleteComment(comment_id) {
       if (confirm('コメントを削除しますか？')) {
         this.$axios.delete(`comments/${comment_id}`)
           .then(res => {
-            this.$emit('getComments')
+            this.$emit('deleteComment', this.comment.index)
           })
           .catch(err => console.log(err.response))
       }
@@ -193,7 +190,7 @@ export default {
         this.$axios.delete(`comments/${comment_id}`)
           .then(res => {
             this.show = false
-            this.$emit('getComments')
+            this.$emit('deleteComment', this.comment.index)
           })
           .catch(err => console.log(err.response))
       }

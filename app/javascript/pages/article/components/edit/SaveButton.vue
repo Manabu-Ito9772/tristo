@@ -39,6 +39,10 @@ export default {
       type: String,
       default: 'published',
       required: true
+    },
+    country: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -61,6 +65,11 @@ export default {
       this.article.created_at = new Date()
       await this.$axios.patch(`articles/${this.$route.query.id}`, this.article)
         .catch(err => console.log(err.response))
+      if (this.country == '日本') {
+        this.$store.commit('articles/articleJapanTrue')
+      } else {
+        this.$store.commit('articles/articleJapanFalse')
+      }
       this.$store.commit('pages/setCurrentPage', 'home')
       this.$router.push({ name: 'ArticleIndex' })
     },

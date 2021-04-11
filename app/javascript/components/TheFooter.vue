@@ -3,17 +3,19 @@
     <template v-if="authUser">
       <nav class="navbar navbar-expand pl-5 pr-5 justify-content-between fixed-bottom">
         <!-- HOME ICON -->
-        <ul class="navbar-nav pl-4">
+        <ul class="navbar-nav">
           <li class="nav-item active m-0">
             <template v-if="currentPage == 'home'">
               <router-link
                 :to="{ name: 'ArticleIndex' }"
                 class="icon-selected"
               >
-                <font-awesome-icon
-                  :icon="['fas', 'home']"
-                  class="fa-lg"
-                />
+                <div @click="scrollTop">
+                  <font-awesome-icon
+                    :icon="['fas', 'home']"
+                    class="fa-lg"
+                  />
+                </div>
               </router-link>
             </template>
 
@@ -33,6 +35,40 @@
           </li>
         </ul>
         <!-- HOME ICON -->
+
+        <!-- SEARCH ICON -->
+        <ul class="navbar-nav">
+          <li class="nav-item active m-0">
+            <template v-if="currentPage == 'search'">
+              <router-link
+                :to="{ name: 'ArticleSearch' }"
+                class="icon-selected"
+              >
+                <div @click="scrollTop">
+                  <font-awesome-icon
+                    :icon="['fas', 'search']"
+                    class="fa-lg"
+                  />
+                </div>
+              </router-link>
+            </template>
+
+            <template v-else>
+              <router-link
+                :to="{ name: 'ArticleSearch' }"
+                class="icon-color"
+              >
+                <div @click="setCurrentPage('search')">
+                  <font-awesome-icon
+                    :icon="['fas', 'search']"
+                    class="fa-lg"
+                  />
+                </div>
+              </router-link>
+            </template>
+          </li>
+        </ul>
+        <!-- SEARCH ICON -->
 
         <!-- PEN ICON -->
         <ul class="navbar-nav">
@@ -67,17 +103,19 @@
         <!-- PEN ICON -->
 
         <!-- USER ICON -->
-        <ul class="navbar-nav pr-4">
+        <ul class="navbar-nav">
           <li class="nav-item active m-0">
             <template v-if="currentPage == 'user'">
               <router-link
                 :to="{ name: 'MyPage' }"
                 class="icon-selected"
               >
-                <font-awesome-icon
-                  :icon="['fas', 'user']"
-                  class="fa-lg"
-                />
+                <div @click="scrollTop">
+                  <font-awesome-icon
+                    :icon="['fas', 'user']"
+                    class="fa-lg"
+                  />
+                </div>
               </router-link>
             </template>
 
@@ -99,6 +137,78 @@
       <!-- USER ICON -->
       </nav>
     </template>
+
+    <template v-else>
+      <nav class="navbar navbar-expand justify-content-center fixed-bottom">
+        <!-- HOME ICON -->
+        <ul class="navbar-nav mr-3 pr-5">
+          <li class="nav-item active m-0">
+            <template v-if="currentPage == 'home'">
+              <router-link
+                :to="{ name: 'ArticleIndex' }"
+                class="icon-selected"
+              >
+                <div @click="scrollTop">
+                  <font-awesome-icon
+                    :icon="['fas', 'home']"
+                    class="fa-lg"
+                  />
+                </div>
+              </router-link>
+            </template>
+
+            <template v-else>
+              <router-link
+                :to="{ name: 'ArticleIndex' }"
+                class="icon-color"
+              >
+                <div @click="setCurrentPage('home')">
+                  <font-awesome-icon
+                    :icon="['fas', 'home']"
+                    class="fa-lg"
+                  />
+                </div>
+              </router-link>
+            </template>
+          </li>
+        </ul>
+        <!-- HOME ICON -->
+
+        <!-- SEARCH ICON -->
+        <ul class="navbar-nav ml-3 pl-5">
+          <li class="nav-item active m-0">
+            <template v-if="currentPage == 'search'">
+              <router-link
+                :to="{ name: 'ArticleSearch' }"
+                class="icon-selected"
+              >
+                <div @click="scrollTop">
+                  <font-awesome-icon
+                    :icon="['fas', 'search']"
+                    class="fa-lg"
+                  />
+                </div>
+              </router-link>
+            </template>
+
+            <template v-else>
+              <router-link
+                :to="{ name: 'ArticleSearch' }"
+                class="icon-color"
+              >
+                <div @click="setCurrentPage('search')">
+                  <font-awesome-icon
+                    :icon="['fas', 'search']"
+                    class="fa-lg"
+                  />
+                </div>
+              </router-link>
+            </template>
+          </li>
+        </ul>
+      <!-- SEARCH ICON -->
+      </nav>
+    </template>
   </footer>
 </template>
 
@@ -114,6 +224,12 @@ export default {
   methods: {
     setCurrentPage(page) {
       this.$store.commit('pages/setCurrentPage', page)
+    },
+    scrollTop(){
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
     }
   }
 }
@@ -121,7 +237,7 @@ export default {
 
 <style scoped>
 .navbar {
-  height: 60px;
+  height: 70px;
   border-top: solid 1px #CBCBCB;
   background-color: white;
 }

@@ -19,7 +19,27 @@ class Article < ApplicationRecord
 
   enum status: { draft: 0, published: 1 }
 
-  scope :published, -> { where(status: 1).order(created_at: :desc) }
+  scope :draft, -> { where(status: 0) }
+  scope :published, -> { where(status: 1) }
+  scope :japan, -> { joins(:country).where(country: { name: '日本' }) }
+  scope :world, -> { joins(:country).where.not(country: { name: '日本' }) }
+  scope :by_country, ->(country_id) { joins(:country).where(country: { id: country_id }) }
+  scope :by_region, ->(region_id) { joins(:article_regions).where(article_regions: { region_id: region_id }) }
+  scope :by_tag, ->(tag) { joins(:tags).where('tags.name = ?', tag) }
+  scope :keyword, ->(word) { where('title LIKE ? OR description LIKE ?', "%#{word}%", "%#{word}%") }
+
+  def self.change_to_json(articles)
+    articles.as_json(
+      only: %i[id title description status start_date end_date],
+      include: [
+        { user: { only: %i[id name] } },
+        { country: { only: %i[id name currency] } },
+        { regions: { only: %i[id name] } },
+        { favorites: { only: :user_id } },
+        { article_tags: { only: :id, include: { tag: { only: :name } } } }
+      ]
+    )
+  end
 
   private
 
