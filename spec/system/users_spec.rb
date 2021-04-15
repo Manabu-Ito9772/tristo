@@ -19,6 +19,9 @@ RSpec.describe 'ユーザー', type: :system do
         expect(page).to have_field('ユーザーネーム')
         expect(page).to have_field('メールアドレス')
         expect(page).to have_field('パスワード')
+        expect(page).to have_content('プロフィール画像')
+        expect(page).to have_field('プロフィール画像')
+        expect(page).to have_css('.user-icon')
         expect(page).to have_button('登録')
       end
 
@@ -27,11 +30,27 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'ユーザーネーム', with: 'TestUser'
           fill_in 'メールアドレス', with: 'test@test.com'
           fill_in 'パスワード', with: 'password'
+          attach_file('プロフィール画像', 'public/images/sample.png')
           click_on '登録'
           sleep 3
           expect(current_path).to eq('/trips')
           find('.fa-user').click
+          expect(current_path).to eq('/mypage')
           expect(page).to have_content('TestUser')
+          expect(page).to have_selector("img[src$='sample.png']")
+        end
+
+        it 'プロフィール画像を設定しない場合はデフォルトの画像が設定される' do
+          fill_in 'ユーザーネーム', with: 'TestUser'
+          fill_in 'メールアドレス', with: 'test@test.com'
+          fill_in 'パスワード', with: 'password'
+          click_on '登録'
+          sleep 3
+          expect(current_path).to eq('/trips')
+          find('.fa-user').click
+          expect(current_path).to eq('/mypage')
+          expect(page).to have_content('TestUser')
+          expect(page).to have_selector("img[src$='default-image.jpg']")
         end
       end
 
@@ -229,7 +248,12 @@ RSpec.describe 'ユーザー', type: :system do
   describe 'マイページ' do
     before {
       country_japan
+      article_normal
       login_as(user)
+      sleep 2
+      find('.area-changer-unselected').click
+      sleep 2
+      find('.heart').click
       find('.fa-pen').click
       fill_in 'タイトル', with: 'TestTitleDraft'
       within('.prefecture') do
@@ -261,6 +285,7 @@ RSpec.describe 'ユーザー', type: :system do
       it 'マイページが表示される' do
         expect(page).to have_content(user.name)
         expect(page).to have_content(user.description)
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_button('編集')
         expect(page).to have_content('投稿')
         expect(page).to have_content('フォロー')
@@ -380,18 +405,45 @@ RSpec.describe 'ユーザー', type: :system do
         end
       end
 
+      context '「いいね」をクリック' do
+        before {
+          page.all('.post-changer-unselect')[1].click
+          sleep 3
+        }
+
+        it 'いいね一覧が表示される' do
+          within('.post-changer') do
+            expect(page).to have_content('いいね')
+          end
+          expect(page).to have_content(article_normal.title)
+          expect(page).to have_content(article_normal.description)
+        end
+
+        context 'いいね一覧の記事をクリック' do
+          before { find('.article-title').click }
+
+          it '記事詳細ページに遷移する' do
+            expect(current_path).to eq('/trip')
+            expect(page).to have_content(article_normal.title)
+            expect(page).to have_content(article_normal.description)
+            expect(page).to have_content(article_normal.user.name)
+          end
+        end
+      end
+
       context '編集をクリック' do
         before { find('.button').click }
 
         it 'プロフィール編集フォームが表示される' do
           expect(page).to have_content('プロフィール編集')
           expect(page).to have_content('プロフィール画像')
-          expect(page).to have_content('ユーザーネーム')
-          expect(page).to have_content('自己紹介')
-          expect(page).to have_button('保存')
+          expect(page).to have_selector("img[src$='default-image.jpg']")
           expect(page).to have_field('プロフィール画像')
+          expect(page).to have_content('ユーザーネーム')
           expect(page).to have_field('ユーザーネーム')
+          expect(page).to have_content('自己紹介')
           expect(page).to have_field('説明')
+          expect(page).to have_button('保存')
           expect(find_field('ユーザーネーム').value).to eq(user.name)
           expect(find_field('説明').value).to eq(user.description)
         end
@@ -400,9 +452,11 @@ RSpec.describe 'ユーザー', type: :system do
           it 'プロフィールがアップデートされマイページに遷移' do
             fill_in 'ユーザーネーム', with: 'UpdatedUser'
             fill_in '説明', with: 'UpdatedDescription'
+            attach_file('プロフィール画像', 'public/images/sample.png')
             click_on '保存'
             sleep 2
             expect(current_path).to eq('/mypage')
+            expect(page).to have_selector("img[src$='sample.png']")
             expect(page).to have_content('UpdatedUser')
             expect(page).to have_content('UpdatedDescription')
           end
@@ -443,10 +497,12 @@ RSpec.describe 'ユーザー', type: :system do
         find('.area-changer-unselected').click
         sleep 3
         find("#article-user-#{article_normal.user.id}").click
+        sleep 2
       }
 
       it 'ユーザーページが表示される' do
         expect(current_path).to eq('/user')
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(article_normal.user.name)
         expect(page).to have_content(article_normal.user.description)
         expect(page).to_not have_button('編集')

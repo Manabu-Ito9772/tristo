@@ -9,8 +9,6 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         get 'me'
-        patch 'update_current_user'
-        delete 'destroy_current_user'
       end
     end
     resources :relationships do

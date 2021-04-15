@@ -7,20 +7,11 @@
       {{ article.title }}
     </p>
 
-    <template v-if="article.description">
-      <h5 class="col-12 mb-1 p-1 text-center text-white font-weight-bold article-title">
-        説明
-      </h5>
-      <p class="mb-3 pb-2 pl-2 pr-2 text-dark word-break break-line remove-first-line">
-        {{ article.description }}
-      </p>
-    </template>
-
     <template v-if="article.country.name == '日本'">
-      <h5 class="col-12 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
+      <h5 class="col-12 mt-4 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
         都道府県
       </h5>
-      <div class="mb-3 text-center">
+      <div class="text-center">
         <p
           v-for="region in article.regions"
           :key="region.id"
@@ -31,10 +22,10 @@
       </div>
     </template>
     <template v-else>
-      <h5 class="col-12 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
+      <h5 class="col-12 mt-4 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
         国と地域
       </h5>
-      <div class="mb-3 text-center">
+      <div class="text-center">
         <p class="d-inline text-dark">
           【{{ article.country.name }}】
         </p>
@@ -48,8 +39,17 @@
       </div>
     </template>
 
+    <template v-if="article.description">
+      <h5 class="col-12 mt-4 mb-1 p-1 text-center text-white font-weight-bold article-title">
+        説明
+      </h5>
+      <p class="pb-2 pl-2 pr-2 text-dark word-break break-line remove-first-line">
+        {{ article.description }}
+      </p>
+    </template>
+
     <template v-if="article.start_date || article.end_date">
-      <h5 class="col-12 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
+      <h5 class="col-12 mt-4 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
         日程
       </h5>
       <template v-if="article.start_date && article.end_date">
@@ -76,11 +76,21 @@
       </template>
     </template>
 
+    <template v-if="article.eyecatch_url">
+      <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+        アイキャッチ
+      </h5>
+      <img
+        :src="article.eyecatch_url"
+        class="w-100"
+      >
+    </template>
+
     <template v-if="article.article_tags.length">
-      <h5 class="col-12 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
+      <h5 class="col-12 mt-4 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
         タグ
       </h5>
-      <div class="mb-3 text-center">
+      <div class="text-center">
         <p
           v-for="article_tag in article.article_tags"
           :key="article_tag.id"
@@ -92,13 +102,13 @@
     </template>
 
     <template v-if="article.map">
-      <h5 class="col-12 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
+      <h5 class="col-12 mt-4 mb-1 p-1 text-center text-white font-weight-bold article-title word-break">
         マップ
       </h5>
       <a
         :href="article.map"
         target="_blank"
-        class="d-block pb-3 pl-2 pr-2 word-break"
+        class="d-block pl-2 pr-2 word-break"
       >
         {{ article.map }}
       </a>
@@ -106,7 +116,7 @@
 
     <div class="text-center">
       <p
-        class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-2 font-weight-bold edit-button"
+        class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button"
         @click="showOverviewEdit"
       >
         編集

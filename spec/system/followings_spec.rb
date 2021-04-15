@@ -25,7 +25,10 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
     }
 
     context 'フォローとフォロー数をクリック' do
-      before { find('#following-count').click}
+      before {
+        find('#following-count').click
+        sleep 2
+      }
 
       it 'フォローしているユーザーを確認できる' do
         expect(current_path).to eq('/following')
@@ -35,6 +38,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-unselected') do
           expect(page).to have_content('フォロワー')
         end
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(another_user_article.user.name)
         expect(page).to have_button('フォロー中')
       end
@@ -66,7 +70,18 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
 
       context 'ユーザー名をクリック' do
         it 'そのユーザーのユーザー詳細ページに遷移' do
-          find('#user-info').click
+          find('.user-name').click
+          sleep 2
+          expect(current_path).to eq('/user')
+          expect(page).to have_content(another_user_article.user.name)
+          expect(page).to have_content(another_user_article.user.description)
+        end
+      end
+
+      context 'ユーザーアイコンをクリック' do
+        it 'そのユーザーのユーザー詳細ページに遷移' do
+          find('.user-icon').click
+          sleep 2
           expect(current_path).to eq('/user')
           expect(page).to have_content(another_user_article.user.name)
           expect(page).to have_content(another_user_article.user.description)
@@ -88,10 +103,13 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       end
     end
 
-    context 'フォローとフォロー数をクリック' do
-      before { find('#followers-count').click }
+    context 'フォロワーとフォロワー数をクリック' do
+      before {
+        find('#followers-count').click
+        sleep 2
+      }
 
-      it 'フォローしているユーザーを確認できる' do
+      it 'フォロワーを確認できる' do
         expect(current_path).to eq('/followers')
         within('.follow-unselected') do
           expect(page).to have_content('フォロー')
@@ -99,6 +117,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-selected') do
           expect(page).to have_content('フォロワー')
         end
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(another_user_article.user.name)
         expect(page).to have_button('フォロー中')
       end
@@ -132,7 +151,18 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
 
       context 'ユーザー名をクリック' do
         it 'そのユーザーのユーザー詳細ページに遷移' do
-          find('#user-info').click
+          find('.user-name').click
+          sleep 2
+          expect(current_path).to eq('/user')
+          expect(page).to have_content(another_user_article.user.name)
+          expect(page).to have_content(another_user_article.user.description)
+        end
+      end
+
+      context 'ユーザーアイコンをクリック' do
+        it 'そのユーザーのユーザー詳細ページに遷移' do
+          find('.user-icon').click
+          sleep 2
           expect(current_path).to eq('/user')
           expect(page).to have_content(another_user_article.user.name)
           expect(page).to have_content(another_user_article.user.description)
@@ -204,7 +234,10 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
     end
 
     context 'フォローとフォロー数をクリック' do
-      before { find('#following-count').click}
+      before {
+        find('#following-count').click
+        sleep 2
+      }
 
       it 'フォローしているユーザーを確認できる' do
         expect(current_path).to eq('/following')
@@ -214,15 +247,83 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-unselected') do
           expect(page).to have_content('フォロワー')
         end
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(article_normal.user.name)
       end
 
       context 'ユーザー名をクリック' do
         it 'そのユーザーのユーザー詳細ページに遷移' do
-          find('#user-info').click
+          find('.user-name').click
+          sleep 2
           expect(current_path).to eq('/user')
           expect(page).to have_content(article_normal.user.name)
           expect(page).to have_content(article_normal.user.description)
+        end
+
+        it 'マイページに遷移' do
+          visit root_path
+          sleep 2
+          find("#article-user-#{another_user_article.user.id}").click
+          sleep 2
+          click_on 'フォロー'
+          find('.fa-bars').click
+          page.all('.dropdown-item')[1].click
+          login_as(another_user_article.user)
+          find('.fa-user').click
+          find('#followers-count').click
+          sleep 2
+          click_on 'フォロー'
+          find('.fa-bars').click
+          page.all('.dropdown-item')[1].click
+          login_as(user)
+          sleep 2
+          find("#article-user-#{another_user_article.user.id}").click
+          sleep 2
+          find('#following-count').click
+          sleep 2
+          page.all('.user-name')[0].click
+          sleep 2
+          expect(current_path).to eq('/mypage')
+          expect(page).to have_content(user.name)
+          expect(page).to have_content(user.description)
+        end
+      end
+
+      context 'ユーザーアイコンをクリック' do
+        it 'そのユーザーのユーザー詳細ページに遷移' do
+          find('.user-icon').click
+          sleep 2
+          expect(current_path).to eq('/user')
+          expect(page).to have_content(article_normal.user.name)
+          expect(page).to have_content(article_normal.user.description)
+        end
+
+        it 'マイページに遷移' do
+          visit root_path
+          sleep 2
+          find("#article-user-#{another_user_article.user.id}").click
+          sleep 2
+          click_on 'フォロー'
+          find('.fa-bars').click
+          page.all('.dropdown-item')[1].click
+          login_as(another_user_article.user)
+          find('.fa-user').click
+          find('#followers-count').click
+          sleep 2
+          click_on 'フォロー'
+          find('.fa-bars').click
+          page.all('.dropdown-item')[1].click
+          login_as(user)
+          sleep 2
+          find("#article-user-#{another_user_article.user.id}").click
+          sleep 2
+          find('#following-count').click
+          sleep 2
+          page.all('.user-icon')[0].click
+          sleep 2
+          expect(current_path).to eq('/mypage')
+          expect(page).to have_content(user.name)
+          expect(page).to have_content(user.description)
         end
       end
 
@@ -241,7 +342,10 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
     end
 
     context 'フォロワーとフォロワー数をクリック' do
-      before { find('#followers-count').click}
+      before {
+        find('#followers-count').click
+        sleep 2
+      }
 
       it 'フォロワーを確認できる' do
         expect(current_path).to eq('/followers')
@@ -251,15 +355,57 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-selected') do
           expect(page).to have_content('フォロワー')
         end
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(article_normal.user.name)
       end
 
       context 'ユーザー名をクリック' do
         it 'そのユーザーのユーザー詳細ページに遷移' do
-          find('#user-info').click
+          find('.user-name').click
+          sleep 2
           expect(current_path).to eq('/user')
           expect(page).to have_content(article_normal.user.name)
           expect(page).to have_content(article_normal.user.description)
+        end
+
+        it 'マイページに遷移' do
+          visit root_path
+          sleep 2
+          find("#article-user-#{another_user_article.user.id}").click
+          sleep 2
+          click_on 'フォロー'
+          find('#followers-count').click
+          sleep 2
+          page.all('.user-name')[0].click
+          sleep 2
+          expect(current_path).to eq('/mypage')
+          expect(page).to have_content(user.name)
+          expect(page).to have_content(user.description)
+        end
+      end
+
+      context 'ユーザーアイコンをクリック' do
+        it 'そのユーザーのユーザー詳細ページに遷移' do
+          find('.user-icon').click
+          sleep 2
+          expect(current_path).to eq('/user')
+          expect(page).to have_content(article_normal.user.name)
+          expect(page).to have_content(article_normal.user.description)
+        end
+
+        it 'マイページに遷移' do
+          visit root_path
+          sleep 2
+          find("#article-user-#{another_user_article.user.id}").click
+          sleep 2
+          click_on 'フォロー'
+          find('#followers-count').click
+          sleep 2
+          page.all('.user-icon')[0].click
+          sleep 2
+          expect(current_path).to eq('/mypage')
+          expect(page).to have_content(user.name)
+          expect(page).to have_content(user.description)
         end
       end
 

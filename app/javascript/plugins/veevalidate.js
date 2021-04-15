@@ -9,7 +9,8 @@ import {
 import {
   email,
   required,
-  numeric
+  numeric,
+  image
 } from 'vee-validate/dist/rules';
 
 Vue.component('ValidationObserver', ValidationObserver)
@@ -45,9 +46,14 @@ extend('numeric', {
   message: '{_field_}は半角数字で入力してください'
 })
 
+extend('image', {
+  ...image,
+  message: '{_field_}は画像形式で入力してください'
+})
+
 extend('max', {
   validate(value, { length }) {
-    return value.length <= length;
+    return value.length <= length
   },
   params: ['length'],
   message: '{_field_}は{length}文字以下で入力してください'
@@ -55,7 +61,7 @@ extend('max', {
 
 extend('min', {
   validate(value, { length }) {
-    return value.length >= length;
+    return value.length >= length
   },
   params: ['length'],
   message: '{_field_}は{length}文字以上で入力してください'

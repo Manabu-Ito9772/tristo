@@ -28,11 +28,13 @@
                   class="d-flex justify-content-center align-items-center pointer"
                   @click="toUserPage(relationship.user.id)"
                 >
-                  <img
-                    src="../../images/sample.png"
-                    class="user-icon"
-                  >
-                  <h5 class="ml-3 mr-3 m-0 text-dark word-break">
+                  <div>
+                    <img
+                      :src="relationship.user.avatar_url"
+                      class="user-icon"
+                    >
+                  </div>
+                  <h5 class="ml-3 mr-3 m-0 text-dark word-break user-name">
                     {{ relationship.user.name }}
                   </h5>
                 </div>

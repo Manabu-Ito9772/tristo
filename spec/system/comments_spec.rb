@@ -31,6 +31,7 @@ RSpec.describe 'コメント', type: :system do
       }
 
       it 'コメントが投稿される' do
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(user.name)
         expect(page).to have_content('Comment')
       end
@@ -65,8 +66,8 @@ RSpec.describe 'コメント', type: :system do
       end
     end
 
-    context 'コメントのユーザー名もしくはユーザーアイコンをクリック' do
-      it 'ユーザー詳細/マイページに遷移' do
+    context 'コメントのユーザー名をクリック' do
+      it 'ユーザー詳細に遷移' do
         fill_in 'コメント', with: 'Comment'
         click_on '投稿'
         find('.fa-bars').click
@@ -76,19 +77,53 @@ RSpec.describe 'コメント', type: :system do
         find("#article-item-#{article_normal.id}").click
         click_on 'コメント'
         find("#user-name-#{user.id}").click
+        sleep 2
         expect(current_path).to eq('/user')
         expect(page).to have_content(user.name)
         expect(page).to have_content(user.description)
-        visit root_path
+      end
+
+      it 'マイページに遷移' do
+        fill_in 'コメント', with: 'MyComment'
+        click_on '投稿'
+        find("#user-name-#{user.id}").click
+        sleep 2
+        expect(current_path).to eq('/mypage')
+        expect(page).to have_content(user.name)
+        expect(page).to have_content(user.description)
+      end
+    end
+
+    context 'コメントのユーザーアイコンをクリック' do
+      it 'ユーザー詳細に遷移' do
+        fill_in 'コメント', with: 'Comment'
+        click_on '投稿'
+        find('.fa-bars').click
+        page.all('.dropdown-item')[1].click
+        login_as(another_user)
         sleep 2
         find("#article-item-#{article_normal.id}").click
         click_on 'コメント'
+        sleep 2
+        within('.comment-all') {
+          find('.user-icon').click
+        }
+        sleep 2
+        expect(current_path).to eq('/user')
+        expect(page).to have_content(user.name)
+        expect(page).to have_content(user.description)
+      end
+
+      it 'マイページに遷移' do
         fill_in 'コメント', with: 'MyComment'
         click_on '投稿'
-        find("#user-name-#{another_user.id}").click
+        within('.comment-all') {
+          find('.user-icon').click
+        }
+        sleep 2
         expect(current_path).to eq('/mypage')
-        expect(page).to have_content(another_user.name)
-        expect(page).to have_content(another_user.description)
+        expect(page).to have_content(user.name)
+        expect(page).to have_content(user.description)
       end
     end
   end
@@ -107,6 +142,7 @@ RSpec.describe 'コメント', type: :system do
       click_on 'コメント'
       expect(page).to_not have_field('コメント')
       expect(page).to_not have_button('投稿')
+      expect(page).to have_selector("img[src$='default-image.jpg']")
       expect(page).to have_content(user.name)
       expect(page).to have_content('Comment')
       expect(page).to_not have_content('.fa-edit')
@@ -124,7 +160,7 @@ RSpec.describe 'コメント', type: :system do
       expect(page).to_not have_button('コメント')
     end
 
-    context 'コメントのユーザー名もしくはユーザーアイコンをクリック' do
+    context 'コメントのユーザー名をクリック' do
       it 'ユーザー詳細ページに遷移' do
         click_on 'コメント'
         fill_in 'コメント', with: 'Comment'
@@ -136,6 +172,27 @@ RSpec.describe 'コメント', type: :system do
         find("#article-item-#{article_normal.id}").click
         click_on 'コメント'
         find("#user-name-#{user.id}").click
+        sleep 2
+        expect(current_path).to eq('/user')
+        expect(page).to have_content(user.name)
+        expect(page).to have_content(user.description)
+      end
+    end
+
+    context 'ユーザーアイコンをクリック' do
+      it 'ユーザー詳細ページに遷移' do
+        click_on 'コメント'
+        fill_in 'コメント', with: 'Comment'
+        click_on '投稿'
+        find('.fa-bars').click
+        page.all('.dropdown-item')[1].click
+        visit root_path
+        sleep 2
+        find("#article-item-#{article_normal.id}").click
+        click_on 'コメント'
+        within('.comment-all') {
+          find('.user-icon').click
+        }
         sleep 2
         expect(current_path).to eq('/user')
         expect(page).to have_content(user.name)

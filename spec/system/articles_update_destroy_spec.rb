@@ -17,6 +17,7 @@ RSpec.describe "記事編集/削除", type: :system do
     page.all('.cell')[20].click
     find("input[name='旅行終了日']").click
     page.all('.cell')[22].click
+    attach_file('アイキャッチ', 'public/images/sample.png')
     fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
     within('.tag') do
       find('.vs__search').set('Tag')
@@ -43,6 +44,7 @@ RSpec.describe "記事編集/削除", type: :system do
     page.all('.cell')[20].click
     find("input[name='旅行終了日']").click
     page.all('.cell')[22].click
+    attach_file('アイキャッチ', 'public/images/sample.png')
     fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=17HzQVLk9-3JyLYxvCBQmvWjtlaomn4xd" width="640" height="480"></iframe>'
     within('.tag') do
       find('.vs__search').set('Tag')
@@ -105,6 +107,7 @@ RSpec.describe "記事編集/削除", type: :system do
             expect(page).to have_content('説明')
             expect(page).to have_content('都道府県')
             expect(page).to have_content('日程')
+            expect(page).to have_content('アイキャッチ')
             expect(page).to have_content('タグ')
             expect(page).to have_content('マップ')
             expect(page).to have_content(country_japan.articles.first.title)
@@ -112,6 +115,7 @@ RSpec.describe "記事編集/削除", type: :system do
             expect(page).to have_content(country_japan.regions.first.name)
             expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
             expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+            expect(page).to have_selector("img[src$='sample.png']")
             expect(page).to have_content(country_japan.articles.first.tags.first.name)
             expect(page).to have_content(country_japan.articles.first.map)
           end
@@ -136,6 +140,7 @@ RSpec.describe "記事編集/削除", type: :system do
             expect(page).to have_content('都道府県')
             expect(page).to_not have_content('説明')
             expect(page).to_not have_content('日程')
+            expect(page).to_not have_content('アイキャッチ')
             expect(page).to_not have_content('タグ')
             expect(page).to_not have_content('マップ')
           end
@@ -145,19 +150,24 @@ RSpec.describe "記事編集/削除", type: :system do
           end
 
           context '編集ボタンをクリック' do
-            before { find('.edit-button').click }
+            before {
+              find('.edit-button').click
+              sleep 2
+            }
 
             it '概要編集フォームが表示される' do
               expect(page).to have_content('* タイトル')
               expect(page).to have_content('説明')
               expect(page).to have_content('* 都道府県')
               expect(page).to have_content('日程')
+              expect(page).to have_content('アイキャッチ')
               expect(page).to have_content('タグ')
               expect(page).to have_content('マップ')
               expect(page).to have_field('タイトル')
               expect(page).to have_field('説明')
               expect(page).to have_field('旅行開始日')
               expect(page).to have_field('旅行終了日')
+              expect(page).to have_field('アイキャッチ')
               expect(page).to have_field('マップ')
               within('.prefecture') do
                 expect(page).to have_css('.vs__search')
@@ -180,6 +190,7 @@ RSpec.describe "記事編集/削除", type: :system do
                 page.all('.cell')[23].click
                 find("input[name='旅行終了日']").click
                 page.all('.cell')[25].click
+                attach_file('アイキャッチ', 'public/images/sample2.png')
                 fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
                 within('.tag') do
                   find('.vs__deselect').click
@@ -193,6 +204,7 @@ RSpec.describe "記事編集/削除", type: :system do
                 expect(page).to have_content('神奈川')
                 expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
                 expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+                expect(page).to have_selector("img[src$='sample2.png']")
                 expect(page).to have_content('UpdatedTag')
                 expect(page).to have_content('https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS')
               end
@@ -234,13 +246,17 @@ RSpec.describe "記事編集/削除", type: :system do
         }
 
         context '概要ボタンをクリック' do
-          before { click_on '概要' }
+          before {
+            click_on '概要'
+            sleep 2
+          }
 
           it '記事概要が表示される' do
             expect(page).to have_content('タイトル')
             expect(page).to have_content('説明')
             expect(page).to have_content('国と地域')
             expect(page).to have_content('日程')
+            expect(page).to have_content('アイキャッチ')
             expect(page).to have_content('タグ')
             expect(page).to have_content('マップ')
             expect(page).to have_content(country[1].articles.first.title)
@@ -248,6 +264,7 @@ RSpec.describe "記事編集/削除", type: :system do
             expect(page).to have_content(country[1].regions.first.name)
             expect(page).to have_content(country[1].articles.first.start_date.strftime("%-m/%-d"))
             expect(page).to have_content(country[1].articles.first.end_date.strftime("%-m/%-d"))
+            expect(page).to have_selector("img[src$='sample.png']")
             expect(page).to have_content(country[1].articles.first.tags.first.name)
             expect(page).to have_content(country[1].articles.first.map)
           end
@@ -272,6 +289,7 @@ RSpec.describe "記事編集/削除", type: :system do
             expect(page).to have_content('国と地域')
             expect(page).to_not have_content('説明')
             expect(page).to_not have_content('日程')
+            expect(page).to_not have_content('アイキャッチ')
             expect(page).to_not have_content('タグ')
             expect(page).to_not have_content('マップ')
           end
@@ -288,12 +306,14 @@ RSpec.describe "記事編集/削除", type: :system do
               expect(page).to have_content('* 国')
               expect(page).to have_content('地域')
               expect(page).to have_content('日程')
+              expect(page).to have_content('アイキャッチ')
               expect(page).to have_content('タグ')
               expect(page).to have_content('マップ')
               expect(page).to have_field('タイトル')
               expect(page).to have_field('説明')
               expect(page).to have_field('旅行開始日')
               expect(page).to have_field('旅行終了日')
+              expect(page).to have_field('アイキャッチ')
               expect(page).to have_field('マップ')
               within('.country') do
                 expect(page).to have_css('.vs__search')
@@ -323,6 +343,7 @@ RSpec.describe "記事編集/削除", type: :system do
                 page.all('.cell')[23].click
                 find("input[name='旅行終了日']").click
                 page.all('.cell')[25].click
+                attach_file('アイキャッチ', 'public/images/sample2.png')
                 fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
                 within('.tag') do
                   find('.vs__deselect').click
@@ -337,6 +358,7 @@ RSpec.describe "記事編集/削除", type: :system do
                 expect(page).to have_content(country[2].regions.first.name)
                 expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
                 expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
+                expect(page).to have_selector("img[src$='sample2.png']")
                 expect(page).to have_content('UpdatedTag')
                 expect(page).to have_content('https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS')
               end
@@ -385,7 +407,7 @@ RSpec.describe "記事編集/削除", type: :system do
             expect(page).to have_content('コスト')
             expect(page).to have_content('次のスポットまでの移動手段')
             expect(page).to have_content('コメント')
-            expect(page).to have_content('アイキャッチ')
+            expect(page).to have_content('写真（上限3枚）')
             expect(page).to have_css('.arriving_time')
             expect(page).to have_css('.leaving_time')
             expect(page).to have_field('イベント')
@@ -750,6 +772,7 @@ RSpec.describe "記事編集/削除", type: :system do
       page.all('.cell')[23].click
       find("input[name='旅行終了日']").click
       page.all('.cell')[25].click
+      attach_file('アイキャッチ', 'public/images/sample2.png')
       fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
       within('.tag') do
         find('.vs__deselect').click
@@ -821,6 +844,7 @@ RSpec.describe "記事編集/削除", type: :system do
         expect(page).to have_content('神奈川')
         expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+        expect(page).to have_selector("img[src$='sample2.png']")
         expect(page).to have_content('UpdatedTag')
         expect(page).to have_content(user.name)
       end
@@ -839,6 +863,7 @@ RSpec.describe "記事編集/削除", type: :system do
           expect(page).to have_content('神奈川')
           expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
           expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_selector("img[src$='sample2.png']")
           expect(page).to have_content('UpdatedTag')
           expect(page).to have_content(user.name)
         end
@@ -859,6 +884,7 @@ RSpec.describe "記事編集/削除", type: :system do
           expect(page).to have_content('神奈川')
           expect(page).to have_content(country_japan.articles.first.start_date.strftime("%-m/%-d"))
           expect(page).to have_content(country_japan.articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_selector("img[src$='sample2.png']")
           expect(page).to have_content('UpdatedTag')
           expect(page).to have_content(user.name)
         end
@@ -892,6 +918,7 @@ RSpec.describe "記事編集/削除", type: :system do
       page.all('.cell')[23].click
       find("input[name='旅行終了日']").click
       page.all('.cell')[25].click
+      attach_file('アイキャッチ', 'public/images/sample2.png')
       fill_in 'マップ', with: '<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1TFQRmCHcR8rKSoojgc0paPn0XzjyQ2wS" width="640" height="480"></iframe>'
       within('.tag') do
         find('.vs__deselect').click
@@ -965,8 +992,10 @@ RSpec.describe "記事編集/削除", type: :system do
         expect(page).to have_content(country[2].regions.first.name)
         expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
+        expect(page).to have_selector("img[src$='sample2.png']")
         expect(page).to have_content('UpdatedTag')
         expect(page).to have_content(user.name)
+        page.save_screenshot 'screenshot.png'
       end
 
       context '下書き状態の記事編集ページで「投稿する」をクリック' do
@@ -984,6 +1013,7 @@ RSpec.describe "記事編集/削除", type: :system do
           expect(page).to have_content(country[2].regions.first.name)
           expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
           expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_selector("img[src$='sample2.png']")
           expect(page).to have_content('UpdatedTag')
           expect(page).to have_content(user.name)
         end
@@ -1005,6 +1035,7 @@ RSpec.describe "記事編集/削除", type: :system do
           expect(page).to have_content(country[2].regions.first.name)
           expect(page).to have_content(country[2].articles.first.start_date.strftime("%-m/%-d"))
           expect(page).to have_content(country[2].articles.first.end_date.strftime("%-m/%-d"))
+          expect(page).to have_selector("img[src$='sample2.png']")
           expect(page).to have_content('UpdatedTag')
           expect(page).to have_content(user.name)
         end

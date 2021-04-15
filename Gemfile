@@ -40,6 +40,9 @@ gem 'sorcery'
 gem 'aws-sdk-s3', require: false
 gem 'mini_magick'
 
+# Active Storage Validation
+gem 'activestorage-validator'
+
 # pagination
 gem 'kaminari'
 

@@ -272,7 +272,7 @@ RSpec.describe 'いいね', type: :system do
       end
     end
 
-    describe '投稿記事' do
+    describe 'いいねした記事' do
       before {
         page.all('.post-changer-unselect')[1].click
         sleep 3

@@ -1,10 +1,12 @@
 <template>
   <div class="pt-2 pb-2 pl-3 pr-3 d-flex align-items-top comment-each">
-    <img
-      src="../../../../../images/sample.png"
-      class="user-icon"
-      @click="toUserPage(comment.user.id)"
-    >
+    <div>
+      <img
+        :src="comment.user.avatar_url"
+        class="user-icon"
+        @click="toUserPage(comment.user.id)"
+      >
+    </div>
     <div class="ml-3 w-100">
       <div class="d-flex justify-content-between align-items-center">
         <p
@@ -216,7 +218,7 @@ export default {
 
 .user-icon {
   width: 50px;
-	height: 50px;
+  height: 50px;
 	object-fit: cover;
 	border-radius: 50%;
   cursor: pointer;

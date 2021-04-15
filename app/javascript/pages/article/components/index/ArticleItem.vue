@@ -57,18 +57,24 @@
             </div>
           </div>
         </div>
-        <div class="col-12 pt-2 pl-4 pr-4">
-          <img
-            src="../../../../images/sample.png"
-            class="main-image-xs m-0"
-          >
-        </div>
+
+        <template v-if="article.eyecatch_url">
+          <div class="col-12 pt-2 pl-4 pr-4">
+            <img
+              :src="article.eyecatch_url"
+              class="main-image-xs m-0"
+            >
+          </div>
+        </template>
+
         <div class="col-12">
           <div class="pt-3 pb-3 d-flex justify-content-center align-items-center">
-            <img
-              src="../../../../images/sample.png"
-              class="user-icon"
-            >
+            <div>
+              <img
+                :src="article.user.avatar_url"
+                class="user-icon"
+              >
+            </div>
             <h5
               class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name"
               @click="toUserPage(article.user.id)"
@@ -184,18 +190,24 @@
               </div>
             </div>
           </div>
-          <div class="col-12">
-            <img
-              src="../../../../images/sample.png"
-              class="main-image pt-3 pb-3"
-            >
-          </div>
+
+          <template v-if="article.eyecatch_url">
+            <div class="col-12">
+              <img
+                :src="article.eyecatch_url"
+                class="main-image pt-3 pb-3"
+              >
+            </div>
+          </template>
+
           <div class="col-12">
             <div class="p-2 d-flex justify-content-center align-items-center user">
-              <img
-                src="../../../../images/sample.png"
-                class="user-icon"
-              >
+              <div>
+                <img
+                  :src="article.user.avatar_url"
+                  class="user-icon"
+                >
+              </div>
               <h5
                 :id="'article-user-' + article.user.id"
                 class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name"

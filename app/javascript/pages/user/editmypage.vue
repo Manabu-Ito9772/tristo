@@ -9,21 +9,44 @@
         </div>
         <div class="col-12">
           <ValidationObserver v-slot="{ handleSubmit }">
-            <div class="form-group m-0">
+            <div class="form-group text-center m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="max:100"
+                ref="provider"
+                name="プロフィール画像"
+                rules="image"
               >
                 <h5
                   id="プロフィール画像"
-                  class="p-1 text-center text-white font-weight-bold form-label"
+                  class="p-1 mb-4 text-center text-white font-weight-bold form-label"
                 >
                   プロフィール画像
                 </h5>
-                <input
-                  name="プロフィール画像"
-                  class="form-control mt-2"
-                >
+                <template v-if="uploadAvatar">
+                  <img
+                    :src="previewAvatar"
+                    class="user-icon"
+                  >
+                </template>
+                <template v-else>
+                  <img
+                    :src="user.avatar_url"
+                    class="user-icon"
+                  >
+                </template>
+                <label class="mb-0 ml-3 mr-3">
+                  <p class="mb-0 pl-3 pr-3 bg-white text-dark file-button">
+                    画像を選択
+                  </p>
+                  <input
+                    id="avatar"
+                    type="file"
+                    accept="image/png,image/jpeg"
+                    name="プロフィール画像"
+                    class="d-none"
+                    @change="handleChange"
+                  >
+                </label>
                 <span class="text-danger">{{ errors[0] }}</span>
               </ValidationProvider>
             </div>
@@ -91,10 +114,12 @@
         </h3>
         <div class="col-12 p-4 bg-white overview">
           <ValidationObserver v-slot="{ handleSubmit }">
-            <div class="form-group m-0">
+            <div class="form-group text-center m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="max:100"
+                ref="provider"
+                name="プロフィール画像"
+                rules="image"
               >
                 <h5
                   id="プロフィール画像"
@@ -102,9 +127,25 @@
                 >
                   プロフィール画像
                 </h5>
+                <template v-if="uploadAvatar">
+                  <img
+                    :src="previewAvatar"
+                    class="mt-2 mb-3 user-icon"
+                  >
+                </template>
+                <template v-else>
+                  <img
+                    :src="user.avatar_url"
+                    class="mt-2 mb-3 user-icon"
+                  >
+                </template>
                 <input
+                  id="avatar"
+                  type="file"
+                  accept="image/png,image/jpeg"
                   name="プロフィール画像"
-                  class="form-control mt-2 bg-light"
+                  class="form-control-file mx-auto file-input"
+                  @change="handleChange"
                 >
                 <span class="text-danger">{{ errors[0] }}</span>
               </ValidationProvider>
@@ -178,8 +219,11 @@ export default {
       user: {
         name: '',
         description: '',
+        avatar_url: ''
       },
       height: '',
+      previewAvatar: '',
+      uploadAvatar: ''
     }
   },
   computed: {
@@ -203,22 +247,32 @@ export default {
   },
   methods: {
     ...mapActions('users', [
-      'updateUser'
+      'updateUser',
     ]),
-    async updateCurrentUser() {
-      try {
-        await this.updateUser(this.user)
-        this.$router.go(-1)
-      } catch (error) {
-        console.log(error)
-      }
-    },
     resize(){
       this.height = 'auto'
       this.$nextTick(()=>{
         this.height = this.$refs.area.scrollHeight + 'px'
       })
-    }
+    },
+    async handleChange(event) {
+      this.previewAvatar = URL.createObjectURL(event.target.files[0])
+      const { valid } = await this.$refs.provider.validate(event)
+      if (valid) this.uploadAvatar = event.target.files[0]
+    },
+    async updateCurrentUser() {
+      const formData = new FormData()
+      formData.append('name', this.user.name)
+      if (this.user.description) formData.append('description', this.user.description)
+      if (this.uploadAvatar) formData.append('avatar', this.uploadAvatar)
+
+      await this.$axios.patch(`users/${this.authUser.id}`, formData)
+        .then(res => {
+          this.$store.commit('users/setUser', res.data)
+        })
+        .catch(err => console.log(err.response))
+      this.$router.push({ name: 'MyPage' })
+    },
   }
 }
 </script>
@@ -248,5 +302,21 @@ export default {
   width: 100px;
   border-radius: 20px;
   background-color: #FF00EB;
+}
+
+.user-icon {
+  width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.file-input {
+  width: 65%;
+}
+
+.file-button {
+  border: solid thin rgb(206, 212, 218);
+  border-radius: 20px;
 }
 </style>

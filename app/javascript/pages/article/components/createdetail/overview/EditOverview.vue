@@ -16,30 +16,12 @@
         <span class="text-danger">{{ errors[0] }}</span>
       </ValidationProvider>
 
-      <ValidationProvider
-        v-slot="{ errors }"
-        rules="max:3000"
-      >
-        <h5 class="col-12 mt-3 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
-          説明
-        </h5>
-        <textarea
-          ref="area"
-          v-model="articleEdit.description"
-          :style="styles"
-          name="説明"
-          class="mb-3 form-control bg-light"
-          rows="1"
-        />
-        <span class="text-danger">{{ errors[0] }}</span>
-      </ValidationProvider>
-
       <template v-if="countryName != '日本'">
         <ValidationProvider
           v-slot="{ errors }"
           rules="country"
         >
-          <h5 class="col-12 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+          <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
             * 国
           </h5>
           <v-select
@@ -55,7 +37,7 @@
           <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
-        <h5 class="col-12 mt-3 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
           地域
         </h5>
         <v-select
@@ -76,7 +58,7 @@
           v-slot="{ errors }"
           rules="prefecture"
         >
-          <h5 class="col-12 mt-3 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+          <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
             * 都道府県
           </h5>
           <v-select
@@ -94,10 +76,28 @@
         </ValidationProvider>
       </template>
 
-      <h5 class="col-12 mt-3 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+      <ValidationProvider
+        v-slot="{ errors }"
+        rules="max:3000"
+      >
+        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+          説明
+        </h5>
+        <textarea
+          ref="area"
+          v-model="articleEdit.description"
+          :style="styles"
+          name="説明"
+          class="form-control bg-light"
+          rows="1"
+        />
+        <span class="text-danger">{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
         日程
       </h5>
-      <div class="mb-3 d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-between">
         <Datepicker
           v-model="articleEdit.start_date"
           :format="datepicker.format"
@@ -125,19 +125,73 @@
         />
       </div>
 
-      <h5 class="col-12 p-1 text-center text-white font-weight-bold article-title word-break">
+      <ValidationProvider
+        v-slot="{ errors }"
+        ref="provider"
+        name="アイキャッチ"
+        rules="image"
+      >
+        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+          アイキャッチ
+        </h5>
+        <template v-if="previewEyecatch">
+          <img
+            :src="previewEyecatch"
+            class="mb-2 w-100"
+          >
+        </template>
+        <template v-else>
+          <template v-if="article.eyecatch_url">
+            <img
+              :src="article.eyecatch_url"
+              class="mb-2 w-100"
+            >
+          </template>
+        </template>
+
+        <template v-if="$mq == 'xs'">
+          <div class="text-center">
+            <label>
+              <p class="mb-0 pl-3 pr-3 bg-white text-dark file-button">
+                画像を選択
+              </p>
+              <input
+                id="eyecatch"
+                type="file"
+                accept="image/png,image/jpeg"
+                name="アイキャッチ"
+                class="d-none"
+                @change="handleChange"
+              >
+            </label>
+          </div>
+        </template>
+        <template v-else>
+          <input
+            id="eyecatch"
+            type="file"
+            accept="image/png,image/jpeg"
+            name="アイキャッチ"
+            class="form-control-file mx-auto file-input"
+            @change="handleChange"
+          >
+        </template>
+        <span class="text-danger">{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <h5 class="col-12 mt-4 p-1 text-center text-white font-weight-bold article-title word-break">
         タグ
       </h5>
       <v-select
         v-model="tags"
         multiple
         taggable
-        class="mb-3 bg-light tag v-select"
+        class="bg-light tag v-select"
       >
         <span slot="no-options">タグを登録できます</span>
       </v-select>
 
-      <h5 class="col-12 p-1 text-center text-white font-weight-bold article-title word-break">
+      <h5 class="col-12 mt-4 p-1 text-center text-white font-weight-bold article-title word-break">
         マップ
       </h5>
       <input
@@ -155,7 +209,7 @@
 
       <div class="text-center">
         <p
-          class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-3 font-weight-bold edit-button"
+          class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-3 mb-4 font-weight-bold edit-button"
           @click="handleSubmit(updateOverview)"
         >
           保存
@@ -206,6 +260,8 @@ export default {
         },
       },
       height: '',
+      previewEyecatch: '',
+      uploadEyecatch: ''
     }
   },
   computed: {
@@ -312,14 +368,23 @@ export default {
           .catch(err => console.log(err.response))
       }
     },
+    async handleChange(event) {
+      this.previewEyecatch = URL.createObjectURL(event.target.files[0])
+      const { valid } = await this.$refs.provider.validate(event)
+      if (valid) this.uploadEyecatch = event.target.files[0]
+    },
     async updateArticle() {
       this.articleEdit.country_id = this.country.id
-      delete this.articleEdit.country
-      delete this.articleEdit.regions
-      delete this.articleEdit.article_regions
-      delete this.articleEdit.article_tags
-      delete this.articleEdit.days
-      await this.$axios.patch(`articles/${this.$route.query.id}`, this.articleEdit)
+      const formData = new FormData()
+      formData.append('article[country_id]', this.articleEdit.country_id)
+      formData.append('article[title]', this.articleEdit.title)
+      if (this.articleEdit.description) formData.append('article[description]', this.articleEdit.description)
+      if (this.articleEdit.map) formData.append('article[map]', this.articleEdit.map)
+      if (this.articleEdit.start_date) formData.append('article[start_date]', this.articleEdit.start_date)
+      if (this.articleEdit.end_date) formData.append('article[end_date]', this.articleEdit.end_date)
+      if (this.uploadEyecatch) formData.append('article[eyecatch]', this.uploadEyecatch)
+
+      await this.$axios.patch(`articles/${this.$route.query.id}`, formData)
         .then(res => {
           this.$emit('updateOverview', res.data)
         })
@@ -385,5 +450,14 @@ export default {
 .v-select {
   border-radius: 4px;
   background-color: #f8f9fa;
+}
+
+.file-button {
+  border: solid thin rgb(206, 212, 218);
+  border-radius: 20px;
+}
+
+.file-input {
+  width: 75%;
 }
 </style>

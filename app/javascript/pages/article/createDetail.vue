@@ -20,6 +20,7 @@
                 :currency="currency"
                 class="col-12 pt-4 pb-2 pl-4 pr-4 main-column"
                 @getArticle="getArticle"
+                @getArticleAndCloseForm="getArticleAndCloseForm"
               />
             </div>
             <div class="d-flex justify-content-center pl-3 pr-3 mb-4">
@@ -69,6 +70,7 @@
               :currency="currency"
               class="ml-5 mr-5 pt-4 pb-2 pr-4 pl-4 main-column"
               @getArticle="getArticle"
+              @getArticleAndCloseForm="getArticleAndCloseForm"
             />
             <div class="d-flex justify-content-center pl-3 pr-3 mb-4">
               <Overview
@@ -114,6 +116,7 @@
               :days="days"
               :currency="currency"
               @getArticle="getArticle"
+              @getArticleAndCloseForm="getArticleAndCloseForm"
             />
             <div class="row d-flex justify-content-center pl-3 pr-3 mb-4">
               <Overview
@@ -203,6 +206,17 @@ export default {
         })
         .catch(err => console.log(err.response))
     },
+    async getArticleAndCloseForm() {
+      await this.$axios.get(`articles/${this.$route.query.id}`)
+        .then(res => {
+          this.article = res.data
+          for (let i = 0; i < this.article.days.length; i++) {
+            this.article.days[i].number = i + 1
+          }
+        })
+        .catch(err => console.log(err.response))
+      this.$refs.list.closeBlockEditForm()
+    },
     async addDay() {
       await this.$axios.post('days', this.day)
         .catch(err => console.log(err.response))
@@ -219,7 +233,21 @@ export default {
     },
     async addBlock(blockAndCost) {
       this.blockAndCost = Object.assign({}, blockAndCost)
-      await this.$axios.post('blocks', this.blockAndCost.block)
+      const formData = new FormData()
+      formData.append('block[day_id]', this.blockAndCost.block.day_id)
+      formData.append('block[title]', this.blockAndCost.block.title)
+      if (this.blockAndCost.block.place) formData.append('block[place]', this.blockAndCost.block.place)
+      if (this.blockAndCost.block.place_info) formData.append('block[place_info]', this.blockAndCost.block.place_info)
+      if (this.blockAndCost.block.comment) formData.append('block[comment]', this.blockAndCost.block.comment)
+      if (this.blockAndCost.block.arriving_time) formData.append('block[arriving_time]', this.blockAndCost.block.arriving_time)
+      if (this.blockAndCost.block.leaving_time) formData.append('block[leaving_time]', this.blockAndCost.block.leaving_time)
+      if (this.blockAndCost.block.uploadImages) {
+        for (let image of this.blockAndCost.block.uploadImages) {
+          formData.append('block[images]' + '[]', image)
+        }
+      }
+
+      await this.$axios.post('blocks', formData)
         .then(res => {
           this.block_id = res.data.id
         })
@@ -263,9 +291,7 @@ export default {
 
 <style scoped>
 .container-fluid {
-  display: flex;
   max-width: 1000px;
-  height: auto;
 }
 
 .main {

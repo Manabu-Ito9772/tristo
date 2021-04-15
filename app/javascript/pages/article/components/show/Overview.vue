@@ -1,9 +1,9 @@
 <template>
   <div class="w-100">
     <template v-if="article.title">
-      <h4 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
+      <h5 class="col-12 mb-1 p-2 text-center text-white font-weight-bold article-title word-break">
         {{ article.title }}
-      </h4>
+      </h5>
     </template>
 
     <div class="col-12 mb-3 text-muted text-center word-break article-info">
@@ -59,11 +59,13 @@
     </template>
 
     <div class="col-12 mb-3 p-0 d-flex justify-content-center align-items-center user-name">
-      <img
-        src="../../../../images/sample.png"
-        class="user-icon"
-        @click="toUserPage(user.id)"
-      >
+      <div>
+        <img
+          :src="user.avatar_url"
+          class="user-icon"
+          @click="toUserPage(user.id)"
+        >
+      </div>
       <h5
         class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-link"
         @click="toUserPage(user.id)"

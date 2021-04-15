@@ -1,11 +1,7 @@
 class Api::BlocksController < ApplicationController
   before_action :authenticate!
-  before_action :set_block, only: %i[show update destroy]
+  before_action :set_block, only: %i[update destroy]
   skip_before_action :verify_authenticity_token
-
-  # def show
-  #   render json: @block
-  # end
 
   def create
     @block = Block.new(block_params)
@@ -37,6 +33,6 @@ class Api::BlocksController < ApplicationController
   end
 
   def block_params
-    params.require(:block).permit(:day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time)
+    params.require(:block).permit(:day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, images: [])
   end
 end

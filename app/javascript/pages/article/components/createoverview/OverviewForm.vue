@@ -207,6 +207,37 @@
           </template>
         </div>
 
+        <div class="form-group mt-4">
+          <ValidationProvider
+            v-slot="{ errors }"
+            ref="provider"
+            name="アイキャッチ"
+            rules="image"
+          >
+            <h5
+              id="アイキャッチ"
+              class="p-1 text-center text-white font-weight-bold form-label"
+            >
+              アイキャッチ
+            </h5>
+            <template v-if="previewEyecatch">
+              <img
+                :src="previewEyecatch"
+                class="mb-2 w-100"
+              >
+            </template>
+            <input
+              id="eyecatch"
+              type="file"
+              accept="image/png,image/jpeg"
+              name="アイキャッチ"
+              class="form-control-file mx-auto file-input"
+              @change="handleChange"
+            >
+            <span class="text-danger">{{ errors[0] }}</span>
+          </ValidationProvider>
+        </div>
+
         <div class="form-group mt-4 mb-3">
           <h5 class="p-1 text-center text-white font-weight-bold form-label">
             タグ
@@ -244,7 +275,7 @@
           </p>
           <button
             class="btn text-white font-weight-bold button"
-            @click="handleSubmit(createArticle)"
+            @click="handleSubmit(createArticleAndRelation)"
           >
             詳細入力ページへ進む
           </button>
@@ -307,6 +338,8 @@ export default {
         { name: '日帰り', value: 1 },
       ],
       height: '',
+      previewEyecatch: '',
+      uploadEyecatch: ''
     }
   },
   computed: {
@@ -350,7 +383,12 @@ export default {
         this.thirty_days.push(day)
       }
     },
-    async createArticle() {
+    async handleChange(event) {
+      this.previewEyecatch = URL.createObjectURL(event.target.files[0])
+      const { valid } = await this.$refs.provider.validate(event)
+      if (valid) this.uploadEyecatch = event.target.files[0]
+    },
+    async createArticleAndRelation() {
       if (this.isVisibleDomestic) {
         this.article.country_id = this.japan.id
       } else {
@@ -362,13 +400,7 @@ export default {
       if (this.article.end_date) {
         this.article.end_date.setHours(this.article.end_date.getHours() + 9)
       }
-      await this.$axios.post('articles', this.article)
-        .then(res => {
-          this.day.article_id = res.data.id
-          this.article_region.article_id = res.data.id
-          this.article_tag.article_id = res.data.id
-        })
-        .catch(err => console.log(err.response))
+      await this.createArticle()
       await this.createRegions()
       await this.createDays()
       await this.registerTags()
@@ -376,6 +408,24 @@ export default {
         name: 'ArticleCreateDetail',
         query: {id: this.day.article_id}
       })
+    },
+    async createArticle() {
+      const formData = new FormData()
+      formData.append('article[country_id]', this.article.country_id)
+      formData.append('article[title]', this.article.title)
+      if (this.article.description) formData.append('article[description]', this.article.description)
+      if (this.article.map) formData.append('article[map]', this.article.map)
+      if (this.article.start_date) formData.append('article[start_date]', this.article.start_date)
+      if (this.article.end_date) formData.append('article[end_date]', this.article.end_date)
+      if (this.uploadEyecatch) formData.append('article[eyecatch]', this.uploadEyecatch)
+
+      await this.$axios.post('articles', formData)
+        .then(res => {
+          this.day.article_id = res.data.id
+          this.article_region.article_id = res.data.id
+          this.article_tag.article_id = res.data.id
+        })
+        .catch(err => console.log(err.response))
     },
     async createRegions() {
       if (this.isVisibleDomestic) {
@@ -498,5 +548,9 @@ export default {
 .v-select {
   border-radius: 4px;
   background-color: #f8f9fa;
+}
+
+.file-input {
+  width: 65%;
 }
 </style>
