@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 2021_04_11_125345) do
   create_table "countries", force: :cascade do |t|
     t.string "name", null: false
     t.string "currency", null: false
+    t.integer "order"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -129,6 +130,7 @@ ActiveRecord::Schema.define(version: 2021_04_11_125345) do
   create_table "regions", force: :cascade do |t|
     t.bigint "country_id", null: false
     t.string "name", null: false
+    t.integer "order"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["country_id"], name: "index_regions_on_country_id"

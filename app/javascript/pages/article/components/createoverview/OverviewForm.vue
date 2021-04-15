@@ -74,9 +74,10 @@
             <v-select
               v-model="country"
               :options="countries"
-              label="name"
+              :get-option-label="country => country.name"
               :clearable="false"
               class="country v-select"
+              @input="getRegions"
             >
               <span slot="no-options">該当する国がありません</span>
             </v-select>
@@ -93,9 +94,9 @@
             </h5>
             <v-select
               v-model="regionIdArray"
-              :options="country.regions"
+              :options="regions"
               :reduce="region => region.id"
-              label="name"
+              :get-option-label="region => region.name"
               multiple
               class="region v-select"
             >
@@ -103,6 +104,7 @@
             </v-select>
           </div>
         </template>
+
         <template v-else>
           <div class="form-group mt-4">
             <ValidationProvider
@@ -115,9 +117,9 @@
                 * 都道府県
               </h5>
               <v-select
-                v-model="regionIdArrayJapan"
-                :options="japan.regions"
-                :reduce="region => region.id"
+                v-model="regionIdArray"
+                :options="prefectures"
+                :reduce="prefecture => prefecture.id"
                 label="name"
                 multiple
                 class="prefecture v-select"
@@ -295,10 +297,10 @@ export default {
       isVisibleDomestic: true,
       isVisibleOverseas: false,
       countries: [],
-      country: '',
-      japan: {},
+      country: {},
+      regions: [],
+      prefectures: [],
       regionIdArray: [],
-      regionIdArrayJapan: [],
       article_region: {
         article_id: 0,
         region_id: 0,
@@ -360,20 +362,34 @@ export default {
       this.resize()
     },
     country() {
-      this.regionIdArray.length = 0
+      this.regionIdArray = []
     }
   },
   created() {
     this.getCountries()
+    this.getPrefectures()
     this.countThirty()
   },
   methods: {
     getCountries() {
       this.$axios.get('countries')
         .then(res => {
-          this.japan = res.data[0]
           this.countries = res.data
           this.countries.splice(0, 1)
+        })
+        .catch(err => console.log(err.response))
+    },
+    getRegions() {
+      this.$axios.get(`regions/${this.country.id}`)
+        .then(res => {
+          this.regions = res.data
+        })
+        .catch(err => console.log(err.response))
+    },
+    getPrefectures() {
+      this.$axios.get(`regions/1`)
+        .then(res => {
+          this.prefectures = res.data
         })
         .catch(err => console.log(err.response))
     },
@@ -390,7 +406,7 @@ export default {
     },
     async createArticleAndRelation() {
       if (this.isVisibleDomestic) {
-        this.article.country_id = this.japan.id
+        this.article.country_id = 1
       } else {
         this.article.country_id = this.country.id
       }
@@ -428,18 +444,10 @@ export default {
         .catch(err => console.log(err.response))
     },
     async createRegions() {
-      if (this.isVisibleDomestic) {
-        for (let region_id of this.regionIdArrayJapan) {
-          this.article_region.region_id = region_id
-          await this.$axios.post('article_regions', this.article_region)
-            .catch(err => console.log(err.response))
-        }
-      } else {
-        for (let region_id of this.regionIdArray) {
-          this.article_region.region_id = region_id
-          await this.$axios.post('article_regions', this.article_region)
-            .catch(err => console.log(err.response))
-        }
+      for (let region_id of this.regionIdArray) {
+        this.article_region.region_id = region_id
+        await this.$axios.post('article_regions', this.article_region)
+          .catch(err => console.log(err.response))
       }
     },
     async createDays() {
@@ -471,10 +479,13 @@ export default {
     changeToDomestic() {
       this.isVisibleOverseas = false
       this.isVisibleDomestic = true
+      this.regionIdArray = []
     },
     changeToOverseas() {
       this.isVisibleDomestic = false
       this.isVisibleOverseas = true
+      this.country = {}
+      this.regionIdArray = []
     },
     resize(){
       this.height = 'auto'
