@@ -1,6 +1,8 @@
 class Article < ApplicationRecord
   before_save :extract_url_from_map
 
+  has_one_attached :eyecatch
+
   has_many :days, dependent: :destroy
   has_many :article_regions, dependent: :destroy
   has_many :regions, through: :article_regions
@@ -16,6 +18,7 @@ class Article < ApplicationRecord
   validates :description, length: { maximum: 3_000 }
   validates :map, length: { maximum: 300 }
   validates :status, presence: true
+  validates :eyecatch, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 0..5.megabytes }
 
   enum status: { draft: 0, published: 1 }
 
@@ -32,13 +35,18 @@ class Article < ApplicationRecord
     articles.as_json(
       only: %i[id title description status start_date end_date],
       include: [
-        { user: { only: %i[id name] } },
+        { user: { only: %i[id name avatar], methods: [:avatar_url] } },
         { country: { only: %i[id name currency] } },
         { regions: { only: %i[id name] } },
         { favorites: { only: :user_id } },
         { article_tags: { only: :id, include: { tag: { only: :name } } } }
-      ]
+      ],
+      methods: [:eyecatch_url]
     )
+  end
+
+  def eyecatch_url
+    eyecatch.attached? ? Rails.application.routes.url_helpers.rails_blob_path(eyecatch, only_path: true) : nil
   end
 
   private

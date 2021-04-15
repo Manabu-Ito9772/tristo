@@ -22,6 +22,7 @@
         </p>
       </div>
     </template>
+
     <template v-else>
       <div class="col-12 text-center text-white">
         <p class="col-12 p-0 mb-1 info-block-time">

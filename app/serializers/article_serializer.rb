@@ -1,5 +1,5 @@
 class ArticleSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :map, :status, :start_date, :end_date
+  attributes :id, :title, :description, :map, :status, :start_date, :end_date, :eyecatch_url
   has_one :user
   has_one :country
   has_many :regions
@@ -9,7 +9,7 @@ class ArticleSerializer < ActiveModel::Serializer
   has_many :days
 
   class UserSerializer < ActiveModel::Serializer
-    attributes :id, :name
+    attributes :id, :name, :avatar_url
   end
 
   class CountrySerializer < ActiveModel::Serializer
@@ -42,7 +42,7 @@ class ArticleSerializer < ActiveModel::Serializer
     has_many :ordered_blocks
 
     class BlockSerializer < ActiveModel::Serializer
-      attributes :id, :day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time
+      attributes :id, :day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, :images_url
       has_many :spendings
       has_many :transportations
 

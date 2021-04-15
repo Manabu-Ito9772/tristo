@@ -3,6 +3,6 @@ class CommentSerializer < ActiveModel::Serializer
   has_one :user
 
   class UserSerializer < ActiveModel::Serializer
-    attributes :id, :name
+    attributes :id, :name, :avatar_url
   end
 end

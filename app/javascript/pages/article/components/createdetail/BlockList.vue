@@ -165,10 +165,23 @@ export default {
       }
       this.$emit('getArticle')
     },
-    async updateBlock(block) {
-      await this.$axios.patch(`blocks/${block.id}`, block)
+    async updateBlock(blockEdit) {
+      const formData = new FormData()
+      formData.append('block[title]', blockEdit.block.title)
+      if (blockEdit.block.place) formData.append('block[place]', blockEdit.block.place)
+      if (blockEdit.block.place_info) formData.append('block[place_info]', blockEdit.block.place_info)
+      if (blockEdit.block.comment) formData.append('block[comment]', blockEdit.block.comment)
+      if (blockEdit.block.arriving_time) formData.append('block[arriving_time]', blockEdit.block.arriving_time)
+      if (blockEdit.block.leaving_time) formData.append('block[leaving_time]', blockEdit.block.leaving_time)
+      if (blockEdit.uploadImages) {
+        for (let image of blockEdit.uploadImages) {
+          formData.append('block[images]' + '[]', image)
+        }
+      }
+
+      await this.$axios.patch(`blocks/${blockEdit.block.id}`,formData)
         .catch(err => console.log(err.response))
-      for (let spending of block.spendings) {
+      for (let spending of blockEdit.block.spendings) {
         if (spending.id) {
           await this.$axios.patch(`spendings/${spending.id}`, spending)
             .catch(err => console.log(err.response))
@@ -177,7 +190,7 @@ export default {
             .catch(err => console.log(err.response))
         }
       }
-      for (let transportation of block.transportations) {
+      for (let transportation of blockEdit.block.transportations) {
         if (transportation.id) {
           await this.$axios.patch(`transportations/${transportation.id}`, transportation)
             .catch(err => console.log(err.response))
@@ -186,7 +199,9 @@ export default {
             .catch(err => console.log(err.response))
         }
       }
-      this.$emit('getArticle')
+      this.$emit('getArticleAndCloseForm')
+    },
+    closeBlockEditForm() {
       this.blockId = null
     },
     showBlockEditForm(block_id) {

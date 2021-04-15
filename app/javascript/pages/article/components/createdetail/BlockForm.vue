@@ -25,6 +25,7 @@
           </div>
         </template>
       </template>
+
       <div class="bg-white mt-3 mb-1 pt-3 pl-3 pr-3 info-block-form">
         <ValidationProvider
           v-slot="{ errors }"
@@ -304,15 +305,50 @@
           <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
-        <p class="mt-4 text-center text-white content-lavel m-0">
-          アイキャッチ
-        </p>
-        <div class="pt-3 pl-3 pr-3">
-          <img
-            src="../../../../images/sample.png"
-            class="mb-3 info-block-photo"
+        <ValidationProvider
+          v-slot="{ errors }"
+          ref="provider"
+          name="イメージ"
+          rules="image"
+        >
+          <p class="mt-4 text-center text-white content-lavel m-0">
+            写真（上限3枚）
+          </p>
+          <div
+            v-for="(image, index) in previewImages"
+            :key="index"
+            class="pt-3 pl-3 pr-3 text-center text-muted"
           >
-        </div>
+            <img
+              :src="image"
+              class="mb-1 info-block-photo"
+            >
+            <div @click="deleteImage(index)">
+              <font-awesome-icon
+                :icon="['far', 'times-circle']"
+                class="fa-lg"
+              />
+            </div>
+          </div>
+          <div class="text-center">
+            <label class="mt-2 mb-4">
+              <p class="mb-0 pl-3 pr-3 bg-white text-dark file-button">
+                画像を選択
+              </p>
+              <input
+                id="image"
+                type="file"
+                accept="image/png,image/jpeg"
+                multiple="multiple"
+                name="イメージ"
+                class="d-none"
+                @change="handleChange"
+              >
+            </label>
+          </div>
+          <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+
         <template v-if="$mq == 'lg'">
           <template v-if="isVisibleAddBlockButton">
             <div class="pt-2 pb-3 pl-3 pr-3 text-center info-block-bottom">
@@ -376,7 +412,8 @@ export default {
           place_info: '',
           comment: '',
           arriving_time: '',
-          leaving_time: ''
+          leaving_time: '',
+          uploadImages: []
         },
         spendings: [],
         transportations: [],
@@ -385,6 +422,7 @@ export default {
       transportationsIndex: 0,
       isVisibleAddBlockButton: true,
       height: '',
+      previewImages: [],
     }
   },
   computed: {
@@ -395,11 +433,32 @@ export default {
     }
   },
   watch:{
-    'blockAndCost.block.comment'(){
+    'blockAndCost.block.comment'() {
       this.resize()
     },
+    'blockAndCost.block.uploadImages'() {
+      if (this.blockAndCost.block.uploadImages.length > 3) {
+        this.blockAndCost.block.uploadImages.splice(3)
+        this.previewImages.splice(3)
+      }
+    }
   },
   methods :{
+    async handleChange(event) {
+      for (let file of event.target.files) {
+        this.previewImages.push(URL.createObjectURL(file))
+      }
+      const { valid } = await this.$refs.provider.validate(event)
+      if (valid) {
+        for (let image of event.target.files) {
+          this.blockAndCost.block.uploadImages.push(image)
+        }
+      }
+    },
+    deleteImage(index) {
+      this.previewImages.splice(index, 1)
+      this.blockAndCost.block.uploadImages.splice(index, 1)
+    },
     addBlock() {
       if (this.dayid) {
         this.blockAndCost.block.day_id = this.dayid
@@ -505,5 +564,10 @@ export default {
 .icon-middle {
   font-size: 30px;
   cursor: pointer;
+}
+
+.file-button {
+  border: solid thin rgb(206, 212, 218);
+  border-radius: 20px;
 }
 </style>

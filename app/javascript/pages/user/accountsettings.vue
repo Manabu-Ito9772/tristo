@@ -221,13 +221,14 @@ export default {
     ...mapActions('users', [
       'updateUser', 'deleteUser'
     ]),
-    async updateCurrentUser() {
+    updateCurrentUser() {
       try {
         if (this.user.password == '') {
           delete this.user.password
         }
-        await this.updateUser(this.user)
-        this.$router.go(-1)
+        this.updateUser(this.user)
+        this.$router.push({ name: 'MyPage' })
+        this.$store.commit('pages/setCurrentPage', 'user')
       } catch (error) {
         console.log(error)
       }

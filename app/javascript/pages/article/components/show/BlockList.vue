@@ -6,7 +6,7 @@
           v-for="block in blocks"
           :key="block.id"
         >
-          <InfoBlockSmall
+          <BlockItem
             :block="block"
             :currency="currency"
           />
@@ -34,7 +34,7 @@
             v-for="block in blocks"
             :key="block.id"
           >
-            <InfoBlockMiddle
+            <BlockItem
               :block="block"
               :currency="currency"
             />
@@ -62,7 +62,7 @@
             v-for="block in blocks"
             :key="block.id"
           >
-            <InfoBlock
+            <BlockItem
               :block="block"
               :currency="currency"
             />
@@ -86,17 +86,13 @@
 </template>
 
 <script>
-import InfoBlock from './maincolumn/InfoBlock'
-import InfoBlockMiddle from './maincolumn/InfoBlockMiddle'
-import InfoBlockSmall from './maincolumn/InfoBlockSmall'
+import BlockItem from './maincolumn/BlockItem'
 import Transportation from './maincolumn/Transportation'
 
 export default {
-  name: 'MainColumn',
+  name: 'BlockList',
   components: {
-    InfoBlock,
-    InfoBlockMiddle,
-    InfoBlockSmall,
+    BlockItem,
     Transportation
   },
   props: {

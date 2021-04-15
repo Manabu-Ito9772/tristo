@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid mt-4">
+  <div class="container-fluid mt-4 mb-5">
     <template v-if="$mq == 'xs'">
-      <div class="row">
+      <div class="row pb-5">
         <div class="col-12 pt-3 text-center">
           <h3 class="p-0 m-0 d-inline font-weight-bold text-muted">
             ユーザー登録
@@ -83,7 +83,53 @@
               <span class="text-danger">{{ errors[0] }}</span>
             </ValidationProvider>
 
-            <div class="pt-4 pb-3 text-center">
+            <div class="form-group text-center mt-4 mb-0">
+              <ValidationProvider
+                v-slot="{ errors }"
+                ref="provider"
+                name="プロフィール画像"
+                rules="image"
+              >
+                <div class="d-flex justify-content-center align-items-center">
+                  <template v-if="previewAvatar">
+                    <img
+                      :src="previewAvatar"
+                      class="user-icon"
+                    >
+                  </template>
+                  <template v-else>
+                    <img
+                      src="~default.jpg"
+                      class="user-icon"
+                    >
+                  </template>
+                  <div class="ml-3">
+                    <p
+                      id="プロフィール画像"
+                      class="mb-2 text-muted"
+                    >
+                      プロフィール画像
+                    </p>
+                    <label class="mb-0">
+                      <p class="mb-0 pl-3 pr-3 bg-white text-dark file-button">
+                        画像を選択
+                      </p>
+                      <input
+                        id="avatar"
+                        type="file"
+                        accept="image/png,image/jpeg"
+                        name="プロフィール画像"
+                        class="d-none"
+                        @change="handleChange"
+                      >
+                    </label>
+                  </div>
+                </div>
+                <span class="text-danger">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </div>
+
+            <div class="pt-5 pb-3 text-center">
               <button
                 class="btn text-white font-weight-bold button"
                 @click="handleSubmit(createNewUser)"
@@ -178,6 +224,43 @@
               <span class="text-danger">{{ errors[0] }}</span>
             </ValidationProvider>
 
+            <div class="form-group m-0 text-center">
+              <ValidationProvider
+                v-slot="{ errors }"
+                ref="provider"
+                name="プロフィール画像"
+                rules="image"
+              >
+                <p
+                  id="プロフィール画像"
+                  class="center mt-4 mb-2 text-muted font-weight-bold"
+                >
+                  プロフィール画像
+                </p>
+                <template v-if="previewAvatar">
+                  <img
+                    :src="previewAvatar"
+                    class="mb-3 user-icon"
+                  >
+                </template>
+                <template v-else>
+                  <img
+                    src="~default.jpg"
+                    class="mb-3 user-icon"
+                  >
+                </template>
+                <input
+                  id="avatar"
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  name="プロフィール画像"
+                  class="form-control-file mx-auto file-input"
+                  @change="handleChange"
+                >
+                <span class="text-danger">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </div>
+
             <div class="mt-4 mb-4 text-center">
               <button
                 class="btn text-white font-weight-bold button"
@@ -194,6 +277,7 @@
 </template>
 
 <script>
+import 'default.jpg'
 import { mapActions } from 'vuex'
 
 export default {
@@ -205,6 +289,8 @@ export default {
         email: '',
         password: '',
       },
+      uploadAvatar: '',
+      previewAvatar: '',
       emailError: false,
       inputType: 'password'
     }
@@ -216,9 +302,20 @@ export default {
   },
   methods: {
     ...mapActions('users', ['createUser']),
+    async handleChange(event) {
+      this.previewAvatar = URL.createObjectURL(event.target.files[0])
+      const { valid } = await this.$refs.provider.validate(event)
+      if (valid) this.uploadAvatar = event.target.files[0]
+    },
     async createNewUser() {
       try {
-        await this.createUser(this.user)
+        const formData = new FormData()
+        formData.append('name', this.user.name)
+        formData.append('email', this.user.email)
+        formData.append('password', this.user.password)
+        if (this.uploadAvatar) formData.append('avatar', this.uploadAvatar)
+
+        await this.createUser(formData)
         this.$router.push({ name: 'ArticleIndex' })
       } catch (error) {
         for (let err of error.response.data.email) {
@@ -263,5 +360,21 @@ export default {
 
 .eye-icon {
   width: 26.66px;
+}
+
+.file-input {
+  width: 65%;
+}
+
+.file-button {
+  border: solid thin rgb(206, 212, 218);
+  border-radius: 20px;
+}
+
+.user-icon {
+  width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 50%;
 }
 </style>

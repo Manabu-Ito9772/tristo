@@ -7,7 +7,7 @@ class Comment < ApplicationRecord
   def self.change_to_json(comments)
     comments.as_json(
       only: %i[id body],
-      include: [{ user: { only: %i[id name] } }]
+      include: [{ user: { only: %i[id name avatar], methods: [:avatar_url] } }]
     )
   end
 end

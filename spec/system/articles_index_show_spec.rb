@@ -26,11 +26,12 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.regions.first.name)
         expect(page).to have_content(article_normal.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(article_normal.tags.first.name)
         expect(page).to have_content(article_normal.user.name)
       end
 
-      it '記事の説明、地域、日付、タグはデータがなければ表示されない' do
+      it '記事の説明、地域、日付、タグ、写真はデータがなければ表示されない' do
         article_wihout_info
         visit root_path
         sleep 2
@@ -39,6 +40,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to_not have_css('.article-region')
         expect(page).to_not have_css('.article-date')
         expect(page).to_not have_css('.article-tag')
+        expect(page).to_not have_css('.main-image')
       end
 
       it '国が日本の場合は都道府県のみ表示される' do
@@ -82,6 +84,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
           expect(page).to_not have_content('場所')
           expect(page).to_not have_content('コスト')
           expect(page).to_not have_content('コメント')
+          expect(page).to_not have_css('.info-block-photo')
         end
       end
     end
@@ -95,12 +98,13 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.regions.first.name)
         expect(page).to have_content(article_normal.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
+        expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(article_normal.tags.first.name)
         expect(page).to have_content(article_normal.description)
         expect(page).to have_content(article_normal.user.name)
       end
 
-      it '説明、地域、日付、タグはデータがなければ表示されない' do
+      it '説明、地域、日付、タグ、写真はデータがなければ表示されない' do
         article_wihout_info
         visit root_path
         sleep 2
@@ -110,6 +114,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to_not have_css('.article-region')
         expect(page).to_not have_css('.article-date')
         expect(page).to_not have_css('.article-tag')
+        expect(page).to_not have_css('.main-image')
       end
 
       it '国が日本の場合は都道府県のみ表示される' do

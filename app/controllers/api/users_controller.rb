@@ -1,10 +1,11 @@
 class Api::UsersController < ApplicationController
-  before_action :authenticate!, only: %i[update_current_user destroy_current_user]
+  before_action :authenticate!, only: %i[update update_current_user destroy_current_user]
   skip_before_action :verify_authenticity_token
 
   def show
-    @user = User.find(params[:id])
-    render json: @user
+    user = User.find(params[:id])
+    user_json = user.as_json(only: %i[id name description])
+    render json: user_json.merge(avatar_url: user.avatar_url)
   end
 
   def create
@@ -18,26 +19,29 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  def me
-    render json: current_user, include: {}
-  end
-
-  def update_current_user
-    if current_user.update(user_params)
-      render json: current_user
+  def update
+    user = User.find(current_user.id)
+    if user.update(user_params)
+      render json: user, methods: [:avatar_url]
     else
-      render json: current_user.errors, status: :bad_request
+      render json: user.errors, status: :bad_request
     end
   end
 
-  def destroy_current_user
-    current_user.destroy!
-    render json: current_user
+  def destroy
+    user = User.find(current_user.id)
+    user.destroy!
+    render json: user
+  end
+
+  def me
+    user = current_user.as_json(only: %i[id name email description])
+    render json: user.merge(avatar_url: current_user.avatar_url)
   end
 
   private
 
   def user_params
-    params.permit(:name, :email, :description, :password)
+    params.permit(:name, :email, :password, :description, :avatar)
   end
 end

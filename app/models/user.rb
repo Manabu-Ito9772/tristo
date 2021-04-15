@@ -2,6 +2,10 @@ class User < ApplicationRecord
   include JwtToken
   authenticates_with_sorcery!
 
+  before_create :default_avatar
+
+  has_one_attached :avatar
+
   has_many :articles, dependent: :destroy
   has_many :ordered_articles, -> { order('created_at desc') }, class_name: :Article, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -17,6 +21,7 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :description, length: { maximum: 1_000 }
+  validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 0..5.megabytes }
 
   def follow(other_user_id)
     return if id == other_user_id
@@ -43,5 +48,15 @@ class User < ApplicationRecord
 
   def favorite?(article)
     favorite_articles.include?(article)
+  end
+
+  def avatar_url
+    avatar.attached? ? Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true) : nil
+  end
+
+  def default_avatar
+    return if avatar.attached?
+
+    avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.jpg')), filename: 'default-image.jpg', content_type: 'image/png')
   end
 end

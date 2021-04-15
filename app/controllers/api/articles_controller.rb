@@ -90,7 +90,7 @@ class Api::ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:country_id, :title, :description, :map, :status, :start_date, :end_date, :created_at)
+    params.require(:article).permit(:country_id, :title, :description, :map, :status, :start_date, :end_date, :created_at, :eyecatch)
   end
 
   def search_params

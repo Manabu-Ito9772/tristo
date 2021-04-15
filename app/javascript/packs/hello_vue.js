@@ -20,6 +20,7 @@ import VScrollLock from '../plugins/vscrolllock'
 import DropdownMenu from '../plugins/dropdownmenu'
 import InfiniteLoading from '../plugins/infiniteloading'
 import VueLoading from '../plugins/vueloading'
+import VueAwesomeSwiper from '../plugins/awesomeswiper'
 import '../plugins/veevalidate'
 import 'bootstrap/dist/css/bootstrap.css'
 

@@ -6,10 +6,12 @@
           <div class="col-12 mt-3">
             <div class="m-0">
               <div class="pb-3 d-flex justify-content-center align-items-center">
-                <img
-                  src="../../images/sample.png"
-                  class="user-icon mr-4"
-                >
+                <div>
+                  <img
+                    :src="authUser.avatar_url"
+                    class="user-icon mr-4"
+                  >
+                </div>
                 <div>
                   <div class="d-flex justify-content-center align-items-center">
                     <h4 class="mb-0 pr-3 text-dark font-weight-bold word-break">
@@ -267,10 +269,12 @@
           <div class="col-12 mt-3 p-0">
             <div class="m-0">
               <div class="pb-3 d-flex justify-content-center align-items-center">
-                <img
-                  src="../../images/sample.png"
-                  class="user-icon mr-4"
-                >
+                <div>
+                  <img
+                    :src="authUser.avatar_url"
+                    class="user-icon mr-4"
+                  >
+                </div>
                 <div>
                   <div class="d-flex justify-content-center align-items-center">
                     <h3 class="mb-0 pr-3 text-dark font-weight-bold word-break">

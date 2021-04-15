@@ -56,13 +56,13 @@ const actions = {
     }
   },
   updateUser({ commit, state }, user) {
-    axios.patch('users/update_current_user', user)
+    axios.patch(`users/${state.authUser.id}`, user)
       .then(res => {
         commit('setUser', res.data)
       })
   },
   async deleteUser({ commit }) {
-    await axios.delete('users/destroy_current_user')
+    await axios.delete(`users/${state.authUser.id}`)
     localStorage.removeItem('auth_token')
     axios.defaults.headers.common['Authorization'] = ''
     commit('setUser', null)
