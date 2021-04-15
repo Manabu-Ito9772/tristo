@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/tristo_admin_page', as: 'rails_admin'
   namespace :api do
     get 'favorites/create'
     get 'favorites/destroy'
@@ -6,6 +7,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
   namespace :api, format: 'json' do
     resources :countries, only: %i[index show]
+    resources :regions, only: %i[show]
     resources :users do
       collection do
         get 'me'

@@ -31,6 +31,7 @@
             :get-option-label="country => country.name"
             :clearable="false"
             class="bg-light country v-select"
+            @input="getRegions"
           >
             <span slot="no-options">該当する国がありません</span>
           </v-select>
@@ -43,7 +44,7 @@
         <v-select
           v-model="regionIdArray"
           name="地域"
-          :options="country.regions"
+          :options="regions"
           :reduce="region => region.id"
           :get-option-label="region => region.name"
           multiple
@@ -64,7 +65,7 @@
           <v-select
             v-model="regionIdArray"
             name="都道府県"
-            :options="country.regions"
+            :options="regions"
             :reduce="region => region.id"
             :get-option-label="region => region.name"
             multiple
@@ -235,6 +236,7 @@ export default {
       articleEdit: {},
       countries: [],
       country: {},
+      regions: [],
       countryName: '',
       regionIdArray: [],
       article_region: {
@@ -274,7 +276,7 @@ export default {
   watch: {
     country() {
       if (this.country.id != this.articleEdit.country.id) {
-        this.regionIdArray.length = 0
+        this.regionIdArray = []
       }
     },
     'articleEdit.start_date'() {
@@ -325,6 +327,14 @@ export default {
       await this.$axios.get(`countries/${this.articleEdit.country.id}`)
         .then(res => {
           this.country = res.data
+        })
+        .catch(err => console.log(err.response))
+      this.getRegions()
+    },
+    getRegions() {
+      this.$axios.get(`regions/${this.country.id}`)
+        .then(res => {
+          this.regions = res.data
         })
         .catch(err => console.log(err.response))
     },

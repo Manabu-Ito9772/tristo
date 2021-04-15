@@ -2,8 +2,8 @@ class Api::CountriesController < ApplicationController
   before_action :set_country, only: %i[show]
 
   def index
-    @countries = Country.includes(:regions).all
-    render json: @countries
+    @countries = Country.all.order(order: :asc)
+    render json: @countries, only: %i[id name]
   end
 
   def show

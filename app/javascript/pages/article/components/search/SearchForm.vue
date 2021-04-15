@@ -82,9 +82,9 @@
                 都道府県
               </p>
               <v-select
-                v-model="regions"
-                :options="japan.regions"
-                :reduce="region => region.id"
+                v-model="regionsIdArray"
+                :options="prefectures"
+                :reduce="prefecture => prefecture.id"
                 label="name"
                 multiple
                 class="w-100 v-select"
@@ -105,6 +105,7 @@
                 :options="countries"
                 :get-option-label="country => country.name"
                 class="w-100 v-select"
+                @input="getRegions"
               >
                 <span slot="no-options">該当する国がありません</span>
               </v-select>
@@ -117,8 +118,8 @@
                 地域
               </p>
               <v-select
-                v-model="regions"
-                :options="countryRegions"
+                v-model="regionsIdArray"
+                :options="regions"
                 :reduce="region => region.id"
                 label="name"
                 multiple
@@ -268,7 +269,7 @@
         </template>
 
         <div class="col-12 text-center">
-          <template v-if="article">
+          <template v-if="article || !loading">
             <button
               class="btn pl-4 pr-4 text-white font-weight-bold button"
               @click="searchArticles"
@@ -320,10 +321,10 @@ export default {
       following: null,
       countries: [],
       country: {},
-      japan: {},
       regions: [],
+      prefectures: [],
+      regionsIdArray: [],
       tags: [],
-      countryRegions: [],
     }
   },
   computed: {
@@ -344,15 +345,15 @@ export default {
     country() {
       if (this.country) {
         this.search.q.country_id = this.country.id
-        this.countryRegions = this.country.regions
+        this.regionsIdArray = []
       } else {
         this.search.q.country_id = null
+        this.regionsIdArray = []
         this.regions = []
-        this.countryRegions = []
       }
     },
-    regions() {
-      this.search.q.regions = this.regions.join(' ')
+    regionsIdArray() {
+      this.search.q.regions = this.regionsIdArray.join(' ')
     },
     tags() {
       this.search.q.tags = this.tags.join(' ')
@@ -361,14 +362,30 @@ export default {
   created() {
     this.search.q.japan = this.articleJapan
     this.getCountries()
+    this.getPrefectures()
   },
   methods: {
     getCountries() {
       this.$axios.get('countries')
         .then(res => {
-          this.japan = res.data[0]
           this.countries = res.data
           this.countries.splice(0, 1)
+        })
+        .catch(err => console.log(err.response))
+    },
+    getRegions() {
+      if (this.country) {
+        this.$axios.get(`regions/${this.country.id}`)
+          .then(res => {
+            this.regions = res.data
+          })
+          .catch(err => console.log(err.response))
+      }
+    },
+    getPrefectures() {
+      this.$axios.get(`regions/1`)
+        .then(res => {
+          this.prefectures = res.data
         })
         .catch(err => console.log(err.response))
     },
@@ -389,7 +406,6 @@ export default {
     },
     async selectJapan() {
       this.country = {}
-      this.regions = []
       this.tags = []
       this.search.q.words = ''
       this.search.q.sort = 0
@@ -402,7 +418,6 @@ export default {
     },
     async selectWorld() {
       this.country = {}
-      this.regions = []
       this.tags = []
       this.search.q.words = ''
       this.search.q.sort = 0
