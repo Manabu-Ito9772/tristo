@@ -1,22 +1,38 @@
 <template>
   <div class="mb-4">
-    <h5
-      class="p-2 mb-3 text-center text-white font-weight-bold post-button"
-      @click="postArticle"
-    >
-      投稿する
-    </h5>
-    <h5
-      class="p-2 text-center bg-white font-weight-bold draft-button"
-      @click="saveDraft"
-    >
-      下書き保存
-    </h5>
+    <template v-if="isMobile">
+      <h5
+        class="p-2 mb-3 w-100 text-center text-white font-weight-bold post-button-mobile"
+        @click="postArticle"
+      >
+        投稿する
+      </h5>
+      <h5
+        class="p-2 w-100 text-center bg-white font-weight-bold draft-button-mobile"
+        @click="saveDraft"
+      >
+        非公開一覧に追加する
+      </h5>
+    </template>
+    <template v-else>
+      <h5
+        class="p-2 mb-3 w-100 text-center text-white font-weight-bold post-button"
+        @click="postArticle"
+      >
+        投稿する
+      </h5>
+      <h5
+        class="p-2 w-100 text-center bg-white font-weight-bold draft-button"
+        @click="saveDraft"
+      >
+        非公開一覧に追加する
+      </h5>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'PostButton',
@@ -31,13 +47,10 @@ export default {
       article: {
         status: 'published'
       },
+      isMobile: isMobile
     }
   },
   methods: {
-    ...mapActions('articles', [
-      'getArticlesJapan',
-      'getArticlesWorld',
-    ]),
     async postArticle() {
       await this.$axios.patch(`articles/${this.$route.query.id}`, this.article)
         .catch(err => console.log(err.response))
@@ -59,15 +72,71 @@ export default {
 
 <style scoped>
 .post-button {
-  background-color: #FF00EB;
+  background-color: #FF58F2;
+  border: solid #FF58F2;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.post-button:active {
+  background-color: #C642BC;
+  border: solid #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.post-button:hover {
+  background-color: #C642BC;
+  border: solid #C642BC;
+  position: relative;
+}
+
+.draft-button {
+  color: #FF58F2;
+  border: solid #FF58F2;
   border-radius: 6px;
   cursor: pointer;
 }
 
-.draft-button {
-  border: solid #FF00EB;
-  color: #FF00EB;
+.draft-button:active {
+  color: #C642BC;
+  border: solid #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.draft-button:hover {
+  color: #C642BC;
+  background-color: #C642BC;
+  border: solid #C642BC;
+  position: relative;
+}
+
+.post-button-mobile {
+  background-color: #FF58F2;
+  border: solid #FF58F2;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.post-button-mobile:active {
+  background-color: #C642BC;
+  border: solid #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.draft-button-mobile {
+  color: #FF58F2;
+  border: solid #FF58F2;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.draft-button-mobile:active {
+  color: #C642BC;
+  border: solid #C642BC;
+  position: relative;
+  top: 4px;
 }
 </style>

@@ -24,6 +24,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.description)
         expect(page).to have_content(article_normal.country.name)
         expect(page).to have_content(article_normal.regions.first.name)
+        expect(page).to have_content(article_normal.start_date.strftime("%Y"))
         expect(page).to have_content(article_normal.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
         expect(page).to have_selector("img[src$='default-image.jpg']")
@@ -96,6 +97,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.title)
         expect(page).to have_content(article_normal.country.name)
         expect(page).to have_content(article_normal.regions.first.name)
+        expect(page).to have_content(article_normal.start_date.strftime("%Y"))
         expect(page).to have_content(article_normal.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
         expect(page).to have_selector("img[src$='default-image.jpg']")
@@ -122,8 +124,10 @@ RSpec.describe "記事一覧/詳細", type: :system do
         visit root_path
         sleep 2
         find("#article-item-#{country_japan.articles.first.id}").click
-        expect(page).to_not have_content('日本')
-        expect(page).to have_content('東京')
+        within('.article-overview') {
+          expect(page).to_not have_content('日本')
+          expect(page).to have_content('東京')
+        }
       end
     end
 
@@ -149,9 +153,9 @@ RSpec.describe "記事一覧/詳細", type: :system do
         it '記事情報ブロックカラムが切り替わる' do
           article_normal_set
           find("#article-item-#{article_normal.id}").click
-          click_on '2日目'
+          page.all('.day-number')[0].click
           expect(page).to have_content(article_normal.days.second.blocks.first.title)
-          click_on '3日目'
+          page.all('.day-number')[1].click
           expect(page).to have_content(article_normal.days.third.blocks.first.title)
         end
       end
@@ -177,7 +181,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         it 'コスト一覧が表示される' do
           article_normal_set
           find("#article-item-#{article_normal.id}").click
-          click_on 'コスト'
+          find('.total-cost').click
           expect(page).to have_content('観光費')
           expect(page).to have_content('アクティビティ費')
           expect(page).to have_content('食費')
@@ -195,7 +199,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         sleep 2
         find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_cost.id}").click
-        click_on 'コスト'
+        find('.total-cost').click
         expect(page).to_not have_content('観光費')
         expect(page).to_not have_content('アクティビティ費')
         expect(page).to_not have_content('食費')
@@ -210,7 +214,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         sleep 2
         find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_cost_all.id}").click
-        click_on 'コスト'
+        find('.total-cost').click
         expect(page).to have_content('観光費')
         expect(page).to_not have_content('交通費')
       end
@@ -221,7 +225,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         sleep 2
         find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_cost.id}").click
-        click_on 'コスト'
+        find('.total-cost').click
         expect(page).to_not have_content(
           article_without_transportation_cost.days.first.blocks.first.transportations.first.description
         )
@@ -233,7 +237,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         sleep 2
         find('.area-changer-unselected').click
         find("#article-item-#{article_without_transportation_description.id}").click
-        click_on 'コスト'
+        find('.total-cost').click
         expect(page).to have_content('車')
         expect(page).to have_content('タクシー')
         expect(page).to have_content('バス')
@@ -257,7 +261,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         it 'マップが表示される' do
           article_normal_set
           find("#article-item-#{article_normal.id}").click
-          click_on 'マップ'
+          find('.map').click
           expect(page).to have_css('.map')
           page.save_screenshot 'screenshot.png'
         end

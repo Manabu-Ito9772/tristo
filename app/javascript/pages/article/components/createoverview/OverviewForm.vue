@@ -1,39 +1,39 @@
 <template>
-  <div class="row">
+  <div class="row mb-5">
     <h3 class="col-12 p-2 m-0 text-center text-white font-weight-bold top-title">
-      旅行記録を作成
+      旅行記録作成
     </h3>
-    <div class="col-12 mb-4 overview bg-white">
+    <div class="col-12 mb-5 overview bg-white">
       <div class="row pt-4 pb-4 pl-3 pr-3">
         <div class="col-6 pl-0 pr-2">
-          <button
+          <div
             v-if="isVisibleDomestic"
-            class="btn p-0 w-100 text-white font-weight-bold domestic-btn"
+            class="p-0 w-100 text-center text-white font-weight-bold domestic-btn"
           >
             国内
-          </button>
-          <button
+          </div>
+          <div
             v-if="isVisibleOverseas"
-            class="btn p-0 w-100 font-weight-bold domestic-btn-unselected"
+            class="p-0 w-100 text-center font-weight-bold domestic-btn-unselected"
             @click="changeToDomestic"
           >
             国内
-          </button>
+          </div>
         </div>
         <div class="col-6 pr-0 pl-2">
-          <button
+          <div
             v-if="isVisibleOverseas"
-            class="btn p-0 w-100 text-white font-weight-bold domestic-btn"
+            class="p-0 w-100 text-center text-white font-weight-bold domestic-btn"
           >
             海外
-          </button>
-          <button
+          </div>
+          <div
             v-if="isVisibleDomestic"
-            class="btn p-0 w-100 font-weight-bold domestic-btn-unselected"
+            class="p-0 w-100 text-center font-weight-bold domestic-btn-unselected"
             @click="changeToOverseas"
           >
             海外
-          </button>
+          </div>
         </div>
       </div>
 
@@ -47,7 +47,7 @@
               id="タイトル"
               class="p-1 text-center text-white font-weight-bold form-label"
             >
-              * タイトル
+              タイトル（必須）
             </h5>
             <input
               v-model="article.title"
@@ -69,7 +69,7 @@
             <h5
               class="p-1 text-center text-white font-weight-bold form-label"
             >
-              * 国
+              国（必須）
             </h5>
             <v-select
               v-model="country"
@@ -114,7 +114,7 @@
               <h5
                 class="p-1 text-center text-white font-weight-bold form-label"
               >
-                * 都道府県
+                都道府県（必須）
               </h5>
               <v-select
                 v-model="regionIdArray"
@@ -132,31 +132,8 @@
         </template>
 
         <div class="form-group mt-4">
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="max:3000"
-          >
-            <h5
-              id="説明"
-              class="p-1 text-center text-white font-weight-bold form-label"
-            >
-              説明
-            </h5>
-            <textarea
-              ref="area"
-              v-model="article.description"
-              :style="styles"
-              name="説明"
-              class="form-control bg-light"
-              rows="1"
-            />
-            <span class="text-danger">{{ errors[0] }}</span>
-          </ValidationProvider>
-        </div>
-
-        <div class="form-group mt-4">
           <h5 class="p-1 text-center text-white font-weight-bold form-label">
-            日程
+            期間
           </h5>
           <div class="d-flex align-items-center justify-content-between">
             <Datepicker
@@ -212,6 +189,29 @@
         <div class="form-group mt-4">
           <ValidationProvider
             v-slot="{ errors }"
+            rules="max:500"
+          >
+            <h5
+              id="コメント"
+              class="p-1 text-center text-white font-weight-bold form-label"
+            >
+              コメント
+            </h5>
+            <textarea
+              ref="area"
+              v-model="article.description"
+              :style="styles"
+              name="コメント"
+              class="form-control bg-light"
+              rows="2"
+            />
+            <span class="text-danger">{{ errors[0] }}</span>
+          </ValidationProvider>
+        </div>
+
+        <div class="form-group mt-4">
+          <ValidationProvider
+            v-slot="{ errors }"
             ref="provider"
             name="アイキャッチ"
             rules="image"
@@ -223,10 +223,9 @@
               アイキャッチ
             </h5>
             <template v-if="previewEyecatch">
-              <img
-                :src="previewEyecatch"
-                class="mb-2 w-100"
-              >
+              <div class="mb-2 image-trim">
+                <img :src="previewEyecatch">
+              </div>
             </template>
             <input
               id="eyecatch"
@@ -254,7 +253,7 @@
           </v-select>
         </div>
 
-        <div class="form-group mt-4 mb-3">
+        <div class="form-group mt-4 mb-0">
           <h5 class="p-1 text-center text-white font-weight-bold form-label">
             マップ
           </h5>
@@ -271,16 +270,23 @@
           </p>
         </div>
 
-        <div class="pb-3 text-center">
-          <p class="m-0 mb-3 text-secondary">
-            * 必須項目
-          </p>
-          <button
-            class="btn text-white font-weight-bold button"
-            @click="handleSubmit(createArticleAndRelation)"
-          >
-            詳細入力ページへ進む
-          </button>
+        <div class="pt-4 pb-4 text-center">
+          <template v-if="isMobile">
+            <div
+              class="text-white font-weight-bold button-mobile"
+              @click="handleSubmit(createArticleAndRelation)"
+            >
+              詳細入力ページへ進む
+            </div>
+          </template>
+          <template v-else>
+            <div
+              class="text-white font-weight-bold button"
+              @click="handleSubmit(createArticleAndRelation)"
+            >
+              詳細入力ページへ進む
+            </div>
+          </template>
         </div>
       </ValidationObserver>
     </div>
@@ -289,6 +295,7 @@
 
 <script>
 import {ja} from 'vuejs-datepicker/dist/locale'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'OverviewForm',
@@ -297,7 +304,7 @@ export default {
       isVisibleDomestic: true,
       isVisibleOverseas: false,
       countries: [],
-      country: {},
+      country: null,
       regions: [],
       prefectures: [],
       regionIdArray: [],
@@ -313,8 +320,6 @@ export default {
         start_date: '',
         end_date: ''
       },
-      start_date: '',
-      end_date: '',
       day: {
         article_id: null,
       },
@@ -330,10 +335,12 @@ export default {
         clear: true,
         bootstrap: true,
         disabledStartDates: {
-          from: '',
+          to: '',
+          from: ''
         },
         disabledEndDates: {
           to: '',
+          from: ''
         },
       },
       thirty_days: [
@@ -341,7 +348,10 @@ export default {
       ],
       height: '',
       previewEyecatch: '',
-      uploadEyecatch: ''
+      uploadEyecatch: '',
+      isMobile: isMobile,
+      date: null,
+      dateb: null
     }
   },
   computed: {
@@ -353,10 +363,24 @@ export default {
   },
   watch: {
     'article.start_date'() {
-      this.datepicker.disabledEndDates.to = this.article.start_date
+      if (this.article.start_date) {
+        this.datepicker.disabledEndDates.to = this.article.start_date
+        this.datepicker.disabledEndDates.from = new Date(this.article.start_date)
+        this.datepicker.disabledEndDates.from.setDate(this.datepicker.disabledEndDates.from.getDate() + 13)
+      } else {
+        this.datepicker.disabledEndDates.to = ''
+        this.datepicker.disabledEndDates.from = ''
+      }
     },
     'article.end_date'() {
-      this.datepicker.disabledStartDates.from = this.article.end_date
+      if (this.article.end_date) {
+        this.datepicker.disabledStartDates.from = this.article.end_date
+        this.datepicker.disabledStartDates.to = new Date(this.article.end_date)
+        this.datepicker.disabledStartDates.to.setDate(this.datepicker.disabledStartDates.from.getDate() - 13)
+      } else {
+        this.datepicker.disabledStartDates.from = ''
+        this.datepicker.disabledStartDates.to = ''
+      }
     },
     'article.description'(){
       this.resize()
@@ -394,7 +418,7 @@ export default {
         .catch(err => console.log(err.response))
     },
     countThirty() {
-      for (let i = 2; i < 31; i++) {
+      for (let i = 2; i < 15; i++) {
         let day = { name: `${i}日間`, value: i }
         this.thirty_days.push(day)
       }
@@ -484,7 +508,7 @@ export default {
     changeToOverseas() {
       this.isVisibleDomestic = false
       this.isVisibleOverseas = true
-      this.country = {}
+      this.country = null
       this.regionIdArray = []
     },
     resize(){
@@ -499,12 +523,12 @@ export default {
 
 <style scoped>
 .top-title {
-  background-color: #FF00EB;
+  background-color: #FF58F2;
   border-radius: 6px 6px 0px 0px / 6px 6px 0px 0px;
 }
 
 .overview {
-  border: solid #FF00EB;
+  border: solid #FF58F2;
   border-width: 0rem 0.3rem 0.3rem 0.3rem;
   border-radius: 0px 0px 6px 6px / 0px 0px 6px 6px;
 }
@@ -513,12 +537,16 @@ export default {
   font-size: 20px;
   background-color: #00D320;
   border: solid #00D320;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .domestic-btn-unselected {
   font-size: 20px;
   border: solid #00D320;
   color: #00D320;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .overseas-btn {
@@ -549,7 +577,40 @@ export default {
 }
 
 .button {
-  background-color: #FF00EB;
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.button:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  background-color: #C642BC;
+  position: relative;
+}
+
+.button-mobile {
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.button-mobile:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
 }
 
 .font-small {
@@ -563,5 +624,22 @@ export default {
 
 .file-input {
   width: 65%;
+}
+
+.image-trim {
+  position: relative;
+  overflow: hidden;
+  padding-top: 60%;
+}
+
+.image-trim img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
 }
 </style>

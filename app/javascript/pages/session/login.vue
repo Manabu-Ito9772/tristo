@@ -70,14 +70,26 @@
               </div>
             </template>
 
-            <div class="pt-4 pb-3 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(login)"
-              >
-                ログイン
-              </button>
-            </div>
+            <template v-if="isMobile">
+              <div class="pt-4 pb-3 text-center">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(login)"
+                >
+                  ログイン
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="pt-4 pb-3 text-center">
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(login)"
+                >
+                  ログイン
+                </div>
+              </div>
+            </template>
           </ValidationObserver>
         </div>
       </div>
@@ -151,14 +163,26 @@
               </div>
             </template>
 
-            <div class="mt-4 mb-4 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(login)"
-              >
-                ログイン
-              </button>
-            </div>
+            <template v-if="isMobile">
+              <div class="mt-4 mb-4 text-center">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(login)"
+                >
+                  ログイン
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="mt-4 mb-4 text-center">
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(login)"
+                >
+                  ログイン
+                </div>
+              </div>
+            </template>
           </ValidationObserver>
         </div>
       </div>
@@ -168,6 +192,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'Login',
@@ -178,7 +203,8 @@ export default {
         password: '',
       },
       loginError: false,
-      inputType: 'password'
+      inputType: 'password',
+      isMobile: isMobile
     }
   },
   watch: {
@@ -229,9 +255,40 @@ export default {
 }
 
 .button {
-  width: 100px;
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
-  background-color: #FF00EB;
+}
+
+.button:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  background-color: #C642BC;
+  position: relative;
+}
+
+.button-mobile {
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
 }
 
 .eye-icon {

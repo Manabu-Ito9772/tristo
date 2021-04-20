@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         get 'following'
         get 'followers'
         get 'count'
-        get 'get_following_ids'
+        get 'follow_or_not'
       end
       collection do
         get 'get_following_ids'

@@ -15,19 +15,17 @@ RSpec.describe 'コメント', type: :system do
   }
 
   context '記事詳細ページのコメントボタンをクリック' do
-    before {
-      click_on 'コメント'
-    }
+    before { find('.comment').click }
 
     it 'コメント入力フォームが表示される' do
       expect(page).to have_field('コメント')
-      expect(page).to have_button('投稿')
+      expect(page).to have_css('.button')
     end
 
     context 'コメントを入力して投稿をクリック' do
       before {
         fill_in 'コメント', with: 'Comment'
-        click_on '投稿'
+        find('.button').click
       }
 
       it 'コメントが投稿される' do
@@ -37,9 +35,7 @@ RSpec.describe 'コメント', type: :system do
       end
 
       context '編集ボタンをクリック' do
-        before {
-          find('.fa-edit').click
-        }
+        before { find('.fa-edit').click }
 
         it '編集フォームが表示される' do
           expect(page).to have_field('コメント編集')
@@ -69,13 +65,15 @@ RSpec.describe 'コメント', type: :system do
     context 'コメントのユーザー名をクリック' do
       it 'ユーザー詳細に遷移' do
         fill_in 'コメント', with: 'Comment'
-        click_on '投稿'
+        find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
         login_as(another_user)
         sleep 2
+        find('.area-changer-unselected').click
+        sleep 2
         find("#article-item-#{article_normal.id}").click
-        click_on 'コメント'
+        find('.comment').click
         find("#user-name-#{user.id}").click
         sleep 2
         expect(current_path).to eq('/user')
@@ -85,7 +83,7 @@ RSpec.describe 'コメント', type: :system do
 
       it 'マイページに遷移' do
         fill_in 'コメント', with: 'MyComment'
-        click_on '投稿'
+        find('.button').click
         find("#user-name-#{user.id}").click
         sleep 2
         expect(current_path).to eq('/mypage')
@@ -97,17 +95,19 @@ RSpec.describe 'コメント', type: :system do
     context 'コメントのユーザーアイコンをクリック' do
       it 'ユーザー詳細に遷移' do
         fill_in 'コメント', with: 'Comment'
-        click_on '投稿'
+        find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
         login_as(another_user)
         sleep 2
-        find("#article-item-#{article_normal.id}").click
-        click_on 'コメント'
+        find('.area-changer-unselected').click
         sleep 2
-        within('.comment-all') {
+        find("#article-item-#{article_normal.id}").click
+        find('.comment').click
+        sleep 2
+        within('.comment-all') do
           find('.user-icon').click
-        }
+        end
         sleep 2
         expect(current_path).to eq('/user')
         expect(page).to have_content(user.name)
@@ -116,10 +116,10 @@ RSpec.describe 'コメント', type: :system do
 
       it 'マイページに遷移' do
         fill_in 'コメント', with: 'MyComment'
-        click_on '投稿'
-        within('.comment-all') {
+        find('.button').click
+        within('.comment-all') do
           find('.user-icon').click
-        }
+        end
         sleep 2
         expect(current_path).to eq('/mypage')
         expect(page).to have_content(user.name)
@@ -130,16 +130,18 @@ RSpec.describe 'コメント', type: :system do
 
   describe '未ログイン状態' do
     it 'コメントフォーム、投稿ボタン、編集ボタン、ゴミ箱ボタンが表示されない' do
-      click_on 'コメント'
+      find('.comment').click
       fill_in 'コメント', with: 'Comment'
-      click_on '投稿'
+      find('.button').click
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       sleep 2
       visit root_path
       sleep 2
+      find('.area-changer-unselected').click
+      sleep 2
       find("#article-item-#{article_normal.id}").click
-      click_on 'コメント'
+      find('.comment').click
       expect(page).to_not have_field('コメント')
       expect(page).to_not have_button('投稿')
       expect(page).to have_selector("img[src$='default-image.jpg']")
@@ -155,6 +157,8 @@ RSpec.describe 'コメント', type: :system do
       sleep 2
       visit root_path
       sleep 2
+      find('.area-changer-unselected').click
+      sleep 2
       find("#article-item-#{article_normal.id}").click
       expect(page).to_not have_css('.comment')
       expect(page).to_not have_button('コメント')
@@ -162,15 +166,17 @@ RSpec.describe 'コメント', type: :system do
 
     context 'コメントのユーザー名をクリック' do
       it 'ユーザー詳細ページに遷移' do
-        click_on 'コメント'
+        find('.comment').click
         fill_in 'コメント', with: 'Comment'
-        click_on '投稿'
+        find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
         visit root_path
         sleep 2
+        find('.area-changer-unselected').click
+        sleep 2
         find("#article-item-#{article_normal.id}").click
-        click_on 'コメント'
+        find('.comment').click
         find("#user-name-#{user.id}").click
         sleep 2
         expect(current_path).to eq('/user')
@@ -181,15 +187,17 @@ RSpec.describe 'コメント', type: :system do
 
     context 'ユーザーアイコンをクリック' do
       it 'ユーザー詳細ページに遷移' do
-        click_on 'コメント'
+        find('.comment').click
         fill_in 'コメント', with: 'Comment'
-        click_on '投稿'
+        find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
         visit root_path
         sleep 2
+        find('.area-changer-unselected').click
+        sleep 2
         find("#article-item-#{article_normal.id}").click
-        click_on 'コメント'
+        find('.comment').click
         within('.comment-all') {
           find('.user-icon').click
         }
@@ -202,15 +210,17 @@ RSpec.describe 'コメント', type: :system do
   end
 
   it '他人のコメントは編集/削除できない' do
-    click_on 'コメント'
+    find('.comment').click
     fill_in 'コメント', with: 'Comment'
-    click_on '投稿'
+    find('.button').click
     find('.fa-bars').click
     page.all('.dropdown-item')[1].click
     login_as(another_user)
     sleep 2
+    find('.area-changer-unselected').click
+    sleep 2
     find("#article-item-#{article_normal.id}").click
-    click_on 'コメント'
+    find('.comment').click
     expect(page).to have_content(user.name)
     expect(page).to have_content('Comment')
     expect(page).to_not have_content('.fa-edit')

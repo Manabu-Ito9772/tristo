@@ -1,20 +1,20 @@
 <template>
   <div>
     <template v-if="following">
-      <button
-        class="btn text-white font-weight-bold unfollow-button"
+      <div
+        class="text-white font-weight-bold unfollow-button"
         @click="unfollowUser"
       >
         フォロー中
-      </button>
+      </div>
     </template>
     <template v-if="notFollowing">
-      <button
-        class="btn bg-white font-weight-bold follow-button"
+      <div
+        class="bg-white font-weight-bold follow-button"
         @click="followUser"
       >
         フォロー
-      </button>
+      </div>
     </template>
   </div>
 </template>
@@ -86,17 +86,21 @@ export default {
 <style scoped>
 .follow-button {
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 13px;
+  padding: 6px 14px;
   color: #1D51FF;
   border: solid thin #1D51FF;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 .unfollow-button {
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 13px;
+  padding: 6px 14px;
   border: solid thin #1D51FF;
   border-radius: 20px;
   background-color: #1D51FF;
+  cursor: pointer;
 }
 </style>

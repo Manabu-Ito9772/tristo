@@ -7,88 +7,88 @@
     >
       <template v-if="article.days.length != 1">
         <template v-if="dayNumber == day.number">
-          <button class="btn mb-2 ml-1 mr-1 p-1 text-white font-weight-bold day-number-selected">
+          <div class="mb-2 ml-1 mr-1 p-1 text-white font-weight-bold day-number-selected">
             {{ day.number }}日目
-          </button>
+          </div>
         </template>
 
         <template v-else>
-          <button
-            class="btn mb-2 ml-1 mr-1 p-1 bg-white text-muted font-weight-bold day-number"
+          <div
+            class="mb-2 ml-1 mr-1 p-1 bg-white text-muted font-weight-bold day-number"
             @click="showBlockList(day.number)"
           >
             {{ day.number }}日目
-          </button>
+          </div>
         </template>
       </template>
 
       <template v-else>
         <template v-if="dayNumber">
-          <button class="btn mb-2 ml-1 mr-1 p-1 text-white font-weight-bold day-number-selected">
+          <div class="mb-2 ml-1 mr-1 p-1 text-white font-weight-bold day-number-selected">
             日帰り
-          </button>
+          </div>
         </template>
 
         <template v-else>
-          <button
-            class="btn mb-2 ml-1 mr-1 p-1 bg-white text-muted font-weight-bold day-number"
+          <div
+            class="mb-2 ml-1 mr-1 p-1 bg-white text-muted font-weight-bold day-number"
             @click="showBlockList(1)"
           >
             日帰り
-          </button>
+          </div>
         </template>
       </template>
     </div>
 
-    <template v-if="costs.length">
+    <template v-if="cost">
       <template v-if="costButtonSelected">
-        <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold total-cost-selected">
+        <div class="d-inline-block mb-2 mr-1 p-1 text-white font-weight-bold total-cost-selected">
           コスト
-        </button>
+        </div>
       </template>
 
       <template v-else>
-        <button
-          class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold total-cost"
+        <div
+          class="d-inline-block mb-2 mr-1 p-1 bg-white text-muted font-weight-bold total-cost"
           @click="showCost"
         >
           コスト
-        </button>
+        </div>
       </template>
     </template>
 
     <template v-if="article.map">
       <template v-if="mapButtonSelected">
-        <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold map-selected">
+        <div class="d-inline-block mb-2 mr-1 p-1 text-white font-weight-bold map-selected">
           マップ
-        </button>
+        </div>
       </template>
 
       <template v-else>
-        <button
-          class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold map"
+        <div
+          class="d-inline-block mb-2 mr-1 p-1 bg-white text-muted font-weight-bold map"
           @click="showGmap"
         >
           マップ
-        </button>
+        </div>
       </template>
     </template>
 
     <template v-if="authUser">
       <template v-if="article.days">
         <template v-if="commentButtonSelected">
-          <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
+          <div class="d-inline-block mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
             コメント
-          </button>
+          </div>
         </template>
 
         <template v-else>
-          <button
-            class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
+          <div
+            class="d-inline-block mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
             @click="showComment"
           >
             コメント
-          </button>
+          </div>
         </template>
       </template>
     </template>
@@ -96,18 +96,18 @@
     <template v-if="!authUser && comments != 0">
       <template v-if="article.days">
         <template v-if="commentButtonSelected">
-          <button class="btn mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
+          <div class="d-inline-block mb-2 mr-1 p-1 text-white font-weight-bold comment-selected">
             コメント
-          </button>
+          </div>
         </template>
 
         <template v-else>
-          <button
-            class="btn mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
+          <div
+            class="d-inline-block mb-2 mr-1 p-1 bg-white text-muted font-weight-bold comment"
             @click="showComment"
           >
             コメント
-          </button>
+          </div>
         </template>
       </template>
     </template>
@@ -124,6 +124,10 @@ export default {
       type: Object,
       required: true
     },
+    cost: {
+      type: Boolean,
+      required: true
+    },
   },
   data() {
     return {
@@ -137,22 +141,6 @@ export default {
   },
   computed: {
     ...mapGetters('users', ['authUser'])
-  },
-  watch: {
-    article: {
-      handler() {
-        for (let day of this.article.days) {
-          for (let block of day.ordered_blocks) {
-            for (let spending of block.spendings) {
-              this.costs.push(spending)
-            }
-            for (let transportation of block.transportations) {
-              this.costs.push(transportation)
-            }
-          }
-        }
-      },
-    }
   },
   created() {
     this.getComments()
@@ -202,37 +190,53 @@ export default {
 <style scoped>
 .day-number {
   border: solid #00D320;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .day-number-selected {
   background-color: #00D320;
   border: solid #00D320;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .total-cost {
   border: solid #1D51FF;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .total-cost-selected {
   background-color: #1D51FF;
   border: solid #1D51FF;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .map {
   border: solid #FF990D;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .map-selected {
   background-color: #FF990D;
   border: solid #FF990D;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .comment {
   border: solid #6A6A6A;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .comment-selected {
   background-color: #6A6A6A;
   border: solid #6A6A6A;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>

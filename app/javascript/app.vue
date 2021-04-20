@@ -4,7 +4,10 @@
     class="min-vh-100 background"
   >
     <TheHeader />
-    <div class="header-adjust">
+    <div
+      class="header-adjust"
+      ontouchstart=""
+    >
       <router-view />
     </div>
     <template v-if="$mq == 'xs'">

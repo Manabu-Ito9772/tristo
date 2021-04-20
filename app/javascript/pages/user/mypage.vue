@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid d-flex justify-content-center mt-4">
     <template v-if="$mq == 'xs'">
-      <template v-if="numOfArticles != null">
+      <template v-if="authUser">
         <div class="row">
           <div class="col-12 mt-3">
             <div class="m-0">
@@ -20,51 +20,73 @@
                     <router-link
                       :to="{ name: 'EditMyPage' }"
                     >
-                      <button class="btn text-muted button">
-                        編集
-                      </button>
+                      <template v-if="isMobile">
+                        <div class="text-muted button-mobile">
+                          編集
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="text-muted button">
+                          編集
+                        </div>
+                      </template>
                     </router-link>
                   </div>
 
                   <div class="mt-2 d-flex justify-content-center text-muted">
-                    <template v-if="numOfArticles != null">
-                      <div class="pr-3 text-center">
-                        <p class="m-0 font-small">
-                          投稿
-                        </p>
+                    <div class="pr-3 text-center">
+                      <p class="m-0 font-small">
+                        投稿
+                      </p>
+                      <template v-if="numOfArticles != null">
                         <p class="m-0 word-break">
                           {{ numOfArticles }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followings != null">
-                      <div
-                        class="pl-4 pr-4 text-center pointer"
-                        @click="toFollowingPage"
-                      >
-                        <p class="m-0 font-small">
-                          フォロー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロー
+                      </p>
+                      <template v-if="followings != null">
                         <p class="m-0 word-break">
                           {{ followings }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followers != null">
-                      <div
-                        class="text-center pointer"
-                        @click="toFollowerPage"
-                      >
-                        <p class="m-0 font-small">
-                          フォロワー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロワー
+                      </p>
+                      <template v-if="followers != null">
                         <p class="m-0 word-break">
                           {{ followers }}
                         </p>
-                      </div>
-                    </template>
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
+                        </p>
+                      </template>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -91,14 +113,14 @@
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                 </div>
@@ -143,7 +165,7 @@
 
                 <div class="col-4">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                    下書き
+                    非公開
                   </h5>
                 </div>
 
@@ -191,14 +213,14 @@
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                 </div>
@@ -237,7 +259,7 @@
               <div class="col-12 mt-4 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF00EB"
+                  color="#FF58F2"
                   :size="{ width: '80px' }"
                 />
               </div>
@@ -250,7 +272,7 @@
                     投稿がありません
                   </template>
                   <template v-else-if="draft">
-                    下書きがありません
+                    非公開投稿がありません
                   </template>
                   <template v-else>
                     いいねした投稿がありません
@@ -264,7 +286,7 @@
     </template>
 
     <template v-else>
-      <template v-if="numOfArticles != null">
+      <template v-if="authUser">
         <div class="row column-width">
           <div class="col-12 mt-3 p-0">
             <div class="m-0">
@@ -283,53 +305,75 @@
                     <router-link
                       :to="{ name: 'EditMyPage' }"
                     >
-                      <button class="btn text-muted button">
-                        編集
-                      </button>
+                      <template v-if="isMobile">
+                        <div class="text-muted button-mobile">
+                          編集
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="text-muted button">
+                          編集
+                        </div>
+                      </template>
                     </router-link>
                   </div>
 
                   <div class="mt-2 d-flex justify-content-center text-muted">
-                    <template v-if="numOfArticles != null">
-                      <div class="pr-3 text-center">
-                        <p class="m-0">
-                          投稿
-                        </p>
+                    <div class="pr-3 text-center">
+                      <p class="m-0">
+                        投稿
+                      </p>
+                      <template v-if="numOfArticles != null">
                         <p class="m-0 word-break">
                           {{ numOfArticles }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followings != null">
-                      <div
-                        id="following-count"
-                        class="pl-4 pr-4 text-center pointer"
-                        @click="toFollowingPage"
-                      >
-                        <p class="m-0">
-                          フォロー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      id="following-count"
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0">
+                        フォロー
+                      </p>
+                      <template v-if="followings != null">
                         <p class="m-0 word-break">
                           {{ followings }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followers != null">
-                      <div
-                        id="followers-count"
-                        class="text-center pointer"
-                        @click="toFollowerPage"
-                      >
-                        <p class="m-0">
-                          フォロワー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      id="followers-count"
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0">
+                        フォロワー
+                      </p>
+                      <template v-if="followers != null">
                         <p class="m-0 word-break">
                           {{ followers }}
                         </p>
-                      </div>
-                    </template>
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
+                        </p>
+                      </template>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -356,14 +400,14 @@
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                 </div>
@@ -408,7 +452,7 @@
 
                 <div class="col-4">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                    下書き
+                    非公開
                   </h5>
                 </div>
 
@@ -456,14 +500,14 @@
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
                     >
-                      下書き
+                      非公開
                     </h5>
                   </template>
                 </div>
@@ -500,7 +544,7 @@
               <div class="col-12 mt-5 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF00EB"
+                  color="#FF58F2"
                   :size="{ width: '100px' }"
                 />
               </div>
@@ -513,7 +557,7 @@
                     投稿がありません
                   </template>
                   <template v-else-if="draft">
-                    下書きがありません
+                    非公開投稿がありません
                   </template>
                   <template v-else>
                     いいねした投稿がありません
@@ -531,6 +575,7 @@
 <script>
 import ArticleItem from '../article/components/index/ArticleItem'
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'MyPage',
@@ -550,7 +595,8 @@ export default {
       page: 1,
       kaminariPage: null,
       loading: true,
-      presence: false
+      presence: false,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -689,13 +735,49 @@ export default {
 }
 
 .self-intro {
-  border-top: solid thin #FF00EB;
+  border-top: solid thin #FF58F2;
 }
 
 .button {
   white-space: nowrap;
-  border-radius: 20px;
+  display: inline-block;
   background-color: #D8D8D8;
+  padding: 6px 18px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button:active {
+  white-space: nowrap;
+  background-color: #A5A5A5;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  white-space: nowrap;
+  background-color: #A5A5A5;
+  position: relative;
+}
+
+.button-mobile {
+  white-space: nowrap;
+  display: inline-block;
+  background-color: #D8D8D8;
+  padding: 6px 18px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  white-space: nowrap;
+  background-color: #A5A5A5;
+  position: relative;
+  top: 4px;
 }
 
 .post-changer {
@@ -727,5 +809,9 @@ export default {
 .border-top {
   border-top: solid thin #CBCBCB;
   padding-bottom: 70px;
+}
+
+.invisible {
+  opacity: 0;
 }
 </style>

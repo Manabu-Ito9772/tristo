@@ -1,5 +1,6 @@
 class Article < ApplicationRecord
   before_save :extract_url_from_map
+  before_save :null_to_nill
 
   has_one_attached :eyecatch
 
@@ -15,7 +16,7 @@ class Article < ApplicationRecord
   belongs_to :country
 
   validates :title, presence: true, length: { maximum: 100 }
-  validates :description, length: { maximum: 3_000 }
+  validates :description, length: { maximum: 500 }
   validates :map, length: { maximum: 300 }
   validates :status, presence: true
   validates :eyecatch, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 0..5.megabytes }
@@ -37,12 +38,17 @@ class Article < ApplicationRecord
       include: [
         { user: { only: %i[id name avatar], methods: [:avatar_url] } },
         { country: { only: %i[id name currency] } },
-        { regions: { only: %i[id name] } },
+        { article_regions: { only: :id, include: { region: { only: :name } } } },
         { favorites: { only: :user_id } },
         { article_tags: { only: :id, include: { tag: { only: :name } } } }
       ],
       methods: [:eyecatch_url]
     )
+  end
+
+  def self.include_relations
+    Article.includes(:user, :country, :article_regions, :article_tags, :favorites,
+                     [days: [ordered_blocks: [:spendings, :transportations, image_attachment: :blob]]])
   end
 
   def eyecatch_url
@@ -53,5 +59,11 @@ class Article < ApplicationRecord
 
   def extract_url_from_map
     self.map = URI.extract(map, ['https']).first unless map.blank?
+  end
+
+  def null_to_nill
+    return if description != 'null'
+
+    self.description = nil
   end
 end

@@ -4,6 +4,7 @@ RSpec.describe 'ユーザー', type: :system do
   let(:user) { create(:user) }
   let(:country_japan) { create(:country, :japan_tokyo_kanagawa) }
   let(:article_normal) { create(:article, :normal) }
+  let(:article_another_user) { create(:article, :another_user) }
 
   describe 'ユーザー登録' do
     context 'ユーザー登録ボタンをクリック' do
@@ -22,7 +23,7 @@ RSpec.describe 'ユーザー', type: :system do
         expect(page).to have_content('プロフィール画像')
         expect(page).to have_field('プロフィール画像')
         expect(page).to have_css('.user-icon')
-        expect(page).to have_button('登録')
+        expect(page).to have_css('.button')
       end
 
       context 'フォームを入力して「登録」をクリック' do
@@ -31,8 +32,8 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'メールアドレス', with: 'test@test.com'
           fill_in 'パスワード', with: 'password'
           attach_file('プロフィール画像', 'public/images/sample.png')
-          click_on '登録'
-          sleep 3
+          find('.button').click
+          sleep 2
           expect(current_path).to eq('/trips')
           find('.fa-user').click
           expect(current_path).to eq('/mypage')
@@ -44,8 +45,8 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'ユーザーネーム', with: 'TestUser'
           fill_in 'メールアドレス', with: 'test@test.com'
           fill_in 'パスワード', with: 'password'
-          click_on '登録'
-          sleep 3
+          find('.button').click
+          sleep 2
           expect(current_path).to eq('/trips')
           find('.fa-user').click
           expect(current_path).to eq('/mypage')
@@ -56,7 +57,7 @@ RSpec.describe 'ユーザー', type: :system do
 
       context '何も入力せずに「登録」をクリック' do
         it 'バリデーションメッセージが表示される' do
-          click_on '登録'
+          find('.button').click
           expect(page).to have_content('ユーザーネームは必須項目です')
           expect(page).to have_content('メールアドレスは必須項目です')
           expect(page).to have_content('パスワードは必須項目です')
@@ -66,7 +67,7 @@ RSpec.describe 'ユーザー', type: :system do
       context '不適切な形式のメールアドレスを入力して「登録」をクリック' do
         it 'バリデーションメッセージが表示される' do
           fill_in 'メールアドレス', with: 'test'
-          click_on '登録'
+          find('.button').click
           expect(page).to have_content('メールアドレスの形式で入力してください')
         end
       end
@@ -77,8 +78,8 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'ユーザーネーム', with: 'TestUser'
           fill_in 'メールアドレス', with: user.email
           fill_in 'パスワード', with: 'password'
-          click_on '登録'
-          sleep 3
+          find('.button').click
+          sleep 2
           expect(page).to have_content('このメールアドレスは既に使われています')
         end
       end
@@ -86,15 +87,15 @@ RSpec.describe 'ユーザー', type: :system do
       context 'パスワードを半角英数字以外で入力して「登録」をクリック' do
         it 'バリデーションメッセージが表示される' do
           fill_in 'パスワード', with: 'テスト'
-          click_on '登録'
-          expect(page).to have_content('半角英数字で入力してください')
+          find('.button').click
+          expect(page).to have_content('半角英数字・記号で入力してください')
         end
       end
 
       context 'パスワードを5文字未満で入力して「登録」をクリック' do
         it 'バリデーションメッセージが表示される' do
           fill_in 'パスワード', with: 'aaaa'
-          click_on '登録'
+          find('.button').click
           expect(page).to have_content('パスワードは5文字以上で入力してください')
         end
       end
@@ -125,7 +126,7 @@ RSpec.describe 'ユーザー', type: :system do
         end
         expect(page).to have_field('メールアドレス')
         expect(page).to have_field('パスワード')
-        expect(page).to have_button('ログイン')
+        expect(page).to have_css('.button')
       end
 
       context 'フォームを入力して「ログイン」をクリック' do
@@ -133,7 +134,7 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'メールアドレス', with: user.email
           fill_in 'パスワード', with: 'password'
           find('.button').click
-          sleep 3
+          sleep 2
           expect(current_path).to eq('/trips')
           find('.fa-user').click
           expect(page).to have_content(user.name)
@@ -161,7 +162,7 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'メールアドレス', with: 'wrong@test.com'
           fill_in 'パスワード', with: 'password'
           find('.button').click
-          sleep 3
+          sleep 2
           expect(page).to have_content('メールアドレスまたはパスワードが正しくありません')
         end
       end
@@ -170,7 +171,7 @@ RSpec.describe 'ユーザー', type: :system do
         it 'バリデーションメッセージが表示される' do
           fill_in 'パスワード', with: 'テスト'
           find('.button').click
-          expect(page).to have_content('半角英数字で入力してください')
+          expect(page).to have_content('半角英数字・記号で入力してください')
         end
       end
 
@@ -179,7 +180,7 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'メールアドレス', with: user.email
           fill_in 'パスワード', with: 'wrong'
           find('.button').click
-          sleep 3
+          sleep 2
           expect(page).to have_content('メールアドレスまたはパスワードが正しくありません')
         end
       end
@@ -198,23 +199,24 @@ RSpec.describe 'ユーザー', type: :system do
     context 'ログインせずに記事一覧、記事詳細、ユーザーページにアクセス' do
       it 'アクセスできる' do
         article_normal
-        visit 'trips'
+        visit root_path
         sleep 2
         find('.area-changer-unselected').click
+        sleep 2
         expect(current_path).to eq('/trips')
         expect(page).to have_content(article_normal.title)
         find("#article-item-#{article_normal.id}").click
         expect(current_path).to eq('/trip')
         expect(page).to have_content(article_normal.title)
-        visit 'trips'
-        sleep 3
+        visit root_path
+        sleep 2
         find("#article-user-#{article_normal.user.id}").click
         expect(current_path).to eq('/user')
         expect(page).to have_content(article_normal.user.name)
       end
     end
 
-    context 'ログインせずに記事作成、記事詳細作成、マイページ、プロフィール編集、アカウント設定にアクセス' do
+    context 'ログインせずにログインが必要なページにアクセス' do
       it 'ログインページに遷移する' do
         visit 'create_trip'
         expect(current_path).to eq('/login')
@@ -222,6 +224,11 @@ RSpec.describe 'ユーザー', type: :system do
           expect(page).to have_content('ログイン')
         end
         visit 'create_trip_detail'
+        expect(current_path).to eq('/login')
+        within('.container-fluid') do
+          expect(page).to have_content('ログイン')
+        end
+        visit 'edit_trip'
         expect(current_path).to eq('/login')
         within('.container-fluid') do
           expect(page).to have_content('ログイン')
@@ -249,49 +256,41 @@ RSpec.describe 'ユーザー', type: :system do
     before {
       country_japan
       article_normal
-      login_as(user)
+      article_another_user
+      login_as(article_another_user.user)
       sleep 2
       find('.area-changer-unselected').click
       sleep 2
-      find('.heart').click
+      page.all('.heart')[1].click
       find('.fa-pen').click
       fill_in 'タイトル', with: 'TestTitleDraft'
       within('.prefecture') do
         find('.vs__search').set('東京')
         find('.vs__dropdown-menu').click
       end
-      click_on '詳細入力ページへ進む'
-      sleep 3
+      find('.button').click
+      sleep 2
       find('.draft-button').click
-      sleep 3
-      find('.fa-pen').click
-      fill_in 'タイトル', with: 'TestTitle'
-      within('.prefecture') do
-        find('.vs__search').set('東京')
-        find('.vs__dropdown-menu').click
-      end
-      click_on '詳細入力ページへ進む'
-      sleep 3
-      find('.post-button').click
-      sleep 3
+      sleep 2
+      visit root_path
     }
 
     context 'ヘッダーのユーザーアイコンをクリック' do
       before {
         find('.fa-user').click
-        sleep 3
+        sleep 1
       }
 
       it 'マイページが表示される' do
-        expect(page).to have_content(user.name)
-        expect(page).to have_content(user.description)
+        expect(page).to have_content(article_another_user.user.name)
+        expect(page).to have_content(article_another_user.description)
         expect(page).to have_selector("img[src$='default-image.jpg']")
-        expect(page).to have_button('編集')
+        expect(page).to have_content('編集')
         expect(page).to have_content('投稿')
         expect(page).to have_content('フォロー')
         expect(page).to have_content('フォロワー')
         expect(page).to have_content('投稿')
-        expect(page).to have_content('下書き')
+        expect(page).to have_content('非公開')
         expect(page).to have_content('いいね')
       end
 
@@ -308,13 +307,13 @@ RSpec.describe 'ユーザー', type: :system do
         it '記事詳細ページに遷移する' do
           expect(current_path).to eq('/trip')
           expect(page).to have_content('TestTitle')
-          expect(page).to have_content(user.name)
+          expect(page).to have_content(article_another_user.user.name)
         end
 
         context 'メニューボタンをクリックし、「旅行記録を編集」をクリック' do
           before {
-            find('.edit-menu').click
-            find('.edit-button').click
+            find('#edit-menu').click
+            find('#edit-btn').click
           }
 
           it '記事編集ページに遷移する' do
@@ -324,55 +323,54 @@ RSpec.describe 'ユーザー', type: :system do
           context '「保存する」をクリック' do
             it '記事が保存され記事詳細ページに遷移' do
               find('.post-button').click
-              sleep 3
+              sleep 2
               expect(current_path).to eq('/trip')
-              expect(page).to have_content(user.name)
+              expect(page).to have_content(article_another_user.user.name)
               expect(page).to have_content('TestTitle')
             end
           end
 
-          context '「下書き状態にする」をクリック' do
-            it '記事が下書き状態になりマイページに遷移' do
+          context '「非公開にする」をクリック' do
+            it '記事が非公開になりマイページに遷移' do
               find('.draft-button').click
-              sleep 3
+              sleep 2
               within('.post-changer') do
-                expect(page).to have_content('下書き')
+                expect(page).to have_content('非公開')
               end
               expect(current_path).to eq('/mypage')
               expect(page).to have_content('TestTitle')
-              expect(page).to have_content(user.name)
+              expect(page).to have_content(article_another_user.user.name)
             end
           end
         end
       end
 
-      context '「下書き」をクリック' do
+      context '「非公開」をクリック' do
         before {
           page.all('.post-changer-unselect')[0].click
-          sleep 3
+          sleep 2
         }
 
-        it '自分の下書き一覧が表示される' do
+        it '自分の非公開記事一覧が表示される' do
           within('.post-changer') do
-            expect(page).to have_content('下書き')
+            expect(page).to have_content('非公開')
           end
           expect(page).to have_content('TestTitleDraft')
         end
 
-        context '自分の下書き一覧の下書きをクリック' do
+        context '自分の非公開一覧の記事をクリック' do
           before { find('.article-title').click }
 
           it '記事詳細ページに遷移する' do
             expect(current_path).to eq('/trip')
             expect(page).to have_content('TestTitleDraft')
-            expect(page).to have_content(user.name)
+            expect(page).to have_content(article_another_user.user.name)
           end
 
           context 'メニューボタンをクリックし、「旅行記録を編集」をクリック' do
             before {
-              find('.edit-menu').click
-              find('.edit-button').click
-              sleep 1
+              find('#edit-menu').click
+              find('#edit-btn').click
             }
 
             it '記事編集ページに遷移する' do
@@ -382,23 +380,23 @@ RSpec.describe 'ユーザー', type: :system do
             context '「投稿する」をクリック' do
               it '記事が投稿され記事一覧ページに遷移' do
                 find('.post-button').click
-                sleep 3
+                sleep 2
                 expect(current_path).to eq('/trips')
                 expect(page).to have_content('TestTitleDraft')
-                expect(page).to have_content(user.name)
+                expect(page).to have_content(article_another_user.user.name)
               end
             end
 
-            context '「下書き保存」をクリック' do
-              it '記事は下書き状態のままマイページに遷移' do
+            context '「保存」をクリック' do
+              it '記事は非公開のままマイページに遷移' do
                 find('.draft-button').click
-                sleep 3
+                sleep 2
                 within('.post-changer') do
-                  expect(page).to have_content('下書き')
+                  expect(page).to have_content('非公開')
                 end
                 expect(current_path).to eq('/mypage')
                 expect(page).to have_content('TestTitleDraft')
-                expect(page).to have_content(user.name)
+                expect(page).to have_content(article_another_user.user.name)
               end
             end
           end
@@ -408,7 +406,7 @@ RSpec.describe 'ユーザー', type: :system do
       context '「いいね」をクリック' do
         before {
           page.all('.post-changer-unselect')[1].click
-          sleep 3
+          sleep 2
         }
 
         it 'いいね一覧が表示される' do
@@ -420,7 +418,10 @@ RSpec.describe 'ユーザー', type: :system do
         end
 
         context 'いいね一覧の記事をクリック' do
-          before { find('.article-title').click }
+          before {
+            find('.article-title').click
+            sleep 2
+          }
 
           it '記事詳細ページに遷移する' do
             expect(current_path).to eq('/trip')
@@ -443,9 +444,9 @@ RSpec.describe 'ユーザー', type: :system do
           expect(page).to have_field('ユーザーネーム')
           expect(page).to have_content('自己紹介')
           expect(page).to have_field('説明')
-          expect(page).to have_button('保存')
-          expect(find_field('ユーザーネーム').value).to eq(user.name)
-          expect(find_field('説明').value).to eq(user.description)
+          expect(page).to have_css('.button')
+          expect(find_field('ユーザーネーム').value).to eq(article_another_user.user.name)
+          expect(find_field('説明').value).to eq(article_another_user.user.description)
         end
 
         context 'プロフィールを編集して「保存」をクリック' do
@@ -453,7 +454,7 @@ RSpec.describe 'ユーザー', type: :system do
             fill_in 'ユーザーネーム', with: 'UpdatedUser'
             fill_in '説明', with: 'UpdatedDescription'
             attach_file('プロフィール画像', 'public/images/sample.png')
-            click_on '保存'
+            find('.button').click
             sleep 2
             expect(current_path).to eq('/mypage')
             expect(page).to have_selector("img[src$='sample.png']")
@@ -465,7 +466,7 @@ RSpec.describe 'ユーザー', type: :system do
         context 'ユーザーネームを空欄にしたまま「保存」をクリック' do
           it 'バリデーションメッセージが表示される' do
             fill_in 'ユーザーネーム', with: ' '
-            click_on '保存'
+            find('.button').click
             expect(page).to have_content('ユーザーネームは必須項目です')
           end
         end
@@ -474,15 +475,15 @@ RSpec.describe 'ユーザー', type: :system do
 
     context '記事一覧の自分の記事のユーザー名をクリック' do
       it 'マイページに遷移' do
-        find("#article-user-#{user.id}").click
-        expect(page).to have_content(user.name)
-        expect(page).to have_content(user.description)
-        expect(page).to have_button('編集')
+        find("#article-user-#{article_another_user.user.id}").click
+        expect(page).to have_content(article_another_user.user.name)
+        expect(page).to have_content(article_another_user.description)
+        expect(page).to have_content('編集')
         expect(page).to have_content('投稿')
         expect(page).to have_content('フォロー')
         expect(page).to have_content('フォロワー')
         expect(page).to have_content('投稿')
-        expect(page).to have_content('下書き')
+        expect(page).to have_content('非公開')
         expect(page).to have_content('いいね')
       end
     end
@@ -492,10 +493,17 @@ RSpec.describe 'ユーザー', type: :system do
     context '記事一覧の記事のユーザー名をクリック' do
       before {
         article_normal
-        visit root_path
-        sleep 3
+        login_as(article_normal.user)
+        sleep 2
         find('.area-changer-unselected').click
-        sleep 3
+        sleep 2
+        find('.heart').click
+        find('.fa-bars').click
+        page.all('.dropdown-item')[1].click
+        visit root_path
+        sleep 2
+        find('.area-changer-unselected').click
+        sleep 2
         find("#article-user-#{article_normal.user.id}").click
         sleep 2
       }
@@ -505,13 +513,17 @@ RSpec.describe 'ユーザー', type: :system do
         expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(article_normal.user.name)
         expect(page).to have_content(article_normal.user.description)
-        expect(page).to_not have_button('編集')
+        expect(page).to_not have_content('編集')
         expect(page).to have_content('投稿')
         expect(page).to have_content('フォロー')
         expect(page).to have_content('フォロワー')
         expect(page).to have_content('投稿')
-        expect(page).to_not have_content('下書き')
+        expect(page).to_not have_content('非公開')
         expect(page).to have_content('いいね')
+      end
+
+      it '投稿一覧が表示される' do
+        expect(page).to have_content(article_normal.title)
       end
 
       context '投稿一覧の記事をクリック' do
@@ -519,6 +531,22 @@ RSpec.describe 'ユーザー', type: :system do
           find("#article-item-#{article_normal.id}").click
           expect(current_path).to eq('/trip')
           expect(page).to have_content(article_normal.title)
+        end
+      end
+
+      context '「いいね」をクリック' do
+        it 'いいねした記事一覧が表示される' do
+          find('.post-changer-unselect').click
+          sleep 2
+          expect(page).to have_content(article_normal.title)
+        end
+
+        context 'いいねした記事をクリック' do
+          it '記事詳細が表示される' do
+            find("#article-item-#{article_normal.id}").click
+            expect(current_path).to eq('/trip')
+            expect(page).to have_content(article_normal.title)
+          end
         end
       end
     end
@@ -532,11 +560,12 @@ RSpec.describe 'ユーザー', type: :system do
         find('.fa-bars').click
         page.all('.dropdown-item')[0].click
       }
+
       it 'アカウント設定ページが表示される' do
         expect(page).to have_content('アカウント設定')
         expect(page).to have_content('メールアドレス')
         expect(page).to have_content('パスワード')
-        expect(page).to have_button('保存')
+        expect(page).to have_css('.button')
         expect(page).to have_field('メールアドレス')
         expect(page).to have_field('パスワード')
         expect(find_field('メールアドレス').value).to eq(user.email)
@@ -546,21 +575,18 @@ RSpec.describe 'ユーザー', type: :system do
         it 'アカウント設定がアップデートされる' do
           fill_in 'メールアドレス', with: 'update@update.com'
           fill_in 'パスワード', with: 'update'
-          click_on '保存'
-          page.all('.dropdown-item')[1].click
-          fill_in 'メールアドレス', with: 'update@update.com'
-          fill_in 'パスワード', with: 'update'
           find('.button').click
           find('.fa-bars').click
           page.all('.dropdown-item')[0].click
           expect(find_field('メールアドレス').value).to eq('update@update.com')
+          page.save_screenshot 'screenshot.png'
         end
       end
 
       context 'メールアドレスのみを編集して「保存」をクリック' do
         it 'メールアドレスがアップデートされる' do
           fill_in 'メールアドレス', with: 'update@update.com'
-          click_on '保存'
+          find('.button').click
           sleep 2
           find('.fa-bars').click
           page.all('.dropdown-item')[0].click
@@ -571,7 +597,7 @@ RSpec.describe 'ユーザー', type: :system do
       context 'メールアドレスを空欄にして「保存」をクリック' do
         it 'バリデーションメッセージが表示される' do
           fill_in 'メールアドレス', with: ' '
-          click_on '保存'
+          find('.button').click
           expect(page).to have_content('メールアドレスは必須項目です')
         end
       end
@@ -579,7 +605,7 @@ RSpec.describe 'ユーザー', type: :system do
       context '不適切な形式のメールアドレスを入力して「保存」をクリック' do
         it 'バリデーションメッセージが表示される' do
           fill_in 'メールアドレス', with: 'test'
-          click_on '保存'
+          find('.button').click
           expect(page).to have_content('メールアドレスの形式で入力してください')
         end
       end
@@ -587,15 +613,15 @@ RSpec.describe 'ユーザー', type: :system do
       context 'パスワードを半角英数字以外で入力して「登録」をクリック' do
         it 'バリデーションメッセージが表示される' do
           fill_in 'パスワード', with: 'テスト'
-          click_on '保存'
-          expect(page).to have_content('半角英数字で入力してください')
+          find('.button').click
+          expect(page).to have_content('半角英数字・記号で入力してください')
         end
       end
 
       context 'パスワードを5文字未満で入力して「登録」をクリック' do
         it 'バリデーションメッセージが表示される' do
           fill_in 'パスワード', with: 'aaaa'
-          click_on '保存'
+          find('.button').click
           expect(page).to have_content('パスワードは5文字以上で入力してください')
         end
       end
@@ -616,6 +642,7 @@ RSpec.describe 'ユーザー', type: :system do
             find('#delete-membership').click
           end
           expect(current_path).to eq('/trips')
+          expect(page).to have_content('退会しました。ご利用ありがとうございました。')
           find('.login-button').click
           fill_in 'メールアドレス', with: user.email
           fill_in 'パスワード', with: 'password'

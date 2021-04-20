@@ -19,63 +19,78 @@
                     </h4>
                     <template v-if="authUser">
                       <template v-if="notFollowing">
-                        <button
-                          class="btn bg-white font-weight-bold follow-button"
+                        <div
+                          class="bg-white font-weight-bold follow-button"
                           @click="followUser"
                         >
                           フォロー
-                        </button>
+                        </div>
                       </template>
                       <template v-if="following">
-                        <button
-                          class="btn text-white font-weight-bold unfollow-button"
+                        <div
+                          class="text-white font-weight-bold unfollow-button"
                           @click="unfollowUser"
                         >
                           フォロー中
-                        </button>
+                        </div>
                       </template>
                     </template>
                   </div>
 
                   <div class="mt-2 d-flex justify-content-center text-muted">
-                    <template v-if="numOfArticles != null">
-                      <div class="pr-3 text-center">
-                        <p class="m-0 word-unbreak font-small">
-                          投稿
-                        </p>
+                    <div class="pr-3 text-center">
+                      <p class="m-0 word-unbreak font-small">
+                        投稿
+                      </p>
+                      <template v-if="numOfArticles != null">
                         <p class="m-0 word-break">
                           {{ numOfArticles }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followings != null">
-                      <div
-                        class="pl-4 pr-4 text-center pointer"
-                        @click="toFollowingPage"
-                      >
-                        <p class="m-0 font-small">
-                          フォロー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロー
+                      </p>
+                      <template v-if="followings != null">
                         <p class="m-0 word-break">
                           {{ followings }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followers != null">
-                      <div
-                        class="text-center pointer"
-                        @click="toFollowerPage"
-                      >
-                        <p class="m-0 font-small">
-                          フォロワー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0 font-small">
+                        フォロワー
+                      </p>
+                      <template v-if="followers != null">
                         <p class="m-0 word-break">
                           {{ followers }}
                         </p>
-                      </div>
-                    </template>
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break invisible">
+                          NaN
+                        </p>
+                      </template>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -168,7 +183,7 @@
               <div class="col-12 mt-4 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF00EB"
+                  color="#FF58F2"
                   :size="{ width: '80px' }"
                 />
               </div>
@@ -209,65 +224,80 @@
                     </h3>
                     <template v-if="authUser">
                       <template v-if="notFollowing">
-                        <button
-                          class="btn bg-white font-weight-bold follow-button"
+                        <div
+                          class="bg-white font-weight-bold follow-button"
                           @click="followUser"
                         >
                           フォロー
-                        </button>
+                        </div>
                       </template>
                       <template v-if="following">
-                        <button
-                          class="btn text-white font-weight-bold unfollow-button"
+                        <div
+                          class="text-white font-weight-bold unfollow-button"
                           @click="unfollowUser"
                         >
                           フォロー中
-                        </button>
+                        </div>
                       </template>
                     </template>
                   </div>
 
                   <div class="mt-2 d-flex justify-content-center text-muted">
-                    <template v-if="numOfArticles != null">
-                      <div class="pr-3 text-center">
-                        <p class="m-0">
-                          投稿
-                        </p>
+                    <div class="pr-3 text-center">
+                      <p class="m-0">
+                        投稿
+                      </p>
+                      <template v-if="numOfArticles != null">
                         <p class="m-0 word-break">
                           {{ numOfArticles }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followings != null">
-                      <div
-                        id="following-count"
-                        class="pl-4 pr-4 text-center pointer"
-                        @click="toFollowingPage"
-                      >
-                        <p class="m-0">
-                          フォロー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      id="following-count"
+                      class="pl-4 pr-4 text-center pointer"
+                      @click="toFollowingPage"
+                    >
+                      <p class="m-0">
+                        フォロー
+                      </p>
+                      <template v-if="followings != null">
                         <p class="m-0 word-break">
                           {{ followings }}
                         </p>
-                      </div>
-                    </template>
-
-                    <template v-if="followers != null">
-                      <div
-                        id="followers-count"
-                        class="text-center pointer"
-                        @click="toFollowerPage"
-                      >
-                        <p class="m-0">
-                          フォロワー
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break">
+                          NaN
                         </p>
+                      </template>
+                    </div>
+
+                    <div
+                      id="followers-count"
+                      class="text-center pointer"
+                      @click="toFollowerPage"
+                    >
+                      <p class="m-0">
+                        フォロワー
+                      </p>
+                      <template v-if="followers != null">
                         <p class="m-0 word-break">
                           {{ followers }}
                         </p>
-                      </div>
-                    </template>
+                      </template>
+                      <template v-else>
+                        <p class="m-0 word-break">
+                          NaN
+                        </p>
+                      </template>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -358,7 +388,7 @@
               <div class="col-12 mt-5 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF00EB"
+                  color="#FF58F2"
                   :size="{ width: '100px' }"
                 />
               </div>
@@ -575,7 +605,7 @@ export default {
 }
 
 .self-intro {
-  border-top: solid thin #FF00EB;
+  border-top: solid thin #FF58F2;
 }
 
 .post-changer {
@@ -595,17 +625,21 @@ export default {
 .follow-button {
   white-space: nowrap;
   font-size: 13px;
+  padding: 6px 14px;
   color: #1D51FF;
   border: solid thin #1D51FF;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 .unfollow-button {
   white-space: nowrap;
   font-size: 13px;
+  padding: 6px 14px;
   border: solid thin #1D51FF;
   border-radius: 20px;
   background-color: #1D51FF;
+  cursor: pointer;
 }
 
 .pointer {
@@ -623,5 +657,9 @@ export default {
 .border-top {
   border-top: solid thin #CBCBCB;
   padding-bottom: 70px;
+}
+
+.invisible {
+  opacity: 0;
 }
 </style>

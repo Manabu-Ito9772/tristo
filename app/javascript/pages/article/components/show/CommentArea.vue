@@ -18,12 +18,22 @@
             </ValidationProvider>
           </div>
           <div class="ml-2">
-            <button
-              class="btn text-white font-weight-bold button"
-              @click="handleSubmit(postComment)"
-            >
-              投稿
-            </button>
+            <template v-if="isMobile">
+              <div
+                class="text-white font-weight-bold button-mobile"
+                @click="handleSubmit(postComment)"
+              >
+                投稿
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="text-white font-weight-bold button"
+                @click="handleSubmit(postComment)"
+              >
+                投稿
+              </div>
+            </template>
           </div>
         </div>
       </ValidationObserver>
@@ -56,7 +66,7 @@
       <template v-if="loading">
         <vue-loading
           type="spiningDubbles"
-          color="#FF00EB"
+          color="#FF58F2"
           :size="{ width: '60px' }"
           class="mt-5"
         />
@@ -68,6 +78,7 @@
 <script>
 import EachComment from './commentarea/EachComment'
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'CommentArea',
@@ -85,7 +96,8 @@ export default {
       page: 1,
       loading: true,
       isVisibleComment: true,
-      show: false
+      show: false,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -185,7 +197,43 @@ export default {
 
 .button {
   white-space: nowrap;
-  background-color: #FF00EB;
-  border-radius: 30px;
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 6px 20px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button:active {
+  white-space: nowrap;
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  white-space: nowrap;
+  background-color: #C642BC;
+  position: relative;
+}
+
+.button-mobile {
+  white-space: nowrap;
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 6px 20px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  white-space: nowrap;
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
 }
 </style>

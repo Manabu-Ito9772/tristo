@@ -6,7 +6,7 @@
         rules="required|max:100"
       >
         <h5 class="col-12 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
-          * タイトル
+          タイトル（必須）
         </h5>
         <input
           v-model="articleEdit.title"
@@ -22,7 +22,7 @@
           rules="country"
         >
           <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
-            * 国
+            国（必須）
           </h5>
           <v-select
             v-model="country"
@@ -60,7 +60,7 @@
           rules="prefecture"
         >
           <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
-            * 都道府県
+            都道府県（必須）
           </h5>
           <v-select
             v-model="regionIdArray"
@@ -77,26 +77,8 @@
         </ValidationProvider>
       </template>
 
-      <ValidationProvider
-        v-slot="{ errors }"
-        rules="max:3000"
-      >
-        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
-          説明
-        </h5>
-        <textarea
-          ref="area"
-          v-model="articleEdit.description"
-          :style="styles"
-          name="説明"
-          class="form-control bg-light"
-          rows="1"
-        />
-        <span class="text-danger">{{ errors[0] }}</span>
-      </ValidationProvider>
-
       <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
-        日程
+        期間
       </h5>
       <div class="d-flex align-items-center justify-content-between">
         <Datepicker
@@ -128,6 +110,24 @@
 
       <ValidationProvider
         v-slot="{ errors }"
+        rules="max:500"
+      >
+        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+          コメント
+        </h5>
+        <textarea
+          ref="area"
+          v-model="articleEdit.description"
+          :style="styles"
+          name="コメント"
+          class="form-control bg-light"
+          rows="2"
+        />
+        <span class="text-danger">{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <ValidationProvider
+        v-slot="{ errors }"
         ref="provider"
         name="アイキャッチ"
         rules="image"
@@ -136,17 +136,15 @@
           アイキャッチ
         </h5>
         <template v-if="previewEyecatch">
-          <img
-            :src="previewEyecatch"
-            class="mb-2 w-100"
-          >
+          <div class="mb-2 image-trim">
+            <img :src="previewEyecatch">
+          </div>
         </template>
         <template v-else>
           <template v-if="article.eyecatch_url">
-            <img
-              :src="article.eyecatch_url"
-              class="mb-2 w-100"
-            >
+            <div class="mb-2 image-trim">
+              <img :src="article.eyecatch_url">
+            </div>
           </template>
         </template>
 
@@ -200,17 +198,13 @@
         name="マップ"
         class="form-control bg-light"
       >
-      <p class="mb-3 text-center text-secondary font-small">
+      <p class="text-center text-secondary font-small">
         ※HTMLコードを入力することでGoogle my mapsを埋め込むことができます。詳しくはこちら。
-      </p>
-
-      <p class="col-12 m-0 text-center text-secondary font-small">
-        * 必須項目
       </p>
 
       <div class="text-center">
         <p
-          class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-3 mb-4 font-weight-bold edit-button"
+          class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button"
           @click="handleSubmit(updateOverview)"
         >
           保存
@@ -255,10 +249,12 @@ export default {
         clear: true,
         bootstrap: true,
         disabledStartDates: {
-          from: '',
+          to: '',
+          from: ''
         },
         disabledEndDates: {
           to: '',
+          from: ''
         },
       },
       height: '',
@@ -280,17 +276,23 @@ export default {
       }
     },
     'articleEdit.start_date'() {
-      if (this.articleEdit.start_date != null) {
+      if (this.articleEdit.start_date) {
         this.datepicker.disabledEndDates.to = new Date(this.articleEdit.start_date)
+        this.datepicker.disabledEndDates.from = new Date(this.articleEdit.start_date)
+        this.datepicker.disabledEndDates.from.setDate(this.datepicker.disabledEndDates.from.getDate() + 13)
       } else {
         this.datepicker.disabledEndDates.to = ''
+        this.datepicker.disabledEndDates.from = ''
       }
     },
     'articleEdit.end_date'() {
-      if (this.articleEdit.end_date != null) {
+      if (this.articleEdit.end_date) {
         this.datepicker.disabledStartDates.from = new Date(this.articleEdit.end_date)
+        this.datepicker.disabledStartDates.to = new Date(this.articleEdit.end_date)
+        this.datepicker.disabledStartDates.to.setDate(this.datepicker.disabledStartDates.from.getDate() - 13)
       } else {
         this.datepicker.disabledStartDates.from = ''
+        this.datepicker.disabledStartDates.to = ''
       }
     },
     'articleEdit.description'(){
@@ -301,8 +303,8 @@ export default {
     this.getCountries()
     this.articleEdit = this.article
     this.countryName = this.articleEdit.country.name
-    for (let region of this.articleEdit.regions) {
-      this.regionIdArray.push(region.id)
+    for (let article_region of this.articleEdit.article_regions) {
+      this.regionIdArray.push(article_region.region.id)
     }
     this.articleEdit.article_tags.sort((a, b) => {
       if (a.id < b.id) {
@@ -339,43 +341,58 @@ export default {
         .catch(err => console.log(err.response))
     },
     async updateOverview() {
-      await this.deleteArticleRegions()
-      await this.createArticleRegions()
-      await this.deleteArticleTags()
-      await this.createArticleTags()
+      await this.updateRegions()
+      await this.updateTags()
       await this.updateArticle()
     },
-    async deleteArticleRegions() {
+    async updateRegions() {
       for (let article_region of this.articleEdit.article_regions) {
-        await this.$axios.delete(`article_regions/${article_region.id}`)
+        let result = this.regionIdArray.some(regionId => {
+          return regionId == article_region.region.id
+        })
+        if (result != true) {
+          await this.$axios.delete(`article_regions/${article_region.id}`)
+            .catch(err => console.log(err.response))
+        }
       }
-    },
-    async createArticleRegions() {
-      if (this.regionIdArray.length) {
-        this.article_region.article_id = this.$route.query.id
-        for (let region_id of this.regionIdArray) {
-          this.article_region.region_id = region_id
+
+      for (let regionId of this.regionIdArray) {
+        let result = this.articleEdit.article_regions.some(article_region => {
+          return article_region.region.id == regionId
+        })
+        if (result != true) {
+          this.article_region.article_id = this.$route.query.id
+          this.article_region.region_id = regionId
           await this.$axios.post('article_regions', this.article_region)
             .catch(err => console.log(err.response))
         }
       }
     },
-    async deleteArticleTags() {
+    async updateTags() {
       for (let article_tag of this.articleEdit.article_tags) {
-        await this.$axios.delete(`article_tags/${article_tag.id}`)
-          .catch(err => console.log(err.response))
+        let result = this.tags.some(tag => {
+          return tag == article_tag.tag.name
+        })
+        if (result != true) {
+          await this.$axios.delete(`article_tags/${article_tag.id}`)
+            .catch(err => console.log(err.response))
+        }
       }
-    },
-    async createArticleTags() {
-      this.article_tag.article_id = this.$route.query.id
+
       for (let tag of this.tags) {
-        await this.$axios.post('tags', { name: tag })
-          .then(res => {
-            this.article_tag.tag_id = res.data.id
-          })
-          .catch(err => console.log(err.response))
-        await this.$axios.post('article_tags', this.article_tag)
-          .catch(err => console.log(err.response))
+        let result = this.articleEdit.article_tags.some(article_tag => {
+          return article_tag.tag.name == tag
+        })
+        if (result != true) {
+          this.article_tag.article_id = this.$route.query.id
+          await this.$axios.post('tags', { name: tag })
+            .then(res => {
+              this.article_tag.tag_id = res.data.id
+            })
+            .catch(err => console.log(err.response))
+          await this.$axios.post('article_tags', this.article_tag)
+            .catch(err => console.log(err.response))
+        }
       }
     },
     async handleChange(event) {
@@ -388,10 +405,10 @@ export default {
       const formData = new FormData()
       formData.append('article[country_id]', this.articleEdit.country_id)
       formData.append('article[title]', this.articleEdit.title)
-      if (this.articleEdit.description) formData.append('article[description]', this.articleEdit.description)
-      if (this.articleEdit.map) formData.append('article[map]', this.articleEdit.map)
-      if (this.articleEdit.start_date) formData.append('article[start_date]', this.articleEdit.start_date)
-      if (this.articleEdit.end_date) formData.append('article[end_date]', this.articleEdit.end_date)
+      formData.append('article[start_date]', this.articleEdit.start_date)
+      formData.append('article[end_date]', this.articleEdit.end_date)
+      formData.append('article[description]', this.articleEdit.description)
+      formData.append('article[map]', this.articleEdit.map)
       if (this.uploadEyecatch) formData.append('article[eyecatch]', this.uploadEyecatch)
 
       await this.$axios.patch(`articles/${this.$route.query.id}`, formData)
@@ -469,5 +486,22 @@ export default {
 
 .file-input {
   width: 75%;
+}
+
+.image-trim {
+  position: relative;
+  overflow: hidden;
+  padding-top: 60%;
+}
+
+.image-trim img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
 }
 </style>

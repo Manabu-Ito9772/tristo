@@ -52,27 +52,29 @@
           </div>
         </template>
 
-        <div class="col-12 mt-2 mb-3 p-0">
-          <div class="p-2 d-flex align-items-center bg-white checkbox">
-            <template v-if="article || !loading">
-              <input
-                id="followingRadioButton"
-                v-model="following"
-                type="checkbox"
-                @change="followingArticles"
-              >
-            </template>
-            <template v-else>
-              <input
-                type="checkbox"
-                disabled
-              >
-            </template>
-            <p class="pl-2 m-0 text-dark font-small">
-              フォローしているユーザーの投稿のみ表示
-            </p>
+        <template v-if="authUser">
+          <div class="col-12 mt-2 mb-3 p-0">
+            <div class="p-2 d-flex align-items-center bg-white checkbox">
+              <template v-if="article || !loading">
+                <input
+                  id="followingRadioButton"
+                  v-model="following"
+                  type="checkbox"
+                  @change="followingArticles"
+                >
+              </template>
+              <template v-else>
+                <input
+                  type="checkbox"
+                  disabled
+                >
+              </template>
+              <p class="pl-2 m-0 text-dark font-small">
+                フォローしているユーザーの投稿のみ表示
+              </p>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
 
       <div class="row p-3 bg-white search">
@@ -279,19 +281,38 @@
 
         <div class="col-12 text-center">
           <template v-if="article || !loading">
-            <button
-              class="btn pl-4 pr-4 text-white font-weight-bold button"
-              @click="searchArticles"
-            >
-              検索
-            </button>
+            <template v-if="isMobile">
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button-mobile"
+                @click="searchArticles"
+              >
+                検索
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button"
+                @click="searchArticles"
+              >
+                検索
+              </div>
+            </template>
           </template>
           <template v-else>
-            <button
-              class="btn pl-4 pr-4 text-white font-weight-bold button"
-            >
-              検索
-            </button>
+            <template v-if="isMobile">
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button-mobile"
+              >
+                検索
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button"
+              >
+                検索
+              </div>
+            </template>
           </template>
         </div>
       </div>
@@ -301,6 +322,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'SearchForm',
@@ -312,7 +334,16 @@ export default {
     loading: {
       type: Boolean,
       required: true
-    }
+    },
+    sentag: {
+      type: String,
+      default: null,
+      required: false
+    },
+    japan: {
+      type: Boolean,
+      required: false
+    },
   },
   data() {
     return {
@@ -334,6 +365,7 @@ export default {
       prefectures: [],
       regionsIdArray: [],
       tags: [],
+      isMobile: isMobile
     }
   },
   computed: {
@@ -369,7 +401,7 @@ export default {
     },
   },
   created() {
-    this.search.q.japan = this.articleJapan
+    this.sentag ? this.searchBySentag() : this.search.q.japan = this.articleJapan
     this.getCountries()
     this.getPrefectures()
   },
@@ -436,6 +468,24 @@ export default {
       } else {
         this.$emit('resetPageWorld')
       }
+    },
+    searchByTag(tag) {
+      this.tags = []
+      this.tags.push(tag)
+      this.search.q.tags = tag
+      this.$emit('setSearch', this.search)
+    },
+    searchBySentag() {
+      this.tags = []
+      this.tags.push(this.sentag)
+      this.search.q.japan = this.japan
+      this.search.q.tags = this.sentag
+      if (this.japan) {
+        this.$store.commit('articles/articleJapanTrue')
+      } else {
+        this.$store.commit('articles/articleJapanFalse')
+      }
+      this.$emit('setSearch', this.search)
     }
   }
 }
@@ -489,8 +539,40 @@ export default {
 }
 
 .button {
+  display: inline-block;
   background-color: #FF990D;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
+}
+
+.button:active {
+  background-color: #D37C04;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  background-color: #D37C04;
+  position: relative;
+}
+
+.button-mobile {
+  display: inline-block;
+  background-color: #FF990D;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  background-color: #D37C04;
+  position: relative;
+  top: 4px;
 }
 
 .v-select {

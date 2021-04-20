@@ -29,7 +29,8 @@ const router = new Router({
     {
       path: '/trips',
       component: ArticleIndex,
-      name: 'ArticleIndex'
+      name: 'ArticleIndex',
+      props: true
     },
     {
       path: '/trip',
@@ -60,6 +61,7 @@ const router = new Router({
       path: '/search_trips',
       component: ArticleSearch,
       name: 'ArticleSearch',
+      props: true
     },
     {
       path: '/register',

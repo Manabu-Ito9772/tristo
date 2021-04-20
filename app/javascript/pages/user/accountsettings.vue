@@ -31,7 +31,7 @@
 
             <ValidationProvider
               v-slot="{ errors }"
-              rules="password_format|min:5|max:100"
+              rules="password_format|min:5|max:30"
             >
               <h5
                 id="パスワード"
@@ -61,7 +61,10 @@
                       </span>
                     </template>
                     <template v-else>
-                      <span @click="hidePassword">
+                      <span
+                        class="pointer"
+                        @click="hidePassword"
+                      >
                         <font-awesome-icon
                           :icon="['far', 'eye-slash']"
                           class="fa-lg"
@@ -75,22 +78,43 @@
             </ValidationProvider>
 
             <div class="mt-4 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(updateCurrentUser)"
-              >
-                保存
-              </button>
+              <template v-if="isMobile">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
+              <template v-else>
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
             </div>
 
             <div class="mt-2 text-right">
-              <p
-                id="delete-membership"
-                class="btn text-muted font-weight-bold"
-                @click="deleteCurrentUser"
-              >
-                退会する
-              </p>
+              <template v-if="isMobile">
+                <p
+                  id="delete-membership"
+                  class="btn font-weight-bold text-muted"
+                  @click="deleteCurrentUser"
+                >
+                  退会する
+                </p>
+              </template>
+              <template v-else>
+                <p
+                  id="delete-membership"
+                  class="btn font-weight-bold delete-user"
+                  @click="deleteCurrentUser"
+                >
+                  退会する
+                </p>
+              </template>
             </div>
           </ValidationObserver>
         </div>
@@ -126,7 +150,7 @@
 
             <ValidationProvider
               v-slot="{ errors }"
-              rules="password_format|min:5|max:100"
+              rules="password_format|min:5|max:30"
             >
               <h5
                 id="パスワード"
@@ -156,7 +180,10 @@
                       </span>
                     </template>
                     <template v-else>
-                      <span @click="hidePassword">
+                      <span
+                        class="pointer"
+                        @click="hidePassword"
+                      >
                         <font-awesome-icon
                           :icon="['far', 'eye-slash']"
                           class="fa-lg"
@@ -170,23 +197,44 @@
             </ValidationProvider>
 
             <div class="mt-4 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(updateCurrentUser)"
-              >
-                保存
-              </button>
+              <template v-if="isMobile">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
+              <template v-else>
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
             </div>
           </ValidationObserver>
         </div>
         <div class="col-12 mt-1 pr-0 text-right">
-          <p
-            id="delete-membership"
-            class="btn p-0 text-muted font-weight-bold"
-            @click="deleteCurrentUser"
-          >
-            退会する
-          </p>
+          <template v-if="isMobile">
+            <p
+              id="delete-membership"
+              class="btn p-0 font-weight-bold text-muted"
+              @click="deleteCurrentUser"
+            >
+              退会する
+            </p>
+          </template>
+          <template v-else>
+            <p
+              id="delete-membership"
+              class="btn p-0 font-weight-bold delete-user"
+              @click="deleteCurrentUser"
+            >
+              退会する
+            </p>
+          </template>
         </div>
       </div>
     </template>
@@ -195,6 +243,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'AccountSettings',
@@ -205,7 +254,8 @@ export default {
         email: '',
         password: ''
       },
-      inputType: 'password'
+      inputType: 'password',
+      isMobile: isMobile
     }
   },
   computed: {
@@ -238,7 +288,7 @@ export default {
         try {
           this.deleteUser()
           this.$store.commit('pages/setCurrentPage', 'home')
-          this.$router.push({ name: 'ArticleIndex' })
+          this.$router.push({ name: 'ArticleIndex', params: { msg: true } })
         } catch (error) {
           console.log(error)
         }
@@ -260,12 +310,12 @@ export default {
 }
 
 .top-title {
-  background-color: #FF00EB;
+  background-color: #FF58F2;
   border-radius: 6px 6px 0px 0px / 6px 6px 0px 0px;
 }
 
 .overview {
-  border: solid #FF00EB;
+  border: solid #FF58F2;
   border-width: 0rem 0.3rem 0.3rem 0.3rem;
   border-radius: 0px 0px 6px 6px / 0px 0px 6px 6px;
 }
@@ -276,12 +326,56 @@ export default {
 }
 
 .button {
-  width: 100px;
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
-  background-color: #FF00EB;
+}
+
+.button:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  background-color: #C642BC;
+  position: relative;
+}
+
+.button-mobile {
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
 }
 
 .eye-icon {
   width: 26.66px;
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.delete-user {
+  color: gray;
+}
+
+.delete-user:hover {
+  color: #525252;
 }
 </style>

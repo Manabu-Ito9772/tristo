@@ -2,7 +2,6 @@ class ArticleSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :map, :status, :start_date, :end_date, :eyecatch_url
   has_one :user
   has_one :country
-  has_many :regions
   has_many :article_regions
   has_many :article_tags
   has_many :favorites
@@ -16,12 +15,13 @@ class ArticleSerializer < ActiveModel::Serializer
     attributes :id, :name, :currency
   end
 
-  class RegionSerializer < ActiveModel::Serializer
-    attributes :id, :name
-  end
-
   class ArticleRegionSerializer < ActiveModel::Serializer
     attributes :id
+    has_one :region
+
+    class RegionSerializer < ActiveModel::Serializer
+      attributes :id, :name
+    end
   end
 
   class ArticleTagSerializer < ActiveModel::Serializer
@@ -42,7 +42,7 @@ class ArticleSerializer < ActiveModel::Serializer
     has_many :ordered_blocks
 
     class BlockSerializer < ActiveModel::Serializer
-      attributes :id, :day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, :images_url
+      attributes :id, :day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, :image_url
       has_many :spendings
       has_many :transportations
 
