@@ -35,9 +35,16 @@
                   >
                 </template>
                 <label class="mb-0 ml-3 mr-3">
-                  <p class="mb-0 pl-3 pr-3 bg-white text-dark file-button">
-                    画像を選択
-                  </p>
+                  <template v-if="isMobile">
+                    <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
+                      画像を選択
+                    </p>
+                  </template>
+                  <template v-else>
+                    <p class="mb-0 pl-3 pr-3 text-dark file-button">
+                      画像を選択
+                    </p>
+                  </template>
                   <input
                     id="avatar"
                     type="file"
@@ -54,7 +61,7 @@
             <div class="form-group m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="required|max:100"
+                rules="required|max:30"
               >
                 <h5
                   id="ユーザーネーム"
@@ -74,7 +81,7 @@
             <div class="form-group m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="max:1000"
+                rules="max:500"
               >
                 <h5
                   id="自己紹介"
@@ -95,12 +102,22 @@
             </div>
 
             <div class="mt-4 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(updateCurrentUser)"
-              >
-                保存
-              </button>
+              <template v-if="isMobile">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
+              <template v-else>
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
             </div>
           </ValidationObserver>
         </div>
@@ -154,7 +171,7 @@
             <div class="form-group m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="required|max:100"
+                rules="required|max:30"
               >
                 <h5
                   id="ユーザーネーム"
@@ -174,7 +191,7 @@
             <div class="form-group m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="max:1000"
+                rules="max:500"
               >
                 <h5
                   id="自己紹介"
@@ -195,12 +212,22 @@
             </div>
 
             <div class="mt-4 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(updateCurrentUser)"
-              >
-                保存
-              </button>
+              <template v-if="isMobile">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
+              <template v-else>
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(updateCurrentUser)"
+                >
+                  保存
+                </div>
+              </template>
             </div>
           </ValidationObserver>
         </div>
@@ -211,6 +238,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'EditMyPage',
@@ -223,7 +251,8 @@ export default {
       },
       height: '',
       previewAvatar: '',
-      uploadAvatar: ''
+      uploadAvatar: '',
+      isMobile: isMobile
     }
   },
   computed: {
@@ -263,7 +292,7 @@ export default {
     async updateCurrentUser() {
       const formData = new FormData()
       formData.append('name', this.user.name)
-      if (this.user.description) formData.append('description', this.user.description)
+      formData.append('description', this.user.description)
       if (this.uploadAvatar) formData.append('avatar', this.uploadAvatar)
 
       await this.$axios.patch(`users/${this.authUser.id}`, formData)
@@ -283,12 +312,12 @@ export default {
 }
 
 .top-title {
-  background-color: #FF00EB;
+  background-color: #FF58F2;
   border-radius: 6px 6px 0px 0px / 6px 6px 0px 0px;
 }
 
 .overview {
-  border: solid #FF00EB;
+  border: solid #FF58F2;
   border-width: 0rem 0.3rem 0.3rem 0.3rem;
   border-radius: 0px 0px 6px 6px / 0px 0px 6px 6px;
 }
@@ -299,9 +328,40 @@ export default {
 }
 
 .button {
-  width: 100px;
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
-  background-color: #FF00EB;
+}
+
+.button:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  background-color: #C642BC;
+  position: relative;
+}
+
+.button-mobile {
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
 }
 
 .user-icon {
@@ -316,7 +376,32 @@ export default {
 }
 
 .file-button {
+  display: inline-block;
+  background-color: #fff;
   border: solid thin rgb(206, 212, 218);
+  padding: 2px 25px;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
+}
+
+.file-button:hover {
+  background-color: rgb(206, 212, 218);
+  position: relative;
+}
+
+.file-button-mobile {
+  display: inline-block;
+  background-color: #fff;
+  border: solid thin rgb(206, 212, 218);
+  padding: 2px 25px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.file-button-mobile:active {
+  background-color: rgb(206, 212, 218);
+  position: relative;
 }
 </style>

@@ -40,4 +40,12 @@ class Api::RelationshipsController < ApplicationController
     following_ids = followings.to_json(only: :id)
     render json: following_ids
   end
+
+  def follow_or_not
+    if current_user.following?(params[:id])
+      render json: true
+    else
+      render json: false
+    end
+  end
 end

@@ -1,9 +1,9 @@
 <template>
   <div>
     <template v-if="$mq == 'xs'">
-      <div class="row bg-white border-bottom">
-        <div class="col-12">
-          <div class="row pt-4 pl-4 pr-4">
+      <div class="row pt-4 pl-4 pr-4 bg-white border-bottom">
+        <div class="col-12 p-0">
+          <div class="row">
             <div
               class="col-12 pointer"
               @click="toArticleShow(article.id)"
@@ -23,56 +23,87 @@
                   【{{ article.country.name }}】
                 </p>
               </template>
+
               <p
-                v-for="region in article.regions"
-                :key="region.id"
+                v-for="article_region in article.article_regions"
+                :key="article_region.id"
                 class="d-inline pl-1 pr-1"
               >
-                {{ region.name }}
+                {{ article_region.region.name }}
               </p>
+
               <template v-if="article.start_date && article.end_date">
-                <p class="d-inline pl-1 pr-1">
-                  {{ article.start_date | moment('M/D(ddd)') }}〜{{ article.end_date | moment('M/D(ddd)') }}
-                </p>
+                <template v-if="article.start_date == article.end_date">
+                  <p class="d-inline pl-1 pr-1">
+                    {{ article.start_date | moment('YYYY年 M/D(ddd)') }}
+                  </p>
+                </template>
+
+                <template v-else>
+                  <p class="d-inline pl-1 pr-1">
+                    {{ article.start_date | moment('YYYY年 M/D(ddd)') }} 〜 {{ article.end_date | moment('M/D(ddd)') }}
+                  </p>
+                </template>
               </template>
+
               <template v-else-if="article.start_date && !article.end_date">
                 <p class="d-inline pl-1 pr-1">
-                  {{ article.start_date | moment('M/D(ddd)') }}
+                  {{ article.start_date | moment('YYYY年 M/D(ddd)') }}
                 </p>
               </template>
+
               <template v-else-if="!article.start_date && article.end_date">
                 <p class="d-inline pl-1 pr-1">
-                  {{ article.end_date | moment('M/D(ddd)') }}
+                  {{ article.end_date | moment('YYYY年 M/D(ddd)') }}
                 </p>
               </template>
-              <div class="d-flex justify-content-center">
-                <p
+
+              <div class="mt-1 mb-1 text-center">
+                <div
                   v-for="article_tag in article.article_tags"
                   :key="article_tag.id"
-                  class="m-0 pl-1 pr-1 text-primary"
+                  class="d-inline-block pl-1 pr-1 text-primary"
                 >
-                  #{{ article_tag.tag.name }}
-                </p>
+                  <template v-if="article.country.name == '日本'">
+                    <router-link
+                      :to="{ name: 'ArticleSearch', params: { sentag: article_tag.tag.name, japan: true } }"
+                    >
+                      <p class="m-0 pointer">
+                        #{{ article_tag.tag.name }}
+                      </p>
+                    </router-link>
+                  </template>
+
+                  <template v-else>
+                    <router-link
+                      :to="{ name: 'ArticleSearch', params: { sentag: article_tag.tag.name, japan: false } }"
+                    >
+                      <p class="m-0 pointer">
+                        #{{ article_tag.tag.name }}
+                      </p>
+                    </router-link>
+                  </template>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <template v-if="article.eyecatch_url">
-          <div class="col-12 pt-2 pl-4 pr-4">
-            <img
-              :src="article.eyecatch_url"
-              class="main-image-xs m-0"
-            >
+          <div class="col-12 pt-1 p-0">
+            <div class="image-trim">
+              <img :src="article.eyecatch_url">
+            </div>
           </div>
         </template>
 
-        <div class="col-12">
-          <div class="pt-3 pb-3 d-flex justify-content-center align-items-center">
+        <div class="col-12 pt-3 pb-3 p-0">
+          <div class="d-flex justify-content-center align-items-center">
             <div>
               <img
                 :src="article.user.avatar_url"
-                class="user-icon"
+                class="user-icon pointer"
+                @click="toUserPage(article.user.id)"
               >
             </div>
             <h5
@@ -85,27 +116,53 @@
               <div class="pl-3">
                 <template v-if="authUser">
                   <template v-if="favorited">
-                    <div
-                      class="heart"
-                      @click="unfavoriteArticle"
-                    >
-                      <font-awesome-icon
-                        :icon="['fas', 'heart']"
-                        class="fa-lg"
-                      />
-                    </div>
+                    <template v-if="isMobile">
+                      <div
+                        class="heart-favorited-mobile"
+                        @click="unfavoriteArticle"
+                      >
+                        <font-awesome-icon
+                          :icon="['fas', 'heart']"
+                          class="fa-lg"
+                        />
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div
+                        class="heart-favorited"
+                        @click="unfavoriteArticle"
+                      >
+                        <font-awesome-icon
+                          :icon="['fas', 'heart']"
+                          class="fa-lg"
+                        />
+                      </div>
+                    </template>
                   </template>
 
                   <template v-else>
-                    <div
-                      class="heart"
-                      @click="favoriteArticle"
-                    >
-                      <font-awesome-icon
-                        :icon="['far', 'heart']"
-                        class="fa-lg"
-                      />
-                    </div>
+                    <template v-if="isMobile">
+                      <div
+                        class="heart-mobile"
+                        @click="favoriteArticle"
+                      >
+                        <font-awesome-icon
+                          :icon="['far', 'heart']"
+                          class="fa-lg"
+                        />
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div
+                        class="heart"
+                        @click="favoriteArticle"
+                      >
+                        <font-awesome-icon
+                          :icon="['far', 'heart']"
+                          class="fa-lg"
+                        />
+                      </div>
+                    </template>
                   </template>
                 </template>
 
@@ -131,9 +188,9 @@
 
     <template v-else>
       <div class="pl-3 pr-3">
-        <div class="row bg-white article">
-          <div class="col-12">
-            <div class="row pt-3 pl-3 pr-3">
+        <div class="row p-3 bg-white article">
+          <div class="col-12 p-0">
+            <div class="row">
               <div
                 :id="'article-item-' + article.id"
                 class="col-12 pointer"
@@ -142,70 +199,133 @@
                 <h4 class="mb-0 pt-1 pb-1 text-center text-white font-weight-bold article-title word-break">
                   {{ article.title }}
                 </h4>
+
                 <template v-if="article.description">
                   <p class="mt-3 mb-0 pt-2 pb-2 pl-3 pr-3 bg-light text-dark article-description word-break break-line remove-first-line">
                     {{ article.description }}
                   </p>
                 </template>
               </div>
-              <div class="col-12 mt-2 mb-2 text-muted word-break article-info">
+
+              <div class="col-12 mt-2 text-muted word-break article-info">
                 <div class="text-center text-muted word-break">
                   <template v-if="article.country.name != '日本'">
                     <p class="d-inline">
                       【{{ article.country.name }}】
                     </p>
                   </template>
+
                   <p
-                    v-for="region in article.regions"
-                    :key="region.id"
+                    v-for="article_region in article.article_regions"
+                    :key="article_region.id"
                     class="d-inline pl-1 pr-1 article-region"
                   >
-                    {{ region.name }}
+                    {{ article_region.region.name }}
                   </p>
+
                   <template v-if="article.start_date && article.end_date">
-                    <p class="d-inline pl-1 pr-1 article-date">
-                      {{ article.start_date | moment('M/D(ddd)') }}〜{{ article.end_date | moment('M/D(ddd)') }}
-                    </p>
+                    <template v-if="article.start_date == article.end_date">
+                      <p class="d-inline pl-1 pr-1">
+                        {{ article.start_date | moment('YYYY年 M/D(ddd)') }}
+                      </p>
+                    </template>
+                    <template v-else>
+                      <p class="d-inline pl-1 pr-1">
+                        {{ article.start_date | moment('YYYY年 M/D(ddd)') }} 〜 {{ article.end_date | moment('M/D(ddd)') }}
+                      </p>
+                    </template>
                   </template>
                   <template v-else-if="article.start_date && !article.end_date">
-                    <p class="d-inline pl-1 pr-1 article-date">
-                      {{ article.start_date | moment('M/D(ddd)') }}
+                    <p class="d-inline pl-1 pr-1">
+                      {{ article.start_date | moment('YYYY年 M/D(ddd)') }}
                     </p>
                   </template>
                   <template v-else-if="!article.start_date && article.end_date">
-                    <p class="d-inline pl-1 pr-1 article-date">
-                      {{ article.end_date | moment('M/D(ddd)') }}
+                    <p class="d-inline pl-1 pr-1">
+                      {{ article.end_date | moment('YYYY年 M/D(ddd)') }}
                     </p>
                   </template>
                 </div>
-                <div class="d-flex justify-content-center">
-                  <p
+
+                <div class="mt-1 mb-1 text-center">
+                  <div
                     v-for="article_tag in article.article_tags"
                     :key="article_tag.id"
-                    class="m-0 pl-1 pr-1 text-primary article-tag"
+                    :id="'tag-' + article_tag.tag.name"
+                    class="d-inline-block pl-1 pr-1 text-primary article-tag"
                   >
-                    #{{ article_tag.tag.name }}
-                  </p>
+                    <template v-if="$mq == 'lg'">
+                      <template v-if="$route.path == '/trips'">
+                        <a
+                          class="m-0 pointer"
+                          href="#"
+                          @click="searchByTag(article_tag.tag.name)"
+                        >
+                          #{{ article_tag.tag.name }}
+                        </a>
+                      </template>
+                      <template v-else>
+                        <template v-if="article.country.name == '日本'">
+                          <router-link
+                            :to="{ name: 'ArticleIndex', params: { sentag: article_tag.tag.name, japan: true } }"
+                          >
+                            <p class="m-0 pointer">
+                              #{{ article_tag.tag.name }}
+                            </p>
+                          </router-link>
+                        </template>
+                        <template v-else>
+                          <router-link
+                            :to="{ name: 'ArticleIndex', params: { sentag: article_tag.tag.name, japan: false } }"
+                          >
+                            <p class="m-0 pointer">
+                              #{{ article_tag.tag.name }}
+                            </p>
+                          </router-link>
+                        </template>
+                      </template>
+                    </template>
+                    <template v-else>
+                      <template v-if="article.country.name == '日本'">
+                        <router-link
+                          :to="{ name: 'ArticleSearch', params: { sentag: article_tag.tag.name, japan: true } }"
+                        >
+                          <p class="m-0 pointer">
+                            #{{ article_tag.tag.name }}
+                          </p>
+                        </router-link>
+                      </template>
+                      <template v-else>
+                        <router-link
+                          :to="{ name: 'ArticleSearch', params: { sentag: article_tag.tag.name, japan: false } }"
+                        >
+                          <p class="m-0 pointer">
+                            #{{ article_tag.tag.name }}
+                          </p>
+                        </router-link>
+                      </template>
+                    </template>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <template v-if="article.eyecatch_url">
-            <div class="col-12">
-              <img
-                :src="article.eyecatch_url"
-                class="main-image pt-3 pb-3"
-              >
+            <div class="col-12 pt-1 p-0">
+              <div class="image-trim">
+                <img :src="article.eyecatch_url">
+              </div>
             </div>
           </template>
 
-          <div class="col-12">
-            <div class="p-2 d-flex justify-content-center align-items-center user">
+          <div class="col-12 pt-3 p-0">
+            <div class="d-flex justify-content-center align-items-center user">
               <div>
                 <img
                   :src="article.user.avatar_url"
-                  class="user-icon"
+                  class="user-icon pointer"
+                  @click="toUserPage(article.user.id)"
                 >
               </div>
               <h5
@@ -219,29 +339,57 @@
                 <div class="pl-3">
                   <template v-if="authUser">
                     <template v-if="favorited">
-                      <div
-                        id="heart-favorited"
-                        class="heart-favorited"
-                        @click="unfavoriteArticle"
-                      >
-                        <font-awesome-icon
-                          :icon="['fas', 'heart']"
-                          class="fa-lg"
-                        />
-                      </div>
+                      <template v-if="isMobile">
+                        <div
+                          id="heart-favorited"
+                          class="heart-favorited-mobile"
+                          @click="unfavoriteArticle"
+                        >
+                          <font-awesome-icon
+                            :icon="['fas', 'heart']"
+                            class="fa-lg"
+                          />
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div
+                          id="heart-favorited"
+                          class="heart-favorited"
+                          @click="unfavoriteArticle"
+                        >
+                          <font-awesome-icon
+                            :icon="['fas', 'heart']"
+                            class="fa-lg"
+                          />
+                        </div>
+                      </template>
                     </template>
 
                     <template v-else>
-                      <div
-                        id="heart"
-                        class="heart"
-                        @click="favoriteArticle"
-                      >
-                        <font-awesome-icon
-                          :icon="['far', 'heart']"
-                          class="fa-lg"
-                        />
-                      </div>
+                      <template v-if="isMobile">
+                        <div
+                          id="heart"
+                          class="heart-mobile"
+                          @click="favoriteArticle"
+                        >
+                          <font-awesome-icon
+                            :icon="['far', 'heart']"
+                            class="fa-lg"
+                          />
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div
+                          id="heart"
+                          class="heart"
+                          @click="favoriteArticle"
+                        >
+                          <font-awesome-icon
+                            :icon="['far', 'heart']"
+                            class="fa-lg"
+                          />
+                        </div>
+                      </template>
                     </template>
                   </template>
 
@@ -273,6 +421,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'ArticleItem',
@@ -285,7 +434,8 @@ export default {
   data() {
     return {
       favoritesCount: null,
-      favorited: null
+      favorited: null,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -329,12 +479,17 @@ export default {
     },
     toUserPage(user_id) {
       if (this.authUser && this.authUser.id == user_id) {
-        this.$store.commit('pages/setCurrentPage', 'user')
-        this.$router.push({ name: 'MyPage' })
+        if (this.$route.path != '/mypage') {
+          this.$store.commit('pages/setCurrentPage', 'user')
+          this.$router.push({ name: 'MyPage' })
+        }
       } else {
         this.$router.push({ name: 'UserShow', query: { id: user_id } })
       }
     },
+    searchByTag(tag) {
+      this.$emit('searchByTag', tag)
+    }
   }
 }
 </script>
@@ -345,40 +500,22 @@ export default {
 }
 
 .article {
-  border: solid #FF00EB;
+  border: solid #FF58F2;
   border-radius: 6px;
 }
 
 .article-title {
-  background-color: #FF00EB;
+  background-color: #FF58F2;
   border-radius: 6px;
 }
 
 .article-description {
-  border: solid thin #FF00EB;
+  border: solid thin #FF58F2;
   border-radius: 6px;
 }
 
 .article-info {
   font-size: 14px;
-}
-
-.article-date {
-  font-size: 12px;
-  margin-left: auto;
-}
-
-.main-image {
-  width: 100%;
-  border-top: solid thin #FF00EB;
-}
-
-.main-image-xs {
-  width: 100%;
-}
-
-.user {
-  border-top: solid thin #FF00EB;
 }
 
 .user-icon {
@@ -398,12 +535,52 @@ export default {
 }
 
 .heart {
-  color: #FF00EB;
+  color: #FF58F2;
+  cursor: pointer;
+}
+
+.heart:hover {
+  color: #C400B5;
+  cursor: pointer;
+}
+
+.heart:active {
+  color: #C400B5;
   cursor: pointer;
 }
 
 .heart-favorited {
-  color: #FF00EB;
+  color: #FF58F2;
+  cursor: pointer;
+}
+
+.heart-favorited:hover {
+  color: #C400B5;
+  cursor: pointer;
+}
+
+.heart-favorited:active {
+  color: #C400B5;
+  cursor: pointer;
+}
+
+.heart-mobile {
+  color: #FF58F2;
+  cursor: pointer;
+}
+
+.heart-mobile:active {
+  color: #C400B5;
+  cursor: pointer;
+}
+
+.heart-favorited-mobile {
+  color: #FF58F2;
+  cursor: pointer;
+}
+
+.heart-favorited-mobile:active {
+  color: #C400B5;
   cursor: pointer;
 }
 
@@ -417,5 +594,22 @@ export default {
 
 .bottom-border {
   border-bottom: solid thin #CBCBCB;
+}
+
+.image-trim {
+  position: relative;
+  overflow: hidden;
+  padding-top: 60%;
+}
+
+.image-trim img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
 }
 </style>

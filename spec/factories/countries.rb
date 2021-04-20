@@ -20,6 +20,7 @@ FactoryBot.define do
   end
 
   trait :japan_tokyo_kanagawa do
+    id { 1 }
     name { '日本' }
     currency { '円' }
     after(:build) do |country|
@@ -29,6 +30,7 @@ FactoryBot.define do
   end
 
   trait :domestic do
+    id { 1 }
     name { '日本' }
     currency { '円' }
     after(:build) do |country|

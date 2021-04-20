@@ -1,82 +1,59 @@
 <template>
   <div>
     <div class="mt-4 pl-3 pr-3">
-      <div class="row">
+      <div class="row p-3 bg-white search">
         <template v-if="articleJapan">
           <div class="col-6 pr-1 p-0">
-            <h5 class="p-1 text-white text-center font-weight-bold area-changer">
+            <p class="m-0 p-1 text-white text-center font-weight-bold area-changer">
               国内
-            </h5>
+            </p>
           </div>
           <div class="col-6 pl-1 p-0">
             <template v-if="article || !loading">
-              <h5
-                class="p-1 bg-white text-muted text-center font-weight-bold area-changer-unselected"
+              <p
+                class="m-0 p-1 text-muted text-center font-weight-bold area-changer-unselected"
                 @click="selectWorld"
               >
                 海外
-              </h5>
+              </p>
             </template>
             <template v-else>
-              <h5
-                class="p-1 bg-white text-muted text-center font-weight-bold area-changer-unselected"
+              <p
+                class="m-0 p-1 text-muted text-center font-weight-bold area-changer-unselected"
               >
                 海外
-              </h5>
+              </p>
             </template>
           </div>
         </template>
 
-        <template v-if="articleJapan == false">
+        <template v-else>
           <div class="col-6 pr-1 p-0">
             <template v-if="article || !loading">
-              <h5
-                class="p-1 bg-white text-muted text-center font-weight-bold area-changer-unselected"
+              <p
+                class="m-0 p-1 text-muted text-center font-weight-bold area-changer-unselected"
                 @click="selectJapan"
               >
                 国内
-              </h5>
+              </p>
             </template>
             <template v-else>
-              <h5
-                class="p-1 bg-white text-muted text-center font-weight-bold area-changer-unselected"
+              <p
+                class="m-0 p-1 text-muted text-center font-weight-bold area-changer-unselected"
               >
                 国内
-              </h5>
+              </p>
             </template>
           </div>
           <div class="col-6 pl-1 p-0">
-            <h5 class="p-1 text-white text-center font-weight-bold area-changer">
+            <p class="m-0 p-1 text-white text-center font-weight-bold area-changer">
               海外
-            </h5>
+            </p>
           </div>
         </template>
 
-        <div class="col-12 mt-2 mb-3 p-0">
-          <div class="p-2 d-flex align-items-center bg-white checkbox">
-            <template v-if="article || !loading">
-              <input
-                v-model="following"
-                type="checkbox"
-                @change="followingArticles"
-              >
-            </template>
-            <template v-else>
-              <input
-                type="checkbox"
-                disabled
-              >
-            </template>
-            <p class="pl-2 m-0 text-dark">
-              フォローしているユーザーの投稿のみ表示
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="row p-3 bg-white search">
         <template v-if="articleJapan">
-          <div class="col-12 p-0 form-group">
+          <div class="col-12 mt-3 p-0 form-group">
             <div class="d-flex align-items-center">
               <p class="p-1 mr-3 m-0 text-muted font-weight-bold form-label">
                 都道府県
@@ -94,8 +71,9 @@
             </div>
           </div>
         </template>
+
         <template v-else>
-          <div class="col-12 p-0 form-group">
+          <div class="col-12 mt-3 p-0 form-group">
             <div class="d-flex align-items-center">
               <p class="p-1 mr-4 m-0 text-muted font-weight-bold form-label">
                 国
@@ -139,17 +117,20 @@
                   タグ
                 </p>
               </template>
+
               <template v-else>
                 <p class="p-1 mr-5 m-0 text-muted font-weight-bold form-label">
                   タグ
                 </p>
               </template>
             </template>
+
             <template v-else>
               <p class="p-1 mr-2 m-0 text-muted font-weight-bold form-label">
                 タグ
               </p>
             </template>
+
             <v-select
               v-model="tags"
               multiple
@@ -172,6 +153,7 @@
               class="bg-light form-control w-100"
             >
           </template>
+
           <template v-else>
             <input
               v-model="search.q.words"
@@ -224,6 +206,7 @@
             </div>
           </div>
         </template>
+
         <template v-else>
           <div class="col-12 mt-2 mb-4 p-0">
             <div class="d-flex justify-content-center">
@@ -240,6 +223,7 @@
                   新しい順
                 </p>
               </div>
+
               <div class="ml-4 mr-4 d-flex align-items-center">
                 <input
                   v-model="search.q.sort"
@@ -252,6 +236,7 @@
                   古い順
                 </p>
               </div>
+
               <div class="d-flex align-items-center">
                 <input
                   v-model="search.q.sort"
@@ -270,19 +255,39 @@
 
         <div class="col-12 text-center">
           <template v-if="article || !loading">
-            <button
-              class="btn pl-4 pr-4 text-white font-weight-bold button"
-              @click="searchArticles"
-            >
-              検索
-            </button>
+            <template v-if="isMobile">
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button-mobile"
+                @click="searchArticles"
+              >
+                検索
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button"
+                @click="searchArticles"
+              >
+                検索
+              </div>
+            </template>
           </template>
+
           <template v-else>
-            <button
-              class="btn pl-4 pr-4 text-white font-weight-bold button"
-            >
-              検索
-            </button>
+            <template v-if="isMobile">
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button-mobile"
+              >
+                検索
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="mb-2 pl-4 pr-4 text-white font-weight-bold button"
+              >
+                検索
+              </div>
+            </template>
           </template>
         </div>
       </div>
@@ -292,6 +297,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'SearchForm',
@@ -303,14 +309,22 @@ export default {
     loading: {
       type: Boolean,
       required: true
-    }
+    },
+    sentag: {
+      type: String,
+      default: null,
+      required: false
+    },
+    japan: {
+      type: Boolean,
+      required: false
+    },
   },
   data() {
     return {
       search: {
         q: {
           japan: null,
-          user_id: null,
           country_id: null,
           regions: '',
           tags: '',
@@ -318,13 +332,13 @@ export default {
           sort: 0
         }
       },
-      following: null,
       countries: [],
       country: {},
       regions: [],
       prefectures: [],
       regionsIdArray: [],
       tags: [],
+      isMobile: isMobile
     }
   },
   computed: {
@@ -334,13 +348,6 @@ export default {
   watch: {
     articleJapan() {
       this.search.q.japan = this.articleJapan
-    },
-    following() {
-      if (this.following) {
-        this.search.q.user_id = this.authUser.id
-      } else {
-        this.search.q.user_id = null
-      }
     },
     country() {
       if (this.country) {
@@ -360,7 +367,7 @@ export default {
     },
   },
   created() {
-    this.search.q.japan = this.articleJapan
+    this.sentag ? this.searchBySentag() : this.search.q.japan = this.articleJapan
     this.getCountries()
     this.getPrefectures()
   },
@@ -392,41 +399,30 @@ export default {
     searchArticles() {
       this.$emit('setSearch', this.search)
     },
-    async followingArticles() {
-      if (this.following) {
-        this.search.q.user_id = this.authUser.id
-        this.$emit('setSearch', this.search)
-      } else {
-        if (this.articleJapan) {
-          this.$emit('resetPageJapan')
-        } else {
-          this.$emit('resetPageWorld')
-        }
-      }
-    },
     async selectJapan() {
       this.country = {}
       this.tags = []
       this.search.q.words = ''
       this.search.q.sort = 0
-      if (this.following) {
-        await this.$store.commit('articles/articleJapanTrue')
-        await this.$emit('setSearch', this.search)
-      } else {
-        this.$emit('resetPageJapan')
-      }
+      this.$store.commit('articles/articleJapanTrue')
     },
     async selectWorld() {
       this.country = {}
       this.tags = []
       this.search.q.words = ''
       this.search.q.sort = 0
-      if (this.following) {
-        await this.$store.commit('articles/articleJapanFalse')
-        await this.$emit('setSearch', this.search)
+      this.$store.commit('articles/articleJapanFalse')
+    },
+    searchBySentag() {
+      this.tags.push(this.sentag)
+      this.search.q.japan = this.japan
+      this.search.q.tags = this.sentag
+      if (this.japan) {
+        this.$store.commit('articles/articleJapanTrue')
       } else {
-        this.$emit('resetPageWorld')
+        this.$store.commit('articles/articleJapanFalse')
       }
+      this.$emit('setSearch', this.search)
     }
   }
 }
@@ -449,13 +445,13 @@ export default {
 
 .area-changer {
   background-color: #6A6A6A;
-  border: solid #6A6A6A;
+  border: solid thin #6A6A6A;
   border-radius: 6px;
   cursor: pointer;
 }
 
 .area-changer-unselected {
-  border: solid #CBCBCB;
+  border: solid thin #CBCBCB;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -476,8 +472,40 @@ export default {
 }
 
 .button {
+  display: inline-block;
   background-color: #FF990D;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
+}
+
+.button:active {
+  background-color: #D37C04;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  background-color: #D37C04;
+  position: relative;
+}
+
+.button-mobile {
+  display: inline-block;
+  background-color: #FF990D;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  background-color: #D37C04;
+  position: relative;
+  top: 4px;
 }
 
 .v-select {

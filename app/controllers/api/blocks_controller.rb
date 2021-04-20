@@ -33,6 +33,6 @@ class Api::BlocksController < ApplicationController
   end
 
   def block_params
-    params.require(:block).permit(:day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, images: [])
+    params.require(:block).permit(:day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, :image)
   end
 end

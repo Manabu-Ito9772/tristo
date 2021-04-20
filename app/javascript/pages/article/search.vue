@@ -6,6 +6,8 @@
           <SearchForm
             :article="presence"
             :loading="loading"
+            :sentag="sentag"
+            :japan="japan"
             class="ml-5 mr-5 pl-5 pr-5"
             @resetPageJapan="resetPageJapan"
             @resetPageWorld="resetPageWorld"
@@ -40,7 +42,7 @@
               </div>
             </template>
 
-            <template v-else>
+            <template v-if="nan">
               <div class="mt-5 mb-5">
                 <h3 class="text-center font-weight-bold text-secondary">
                   投稿がありません
@@ -58,6 +60,8 @@
           <SearchForm
             :article="presence"
             :loading="loading"
+            :sentag="sentag"
+            :japan="japan"
             class="mb-4 search-form"
             @resetPageJapan="resetPageJapan"
             @resetPageWorld="resetPageWorld"
@@ -95,7 +99,7 @@
             </div>
           </template>
 
-          <template v-else>
+          <template v-if="nan">
             <div class="col-12 mt-4">
               <h3 class="text-center font-weight-bold text-secondary">
                 投稿がありません
@@ -119,6 +123,17 @@ export default {
     ArticleList,
     SearchForm
   },
+  props: {
+    sentag: {
+      type: String,
+      default: null,
+      required: false
+    },
+    japan: {
+      type: Boolean,
+      required: false
+    },
+  },
   data() {
     return {
       articles: [],
@@ -127,7 +142,8 @@ export default {
       url: 'articles/japan',
       search: null,
       loading: true,
-      presence: false
+      presence: false,
+      nan: false
     }
   },
   computed: {
@@ -143,7 +159,8 @@ export default {
     }
   },
   created() {
-    this.infiniteHandler()
+    this.loading = false
+    this.$store.commit('pages/setCurrentPage', 'search')
   },
   methods: {
     async infiniteHandler($state) {
@@ -179,6 +196,7 @@ export default {
           } else {
             setTimeout(() => {
               this.loading = false
+              this.nan = true
             }, 800)
             $state.complete()
           }
@@ -204,6 +222,7 @@ export default {
           } else {
             setTimeout(() => {
               this.loading = false
+              this.nan = true
             }, 800)
             $state.complete()
           }
@@ -211,28 +230,17 @@ export default {
         .catch(err => console.log(err.response))
     },
     async resetPageJapan() {
-      this.articles = []
-      this.search = null
-      this.page = 1
-      this.loading = true
-      this.scrollTop()
       this.$store.commit('articles/articleJapanTrue')
-      await this.infiniteHandler()
     },
     async resetPageWorld() {
-      this.articles = []
-      this.search = null
-      this.page = 1
-      this.loading = true
-      this.scrollTop()
       this.$store.commit('articles/articleJapanFalse')
-      await this.infiniteHandler()
     },
     async setSearch(search) {
       this.search = search
       this.articles = []
       this.page = 1
       this.loading = true
+      this.nan = false
       this.scrollTop()
       await this.infiniteHandler()
     },

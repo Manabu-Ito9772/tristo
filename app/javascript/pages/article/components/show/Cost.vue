@@ -37,7 +37,7 @@
                       </div>
                     </template>
                   </div>
-                  <div class="row mt-2 ml-2 mr-2 cost-border">
+                  <div class="row mt-2 ml-2 mr-2">
                     <div class="col-12 p-0 text-right">
                       <p class="m-0 font-weight-bold">
                         合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}{{ currency }}
@@ -70,7 +70,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row mt-2 ml-2 mr-2 cost-border">
+                <div class="row mt-2 ml-2 mr-2">
                   <div class="col-12 p-0 text-right">
                     <p class="m-0 font-weight-bold">
                       合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}{{ currency }}

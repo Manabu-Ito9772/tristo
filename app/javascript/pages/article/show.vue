@@ -1,181 +1,216 @@
 <template>
   <div class="container-fluid">
     <template v-if="$mq == 'lg'">
-      <div
-        v-scroll-lock="fixScroll"
-        class="row"
-      >
-        <div class="col-8 pb-4 main">
-          <SwitchButton
-            :article="article"
-            class="text-center mt-4"
-            @showBlockList="showBlockList"
-            @showCost="showCost"
-            @showGmap="showGmap"
-            @showComment="showComment"
-          />
-          <div
-            v-for="day in article.days"
-            :key="day.id"
-          >
-            <BlockList
-              v-if="dayNumber == day.number"
-              :blocks="day.ordered_blocks"
+      <template v-if="article">
+        <div
+          v-scroll-lock="fixScroll"
+          class="row"
+        >
+          <div class="col-8 main">
+            <SwitchButton
+              :article="article"
+              :cost="cost"
+              class="text-center mt-4"
+              @showBlockList="showBlockList"
+              @showCost="showCost"
+              @showGmap="showGmap"
+              @showComment="showComment"
+            />
+            <div
+              v-for="day in article.days"
+              :key="day.id"
+            >
+              <BlockList
+                v-if="dayNumber == day.number"
+                :blocks="day.ordered_blocks"
+                :currency="article.country.currency"
+                @fixPage="fixPage"
+                @flowPage="flowPage"
+              />
+            </div>
+            <Cost
+              v-if="isVisibleCost"
+              :days="article.days"
               :currency="article.country.currency"
             />
+            <Gmap
+              v-if="isVisibleGmap"
+              :map="article.map"
+            />
+            <CommentArea
+              v-if="isVisibleComment"
+            />
+          </div>
+          <div class="col-4 main side-column">
+            <div class="row mt-4 pl-3 pr-3">
+              <Overview
+                :article="article"
+                :countryname="countryname"
+                :user="user"
+                :favorites="favorites"
+                :favorited="favorited"
+                class="front-top"
+                @favoriteArticle="favoriteArticle"
+                @unfavoriteArticle="unfavoriteArticle"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template v-else>
+        <vue-loading
+          type="spiningDubbles"
+          color="#FF58F2"
+          :size="{ width: '100px' }"
+          class="mt-5 pt-5"
+        />
+      </template>
+    </template>
+
+    <template v-else-if="$mq == 'sm'">
+      <template v-if="article">
+        <div
+          v-scroll-lock="fixScroll"
+          class="row mt-4 bottom-space"
+        >
+          <div class="col-12">
+            <div class="row d-flex justify-content-center pl-3 pr-3 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
+              <Overview
+                :article="article"
+                :countryname="countryname"
+                :user="user"
+                :favorites="favorites"
+                :favorited="favorited"
+                class="front-top"
+                @favoriteArticle="favoriteArticle"
+                @unfavoriteArticle="unfavoriteArticle"
+              />
+            </div>
+          </div>
+          <div class="col-12 text-center mt-4">
+            <SwitchButton
+              :article="article"
+              :cost="cost"
+              class="ml-5 mr-5 pl-5 pr-5"
+              @showBlockList="showBlockList"
+              @showCost="showCost"
+              @showGmap="showGmap"
+              @showComment="showComment"
+            />
+          </div>
+          <div class="col-12">
+            <div
+              v-for="day in article.days"
+              :key="day.id"
+            >
+              <BlockList
+                v-if="dayNumber == day.number"
+                :blocks="day.ordered_blocks"
+                :currency="article.country.currency"
+                class="ml-5 mr-5 pl-5 pr-5"
+                @fixPage="fixPage"
+                @flowPage="flowPage"
+              />
+            </div>
           </div>
           <Cost
             v-if="isVisibleCost"
             :days="article.days"
             :currency="article.country.currency"
+            class="col-12"
           />
           <Gmap
             v-if="isVisibleGmap"
             :map="article.map"
+            class="col-12"
           />
           <CommentArea
             v-if="isVisibleComment"
+            class="col-12"
           />
         </div>
-        <div class="col-4 pb-5 main side-column">
-          <div class="row mt-4 pl-3 pr-3">
-            <Overview
-              :article="article"
-              :countryname="countryname"
-              :user="user"
-              :favorites="favorites"
-              :favorited="favorited"
-              @fixPage="fixPage"
-              @flowPage="flowPage"
-              @favoriteArticle="favoriteArticle"
-              @unfavoriteArticle="unfavoriteArticle"
-            />
-          </div>
-        </div>
-      </div>
-    </template>
+      </template>
 
-    <template v-else-if="$mq == 'sm'">
-      <div
-        v-scroll-lock="fixScroll"
-        class="row mt-4 pb-4"
-      >
-        <div class="col-12">
-          <div class="row d-flex justify-content-center pl-3 pr-3 ml-sm-5 mr-sm-5 pl-sm-5 pr-sm-5">
-            <Overview
-              :article="article"
-              :countryname="countryname"
-              :user="user"
-              :favorites="favorites"
-              :favorited="favorited"
-              class="front-top"
-              @fixPage="fixPage"
-              @flowPage="flowPage"
-              @favoriteArticle="favoriteArticle"
-              @unfavoriteArticle="unfavoriteArticle"
-            />
-          </div>
-        </div>
-        <div class="col-12 text-center mt-4">
-          <SwitchButton
-            :article="article"
-            class="ml-5 mr-5 pl-5 pr-5"
-            @showBlockList="showBlockList"
-            @showCost="showCost"
-            @showGmap="showGmap"
-            @showComment="showComment"
-          />
-        </div>
-        <div class="col-12">
-          <div
-            v-for="day in article.days"
-            :key="day.id"
-          >
-            <BlockList
-              v-if="dayNumber == day.number"
-              :blocks="day.ordered_blocks"
-              :currency="article.country.currency"
-              class="ml-5 mr-5 pl-5 pr-5"
-            />
-          </div>
-        </div>
-        <Cost
-          v-if="isVisibleCost"
-          :days="article.days"
-          :currency="article.country.currency"
-          class="col-12"
+      <template v-else>
+        <vue-loading
+          type="spiningDubbles"
+          color="#FF58F2"
+          :size="{ width: '100px' }"
+          class="mt-5 pt-5"
         />
-        <Gmap
-          v-if="isVisibleGmap"
-          :map="article.map"
-          class="col-12"
-        />
-        <CommentArea
-          v-if="isVisibleComment"
-          class="col-12"
-        />
-      </div>
+      </template>
     </template>
 
     <template v-else>
-      <div
-        v-scroll-lock="fixScroll"
-        class="row mt-4 pb-4"
-      >
-        <div class="col-12">
-          <div class="row pl-3 pr-3">
-            <Overview
+      <template v-if="article">
+        <div
+          v-scroll-lock="fixScroll"
+          class="row mt-4 bottom-space"
+        >
+          <div class="col-12">
+            <div class="row pl-3 pr-3">
+              <Overview
+                :article="article"
+                :countryname="countryname"
+                :user="user"
+                :favorites="favorites"
+                :favorited="favorited"
+                class="front-top"
+                @favoriteArticle="favoriteArticle"
+                @unfavoriteArticle="unfavoriteArticle"
+              />
+            </div>
+          </div>
+          <div class="col-12 text-center mt-4">
+            <SwitchButton
               :article="article"
-              :countryname="countryname"
-              :user="user"
-              :favorites="favorites"
-              :favorited="favorited"
-              class="front-top"
-              @fixPage="fixPage"
-              @flowPage="flowPage"
-              @favoriteArticle="favoriteArticle"
-              @unfavoriteArticle="unfavoriteArticle"
+              :cost="cost"
+              @showBlockList="showBlockList"
+              @showCost="showCost"
+              @showGmap="showGmap"
+              @showComment="showComment"
             />
           </div>
-        </div>
-        <div class="col-12 text-center mt-4">
-          <SwitchButton
-            :article="article"
-            @showBlockList="showBlockList"
-            @showCost="showCost"
-            @showGmap="showGmap"
-            @showComment="showComment"
+          <div class="col-12">
+            <div
+              v-for="day in article.days"
+              :key="day.id"
+            >
+              <BlockList
+                v-if="dayNumber == day.number"
+                :blocks="day.ordered_blocks"
+                :currency="article.country.currency"
+                class="pb-4"
+              />
+            </div>
+          </div>
+          <Cost
+            v-if="isVisibleCost"
+            :days="article.days"
+            :currency="article.country.currency"
+            class="col-12 mb-5 pb-5"
+          />
+          <Gmap
+            v-if="isVisibleGmap"
+            :map="article.map"
+            class="col-12 mb-5 pb-5"
+          />
+          <CommentArea
+            v-if="isVisibleComment"
+            class="col-12 mb-5 pb-5 pl-4 pr-4"
           />
         </div>
-        <div class="col-12">
-          <div
-            v-for="day in article.days"
-            :key="day.id"
-          >
-            <BlockList
-              v-if="dayNumber == day.number"
-              :blocks="day.ordered_blocks"
-              :currency="article.country.currency"
-              class="pb-4"
-            />
-          </div>
-        </div>
-        <Cost
-          v-if="isVisibleCost"
-          :days="article.days"
-          :currency="article.country.currency"
-          class="col-12 mb-5 pb-5"
+      </template>
+
+      <template v-else>
+        <vue-loading
+          type="spiningDubbles"
+          color="#FF58F2"
+          :size="{ width: '80px' }"
+          class="mt-5 pt-5"
         />
-        <Gmap
-          v-if="isVisibleGmap"
-          :map="article.map"
-          class="col-12 mb-5 pb-5"
-        />
-        <CommentArea
-          v-if="isVisibleComment"
-          class="col-12 mb-5 pb-5 pl-4 pr-4"
-        />
-      </div>
+      </template>
     </template>
   </div>
 </template>
@@ -201,8 +236,9 @@ export default {
   },
   data() {
     return {
-      article: {},
+      article: null,
       user: {},
+      cost: false,
       countryname: '',
       favorites: 0,
       favorited: null,
@@ -239,6 +275,13 @@ export default {
           }
           for (let i = 0; i < this.article.days.length; i++) {
             this.article.days[i].number = i + 1
+          }
+          for (let day of this.article.days) {
+            for (let block of day.ordered_blocks) {
+              if (block.spendings.length || block.transportations.length) {
+                this.cost = true
+              }
+            }
           }
         })
         .catch(err => console.log(err.response))
@@ -293,10 +336,15 @@ export default {
 .main {
   max-height: 100vh;
   overflow: auto;
+  padding-bottom: 100px;
 }
 
 .side-column {
   padding-top: 46px;
+}
+
+.bottom-space {
+  padding-bottom: 100px;
 }
 
 .front-top {

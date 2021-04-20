@@ -28,25 +28,37 @@
                 </p>
               </template>
 
-              <div class="p-0 icon">
+              <div class="p-0">
                 <DropdownMenu
                   v-model="show"
                   :right="right"
                   :interactive="interactive"
                 >
-                  <font-awesome-icon
-                    :icon="['fas', 'ellipsis-h']"
-                    class="fa-lg"
-                  />
+                  <template v-if="isMobile">
+                    <div class="icon-mobile">
+                      <font-awesome-icon
+                        :icon="['fas', 'ellipsis-h']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="icon">
+                      <font-awesome-icon
+                        :icon="['fas', 'ellipsis-h']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
                   <div slot="dropdown">
                     <div
-                      class="dropdown-item text-dark"
+                      class="dropdown-item "
                       @click="showEditFormXS"
                     >
                       コメントを編集
                     </div>
                     <div
-                      class="dropdown-item text-danger"
+                      class="dropdown-item delete-comment"
                       @click="deleteCommentXS(comment.id)"
                     >
                       コメントを削除
@@ -67,26 +79,52 @@
               </template>
 
               <template v-else>
-                <button
-                  class="btn p-0 icon"
-                  @click="showEditForm"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'edit']"
-                    class="fa-lg"
-                  />
-                </button>
+                <template v-if="isMobile">
+                  <div
+                    class="p-0 icon-mobile"
+                    @click="showEditForm"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'edit']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
+                <template v-else>
+                  <div
+                    class="p-0 icon"
+                    @click="showEditForm"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'edit']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
               </template>
 
-              <button
-                class="btn ml-1 p-0 icon"
-                @click="deleteComment(comment.id)"
-              >
-                <font-awesome-icon
-                  :icon="['fas', 'trash-alt']"
-                  class="fa-lg"
-                />
-              </button>
+              <template v-if="isMobile">
+                <div
+                  class="ml-1 p-0 icon-mobile"
+                  @click="deleteComment(comment.id)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'trash-alt']"
+                    class="fa-lg"
+                  />
+                </div>
+              </template>
+              <template v-else>
+                <div
+                  class="ml-1 p-0 icon"
+                  @click="deleteComment(comment.id)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'trash-alt']"
+                    class="fa-lg"
+                  />
+                </div>
+              </template>
             </template>
           </div>
         </template>
@@ -116,6 +154,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'EachComment',
@@ -134,6 +173,7 @@ export default {
       right: true,
       interactive: false,
       height: '',
+      isMobile: isMobile
     }
   },
   computed: {
@@ -188,6 +228,7 @@ export default {
       }
     },
     deleteCommentXS(comment_id) {
+      this.show = false
       if (confirm('コメントを削除しますか？')) {
         this.$axios.delete(`comments/${comment_id}`)
           .then(res => {
@@ -239,6 +280,27 @@ export default {
   cursor: pointer;
 }
 
+.icon:hover {
+  color: #383838;
+  cursor: pointer;
+}
+
+.icon:active {
+  color: #383838;
+  cursor: pointer;
+}
+
+.icon-mobile {
+  color: gray;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.icon-mobile:active {
+  color: #383838;
+  cursor: pointer;
+}
+
 .save-button {
   white-space: nowrap;
   background-color: #FF990D;
@@ -252,5 +314,17 @@ export default {
 
 .remove-first-line:first-line {
   line-height: 0px;
+}
+
+.delete-comment {
+  color: #dc3545;
+}
+
+.delete-comment:hover {
+  color: #dc3545;
+}
+
+.delete-comment:active {
+  color: white;
 }
 </style>

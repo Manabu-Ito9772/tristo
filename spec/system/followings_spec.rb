@@ -14,13 +14,15 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       find('.area-changer-unselected').click
       sleep 2
       find("#article-user-#{article_normal.user.id}").click
-      click_on 'フォロー'
+      find('.follow-button').click
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(article_normal.user)
       sleep 2
+      find('.area-changer-unselected').click
+      sleep 2
       find("#article-user-#{another_user_article.user.id}").click
-      click_on 'フォロー'
+      find('.follow-button').click
       find('.fa-user').click
     }
 
@@ -40,30 +42,28 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         end
         expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(another_user_article.user.name)
-        expect(page).to have_button('フォロー中')
+        expect(page).to have_css('.unfollow-button')
       end
 
       context 'ユーザー名の隣の「フォロー中」をクリックし、確認ダイアログで「OK」をクリック' do
         before {
           page.accept_confirm do
-            click_on 'フォロー中'
+            find('.unfollow-button').click
           end
         }
 
         it 'ユーザーのフォローを解除できる' do
-          expect(page).to have_button('フォロー')
-          visit current_path
-          expect(page).to_not have_content(another_user_article.user.name)
+          expect(page).to have_css('.follow-button')
         end
 
         context '「フォロー」をクリック' do
           it '再びユーザーをフォローできる' do
-            click_on 'フォロー'
+            find('.follow-button').click
             expect(page).to have_content(another_user_article.user.name)
-            expect(page).to have_button('フォロー中')
+            expect(page).to have_css('.unfollow-button')
             visit current_path
             expect(page).to have_content(another_user_article.user.name)
-            expect(page).to have_button('フォロー中')
+            expect(page).to have_css('.unfollow-button')
           end
         end
       end
@@ -98,7 +98,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
             expect(page).to have_content('フォロワー')
           end
           expect(page).to have_content(another_user_article.user.name)
-          expect(page).to have_button('フォロー中')
+          expect(page).to have_css('.unfollow-button')
         end
       end
     end
@@ -119,18 +119,18 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         end
         expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content(another_user_article.user.name)
-        expect(page).to have_button('フォロー中')
+        expect(page).to have_css('.unfollow-button')
       end
 
       context 'ユーザー名の隣の「フォロー中」をクリックし、確認ダイアログで「OK」をクリック' do
         before {
           page.accept_confirm do
-            click_on 'フォロー中'
+            find('.unfollow-button').click
           end
         }
 
         it 'ユーザーのフォローを解除できる' do
-          expect(page).to have_button('フォロー')
+          expect(page).to have_css('.follow-button')
           visit current_path
           expect(page).to have_content(another_user_article.user.name)
           find('.follow-unselected').click
@@ -139,12 +139,12 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
 
         context '「フォロー」をクリック' do
           it '再びユーザーをフォローできる' do
-            click_on 'フォロー'
+            find('.follow-button').click
             expect(page).to have_content(another_user_article.user.name)
-            expect(page).to have_button('フォロー中')
+            expect(page).to have_css('.unfollow-button')
             visit current_path
             expect(page).to have_content(another_user_article.user.name)
-            expect(page).to have_button('フォロー中')
+            expect(page).to have_css('.unfollow-button')
           end
         end
       end
@@ -179,7 +179,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
             expect(page).to have_content('フォロワー')
           end
           expect(page).to have_content(another_user_article.user.name)
-          expect(page).to have_button('フォロー中')
+          expect(page).to have_css('.unfollow-button')
         end
       end
     end
@@ -195,37 +195,41 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       find('.area-changer-unselected').click
       sleep 2
       find("#article-user-#{another_user_article.user.id}").click
-      click_on 'フォロー'
+      find('.follow-button').click
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(another_user_article.user)
       sleep 2
+      find('.area-changer-unselected').click
+      sleep 2
       find("#article-user-#{article_normal.user.id}").click
-      click_on 'フォロー'
+      find('.follow-button').click
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       login_as(user)
+      sleep 2
+      find('.area-changer-unselected').click
       sleep 2
       find("#article-user-#{another_user_article.user.id}").click
     }
 
     context 'フォローボタンをクリック' do
-      before { click_on 'フォロー' }
+      before { find('.follow-button').click }
 
       it 'そのユーザーをフォローできる' do
-        expect(page).to have_button('フォロー中')
+        expect(page).to have_css('.unfollow-button')
         find('.fa-user').click
         find('#following-count').click
         expect(page).to have_content(another_user_article.user.name)
-        expect(page).to have_button('フォロー中')
+        expect(page).to have_css('.unfollow-button')
       end
 
       context 'フォロー中ボタンをクリック' do
         it 'フォローを解除できる' do
           page.accept_confirm do
-            click_on 'フォロー中'
+            find('.unfollow-button').click
           end
-          expect(page).to have_button('フォロー')
+          expect(page).to have_css('.follow-button')
           find('.fa-user').click
           find('#following-count').click
           expect(page).to_not have_content(another_user_article.user.name)
@@ -265,17 +269,19 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
-          click_on 'フォロー'
+          find('.follow-button').click
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
           login_as(another_user_article.user)
           find('.fa-user').click
           find('#followers-count').click
           sleep 2
-          click_on 'フォロー'
+          find('.follow-button').click
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
           login_as(user)
+          sleep 2
+          find('.area-changer-unselected').click
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
@@ -303,17 +309,19 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
-          click_on 'フォロー'
+          find('.follow-button').click
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
           login_as(another_user_article.user)
           find('.fa-user').click
           find('#followers-count').click
           sleep 2
-          click_on 'フォロー'
+          find('.follow-button').click
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
           login_as(user)
+          sleep 2
+          find('.area-changer-unselected').click
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
@@ -373,7 +381,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
-          click_on 'フォロー'
+          find('.follow-button').click
           find('#followers-count').click
           sleep 2
           page.all('.user-name')[0].click
@@ -398,7 +406,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
-          click_on 'フォロー'
+          find('.follow-button').click
           find('#followers-count').click
           sleep 2
           page.all('.user-icon')[0].click

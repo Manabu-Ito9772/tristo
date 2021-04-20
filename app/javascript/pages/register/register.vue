@@ -12,7 +12,7 @@
             <div class="form-group m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="required|max:100"
+                rules="required|max:30"
               >
                 <input
                   v-model="user.name"
@@ -46,7 +46,7 @@
 
             <ValidationProvider
               v-slot="{ errors }"
-              rules="required|password_format|min:5|max:100"
+              rules="required|password_format|min:5|max:30"
             >
               <div class="input-group mt-4">
                 <input
@@ -70,7 +70,10 @@
                       </span>
                     </template>
                     <template v-else>
-                      <span @click="hidePassword">
+                      <span
+                        class="pointer"
+                        @click="hidePassword"
+                      >
                         <font-awesome-icon
                           :icon="['far', 'eye-slash']"
                           class="fa-lg"
@@ -111,9 +114,16 @@
                       プロフィール画像
                     </p>
                     <label class="mb-0">
-                      <p class="mb-0 pl-3 pr-3 bg-white text-dark file-button">
-                        画像を選択
-                      </p>
+                      <template v-if="isMobile">
+                        <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
+                          画像を選択
+                        </p>
+                      </template>
+                      <template v-else>
+                        <p class="mb-0 pl-3 pr-3 text-dark file-button">
+                          画像を選択
+                        </p>
+                      </template>
                       <input
                         id="avatar"
                         type="file"
@@ -129,14 +139,26 @@
               </ValidationProvider>
             </div>
 
-            <div class="pt-5 pb-3 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(createNewUser)"
-              >
-                登録
-              </button>
-            </div>
+            <template v-if="isMobile">
+              <div class="pt-5 pb-3 text-center">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(createNewUser)"
+                >
+                  登録
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="pt-5 pb-3 text-center">
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(createNewUser)"
+                >
+                  登録
+                </div>
+              </div>
+            </template>
           </ValidationObserver>
         </div>
       </div>
@@ -153,7 +175,7 @@
             <div class="form-group m-0">
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="required|max:100"
+                rules="required|max:30"
               >
                 <input
                   v-model="user.name"
@@ -187,7 +209,7 @@
 
             <ValidationProvider
               v-slot="{ errors }"
-              rules="required|password_format|min:5|max:100"
+              rules="required|password_format|min:5|max:30"
             >
               <div class="input-group mt-4">
                 <input
@@ -211,7 +233,10 @@
                       </span>
                     </template>
                     <template v-else>
-                      <span @click="hidePassword">
+                      <span
+                        class="pointer"
+                        @click="hidePassword"
+                      >
                         <font-awesome-icon
                           :icon="['far', 'eye-slash']"
                           class="fa-lg"
@@ -261,14 +286,26 @@
               </ValidationProvider>
             </div>
 
-            <div class="mt-4 mb-4 text-center">
-              <button
-                class="btn text-white font-weight-bold button"
-                @click="handleSubmit(createNewUser)"
-              >
-                登録
-              </button>
-            </div>
+            <template v-if="isMobile">
+              <div class="mt-4 mb-4 text-center">
+                <div
+                  class="text-white font-weight-bold button-mobile"
+                  @click="handleSubmit(createNewUser)"
+                >
+                  登録
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="mt-4 mb-4 text-center">
+                <div
+                  class="text-white font-weight-bold button"
+                  @click="handleSubmit(createNewUser)"
+                >
+                  登録
+                </div>
+              </div>
+            </template>
           </ValidationObserver>
         </div>
       </div>
@@ -279,6 +316,7 @@
 <script>
 import 'default.jpg'
 import { mapActions } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'Register',
@@ -292,7 +330,8 @@ export default {
       uploadAvatar: '',
       previewAvatar: '',
       emailError: false,
-      inputType: 'password'
+      inputType: 'password',
+      isMobile: isMobile
     }
   },
   watch: {
@@ -353,13 +392,49 @@ export default {
 }
 
 .button {
-  width: 100px;
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
-  background-color: #FF00EB;
+}
+
+.button:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
+}
+
+.button:hover {
+  background-color: #C642BC;
+  position: relative;
+}
+
+.button-mobile {
+  display: inline-block;
+  background-color: #FF58F2;
+  padding: 8px 25px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button-mobile:active {
+  background-color: #C642BC;
+  position: relative;
+  top: 4px;
 }
 
 .eye-icon {
   width: 26.66px;
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .file-input {
@@ -367,8 +442,33 @@ export default {
 }
 
 .file-button {
+  display: inline-block;
+  background-color: #fff;
   border: solid thin rgb(206, 212, 218);
+  padding: 2px 25px;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
+}
+
+.file-button:hover {
+  background-color: rgb(206, 212, 218);
+  position: relative;
+}
+
+.file-button-mobile {
+  display: inline-block;
+  background-color: #fff;
+  border: solid thin rgb(206, 212, 218);
+  padding: 2px 25px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.file-button-mobile:active {
+  background-color: rgb(206, 212, 218);
+  position: relative;
 }
 
 .user-icon {

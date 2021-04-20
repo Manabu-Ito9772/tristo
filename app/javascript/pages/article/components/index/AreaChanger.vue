@@ -52,26 +52,28 @@
           </div>
         </template>
 
-        <div class="col-12 mt-2 p-0">
-          <div class="p-2 d-flex align-items-center bg-white checkbox">
-            <template v-if="article || !loading">
-              <input
-                v-model="following"
-                type="checkbox"
-                @change="followingArticles"
-              >
-            </template>
-            <template v-else>
-              <input
-                type="checkbox"
-                disabled
-              >
-            </template>
-            <p class="pl-2 m-0 text-dark">
-              フォローしているユーザーの投稿のみ表示
-            </p>
+        <template v-if="authUser">
+          <div class="col-12 mt-2 p-0">
+            <div class="p-2 d-flex align-items-center bg-white checkbox">
+              <template v-if="article || !loading">
+                <input
+                  v-model="following"
+                  type="checkbox"
+                  @change="followingArticles"
+                >
+              </template>
+              <template v-else>
+                <input
+                  type="checkbox"
+                  disabled
+                >
+              </template>
+              <p class="pl-2 m-0 text-dark">
+                フォローしているユーザーの投稿のみ表示
+              </p>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
   </div>

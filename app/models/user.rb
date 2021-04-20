@@ -18,9 +18,9 @@ class User < ApplicationRecord
 
   validates :password, length: { minimum: 5 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, presence: true, if: -> { new_record? || changes[:crypted_password] }
-  validates :name, presence: true
+  validates :name, presence: true, length: { maximum: 30 }
   validates :email, presence: true, uniqueness: true
-  validates :description, length: { maximum: 1_000 }
+  validates :description, length: { maximum: 500 }
   validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 0..5.megabytes }
 
   def follow(other_user_id)

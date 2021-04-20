@@ -13,6 +13,7 @@
                 v-model="show"
                 :right="right"
                 :hover="hover"
+                :interactive="interactive"
               >
                 <font-awesome-icon
                   :icon="['fas', 'bars']"
@@ -29,13 +30,13 @@
                   </template>
                   <template v-else>
                     <div
-                      class="dropdown-item text-dark"
+                      class="dropdown-item"
                       @click="accouSettings"
                     >
                       アカウント設定
                     </div>
                     <div
-                      class="dropdown-item text-dark"
+                      class="dropdown-item"
                       @click="logout"
                     >
                       ログアウト
@@ -224,7 +225,7 @@
                   <div slot="dropdown">
                     <template v-if="this.$route.path == '/account_settings'">
                       <div
-                        class="dropdown-item text-dark"
+                        class="dropdown-item"
                         @click="logout"
                       >
                         ログアウト
@@ -232,13 +233,13 @@
                     </template>
                     <template v-else>
                       <div
-                        class="dropdown-item text-dark"
+                        class="dropdown-item"
                         @click="accouSettings"
                       >
                         アカウント設定
                       </div>
                       <div
-                        class="dropdown-item text-dark"
+                        class="dropdown-item"
                         @click="logout"
                       >
                         ログアウト
@@ -264,7 +265,7 @@
                   <div slot="dropdown">
                     <template v-if="this.$route.path == '/account_settings'">
                       <div
-                        class="dropdown-item text-dark"
+                        class="dropdown-item"
                         @click="logout"
                       >
                         ログアウト
@@ -272,13 +273,13 @@
                     </template>
                     <template v-else>
                       <div
-                        class="dropdown-item text-dark"
+                        class="dropdown-item"
                         @click="accouSettings"
                       >
                         アカウント設定
                       </div>
                       <div
-                        class="dropdown-item text-dark"
+                        class="dropdown-item"
                         @click="logout"
                       >
                         ログアウト
@@ -295,29 +296,41 @@
           <!-- NON AUTH USER -->
           <template v-else>
             <li class="nav-item active">
-              <router-link
-                :to="{ name: 'Register' }"
-                class="icon-color"
-              >
-                <button
-                  class="btn pl-0 pr-0 d-flex justify-content-center align-items-center font-weight-bold text-white register-button"
-                >
-                  ユーザー登録
-                </button>
-              </router-link>
+              <div @click="toRegister">
+                <template v-if="isMobile">
+                  <p
+                    class="m-0 pl-0 pr-0 d-flex justify-content-center align-items-center font-weight-bold text-white register-button-mobile"
+                  >
+                    ユーザー登録
+                  </p>
+                </template>
+                <template v-else>
+                  <p
+                    class="m-0 pl-0 pr-0 d-flex justify-content-center align-items-center font-weight-bold text-white register-button"
+                  >
+                    ユーザー登録
+                  </p>
+                </template>
+              </div>
             </li>
 
             <li class="nav-item active">
-              <router-link
-                :to="{ name: 'Login' }"
-                class="icon-color"
-              >
-                <button
-                  class="btn d-flex justify-content-center align-items-center font-weight-bold text-white login-button"
-                >
-                  ログイン
-                </button>
-              </router-link>
+              <div @click="toLogin">
+                <template v-if="isMobile">
+                  <p
+                    class="m-0 d-flex justify-content-center align-items-center font-weight-bold text-white login-button-mobile"
+                  >
+                    ログイン
+                  </p>
+                </template>
+                <template v-else>
+                  <p
+                    class="m-0 d-flex justify-content-center align-items-center font-weight-bold text-white login-button"
+                  >
+                    ログイン
+                  </p>
+                </template>
+              </div>
             </li>
 
             <li class="nav-item active">
@@ -341,6 +354,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'TheHeader',
@@ -350,6 +364,7 @@ export default {
       right: true,
       hover: false,
       interactive: false,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -358,12 +373,13 @@ export default {
   },
   methods: {
     ...mapActions('users', ['logoutUser']),
-    async logout() {
+    logout() {
       try {
-        await this.logoutUser()
-        await this.$store.commit('pages/setCurrentPage', 'home')
-        await this.$router.push({ name: 'Login' })
-        this.$router.go({path: this.$router.currentRoute.path, force: true})
+        this.logoutUser()
+        this.$store.commit('pages/setCurrentPage', 'home')
+        this.$store.commit('articles/articleJapanTrue')
+        this.show = false
+        this.$router.push({ name: 'Login' })
       } catch (error) {
         console.log(error)
       }
@@ -371,9 +387,20 @@ export default {
     accouSettings() {
       this.$store.commit('pages/setCurrentPage', 'menu')
       this.$router.push({ name: 'AccountSettings' })
+      this.show = false
     },
     setCurrentPage(page) {
       this.$store.commit('pages/setCurrentPage', page)
+    },
+    toRegister() {
+      if (this.$route.path != '/register') {
+        this.$router.push({ name: 'Register' })
+      }
+    },
+    toLogin() {
+      if (this.$route.path != '/login') {
+        this.$router.push({ name: 'Login' })
+      }
     }
   },
 }
@@ -386,7 +413,7 @@ export default {
 }
 
 .header-title {
-  color: #FF00EB;
+  color: #FF58F2;
   font-size: 30px;
 }
 
@@ -408,12 +435,48 @@ export default {
   background-color: #1D51FF;
   width: 120px;
   height: 25px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .login-button {
   background-color: #00D320;
   width: 120px;
   height: 25px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.register-button:hover {
+  background-color: #173BB2;
+  width: 120px;
+  height: 25px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #008B15;
+  width: 120px;
+  height: 25px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.register-button-mobile {
+  background-color: #1D51FF;
+  width: 120px;
+  height: 25px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-button-mobile {
+  background-color: #00D320;
+  width: 120px;
+  height: 25px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .menu-bar {

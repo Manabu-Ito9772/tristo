@@ -28,24 +28,46 @@
                   class="m-0 info-block"
                 />
                 <div class="mb-2 d-flex justify-content-end">
-                  <div
-                    class="pt-1 pb-0 pl-0 pr-1 btn icon-color-xs"
-                    @click="showBlockEditForm(block.id)"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'edit']"
-                      class="fa-lg"
-                    />
-                  </div>
-                  <div
-                    class="pt-1 pb-0 pl-0 pr-2 btn icon-color-xs"
-                    @click="deleteBlock(block.id)"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'trash-alt']"
-                      class="fa-lg"
-                    />
-                  </div>
+                  <template v-if="isMobile">
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-1 icon-mobile-xs"
+                      @click="showBlockEditForm(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'edit']"
+                        class="fa-lg"
+                      />
+                    </div>
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-2 icon-mobile-xs"
+                      @click="deleteBlock(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'trash-alt']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-1 icon-xs"
+                      @click="showBlockEditForm(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'edit']"
+                        class="fa-lg"
+                      />
+                    </div>
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-2 icon-xs"
+                      @click="deleteBlock(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'trash-alt']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
                 </div>
                 <Transportation
                   :block="block"
@@ -56,7 +78,7 @@
           </div>
           <div v-else>
             <div class="d-flex align-items-center justify-content-center">
-              <h3 class="mt-3 mb-5 font-weight-bold text-secondary">
+              <h3 class="m-4 font-weight-bold text-secondary">
                 ブロックを追加してください
               </h3>
             </div>
@@ -83,24 +105,46 @@
                   class="ml-0 mr-0 info-block"
                 />
                 <div class="d-flex justify-content-end">
-                  <div
-                    class="pt-1 pb-0 pl-0 pr-1 btn icon-color"
-                    @click="showBlockEditForm(block.id)"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'edit']"
-                      class="fa-lg"
-                    />
-                  </div>
-                  <div
-                    class="pt-1 pb-0 pl-0 pr-2 btn icon-color"
-                    @click="deleteBlock(block.id)"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'trash-alt']"
-                      class="fa-lg"
-                    />
-                  </div>
+                  <template v-if="isMobile">
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-1 icon-mobile"
+                      @click="showBlockEditForm(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'edit']"
+                        class="fa-lg"
+                      />
+                    </div>
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-2 icon-mobile"
+                      @click="deleteBlock(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'trash-alt']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-1 icon"
+                      @click="showBlockEditForm(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'edit']"
+                        class="fa-lg"
+                      />
+                    </div>
+                    <div
+                      class="pt-1 pb-0 pl-0 pr-2 icon"
+                      @click="deleteBlock(block.id)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'trash-alt']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </template>
                 </div>
                 <div class="mb-4">
                   <Transportation
@@ -114,7 +158,7 @@
 
           <div v-else>
             <div class="d-flex align-items-center justify-content-center">
-              <h3 class="mb-0 font-weight-bold text-secondary">
+              <h3 class="mb-2 font-weight-bold text-secondary">
                 ブロックを追加してください
               </h3>
             </div>
@@ -129,6 +173,7 @@
 import BlockItem from './blocklist/BlockItem'
 import BlockEditForm from './blocklist/BlockEditForm'
 import Transportation from './blocklist/Transportation'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'BlockList',
@@ -154,7 +199,8 @@ export default {
       blocks: [],
       blockId: null,
       urgeMessage: false,
-      blocksForCheck: []
+      blocksForCheck: [],
+      isMobile: isMobile
     }
   },
   methods :{
@@ -168,16 +214,12 @@ export default {
     async updateBlock(blockEdit) {
       const formData = new FormData()
       formData.append('block[title]', blockEdit.block.title)
-      if (blockEdit.block.place) formData.append('block[place]', blockEdit.block.place)
-      if (blockEdit.block.place_info) formData.append('block[place_info]', blockEdit.block.place_info)
-      if (blockEdit.block.comment) formData.append('block[comment]', blockEdit.block.comment)
-      if (blockEdit.block.arriving_time) formData.append('block[arriving_time]', blockEdit.block.arriving_time)
-      if (blockEdit.block.leaving_time) formData.append('block[leaving_time]', blockEdit.block.leaving_time)
-      if (blockEdit.uploadImages) {
-        for (let image of blockEdit.uploadImages) {
-          formData.append('block[images]' + '[]', image)
-        }
-      }
+      formData.append('block[place]', blockEdit.block.place)
+      formData.append('block[place_info]', blockEdit.block.place_info)
+      formData.append('block[comment]', blockEdit.block.comment)
+      formData.append('block[arriving_time]', blockEdit.block.arriving_time)
+      formData.append('block[leaving_time]', blockEdit.block.leaving_time)
+      if (blockEdit.uploadImage) formData.append('block[image]', blockEdit.uploadImage)
 
       await this.$axios.patch(`blocks/${blockEdit.block.id}`,formData)
         .catch(err => console.log(err.response))
@@ -231,16 +273,61 @@ export default {
 }
 
 .info-block {
-  border: solid #FF00EB;
+  border: solid #FF58F2;
   border-radius: 6px;
 }
 
-.icon-color {
+.icon {
   color: gray;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.icon-color-xs {
+.icon:hover {
+  color: #383838;
+  cursor: pointer;
+}
+
+.icon:active {
+  color: #383838;
+  cursor: pointer;
+}
+
+.icon-mobile {
+  color: gray;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.icon-mobile:active {
+  color: #383838;
+  cursor: pointer;
+}
+
+.icon-xs {
   color: gray;
   font-size: 20px;
+  cursor: pointer;
+}
+
+.icon-xs:hover {
+  color: #383838;
+  cursor: pointer;
+}
+
+.icon-xs:active {
+  color: #383838;
+  cursor: pointer;
+}
+
+.icon-mobile-xs {
+  color: gray;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.icon-mobile-xs:active {
+  color: #383838;
+  cursor: pointer;
 }
 </style>

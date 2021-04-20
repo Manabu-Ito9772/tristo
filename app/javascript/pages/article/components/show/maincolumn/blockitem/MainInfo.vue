@@ -10,8 +10,9 @@
         {{ block.title }}
       </p>
     </div>
+
     <div
-      v-if="block.place"
+      v-if="block.place || block.place_info"
       class="row mt-3"
     >
       <div class="col-12 text-white">
@@ -19,7 +20,10 @@
           場所
         </p>
       </div>
-      <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
+      <p
+        v-if="block.place"
+        class="col-12 pl-4 pt-1 m-0 text-dark word-break"
+      >
         {{ block.place }}
       </p>
       <div
@@ -35,6 +39,7 @@
         </a>
       </div>
     </div>
+
     <div
       v-if="block.spendings.length"
       class="row mt-3"
@@ -63,13 +68,14 @@
         </div>
       </div>
     </div>
+
     <div
       v-if="block.comment"
       class="row mt-3"
     >
       <div class="col-12 text-white">
         <p class="pl-3 content-lavel m-0">
-          コメント
+          メモ
         </p>
       </div>
       <p class="col-12 pl-4 pt-1 m-0 text-dark word-break break-line remove-first-line">
@@ -107,7 +113,7 @@ export default {
 }
 
 .content-lavel {
-  background-color: #FF00EB;
+  background-color: #FF58F2;
   border-radius: 8px;
 }
 

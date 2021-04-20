@@ -4,7 +4,7 @@ module LoginMacros
     within('.overview') do
       fill_in 'メールアドレス', with: user.email
       fill_in 'パスワード', with: 'password'
-      click_on 'ログイン'
+      find('.button').click
     end
   end
 end

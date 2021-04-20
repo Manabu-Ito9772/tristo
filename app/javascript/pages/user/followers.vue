@@ -34,7 +34,7 @@
                       class="user-icon"
                     >
                   </div>
-                  <h5 class="ml-3 mr-3 m-0 text-dark word-break user-name">
+                  <h5 class="ml-3 mr-3 m-0 text-dark word-break font-weight-bold user-name">
                     {{ relationship.user.name }}
                   </h5>
                 </div>
@@ -57,7 +57,7 @@
             <div class="col-12 mt-5 mb-5">
               <vue-loading
                 type="spiningDubbles"
-                color="#FF00EB"
+                color="#FF58F2"
                 :size="{ width: '80px' }"
               />
             </div>
@@ -179,8 +179,8 @@ export default {
 }
 
 .follow-selected {
-  background-color: #FF00EB;
-  border: solid #FF00EB;
+  background-color: #FF58F2;
+  border: solid #FF58F2;
   border-radius: 6px;
   cursor: pointer;
 }

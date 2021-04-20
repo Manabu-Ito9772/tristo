@@ -2,6 +2,12 @@
   <div class="container-fluid mt-2">
     <template v-if="$mq == 'lg'">
       <div class="row">
+        <div
+          v-show="isVisibleMsg"
+          class="col-12 text-white msg"
+        >
+          {{ msg }}
+        </div>
         <template v-if="articles.length">
           <div class="col-8 mb-5">
             <div
@@ -10,6 +16,7 @@
             >
               <ArticleList
                 :article="article"
+                @searchByTag="searchByTag"
               />
             </div>
             <infinite-loading
@@ -23,7 +30,7 @@
           <template v-if="loading">
             <vue-loading
               type="spiningDubbles"
-              color="#FF00EB"
+              color="#FF58F2"
               :size="{ width: '100px' }"
               class="mt-4 pt-5"
             />
@@ -37,8 +44,11 @@
           </template>
         </template>
         <SearchForm
+          ref="form"
           :article="presence"
           :loading="loading"
+          :sentag="sentag"
+          :japan="japan"
           class="col-4"
           @resetPageJapan="resetPageJapan"
           @resetPageWorld="resetPageWorld"
@@ -81,7 +91,7 @@
               <div class="mt-5 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF00EB"
+                  color="#FF58F2"
                   :size="{ width: '80px' }"
                 />
               </div>
@@ -102,14 +112,26 @@
     <template v-else>
       <div class="row">
         <div class="col-12">
-          <AreaChanger
-            :article="presence"
-            :loading="loading"
-            class="mb-4 search-form"
-            @resetPageJapan="resetPageJapan"
-            @resetPageWorld="resetPageWorld"
-            @setSearch="setSearch"
-          />
+          <template v-if="authUser">
+            <AreaChanger
+              :article="presence"
+              :loading="loading"
+              class="mb-4 search-form"
+              @resetPageJapan="resetPageJapan"
+              @resetPageWorld="resetPageWorld"
+              @setSearch="setSearch"
+            />
+          </template>
+          <template v-else>
+            <AreaChanger
+              :article="presence"
+              :loading="loading"
+              class="mb-3 search-form"
+              @resetPageJapan="resetPageJapan"
+              @resetPageWorld="resetPageWorld"
+              @setSearch="setSearch"
+            />
+          </template>
         </div>
         <template v-if="articles.length">
           <div class="col-12 border-top">
@@ -136,7 +158,7 @@
             <div class="col-12 mt-3">
               <vue-loading
                 type="spiningDubbles"
-                color="#FF00EB"
+                color="#FF58F2"
                 :size="{ width: '80px' }"
               />
             </div>
@@ -168,6 +190,17 @@ export default {
     SearchForm,
     AreaChanger
   },
+  props: {
+    sentag: {
+      type: String,
+      default: null,
+      required: false
+    },
+    japan: {
+      type: Boolean,
+      required: false
+    },
+  },
   data() {
     return {
       articles: [],
@@ -176,11 +209,21 @@ export default {
       url: 'articles/japan',
       search: null,
       loading: true,
-      presence: false
+      presence: false,
+      searchTag: {
+        q: {
+          japan: null,
+          tags: '',
+          sort: 0
+        }
+      },
+      isVisibleMsg: false,
+      msg: '退会しました。ご利用ありがとうございました。'
     }
   },
   computed: {
-    ...mapGetters('articles', ['articleJapan'])
+    ...mapGetters('articles', ['articleJapan']),
+    ...mapGetters('users', ['authUser']),
   },
   watch: {
     articles() {
@@ -192,8 +235,11 @@ export default {
     }
   },
   created() {
-    this.infiniteHandler()
+    if (!this.sentag) {
+      this.infiniteHandler()
+    }
     this.$store.commit('pages/setCurrentPage', 'home')
+    this.showMsg()
   },
   methods: {
     async infiniteHandler($state) {
@@ -286,6 +332,18 @@ export default {
       this.scrollTop()
       await this.infiniteHandler()
     },
+    searchByTag(tag) {
+      this.$refs.form.searchByTag(tag)
+    },
+    showMsg() {
+      if (this.$route.params.msg) {
+        this.isVisibleMsg = true
+        setTimeout(() => {
+          this.isVisibleMsg = false}
+          ,3000
+        )
+      }
+    },
     scrollTop(){
       window.scrollTo({
         top: 0,
@@ -310,5 +368,9 @@ export default {
 
 .search-form {
   z-index: 1;
+}
+
+.msg {
+  background-color: #22CDE8;
 }
 </style>

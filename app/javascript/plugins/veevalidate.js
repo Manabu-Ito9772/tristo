@@ -41,6 +41,11 @@ extend('prefecture', {
   message: '都道府県は必須項目です'
 })
 
+extend('mean', {
+  ...required,
+  message: '手段を選択してください'
+})
+
 extend('numeric', {
   ...numeric,
   message: '{_field_}は半角数字で入力してください'
@@ -69,8 +74,8 @@ extend('min', {
 
 extend('password_format', {
   validate(value) {
-    const regex = new RegExp(/^[0-9a-zA-Z]*$/)
+    const regex = new RegExp(/^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/)
     return regex.test(value)
   },
-  message: '{_field_}は半角英数字で入力してください'
+  message: '{_field_}は半角英数字・記号で入力してください'
 })

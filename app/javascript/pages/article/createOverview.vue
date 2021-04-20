@@ -6,7 +6,9 @@
           <OverviewFormSmall />
         </template>
         <template v-else>
-          <OverviewForm />
+          <OverviewForm
+            class="pt-2"
+          />
         </template>
       </div>
     </div>

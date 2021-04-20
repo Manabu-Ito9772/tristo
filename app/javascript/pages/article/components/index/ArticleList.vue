@@ -5,6 +5,7 @@
         <ArticleItem
           :article="article"
           class="mt-4"
+          @searchByTag="$listeners['searchByTag']"
         />
       </div>
     </template>
