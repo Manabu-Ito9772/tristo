@@ -93,7 +93,7 @@
             <div class="col-12 mt-3">
               <vue-loading
                 type="spiningDubbles"
-                color="#FF00EB"
+                color="#FF58F2"
                 :size="{ width: '80px' }"
               />
             </div>

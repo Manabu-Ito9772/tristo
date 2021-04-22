@@ -41,7 +41,7 @@ RSpec.describe 'いいね', type: :system do
         it '記事にクリック不可のハートボタンが表示される' do
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
-          visit root_path
+          visit '/trips'
           sleep 2
           find('.area-changer-unselected').click
           sleep 2
@@ -91,7 +91,7 @@ RSpec.describe 'いいね', type: :system do
         it '記事にクリック不可のハートボタンが表示される' do
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
-          visit root_path
+          visit '/trips'
           sleep 2
           find('.area-changer-unselected').click
           sleep 2
@@ -153,7 +153,7 @@ RSpec.describe 'いいね', type: :system do
           it '投稿記事にクリック不可のハートボタンが表示される' do
             find('.fa-bars').click
             page.all('.dropdown-item')[1].click
-            visit root_path
+            visit '/trips'
             sleep 2
             find('.area-changer-unselected').click
             sleep 2
@@ -203,7 +203,7 @@ RSpec.describe 'いいね', type: :system do
           it 'いいねした記事にクリック不可のハートボタンが表示される' do
             find('.fa-bars').click
             page.all('.dropdown-item')[1].click
-            visit root_path
+            visit '/trips'
             sleep 2
             find('.area-changer-unselected').click
             sleep 2

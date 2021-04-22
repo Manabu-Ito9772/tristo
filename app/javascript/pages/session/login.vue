@@ -101,7 +101,7 @@
           ログイン
         </h4>
 
-        <div class="col-12 mb-4 pl-4 pr-4 bg-white overview">
+        <div class="col-12 pl-4 pr-4 bg-white overview">
           <ValidationObserver v-slot="{ handleSubmit }">
             <div class="form-group m-0">
               <ValidationProvider
@@ -186,16 +186,21 @@
           </ValidationObserver>
         </div>
       </div>
+      <TermAndPolicyLink />
     </template>
   </div>
 </template>
 
 <script>
+import TermAndPolicyLink from '../../components/TermAndPolicyLink'
 import { mapActions } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'Login',
+  components: {
+    TermAndPolicyLink
+  },
   data() {
     return {
       user: {

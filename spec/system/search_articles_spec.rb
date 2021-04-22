@@ -289,7 +289,6 @@ RSpec.describe '記事検索', type: :system do
           sleep 2
           expect(page).to have_content('Tokio_And_Osaka')
           expect(page).to_not have_content('Tokyo')
-          page.save_screenshot 'screenshot.png'
         end
       end
 
@@ -468,7 +467,6 @@ RSpec.describe '記事検索', type: :system do
           expect(page).to have_content('California')
           expect(page).to have_content('Hawaii')
           expect(page).to_not have_content('Paris')
-          page.save_screenshot 'screenshot.png'
         end
 
         it '記事がない場合は表示されない' do
@@ -620,7 +618,6 @@ RSpec.describe '記事検索', type: :system do
           sleep 2
           expect(page).to have_content('California')
           expect(page).to_not have_content('Hawaii')
-          page.save_screenshot 'screenshot.png'
         end
       end
 
@@ -691,7 +688,6 @@ RSpec.describe '記事検索', type: :system do
           expect(page).to have_content('California')
           expect(page).to have_content('Hawaii')
           expect(page).to_not have_content('Paris')
-          page.save_screenshot 'screenshot.png'
         end
       end
     end

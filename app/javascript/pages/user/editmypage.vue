@@ -231,17 +231,23 @@
             </div>
           </ValidationObserver>
         </div>
+
+        <TermAndPolicyLink />
       </div>
     </template>
   </div>
 </template>
 
 <script>
+import TermAndPolicyLink from '../../components/TermAndPolicyLink'
 import { mapGetters, mapActions } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'EditMyPage',
+  components: {
+    TermAndPolicyLink
+  },
   data() {
     return {
       user: {

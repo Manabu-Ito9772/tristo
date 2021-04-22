@@ -263,10 +263,8 @@
             class="form-control bg-light"
           >
           <p class="mb-0 text-center text-secondary font-small">
-            ※HTMLコードを入力することでGoogle my mapsを埋め込むことができます
-          </p>
-          <p class="mb-0 text-center text-secondary font-small">
-            詳しくはこちら
+            ※Google My MapsのHTMLを入力することで地図を埋め込むことができます。詳しくは
+            <a @click="showModal" href="#">こちら</a>。
           </p>
         </div>
 
@@ -290,15 +288,23 @@
         </div>
       </ValidationObserver>
     </div>
+
+    <HowToEmbedMap
+      ref="modal"
+    />
   </div>
 </template>
 
 <script>
+import HowToEmbedMap from './form/HowToEmbedMap'
 import {ja} from 'vuejs-datepicker/dist/locale'
 import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'OverviewForm',
+  components: {
+    HowToEmbedMap
+  },
   data() {
     return {
       isVisibleDomestic: true,
@@ -350,8 +356,6 @@ export default {
       previewEyecatch: '',
       uploadEyecatch: '',
       isMobile: isMobile,
-      date: null,
-      dateb: null
     }
   },
   computed: {
@@ -444,6 +448,7 @@ export default {
       await this.createRegions()
       await this.createDays()
       await this.registerTags()
+      this.$store.commit('pages/setCurrentPage', 'create')
       this.$router.push({
         name: 'ArticleCreateDetail',
         query: {id: this.day.article_id}
@@ -510,6 +515,9 @@ export default {
       this.isVisibleOverseas = true
       this.country = null
       this.regionIdArray = []
+    },
+    showModal() {
+      this.$refs.modal.showModal()
     },
     resize(){
       this.height = 'auto'
@@ -641,5 +649,9 @@ export default {
   height: 100%;
   object-fit: cover;
   border-radius: 4px;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>

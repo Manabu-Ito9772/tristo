@@ -271,6 +271,7 @@ export default {
         await this.getArticleAndSetDayId()
         this.$refs.button.resetDayNum()
         this.$refs.list.changeNumber(1)
+        this.$refs.overview.closeOverview()
       }
     },
     async addBlock(blockAndCost) {

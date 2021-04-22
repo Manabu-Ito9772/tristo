@@ -126,7 +126,7 @@
         <h3 class="col-12 p-2 m-0 text-center text-white font-weight-bold top-title">
           アカウント設定
         </h3>
-        <div class="col-12 p-4 bg-white overview">
+        <div class="col-12 pt-4 pb-2 pl-4 pr-4 bg-white overview">
           <ValidationObserver v-slot="{ handleSubmit }">
             <div class="form-group m-0">
               <ValidationProvider
@@ -214,39 +214,45 @@
                 </div>
               </template>
             </div>
+            <div class="mt-2 pr-0 text-right">
+              <template v-if="isMobile">
+                <p
+                  id="delete-membership"
+                  class="d-inline-block m-0 p-0 font-weight-bold text-muted pointer"
+                  @click="deleteCurrentUser"
+                >
+                  退会する
+                </p>
+              </template>
+              <template v-else>
+                <p
+                  id="delete-membership"
+                  class="d-inline-block m-0 p-0 font-weight-bold delete-user"
+                  @click="deleteCurrentUser"
+                >
+                  退会する
+                </p>
+              </template>
+            </div>
           </ValidationObserver>
         </div>
-        <div class="col-12 mt-1 pr-0 text-right">
-          <template v-if="isMobile">
-            <p
-              id="delete-membership"
-              class="btn p-0 font-weight-bold text-muted"
-              @click="deleteCurrentUser"
-            >
-              退会する
-            </p>
-          </template>
-          <template v-else>
-            <p
-              id="delete-membership"
-              class="btn p-0 font-weight-bold delete-user"
-              @click="deleteCurrentUser"
-            >
-              退会する
-            </p>
-          </template>
-        </div>
+
+        <TermAndPolicyLink />
       </div>
     </template>
   </div>
 </template>
 
 <script>
+import TermAndPolicyLink from '../../components/TermAndPolicyLink'
 import { mapGetters, mapActions } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'AccountSettings',
+  components: {
+    TermAndPolicyLink
+  },
   data() {
     return {
       preuser: {},
@@ -373,6 +379,7 @@ export default {
 
 .delete-user {
   color: gray;
+  cursor: pointer;
 }
 
 .delete-user:hover {

@@ -10,7 +10,7 @@ RSpec.describe 'ユーザー', type: :system do
     context 'ユーザー登録ボタンをクリック' do
       before {
         visit root_path
-        find('.register-button').click
+        find('#register-button').click
       }
 
       it 'フォームが表示される' do
@@ -117,7 +117,7 @@ RSpec.describe 'ユーザー', type: :system do
       before {
         user
         visit root_path
-        find('.login-button').click
+        find('#login-button').click
       }
 
       it 'フォームが表示される' do
@@ -199,7 +199,7 @@ RSpec.describe 'ユーザー', type: :system do
     context 'ログインせずに記事一覧、記事詳細、ユーザーページにアクセス' do
       it 'アクセスできる' do
         article_normal
-        visit root_path
+        visit '/trips'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2
@@ -208,7 +208,7 @@ RSpec.describe 'ユーザー', type: :system do
         find("#article-item-#{article_normal.id}").click
         expect(current_path).to eq('/trip')
         expect(page).to have_content(article_normal.title)
-        visit root_path
+        visit '/trips'
         sleep 2
         find("#article-user-#{article_normal.user.id}").click
         expect(current_path).to eq('/user')
@@ -272,7 +272,7 @@ RSpec.describe 'ユーザー', type: :system do
       sleep 2
       find('.draft-button').click
       sleep 2
-      visit root_path
+      visit '/trips'
     }
 
     context 'ヘッダーのユーザーアイコンをクリック' do
@@ -500,7 +500,7 @@ RSpec.describe 'ユーザー', type: :system do
         find('.heart').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
-        visit root_path
+        visit '/trips'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2
@@ -544,6 +544,7 @@ RSpec.describe 'ユーザー', type: :system do
         context 'いいねした記事をクリック' do
           it '記事詳細が表示される' do
             find("#article-item-#{article_normal.id}").click
+            sleep 2
             expect(current_path).to eq('/trip')
             expect(page).to have_content(article_normal.title)
           end
@@ -643,7 +644,7 @@ RSpec.describe 'ユーザー', type: :system do
           end
           expect(current_path).to eq('/trips')
           expect(page).to have_content('退会しました。ご利用ありがとうございました。')
-          find('.login-button').click
+          find('#login-button').click
           fill_in 'メールアドレス', with: user.email
           fill_in 'パスワード', with: 'password'
           find('.button').click

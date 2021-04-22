@@ -167,7 +167,6 @@ RSpec.describe "記事作成", type: :system do
 
       it '記事概要が作成され詳細作成ページが表示される（海外フォーム）' do
         create_article_overseas
-        page.save_screenshot 'screenshot.png'
         find('.overview').click
         expect(page).to have_content(country[1].articles.first.title)
         expect(page).to have_content(country[1].articles.first.description)
@@ -271,6 +270,14 @@ RSpec.describe "記事作成", type: :system do
         find('.button').click
         expect(page).to have_content('タイトルは必須項目です')
         expect(page).to have_content('国は必須項目です')
+      end
+    end
+
+    context 'マップの詳しくはこちらをクリック' do
+      it 'マップ埋め込み説明のモーダルが表示さえる' do
+        visit '/create_trip'
+        click_on 'こちら'
+        expect(page).to_not have_content('旅行記録に「Google My Maps」を埋め込む方法')
       end
     end
   end
@@ -981,7 +988,6 @@ RSpec.describe "記事作成", type: :system do
       expect(page).to have_content(country[1].articles.first.tags.first.name)
       expect(page).to have_selector("img[src$='sample.png']")
       expect(page).to have_content(user.name)
-      page.save_screenshot 'screenshot.png'
     end
   end
 end

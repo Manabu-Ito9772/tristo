@@ -76,7 +76,7 @@
 
         <template v-if="article.description">
           <p class="mt-3 mb-1 p-1 text-center text-white font-weight-bold overview-label">
-            説明
+            コメント
           </p>
           <p class="text-dark pl-2 pr-2 pb-0 word-break break-line remove-first-line">
             {{ article.description }}
