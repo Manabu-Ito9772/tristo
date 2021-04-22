@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
 
+import TopPage from '../pages/top/top'
 import ArticleIndex from '../pages/article/index'
 import ArticleShow from '../pages/article/show'
 import ArticleCreateOverview from '../pages/article/createOverview'
@@ -16,6 +17,8 @@ import EditMyPage from '../pages/user/editmypage'
 import AccountSettings from '../pages/user/accountsettings'
 import Following from '../pages/user/following'
 import Followers from '../pages/user/followers'
+import TermOfUse from '../pages/policy/term'
+import PrivacyPolicy from '../pages/policy/policy'
 
 Vue.use(Router)
 
@@ -24,7 +27,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: { name: 'ArticleIndex' }
+      component: TopPage,
+      name: 'TopPage',
     },
     {
       path: '/trips',
@@ -106,6 +110,16 @@ const router = new Router({
       path: '/followers',
       component: Followers,
       name: 'Followers',
+    },
+    {
+      path: '/term_of_use',
+      component: TermOfUse,
+      name: 'TermOfUse',
+    },
+    {
+      path: '/privacy_policy',
+      component: PrivacyPolicy,
+      name: 'PrivacyPolicy',
     },
   ]
 })

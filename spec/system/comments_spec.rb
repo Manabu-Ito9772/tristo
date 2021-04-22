@@ -136,7 +136,7 @@ RSpec.describe 'コメント', type: :system do
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       sleep 2
-      visit root_path
+      visit '/trips'
       sleep 2
       find('.area-changer-unselected').click
       sleep 2
@@ -155,7 +155,7 @@ RSpec.describe 'コメント', type: :system do
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       sleep 2
-      visit root_path
+      visit '/trips'
       sleep 2
       find('.area-changer-unselected').click
       sleep 2
@@ -171,7 +171,7 @@ RSpec.describe 'コメント', type: :system do
         find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
-        visit root_path
+        visit '/trips'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2
@@ -192,7 +192,7 @@ RSpec.describe 'コメント', type: :system do
         find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
-        visit root_path
+        visit '/trips'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2

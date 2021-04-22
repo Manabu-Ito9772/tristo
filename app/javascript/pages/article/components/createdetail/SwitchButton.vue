@@ -152,7 +152,8 @@ export default {
     },
     resetDayNum() {
       this.dayNumber = 1
-    }
+      this.buttonUnselected = true
+    },
   }
 }
 </script>

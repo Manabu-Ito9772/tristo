@@ -2,7 +2,7 @@
   <header>
     <template v-if="$mq == 'xs'">
       <nav class="navbar navbar-expand bg-white justify-content-between fixed-top">
-        <router-link :to="{ name: 'ArticleIndex' }">
+        <router-link :to="{ name: 'TopPage' }">
           <span class="navbar-brand header-title">TriSto</span>
         </router-link>
 
@@ -20,28 +20,33 @@
                   class="fa-lg"
                 />
                 <div slot="dropdown">
-                  <template v-if="this.$route.path == '/account_settings'">
-                    <div
-                      class="dropdown-item text-dark"
-                      @click="logout"
-                    >
-                      ログアウト
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div
-                      class="dropdown-item"
-                      @click="accouSettings"
-                    >
-                      アカウント設定
-                    </div>
-                    <div
-                      class="dropdown-item"
-                      @click="logout"
-                    >
-                      ログアウト
-                    </div>
-                  </template>
+                  <div
+                    v-if="this.$route.path != '/account_settings'"
+                    @click="accouSettings"
+                    class="dropdown-item"
+                  >
+                    アカウント設定
+                  </div>
+                  <div
+                    v-if="this.$route.path != '/term_of_use'"
+                    @click="toTermOfUse"
+                    class="dropdown-item"
+                  >
+                    利用規約
+                  </div>
+                  <div
+                    v-if="this.$route.path != '/privacy_policy'"
+                    @click="toPrivacyPolicy"
+                    class="dropdown-item"
+                  >
+                    プライバシーポリシー
+                  </div>
+                  <div
+                    @click="logout"
+                    class="dropdown-item"
+                  >
+                    ログアウト
+                  </div>
                 </div>
               </DropdownMenu>
             </li>
@@ -49,10 +54,7 @@
 
           <template v-else>
             <li class="nav-item d-flex align-items-center">
-              <router-link
-                :to="{ name: 'Register' }"
-                class="icon-color"
-              >
+              <router-link :to="{ name: 'Register' }">
                 <p
                   class="m-0 font-weight-bold text-muted font-middle"
                 >
@@ -62,15 +64,34 @@
             </li>
 
             <li class="nav-item d-flex align-items-center">
-              <router-link
-                :to="{ name: 'Login' }"
-                class="icon-color"
-              >
+              <router-link :to="{ name: 'Login' }">
                 <p
                   class="m-0 font-weight-bold text-muted font-middle"
                 >
                   ログイン
                 </p>
+              </router-link>
+            </li>
+
+            <li class="nav-item d-flex align-items-center">
+              <router-link :to="{ name: 'ArticleIndex' }">
+                <p
+                  class="m-0 font-weight-bold text-muted font-middle"
+                >
+                  投稿一覧
+                </p>
+              </router-link>
+            </li>
+
+            <li class="nav-item active">
+              <router-link
+                :to="{ name: 'ArticleSearch' }"
+                class="pl-2 text-muted search-font-size"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'search']"
+                  class="fa-lg"
+                />
               </router-link>
             </li>
           </template>
@@ -80,7 +101,7 @@
 
     <template v-else>
       <nav class="navbar navbar-expand bg-white justify-content-between fixed-top">
-        <router-link :to="{ name: 'ArticleIndex' }">
+        <router-link :to="{ name: 'TopPage' }">
           <span class="navbar-brand header-title">TriSto</span>
         </router-link>
 
@@ -210,138 +231,90 @@
             <!-- USER ICON -->
 
             <!-- MENU ICON -->
-            <template v-if="currentPage == 'menu'">
-              <li class="nav-item active menu-bar icon-selected">
-                <DropdownMenu
-                  v-model="show"
-                  :right="right"
-                  :hover="hover"
-                  :interactive="interactive"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'bars']"
-                    class="fa-lg"
-                  />
-                  <div slot="dropdown">
-                    <template v-if="this.$route.path == '/account_settings'">
-                      <div
-                        class="dropdown-item"
-                        @click="logout"
-                      >
-                        ログアウト
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div
-                        class="dropdown-item"
-                        @click="accouSettings"
-                      >
-                        アカウント設定
-                      </div>
-                      <div
-                        class="dropdown-item"
-                        @click="logout"
-                      >
-                        ログアウト
-                      </div>
-                    </template>
+            <li class="nav-item active menu-bar">
+              <DropdownMenu
+                v-model="show"
+                :right="right"
+                :hover="hover"
+                :interactive="interactive"
+              >
+                <template v-if="currentPage == 'menu'">
+                  <div class="icon-selected">
+                    <font-awesome-icon
+                      :icon="['fas', 'bars']"
+                      class="fa-lg"
+                    />
                   </div>
-                </DropdownMenu>
-              </li>
-            </template>
-
-            <template v-else>
-              <li class="nav-item active menu-bar icon-color">
-                <DropdownMenu
-                  v-model="show"
-                  :right="right"
-                  :hover="hover"
-                  :interactive="interactive"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'bars']"
-                    class="fa-lg"
-                  />
-                  <div slot="dropdown">
-                    <template v-if="this.$route.path == '/account_settings'">
-                      <div
-                        class="dropdown-item"
-                        @click="logout"
-                      >
-                        ログアウト
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div
-                        class="dropdown-item"
-                        @click="accouSettings"
-                      >
-                        アカウント設定
-                      </div>
-                      <div
-                        class="dropdown-item"
-                        @click="logout"
-                      >
-                        ログアウト
-                      </div>
-                    </template>
+                </template>
+                <template v-else>
+                  <div class="icon-color">
+                    <font-awesome-icon
+                      :icon="['fas', 'bars']"
+                      class="fa-lg"
+                    />
                   </div>
-                </DropdownMenu>
-              </li>
-            </template>
+                </template>
+                <div slot="dropdown">
+                  <template v-if="this.$route.path == '/account_settings'">
+                    <div
+                      class="dropdown-item"
+                      @click="logout"
+                    >
+                      ログアウト
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="dropdown-item"
+                      @click="accouSettings"
+                    >
+                      アカウント設定
+                    </div>
+                    <div
+                      class="dropdown-item"
+                      @click="logout"
+                    >
+                      ログアウト
+                    </div>
+                  </template>
+                </div>
+              </DropdownMenu>
+            </li>
             <!-- MENU ICON -->
           </template>
           <!-- AUTH USER -->
 
           <!-- NON AUTH USER -->
           <template v-else>
-            <li class="nav-item active">
-              <div @click="toRegister">
-                <template v-if="isMobile">
-                  <p
-                    class="m-0 pl-0 pr-0 d-flex justify-content-center align-items-center font-weight-bold text-white register-button-mobile"
-                  >
-                    ユーザー登録
-                  </p>
-                </template>
-                <template v-else>
-                  <p
-                    class="m-0 pl-0 pr-0 d-flex justify-content-center align-items-center font-weight-bold text-white register-button"
-                  >
-                    ユーザー登録
-                  </p>
-                </template>
-              </div>
+            <li class="nav-item d-flex align-items-center">
+              <router-link :to="{ name: 'Register' }">
+                <p
+                  id="register-button"
+                  class="m-0 font-weight-bold text-muted"
+                >
+                  ユーザー登録
+                </p>
+              </router-link>
             </li>
 
-            <li class="nav-item active">
-              <div @click="toLogin">
-                <template v-if="isMobile">
-                  <p
-                    class="m-0 d-flex justify-content-center align-items-center font-weight-bold text-white login-button-mobile"
-                  >
-                    ログイン
-                  </p>
-                </template>
-                <template v-else>
-                  <p
-                    class="m-0 d-flex justify-content-center align-items-center font-weight-bold text-white login-button"
-                  >
-                    ログイン
-                  </p>
-                </template>
-              </div>
+            <li class="nav-item d-flex align-items-center">
+              <router-link :to="{ name: 'Login' }">
+                <p
+                  id="login-button"
+                  class="m-0 font-weight-bold text-muted"
+                >
+                  ログイン
+                </p>
+              </router-link>
             </li>
 
-            <li class="nav-item active">
-              <router-link
-                :to="{ name: 'ArticleIndex' }"
-                class="icon-selected"
-              >
-                <font-awesome-icon
-                  :icon="['fas', 'home']"
-                  class="fa-lg"
-                />
+            <li class="nav-item d-flex align-items-center">
+              <router-link :to="{ name: 'ArticleIndex' }">
+                <p
+                  class="m-0 font-weight-bold text-muted"
+                >
+                  投稿一覧
+                </p>
               </router-link>
             </li>
           </template>
@@ -401,6 +374,14 @@ export default {
       if (this.$route.path != '/login') {
         this.$router.push({ name: 'Login' })
       }
+    },
+    toTermOfUse() {
+      this.$router.push({ name: 'TermOfUse' })
+      this.show = false
+    },
+    toPrivacyPolicy() {
+      this.$router.push({ name: 'PrivacyPolicy' })
+      this.show = false
     }
   },
 }
@@ -484,6 +465,10 @@ export default {
 }
 
 .font-middle {
-  font-size: 15px;
+  font-size: 13px;
+}
+
+.search-font-size {
+  font-size: 16px;
 }
 </style>

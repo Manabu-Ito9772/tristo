@@ -1,4 +1,6 @@
 class Block < ApplicationRecord
+  before_save :null_to_nill
+
   has_one_attached :image
 
   has_many :spendings, dependent: :destroy
@@ -13,5 +15,13 @@ class Block < ApplicationRecord
 
   def image_url
     image.attached? ? Rails.application.routes.url_helpers.rails_blob_path(image, only_path: true) : nil
+  end
+
+  private
+
+  def null_to_nill
+    self.place = nil if place == 'null'
+    self.place_info = nil if place_info == 'null'
+    self.comment = nil if comment == 'null'
   end
 end

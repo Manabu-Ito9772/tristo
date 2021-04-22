@@ -4,12 +4,21 @@
     class="min-vh-100 background"
   >
     <TheHeader />
-    <div
-      class="header-adjust"
-      ontouchstart=""
-    >
-      <router-view />
-    </div>
+
+    <template v-if="this.$route.path == '/'">
+      <div ontouchstart="">
+        <router-view />
+      </div>
+    </template>
+    <template v-else>
+      <div
+        class="header-adjust"
+        ontouchstart=""
+      >
+        <router-view />
+      </div>
+    </template>
+
     <template v-if="$mq == 'xs'">
       <TheFooter />
     </template>

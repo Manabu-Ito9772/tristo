@@ -316,16 +316,21 @@
           </template>
         </div>
       </div>
+      <TermAndPolicyLink />
     </div>
   </div>
 </template>
 
 <script>
+import TermAndPolicyLink from '../../../../components/TermAndPolicyLink'
 import { mapGetters } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'SearchForm',
+  components: {
+    TermAndPolicyLink
+  },
   props: {
     article: {
       type: Boolean,
