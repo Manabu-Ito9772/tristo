@@ -314,8 +314,8 @@
       <div class="col-12 mb-2 p-0 text-muted text-center word-break article-info">
         <p
           v-for="article_tag in article.article_tags"
-          :key="article_tag.id"
           :id="'tag-' + article_tag.tag.name"
+          :key="article_tag.id"
           class="d-inline-block m-0 pl-1 pr-1 article-tag"
         >
           <template v-if="$mq == 'lg'">

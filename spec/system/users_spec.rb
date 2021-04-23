@@ -55,6 +55,16 @@ RSpec.describe 'ユーザー', type: :system do
         end
       end
 
+      context 'プロフィール画像を選択後にXボタンをクリック' do
+        it 'プロフィール画像の選択が解除される' do
+          attach_file('プロフィール画像', 'public/images/sample.png')
+          expect(page).to have_css('#preview-avatar')
+          find('.icon').click
+          expect(page).to have_css('#default-avatar')
+          expect(page).to_not have_css('#preview-image')
+        end
+      end
+
       context '何も入力せずに「登録」をクリック' do
         it 'バリデーションメッセージが表示される' do
           find('.button').click
@@ -468,6 +478,24 @@ RSpec.describe 'ユーザー', type: :system do
             fill_in 'ユーザーネーム', with: ' '
             find('.button').click
             expect(page).to have_content('ユーザーネームは必須項目です')
+          end
+        end
+
+        context 'プロフィール画像のXボタンをクリック' do
+          it 'デフォルト画像が表示される' do
+            attach_file('プロフィール画像', 'public/images/sample.png')
+            expect(page).to have_css('#preview-avatar')
+            find('.icon').click
+            expect(page).to have_css('#default-avatar')
+            expect(page).to_not have_css('#preview-avatar')
+            attach_file('プロフィール画像', 'public/images/sample.png')
+            find('.button').click
+            sleep 2
+            find('.button').click
+            expect(page).to have_selector("img[src$='sample.png']")
+            find('.icon').click
+            expect(page).to have_css('#default-avatar')
+            expect(page).to_not have_selector("img[src$='sample.png']")
           end
         end
       end

@@ -210,6 +210,17 @@ RSpec.describe "記事編集/削除", type: :system do
               end
             end
 
+            context 'アイキャッチのXボタンをクリック' do
+              it 'アイキャッチが削除される' do
+                find('#delete-btn').click
+                expect(page).to_not have_selector("img[src$='sample.png']")
+                attach_file('アイキャッチ', 'public/images/sample.png')
+                expect(page).to have_css('#preview-eyecatch')
+                find('#delete-btn').click
+                expect(page).to_not have_css('#preview-eyecatch')
+              end
+            end
+
             context '必須項目を入力せずに保存をクリック' do
               it 'バリデーションメッセージが表示される' do
                 fill_in 'タイトル', with: ' '
@@ -299,8 +310,9 @@ RSpec.describe "記事編集/削除", type: :system do
           end
 
           context '編集ボタンをクリック' do
+            before { find('.edit-button').click }
+
             it '概要編集フォームが表示される' do
-              find('.edit-button').click
               expect(page).to have_content('タイトル')
               expect(page).to have_content('コメント')
               expect(page).to have_content('国')
@@ -328,7 +340,6 @@ RSpec.describe "記事編集/削除", type: :system do
 
             context '編集して保存をクリック' do
               it '概要蘭がアップデートされる' do
-                find('.edit-button').click
                 fill_in 'タイトル', with: 'UpdatedTitle'
                 fill_in 'コメント', with: 'UpdatedDescription'
                 within('.country') do
@@ -365,9 +376,19 @@ RSpec.describe "記事編集/削除", type: :system do
               end
             end
 
+            context 'アイキャッチのXボタンをクリック' do
+              it 'アイキャッチが削除される' do
+                find('#delete-btn').click
+                expect(page).to_not have_selector("img[src$='sample.png']")
+                attach_file('アイキャッチ', 'public/images/sample.png')
+                expect(page).to have_css('#preview-eyecatch')
+                find('#delete-btn').click
+                expect(page).to_not have_css('#preview-eyecatch')
+              end
+            end
+
             context '必須項目を入力せずに保存をクリック' do
               it 'バリデーションメッセージが表示される' do
-                find('.edit-button').click
                 fill_in 'タイトル', with: ' '
                 fill_in 'コメント', with: ' '
                 within('.region') do
@@ -566,6 +587,7 @@ RSpec.describe "記事編集/削除", type: :system do
                   fill_in '価格', with: '2000'
                 end
                 fill_in 'メモ', with: 'UpdatedTestMemmo'
+                attach_file('写真', 'public/images/sample.png')
                 find('.add-button').click
                 sleep 2
               end
@@ -577,6 +599,16 @@ RSpec.describe "記事編集/削除", type: :system do
               expect(page).to have_content('UpdatedTestTransport')
               expect(page).to have_content('1,000')
               expect(page).to have_content('2,000')
+              expect(page).to have_selector("img[src$='sample.png']")
+            end
+          end
+
+          context '写真を選択したのちXボタンをクリック' do
+            it '写真の選択が解除される' do
+              attach_file('写真', 'public/images/sample.png')
+              expect(page).to have_css('#preview-image')
+              find('#delete-btn').click
+              expect(page).to_not have_css('#preview-image')
             end
           end
 

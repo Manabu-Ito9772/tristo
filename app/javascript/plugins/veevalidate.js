@@ -10,7 +10,8 @@ import {
   email,
   required,
   numeric,
-  image
+  image,
+  size
 } from 'vee-validate/dist/rules';
 
 Vue.component('ValidationObserver', ValidationObserver)
@@ -54,6 +55,11 @@ extend('numeric', {
 extend('image', {
   ...image,
   message: '{_field_}は画像形式で入力してください'
+})
+
+extend('size', {
+  ...size,
+  message: '{_field_}は5MB以下にしてください'
 })
 
 extend('max', {

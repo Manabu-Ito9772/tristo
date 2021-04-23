@@ -73,7 +73,7 @@
         <!-- PEN ICON -->
         <ul class="navbar-nav">
           <li class="nav-item active m-0">
-            <template v-if="currentPage == 'pen'">
+            <template v-if="currentPage == 'create'">
               <router-link
                 :to="{ name: 'ArticleCreateOverview' }"
                 class="icon-selected"
@@ -90,7 +90,7 @@
                 :to="{ name: 'ArticleCreateOverview' }"
                 class="icon-color"
               >
-                <div @click="setCurrentPage('pen')">
+                <div @click="setCurrentPage('create')">
                   <font-awesome-icon
                     :icon="['fas', 'pen']"
                     class="fa-lg"

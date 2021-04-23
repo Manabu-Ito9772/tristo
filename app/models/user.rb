@@ -3,6 +3,7 @@ class User < ApplicationRecord
   authenticates_with_sorcery!
 
   before_create :default_avatar
+  before_save :null_to_nill
 
   has_one_attached :avatar
 
@@ -21,7 +22,7 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 30 }
   validates :email, presence: true, uniqueness: true
   validates :description, length: { maximum: 500 }
-  validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 0..5.megabytes }
+  validates :avatar, attachment: { content_type: %r{\Aimage/(png|jpeg)\Z}, maximum: 5_242_880 }
 
   def follow(other_user_id)
     return if id == other_user_id
@@ -58,5 +59,13 @@ class User < ApplicationRecord
     return if avatar.attached?
 
     avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.jpg')), filename: 'default-image.jpg', content_type: 'image/png')
+  end
+
+  private
+
+  def null_to_nill
+    return if description != 'null'
+
+    self.description = nil
   end
 end

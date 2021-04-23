@@ -130,31 +130,49 @@
         v-slot="{ errors }"
         ref="provider"
         name="アイキャッチ"
-        rules="image"
+        rules="image|size:5242.88"
       >
         <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
           アイキャッチ
         </h5>
         <template v-if="previewEyecatch">
-          <div class="mb-2 image-trim">
-            <img :src="previewEyecatch">
+          <div class="mb-1 image-trim">
+            <img
+              :src="previewEyecatch"
+              id="preview-eyecatch"
+            >
           </div>
         </template>
         <template v-else>
-          <template v-if="article.eyecatch_url">
-            <div class="mb-2 image-trim">
-              <img :src="article.eyecatch_url">
+          <template v-if="eyecatch">
+            <div class="mb-1 image-trim">
+              <img :src="eyecatch">
             </div>
           </template>
+        </template>
+        <template v-if="previewEyecatch || eyecatch">
+          <div class="text-center">
+            <div
+              @click="deleteEyecatch"
+              id="delete-btn"
+              class="d-inline-block mb-2 icon"
+            >
+              <font-awesome-icon
+                :icon="['far', 'times-circle']"
+                class="fa-lg"
+              />
+            </div>
+          </div>
         </template>
 
         <template v-if="$mq == 'xs'">
           <div class="text-center">
             <label>
-              <p class="mb-0 pl-3 pr-3 bg-white text-dark file-button">
+              <p class="mb-0 pl-3 pr-3 file-button">
                 画像を選択
               </p>
               <input
+                v-if="isVisibleFileInput"
                 id="eyecatch"
                 type="file"
                 accept="image/png,image/jpeg"
@@ -167,6 +185,7 @@
         </template>
         <template v-else>
           <input
+            v-if="isVisibleFileInput"
             id="eyecatch"
             type="file"
             accept="image/png,image/jpeg"
@@ -175,7 +194,9 @@
             @change="handleChange"
           >
         </template>
-        <span class="text-danger">{{ errors[0] }}</span>
+        <p class="text-center text-danger">
+          {{ errors[0] }}
+        </p>
       </ValidationProvider>
 
       <h5 class="col-12 mt-4 p-1 text-center text-white font-weight-bold article-title word-break">
@@ -259,7 +280,9 @@ export default {
       },
       height: '',
       previewEyecatch: '',
-      uploadEyecatch: ''
+      uploadEyecatch: '',
+      eyecatch: '',
+      isVisibleFileInput: true
     }
   },
   computed: {
@@ -316,6 +339,7 @@ export default {
     for (let article_tag of this.articleEdit.article_tags) {
       this.tags.push(article_tag.tag.name)
     }
+    if (this.articleEdit.eyecatch_url) this.eyecatch = this.article.eyecatch_url
     this.resize()
   },
   methods:{
@@ -417,6 +441,18 @@ export default {
         })
         .catch(err => console.log(err.response))
     },
+    deleteEyecatch() {
+      if (this.previewEyecatch) {
+        this.previewEyecatch = ''
+        this.uploadEyecatch = ''
+        this.isVisibleFileInput = false
+        this.$nextTick(() => (this.isVisibleFileInput = true))
+      } else {
+        this.$axios.delete(`articles/${this.$route.query.id}/delete_eyecatch`)
+          .catch(err => console.log(err.response))
+        this.eyecatch = ''
+      }
+    },
     resize(){
       this.height = 'auto'
       this.$nextTick(()=>{
@@ -479,13 +515,38 @@ export default {
   background-color: #f8f9fa;
 }
 
+.file-input {
+  width: 75%;
+}
+
 .file-button {
+  display: inline-block;
+  background-color: #fff;
   border: solid thin rgb(206, 212, 218);
+  padding: 2px 25px;
+  text-align: center;
+  cursor: pointer;
   border-radius: 20px;
 }
 
-.file-input {
-  width: 75%;
+.file-button:hover {
+  background-color: rgb(206, 212, 218);
+  position: relative;
+}
+
+.file-button-mobile {
+  display: inline-block;
+  background-color: #fff;
+  border: solid thin rgb(206, 212, 218);
+  padding: 2px 25px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.file-button-mobile:active {
+  background-color: rgb(206, 212, 218);
+  position: relative;
 }
 
 .image-trim {
@@ -503,5 +564,15 @@ export default {
   height: 100%;
   object-fit: cover;
   border-radius: 4px;
+}
+
+.icon {
+  color: gray;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #383838;
 }
 </style>

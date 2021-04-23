@@ -1,94 +1,162 @@
 <template>
-  <div class="container-fluid mt-2">
-    <template v-if="$mq == 'lg'">
-      <div class="row">
-        <div
-          v-show="isVisibleMsg"
-          class="col-12 text-white msg"
-        >
-          {{ msg }}
-        </div>
-        <template v-if="articles.length">
-          <div class="col-8 mb-5">
-            <div
-              v-for="article in articles"
-              :key="article.id"
-            >
-              <ArticleList
-                :article="article"
-                @searchByTag="searchByTag"
+  <div>
+    <div
+      v-show="isVisibleMsg"
+      class="col-12 mt-2 text-white msg"
+    >
+      {{ msg }}
+    </div>
+    <div class="container-fluid mt-2">
+      <template v-if="$mq == 'lg'">
+        <div class="row">
+          <template v-if="articles.length">
+            <div class="col-8 mb-5">
+              <div
+                v-for="article in articles"
+                :key="article.id"
+              >
+                <ArticleList
+                  :article="article"
+                  @searchByTag="searchByTag"
+                />
+              </div>
+              <infinite-loading
+                spinner="circles"
+                @infinite="infiniteHandler"
               />
             </div>
-            <infinite-loading
-              spinner="circles"
-              @infinite="infiniteHandler"
-            />
-          </div>
-        </template>
-
-        <template v-else>
-          <template v-if="loading">
-            <vue-loading
-              type="spiningDubbles"
-              color="#FF58F2"
-              :size="{ width: '100px' }"
-              class="mt-4 pt-5"
-            />
           </template>
+
           <template v-else>
-            <div class="col-8 mt-5 pt-5 mb-5">
-              <h3 class="text-center font-weight-bold text-secondary">
-                投稿がありません
-              </h3>
-            </div>
+            <template v-if="loading">
+              <vue-loading
+                type="spiningDubbles"
+                color="#FF58F2"
+                :size="{ width: '100px' }"
+                class="mt-4 pt-5"
+              />
+            </template>
+            <template v-else>
+              <div class="col-8 mt-5 pt-5 mb-5">
+                <h3 class="text-center font-weight-bold text-secondary">
+                  投稿がありません
+                </h3>
+              </div>
+            </template>
           </template>
-        </template>
-        <SearchForm
-          ref="form"
-          :article="presence"
-          :loading="loading"
-          :sentag="sentag"
-          :japan="japan"
-          class="col-4"
-          @resetPageJapan="resetPageJapan"
-          @resetPageWorld="resetPageWorld"
-          @setSearch="setSearch"
-        />
-      </div>
-    </template>
-
-    <template v-else-if="$mq == 'sm'">
-      <div class="row">
-        <div class="col-12 search-form">
-          <AreaChanger
+          <SearchForm
+            ref="form"
             :article="presence"
             :loading="loading"
-            class="ml-5 mr-5 pl-5 pr-5"
+            :sentag="sentag"
+            :japan="japan"
+            class="col-4"
             @resetPageJapan="resetPageJapan"
             @resetPageWorld="resetPageWorld"
             @setSearch="setSearch"
           />
         </div>
-        <div class="col-12 mb-5">
-          <template v-if="articles.length">
-            <div
-              v-for="article in articles"
-              :key="article.id"
+      </template>
+
+      <template v-else-if="$mq == 'sm'">
+        <div class="row">
+          <div class="col-12 search-form">
+            <AreaChanger
+              :article="presence"
+              :loading="loading"
               class="ml-5 mr-5 pl-5 pr-5"
-            >
-              <ArticleList
-                :article="article"
-              />
-            </div>
-            <infinite-loading
-              spinner="circles"
-              @infinite="infiniteHandler"
+              @resetPageJapan="resetPageJapan"
+              @resetPageWorld="resetPageWorld"
+              @setSearch="setSearch"
             />
+          </div>
+          <div class="col-12 mb-5">
+            <template v-if="articles.length">
+              <div
+                v-for="article in articles"
+                :key="article.id"
+                class="ml-5 mr-5 pl-5 pr-5"
+              >
+                <ArticleList
+                  :article="article"
+                />
+              </div>
+              <infinite-loading
+                spinner="circles"
+                @infinite="infiniteHandler"
+              />
+            </template>
+
+            <template v-else>
+              <template v-if="loading">
+                <div class="mt-5 mb-5">
+                  <vue-loading
+                    type="spiningDubbles"
+                    color="#FF58F2"
+                    :size="{ width: '80px' }"
+                  />
+                </div>
+              </template>
+
+              <template v-else>
+                <div class="mt-5 pt-3 mb-5">
+                  <h3 class="text-center font-weight-bold text-secondary">
+                    投稿がありません
+                  </h3>
+                </div>
+              </template>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="row">
+          <div class="col-12">
+            <template v-if="authUser">
+              <AreaChanger
+                :article="presence"
+                :loading="loading"
+                class="mb-4 search-form"
+                @resetPageJapan="resetPageJapan"
+                @resetPageWorld="resetPageWorld"
+                @setSearch="setSearch"
+              />
+            </template>
+            <template v-else>
+              <AreaChanger
+                :article="presence"
+                :loading="loading"
+                class="mb-3 search-form"
+                @resetPageJapan="resetPageJapan"
+                @resetPageWorld="resetPageWorld"
+                @setSearch="setSearch"
+              />
+            </template>
+          </div>
+          <template v-if="articles.length">
+            <div class="col-12 border-top">
+              <div
+                v-for="article in articles"
+                :key="article.id"
+              >
+                <ArticleList
+                  :article="article"
+                />
+              </div>
+              <template v-if="page <= kaminariPage">
+                <infinite-loading
+                  spinner="circles"
+                  class="mb-4"
+                  @infinite="infiniteHandler"
+                />
+              </template>
+            </div>
           </template>
 
           <template v-else>
             <template v-if="loading">
-              <div class="mt-5 mb-5">
+              <div class="col-12 mt-3">
                 <vue-loading
                   type="spiningDubbles"
                   color="#FF58F2"
@@ -98,7 +166,7 @@
             </template>
 
             <template v-else>
-              <div class="mt-5 pt-3 mb-5">
+              <div class="col-12 mt-4 pt-2">
                 <h3 class="text-center font-weight-bold text-secondary">
                   投稿がありません
                 </h3>
@@ -106,74 +174,8 @@
             </template>
           </template>
         </div>
-      </div>
-    </template>
-
-    <template v-else>
-      <div class="row">
-        <div class="col-12">
-          <template v-if="authUser">
-            <AreaChanger
-              :article="presence"
-              :loading="loading"
-              class="mb-4 search-form"
-              @resetPageJapan="resetPageJapan"
-              @resetPageWorld="resetPageWorld"
-              @setSearch="setSearch"
-            />
-          </template>
-          <template v-else>
-            <AreaChanger
-              :article="presence"
-              :loading="loading"
-              class="mb-3 search-form"
-              @resetPageJapan="resetPageJapan"
-              @resetPageWorld="resetPageWorld"
-              @setSearch="setSearch"
-            />
-          </template>
-        </div>
-        <template v-if="articles.length">
-          <div class="col-12 border-top">
-            <div
-              v-for="article in articles"
-              :key="article.id"
-            >
-              <ArticleList
-                :article="article"
-              />
-            </div>
-            <template v-if="page <= kaminariPage">
-              <infinite-loading
-                spinner="circles"
-                class="mb-4"
-                @infinite="infiniteHandler"
-              />
-            </template>
-          </div>
-        </template>
-
-        <template v-else>
-          <template v-if="loading">
-            <div class="col-12 mt-3">
-              <vue-loading
-                type="spiningDubbles"
-                color="#FF58F2"
-                :size="{ width: '80px' }"
-              />
-            </div>
-          </template>
-
-          <template v-else>
-            <div class="col-12 mt-4 pt-2">
-              <h3 class="text-center font-weight-bold text-secondary">
-                投稿がありません
-              </h3>
-            </div>
-          </template>
-        </template>
-      </div>
-    </template>
+      </template>
+    </div>
   </div>
 </template>
 

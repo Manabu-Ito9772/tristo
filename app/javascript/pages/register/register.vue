@@ -96,10 +96,23 @@
                 >
                   <div class="d-flex justify-content-center align-items-center">
                     <template v-if="previewAvatar">
-                      <img
-                        :src="previewAvatar"
-                        class="user-icon"
-                      >
+                      <div>
+                        <img
+                          :src="previewAvatar"
+                          class="user-icon"
+                        >
+                        <div class="mt-2 text-center">
+                          <div
+                            class="d-inline-block icon"
+                            @click="deleteAvatar"
+                          >
+                            <font-awesome-icon
+                              :icon="['far', 'times-circle']"
+                              class="fa-lg"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </template>
                     <template v-else>
                       <img
@@ -121,11 +134,19 @@
                           </p>
                         </template>
                         <template v-else>
-                          <p class="mb-0 pl-3 pr-3 text-dark file-button">
-                            画像を選択
-                          </p>
+                          <template v-if="previewAvatar">
+                            <p class="pl-3 pr-3 text-dark file-button file-margin">
+                              画像を選択
+                            </p>
+                          </template>
+                          <template v-else>
+                            <p class="mb-0 pl-3 pr-3 text-dark file-button">
+                              画像を選択
+                            </p>
+                          </template>
                         </template>
                         <input
+                          v-if="isVisibleFileInput"
                           id="avatar"
                           type="file"
                           accept="image/png,image/jpeg"
@@ -255,7 +276,7 @@
                   v-slot="{ errors }"
                   ref="provider"
                   name="プロフィール画像"
-                  rules="image"
+                  rules="image|size:5242.88"
                 >
                   <p
                     id="プロフィール画像"
@@ -266,16 +287,30 @@
                   <template v-if="previewAvatar">
                     <img
                       :src="previewAvatar"
-                      class="mb-3 user-icon"
+                      id="preview-avatar"
+                      class="mb-2 user-icon"
                     >
+                    <div class="mb-3 text-center">
+                      <div
+                        class="d-inline-block icon"
+                        @click="deleteAvatar"
+                      >
+                        <font-awesome-icon
+                          :icon="['far', 'times-circle']"
+                          class="fa-lg"
+                        />
+                      </div>
+                    </div>
                   </template>
                   <template v-else>
                     <img
                       src="~default.jpg"
+                      id="default-avatar"
                       class="mb-3 user-icon"
                     >
                   </template>
                   <input
+                    v-if="isVisibleFileInput"
                     id="avatar"
                     type="file"
                     accept="image/png,image/jpeg"
@@ -339,6 +374,7 @@ export default {
       previewAvatar: '',
       emailError: false,
       inputType: 'password',
+      isVisibleFileInput: true,
       isMobile: isMobile
     }
   },
@@ -378,6 +414,12 @@ export default {
     },
     hidePassword() {
       this.inputType = 'password'
+    },
+    deleteAvatar() {
+      this.uploadAvatar = ''
+      this.previewAvatar = ''
+      this.isVisibleFileInput = false
+      this.$nextTick(() => (this.isVisibleFileInput = true))
     }
   }
 }
@@ -484,5 +526,19 @@ export default {
 	height: 100px;
 	object-fit: cover;
 	border-radius: 50%;
+}
+
+.icon {
+  color: gray;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #383838;
+}
+
+.file-margin {
+  margin-bottom: 35px;
 }
 </style>
