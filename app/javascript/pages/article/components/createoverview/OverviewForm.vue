@@ -214,7 +214,7 @@
             v-slot="{ errors }"
             ref="provider"
             name="アイキャッチ"
-            rules="image"
+            rules="image|size:5242.88"
           >
             <h5
               id="アイキャッチ"
@@ -223,11 +223,26 @@
               アイキャッチ
             </h5>
             <template v-if="previewEyecatch">
-              <div class="mb-2 image-trim">
-                <img :src="previewEyecatch">
+              <div class="mb-1 image-trim">
+                <img
+                  :src="previewEyecatch"
+                  id="preview-eyecatch"
+                >
+              </div>
+              <div class="text-center">
+                <div
+                  @click="deleteEyecatch"
+                  class="d-inline-block mb-2 icon"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'times-circle']"
+                    class="fa-lg"
+                  />
+                </div>
               </div>
             </template>
             <input
+              v-if="isVisibleFileInput"
               id="eyecatch"
               type="file"
               accept="image/png,image/jpeg"
@@ -235,7 +250,9 @@
               class="form-control-file mx-auto file-input"
               @change="handleChange"
             >
-            <span class="text-danger">{{ errors[0] }}</span>
+            <p class="text-center text-danger">
+              {{ errors[0] }}
+            </p>
           </ValidationProvider>
         </div>
 
@@ -264,7 +281,10 @@
           >
           <p class="mb-0 text-center text-secondary font-small">
             ※Google My MapsのHTMLを入力することで地図を埋め込むことができます。詳しくは
-            <a @click="showModal" href="#">こちら</a>。
+            <a
+              href="#"
+              @click="showModal"
+            >こちら</a>。
           </p>
         </div>
 
@@ -355,7 +375,8 @@ export default {
       height: '',
       previewEyecatch: '',
       uploadEyecatch: '',
-      isMobile: isMobile,
+      isVisibleFileInput: true,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -519,6 +540,12 @@ export default {
     showModal() {
       this.$refs.modal.showModal()
     },
+    deleteEyecatch() {
+      this.previewEyecatch = ''
+      this.uploadEyecatch = ''
+      this.isVisibleFileInput = false
+      this.$nextTick(() => (this.isVisibleFileInput = true))
+    },
     resize(){
       this.height = 'auto'
       this.$nextTick(()=>{
@@ -653,5 +680,15 @@ export default {
 
 .pointer {
   cursor: pointer;
+}
+
+.icon {
+  color: gray;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #383838;
 }
 </style>

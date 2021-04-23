@@ -1,6 +1,6 @@
 class Api::BlocksController < ApplicationController
   before_action :authenticate!
-  before_action :set_block, only: %i[update destroy]
+  before_action :set_block, only: %i[update destroy delete_image delete_image]
   skip_before_action :verify_authenticity_token
 
   def create
@@ -24,6 +24,10 @@ class Api::BlocksController < ApplicationController
   def destroy
     @block.destroy!
     render json: @block
+  end
+
+  def delete_image
+    @block.image.purge if @block.image.attached?
   end
 
   private

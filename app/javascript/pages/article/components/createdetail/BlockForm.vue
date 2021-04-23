@@ -363,40 +363,55 @@
             v-slot="{ errors }"
             ref="provider"
             name="写真"
-            rules="image"
+            rules="image|size:5242.88"
           >
-            <p class="mt-4 text-center text-white content-lavel m-0">
-              写真
-            </p>
-            <template v-if="previewImage">
-              <img
-                :src="previewImage"
-                class="mt-2 image"
-              >
-            </template>
-            <div class="text-center">
-              <label class="mt-2 mb-4">
-                <template v-if="isMobile">
-                  <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
-                    画像を選択
-                  </p>
-                </template>
-                <template v-else>
-                  <p class="mb-0 pl-3 pr-3 text-dark file-button">
-                    画像を選択
-                  </p>
-                </template>
-                <input
-                  id="image"
-                  type="file"
-                  accept="image/png,image/jpeg"
-                  name="写真"
-                  class="d-none"
-                  @change="handleChange"
+            <div class="mb-4">
+              <p class="mt-4 text-center text-white content-lavel m-0">
+                写真
+              </p>
+              <template v-if="previewImage">
+                <img
+                  :src="previewImage"
+                  class="mt-2 mb-1 image"
                 >
-              </label>
+                <div class="text-center">
+                  <div
+                    @click="deleteImage"
+                    id="delete-btn"
+                    class="d-inline-block icon"
+                  >
+                    <font-awesome-icon
+                      :icon="['far', 'times-circle']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </div>
+              </template>
+              <div class="text-center">
+                <label class="mt-2">
+                  <template v-if="isMobile">
+                    <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
+                      画像を選択
+                    </p>
+                  </template>
+                  <template v-else>
+                    <p class="mb-0 pl-3 pr-3 text-dark file-button">
+                      画像を選択
+                    </p>
+                  </template>
+                  <input
+                    v-if="isVisibleFileInput"
+                    id="image"
+                    type="file"
+                    accept="image/png,image/jpeg"
+                    name="写真"
+                    class="d-none"
+                    @change="handleChange"
+                  >
+                </label>
+              </div>
+              <span class="text-danger">{{ errors[0] }}</span>
             </div>
-            <span class="text-danger">{{ errors[0] }}</span>
           </ValidationProvider>
 
           <template v-if="$mq == 'lg'">
@@ -490,6 +505,7 @@ export default {
       isVisibleForm: true,
       height: '',
       previewImage: '',
+      isVisibleFileInput: true,
       isMobile: isMobile
     }
   },
@@ -567,6 +583,12 @@ export default {
     },
     closeForm() {
       this.isVisibleForm = false
+    },
+    deleteImage() {
+      this.previewImage = ''
+      this.blockAndCost.block.uploadImage = ''
+      this.isVisibleFileInput = false
+      this.$nextTick(() => (this.isVisibleFileInput = true))
     },
     resize(){
       this.height = 'auto'
@@ -737,5 +759,15 @@ export default {
 
 .add-block-msg {
   color: #FF990D;
+}
+
+.icon {
+  color: gray;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #383838;
 }
 </style>

@@ -23,40 +23,40 @@
         <div class="mt-5 pt-3 mb-5">
           <template v-if="isMobile">
             <h5
-              @click="toRegister"
               class="w-100 mb-3 pt-2 pb-2 text-white text-center font-weight-bold register-btn-mobile"
+              @click="toRegister"
             >
               ユーザー登録
             </h5>
             <h5
-              @click="toLogin"
               class="w-100 mb-3 pt-2 pb-2 text-white text-center font-weight-bold login-btn-mobile"
+              @click="toLogin"
             >
               ログイン
             </h5>
             <h5
-              @click="toArticles"
               class="w-100 mb-3 pt-2 pb-2 text-white text-center font-weight-bold articles-btn-mobile"
+              @click="toArticles"
             >
               投稿一覧
             </h5>
           </template>
           <template v-else>
             <h5
-              @click="toRegister"
               class="w-100 pt-2 pb-2 text-white text-center font-weight-bold register-btn"
+              @click="toRegister"
             >
               ユーザー登録
             </h5>
             <h5
-              @click="toLogin"
               class="w-100 mr-2 pt-2 pb-2 text-white text-center font-weight-bold login-btn"
+              @click="toLogin"
             >
               ログイン
             </h5>
             <h5
-              @click="toArticles"
               class="w-100 pt-2 pb-2 text-white text-center font-weight-bold articles-btn"
+              @click="toArticles"
             >
               投稿一覧
             </h5>
@@ -88,7 +88,9 @@
             class="sample-image"
           >
         </div>
-        <p class="p-0 m-0 font-weight-bold text-center">・<br>・<br>・</p>
+        <p class="p-0 m-0 font-weight-bold text-center">
+          ・<br>・<br>・
+        </p>
         <div class="mb-3 ml-5 mr-5 d-flex justify-content-center image-trim-sm">
           <img
             src="~sample-sm3.jpg"
@@ -105,7 +107,9 @@
             class="sample-image"
           >
         </div>
-        <p class="p-0 m-0 font-weight-bold text-center">・<br>・<br>・</p>
+        <p class="p-0 m-0 font-weight-bold text-center">
+          ・<br>・<br>・
+        </p>
         <div class="mb-3 ml-5 mr-5 d-flex justify-content-center image-trim-sm">
           <img
             src="~sample-sm5.jpg"
@@ -129,8 +133,8 @@
 
         <div class="mt-5 mb-5 pb-3 d-flex justify-content-center">
           <h5
-            @click="toRegister"
             class="p-2 m-0 text-white text-center font-weight-bold register-btn"
+            @click="toRegister"
           >
             今すぐ始める
           </h5>
@@ -159,40 +163,40 @@
         >
           <template v-if="isMobile">
             <h5
-              @click="toRegister"
               class="mr-2 pt-2 pb-2 text-white text-center font-weight-bold register-btn-mobile"
+              @click="toRegister"
             >
               ユーザー登録
             </h5>
             <h5
-              @click="toLogin"
               class="ml-2 mr-2 pt-2 pb-2 text-white text-center font-weight-bold login-btn-mobile"
+              @click="toLogin"
             >
               ログイン
             </h5>
             <h5
-              @click="toArticles"
               class="ml-2 pt-2 pb-2 text-white text-center font-weight-bold articles-btn-mobile"
+              @click="toArticles"
             >
               投稿一覧
             </h5>
           </template>
           <template v-else>
             <h5
-              @click="toRegister"
               class="mr-2 pt-2 pb-2 text-white text-center font-weight-bold register-btn"
+              @click="toRegister"
             >
               ユーザー登録
             </h5>
             <h5
-              @click="toLogin"
               class="ml-2 mr-2 pt-2 pb-2 text-white text-center font-weight-bold login-btn"
+              @click="toLogin"
             >
               ログイン
             </h5>
             <h5
-              @click="toArticles"
               class="ml-2 pt-2 pb-2 text-white text-center font-weight-bold articles-btn"
+              @click="toArticles"
             >
               投稿一覧
             </h5>
@@ -251,8 +255,8 @@
           class="mt-5 mb-5 pt-1 pb-3 d-flex justify-content-center"
         >
           <h5
-            @click="toRegister"
             class="p-2 m-0 text-white text-center font-weight-bold register-btn"
+            @click="toRegister"
           >
             今すぐ始める
           </h5>

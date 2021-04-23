@@ -19,7 +19,7 @@ class Article < ApplicationRecord
   validates :description, length: { maximum: 500 }
   validates :map, length: { maximum: 300 }
   validates :status, presence: true
-  validates :eyecatch, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 0..5.megabytes }
+  validates :eyecatch, attachment: { content_type: %r{\Aimage/(png|jpeg)\Z}, maximum: 5_242_880 }
 
   enum status: { draft: 0, published: 1 }
 

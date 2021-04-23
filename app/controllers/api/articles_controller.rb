@@ -1,6 +1,6 @@
 class Api::ArticlesController < ApplicationController
-  before_action :authenticate!, only: %i[create update destroy]
-  before_action :set_article, only: %i[show update destroy]
+  before_action :authenticate!, only: %i[create update destroy delete_eyecatch]
+  before_action :set_article, only: %i[update destroy delete_eyecatch]
   skip_before_action :verify_authenticity_token
 
   include Pagination
@@ -57,6 +57,7 @@ class Api::ArticlesController < ApplicationController
   end
 
   def show
+    @article = Article.include_relations.find(params[:id])
     render json: @article
   end
 
@@ -83,10 +84,14 @@ class Api::ArticlesController < ApplicationController
     render json: @article
   end
 
+  def delete_eyecatch
+    @article.eyecatch.purge if @article.eyecatch.attached?
+  end
+
   private
 
   def set_article
-    @article = Article.include_relations.find(params[:id])
+    @article = Article.find(params[:id])
   end
 
   def article_params

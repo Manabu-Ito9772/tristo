@@ -1,5 +1,5 @@
 class Api::UsersController < ApplicationController
-  before_action :authenticate!, only: %i[update update_current_user destroy_current_user]
+  before_action :authenticate!, only: %i[update update_current_user destroy_current_user reset_avatar]
   skip_before_action :verify_authenticity_token
 
   def show
@@ -37,6 +37,11 @@ class Api::UsersController < ApplicationController
   def me
     user = current_user.as_json(only: %i[id name email description])
     render json: user.merge(avatar_url: current_user.avatar_url)
+  end
+
+  def reset_avatar
+    user = User.find(params[:id])
+    user.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.jpg')), filename: 'default-image.jpg', content_type: 'image/png')
   end
 
   private

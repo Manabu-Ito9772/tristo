@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       collection do
         get 'me'
       end
+      member do
+        patch 'reset_avatar'
+      end
     end
     resources :relationships do
       member do
@@ -36,13 +39,18 @@ Rails.application.routes.draw do
         get 'user_articles_draft'
         get 'user_favorites'
         get 'user_articles_count'
+        delete 'delete_eyecatch'
       end
     end
     resources :article_regions, only: %i[create destroy]
     resources :tags, only: %i[create]
     resources :article_tags, only: %i[create destroy]
     resources :days, only: %i[show create destroy]
-    resources :blocks, only: %i[show create update destroy]
+    resources :blocks do
+      member do
+        delete 'delete_image'
+      end
+    end
     resources :spendings, only: %i[create update destroy]
     resources :transportations, only: %i[create update destroy]
     resources :comments, only: %i[show create update destroy]

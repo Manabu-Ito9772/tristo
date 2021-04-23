@@ -173,6 +173,5 @@ export default {
 .image {
   width: 100%;
   border-radius: 4px;
-  cursor: pointer;
 }
 </style>

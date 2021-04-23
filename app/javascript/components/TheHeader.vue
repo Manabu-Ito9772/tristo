@@ -22,28 +22,28 @@
                 <div slot="dropdown">
                   <div
                     v-if="this.$route.path != '/account_settings'"
-                    @click="accouSettings"
                     class="dropdown-item"
+                    @click="accouSettings"
                   >
                     アカウント設定
                   </div>
                   <div
                     v-if="this.$route.path != '/term_of_use'"
-                    @click="toTermOfUse"
                     class="dropdown-item"
+                    @click="toTermOfUse"
                   >
                     利用規約
                   </div>
                   <div
                     v-if="this.$route.path != '/privacy_policy'"
-                    @click="toPrivacyPolicy"
                     class="dropdown-item"
+                    @click="toPrivacyPolicy"
                   >
                     プライバシーポリシー
                   </div>
                   <div
-                    @click="logout"
                     class="dropdown-item"
+                    @click="logout"
                   >
                     ログアウト
                   </div>

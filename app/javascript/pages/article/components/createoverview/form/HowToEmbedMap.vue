@@ -2,7 +2,11 @@
   <div>
     <template v-if="$mq == 'xs'">
       <modal
-        name="how-to-embed-map" :scrollable="true" width="90%" :maxHeight="300" height="auto"
+        name="how-to-embed-map"
+        :scrollable="true"
+        width="90%"
+        :max-height="300"
+        height="auto"
         class="modal-box-xs text-center text-dark"
       >
         <div class="modal-header">
@@ -13,7 +17,10 @@
         <div class="modal-body">
           <p class="m-0 font-small">
             ①「Google My Maps」の
-            <a href="https://www.google.com/maps/d/u/0/?hl=ja" target="_blank">
+            <a
+              href="https://www.google.com/maps/d/u/0/?hl=ja"
+              target="_blank"
+            >
               マイマップ一覧ページ
             </a>
             にアクセスしてください
@@ -68,8 +75,8 @@
           </p>
 
           <div
-            @click="hideModal"
             class="mt-5 text-center button"
+            @click="hideModal"
           >
             閉じる
           </div>
@@ -78,7 +85,10 @@
     </template>
     <template v-else>
       <modal
-        name="how-to-embed-map" :scrollable="true" :maxHeight="300" height="auto"
+        name="how-to-embed-map"
+        :scrollable="true"
+        :max-height="300"
+        height="auto"
         class="modal-box text-center text-dark"
       >
         <div class="modal-header">
@@ -89,7 +99,10 @@
         <div class="modal-body">
           <p class="m-0">
             ①「Google My Maps」の
-            <a href="https://www.google.com/maps/d/u/0/?hl=ja" target="_blank">
+            <a
+              href="https://www.google.com/maps/d/u/0/?hl=ja"
+              target="_blank"
+            >
               マイマップ一覧ページ
             </a>
             にアクセスしてください
@@ -144,8 +157,8 @@
           </p>
 
           <div
-            @click="hideModal"
             class="mt-5 text-center button"
+            @click="hideModal"
           >
             閉じる
           </div>

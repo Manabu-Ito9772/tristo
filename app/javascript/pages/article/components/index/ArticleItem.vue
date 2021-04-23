@@ -250,8 +250,8 @@
                 <div class="mt-1 mb-1 text-center">
                   <div
                     v-for="article_tag in article.article_tags"
-                    :key="article_tag.id"
                     :id="'tag-' + article_tag.tag.name"
+                    :key="article_tag.id"
                     class="d-inline-block pl-1 pr-1 text-primary article-tag"
                   >
                     <template v-if="$mq == 'lg'">

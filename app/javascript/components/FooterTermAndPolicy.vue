@@ -37,8 +37,8 @@
     <template v-else>
       <router-link :to="{ name: 'TermOfUse' }">
         <a
-          href="#"
           id="term-of-use"
+          href="#"
           class="mr-2 p-0 d-inline-block text-muted"
         >
           利用規約
@@ -47,8 +47,8 @@
 
       <router-link :to="{ name: 'PrivacyPolicy' }">
         <a
-          href="#"
           id="privacy-policy"
+          href="#"
           class="mr-2 ml-2 p-0 d-inline-block text-muted"
         >
           プライバシーポリシー
@@ -56,9 +56,9 @@
       </router-link>
 
       <a
+        id="contact"
         href="https://docs.google.com/forms/d/e/1FAIpQLSff4mAzKQAal88lGp0Pl9sJTcfgsterdaB7d9CUupKOxyEhpA/viewform?usp=sf_link"
         target="_blank"
-        id="contact"
         class="mr-2 ml-2 p-0 d-inline-block text-muted"
       >
         お問い合わせ

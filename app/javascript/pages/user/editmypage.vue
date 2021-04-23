@@ -14,7 +14,7 @@
                 v-slot="{ errors }"
                 ref="provider"
                 name="プロフィール画像"
-                rules="image"
+                rules="image|size:5242.88"
               >
                 <h5
                   id="プロフィール画像"
@@ -22,38 +22,78 @@
                 >
                   プロフィール画像
                 </h5>
-                <template v-if="uploadAvatar">
-                  <img
-                    :src="previewAvatar"
-                    class="user-icon"
-                  >
-                </template>
-                <template v-else>
-                  <img
-                    :src="user.avatar_url"
-                    class="user-icon"
-                  >
-                </template>
-                <label class="mb-0 ml-3 mr-3">
-                  <template v-if="isMobile">
-                    <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
-                      画像を選択
-                    </p>
-                  </template>
-                  <template v-else>
-                    <p class="mb-0 pl-3 pr-3 text-dark file-button">
-                      画像を選択
-                    </p>
-                  </template>
-                  <input
-                    id="avatar"
-                    type="file"
-                    accept="image/png,image/jpeg"
-                    name="プロフィール画像"
-                    class="d-none"
-                    @change="handleChange"
-                  >
-                </label>
+                <div class="d-flex justify-content-center align-items-center">
+                  <div>
+                    <template v-if="uploadAvatar">
+                      <img
+                        :src="previewAvatar"
+                        class="user-icon"
+                      >
+                    </template>
+                    <template v-else>
+                      <template v-if="avatar">
+                        <img
+                          :src="avatar"
+                          class="user-icon"
+                        >
+                      </template>
+                      <template v-else>
+                        <img
+                          src="~default.jpg"
+                          class="user-icon"
+                        >
+                      </template>
+                    </template>
+                    <template v-if="uploadAvatar || avatar">
+                      <div>
+                        <div
+                          class="mt-2 d-inline-block icon"
+                          @click="resetAvatar"
+                        >
+                          <font-awesome-icon
+                            :icon="['far', 'times-circle']"
+                            class="fa-lg"
+                          />
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                  <label class="mb-0 ml-3 mr-3">
+                    <template v-if="isMobile">
+                      <template v-if="uploadAvatar || avatar">
+                        <p class="pl-3 pr-3 text-dark file-button-mobile file-margin">
+                          画像を選択
+                        </p>
+                      </template>
+                      <template v-else>
+                        <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
+                          画像を選択
+                        </p>
+                      </template>
+                    </template>
+                    <template v-else>
+                      <template v-if="uploadAvatar || avatar">
+                        <p class="pl-3 pr-3 text-dark file-button file-margin">
+                          画像を選択
+                        </p>
+                      </template>
+                      <template v-else>
+                        <p class="mb-0 pl-3 pr-3 text-dark file-button">
+                          画像を選択
+                        </p>
+                      </template>
+                    </template>
+                    <input
+                      v-if="isVisibleFileInput"
+                      id="avatar"
+                      type="file"
+                      accept="image/png,image/jpeg"
+                      name="プロフィール画像"
+                      class="d-none"
+                      @change="handleChange"
+                    >
+                  </label>
+                </div>
                 <span class="text-danger">{{ errors[0] }}</span>
               </ValidationProvider>
             </div>
@@ -136,7 +176,7 @@
                 v-slot="{ errors }"
                 ref="provider"
                 name="プロフィール画像"
-                rules="image"
+                rules="image|size:5242.88"
               >
                 <h5
                   id="プロフィール画像"
@@ -147,21 +187,45 @@
                 <template v-if="uploadAvatar">
                   <img
                     :src="previewAvatar"
-                    class="mt-2 mb-3 user-icon"
+                    id="preview-avatar"
+                    class="mt-2 mb-2 user-icon"
                   >
                 </template>
                 <template v-else>
-                  <img
-                    :src="user.avatar_url"
-                    class="mt-2 mb-3 user-icon"
-                  >
+                  <template v-if="avatar">
+                    <img
+                      :src="avatar"
+                      class="mt-2 mb-2 user-icon"
+                    >
+                  </template>
+                  <template v-else>
+                    <img
+                      src="~default.jpg"
+                      id="default-avatar"
+                      class="mt-2 mb-2 user-icon"
+                    >
+                  </template>
+                </template>
+                <template v-if="uploadAvatar || avatar">
+                  <div>
+                    <div
+                      class="d-inline-block icon"
+                      @click="resetAvatar"
+                    >
+                      <font-awesome-icon
+                        :icon="['far', 'times-circle']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </div>
                 </template>
                 <input
+                  v-if="isVisibleFileInput"
                   id="avatar"
                   type="file"
                   accept="image/png,image/jpeg"
                   name="プロフィール画像"
-                  class="form-control-file mx-auto file-input"
+                  class="mt-3 form-control-file mx-auto file-input"
                   @change="handleChange"
                 >
                 <span class="text-danger">{{ errors[0] }}</span>
@@ -239,6 +303,7 @@
 </template>
 
 <script>
+import 'default.jpg'
 import TermAndPolicyLink from '../../components/TermAndPolicyLink'
 import { mapGetters, mapActions } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
@@ -258,7 +323,10 @@ export default {
       height: '',
       previewAvatar: '',
       uploadAvatar: '',
+      avatar: '',
+      isVisibleFileInput: true,
       isMobile: isMobile
+
     }
   },
   computed: {
@@ -278,6 +346,7 @@ export default {
   },
   created() {
     this.user = Object.assign({}, this.authUser)
+    this.getAvatarUrl()
     this.resize()
   },
   methods: {
@@ -308,6 +377,25 @@ export default {
         .catch(err => console.log(err.response))
       this.$router.push({ name: 'MyPage' })
     },
+    getAvatarUrl() {
+      let avatar = this.authUser.avatar_url.split('/')
+      let avatar_url = avatar.slice(-1)[0]
+      if (avatar_url != 'default-image.jpg') {
+        this.avatar = this.authUser.avatar_url
+      }
+    },
+    resetAvatar() {
+      if (this.previewAvatar) {
+        this.previewAvatar = ''
+        this.uploadAvatar = ''
+        this.isVisibleFileInput = false
+        this.$nextTick(() => (this.isVisibleFileInput = true))
+      } else {
+        this.$axios.patch(`users/${this.authUser.id}/reset_avatar`)
+          .catch(err => console.log(err.response))
+        this.avatar = ''
+      }
+    }
   }
 }
 </script>
@@ -409,5 +497,19 @@ export default {
 .file-button-mobile:active {
   background-color: rgb(206, 212, 218);
   position: relative;
+}
+
+.icon {
+  color: gray;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #383838;
+}
+
+.file-margin {
+  margin-bottom: 35px;
 }
 </style>

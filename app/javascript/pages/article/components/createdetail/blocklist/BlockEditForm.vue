@@ -323,7 +323,7 @@
                 v-slot="{ errors }"
                 ref="provider"
                 name="写真"
-                rules="image"
+                rules="image|size:5242.88"
               >
                 <p class="mt-4 text-center text-white content-lavel m-0">
                   写真
@@ -331,40 +331,72 @@
                 <template v-if="previewImage">
                   <img
                     :src="previewImage"
+                    id="preview-image"
                     class="mt-2 image"
                   >
                 </template>
                 <template v-else>
-                  <template v-if="block.image_url">
+                  <template v-if="image">
                     <img
-                      :src="block.image_url"
+                      :src="image"
                       class="mt-2 image"
                     >
                   </template>
                 </template>
+                <template v-if="previewImage || image">
+                  <div class="mt-1 text-center">
+                    <div
+                      id="delete-btn"
+                      class="d-inline-block icon"
+                      @click="deleteImage"
+                    >
+                      <font-awesome-icon
+                        :icon="['far', 'times-circle']"
+                        class="fa-lg"
+                      />
+                    </div>
+                  </div>
+                </template>
+
                 <div class="text-center">
                   <label class="mt-2">
-                    <template v-if="isMobile">
-                      <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
-                        画像を選択
-                      </p>
+                    <template v-if="$mq == 'xs'">
+                      <template v-if="isMobile">
+                        <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
+                          画像を選択
+                        </p>
+                      </template>
+                      <template v-else>
+                        <p class="mb-0 pl-3 pr-3 text-dark file-button">
+                          画像を選択
+                        </p>
+                      </template>
+                      <input
+                        v-if="isVisibleFileInput"
+                        id="image"
+                        type="file"
+                        accept="image/png,image/jpeg"
+                        name="写真"
+                        class="d-none"
+                        @change="handleChange"
+                      >
                     </template>
                     <template v-else>
-                      <p class="mb-0 pl-3 pr-3 text-dark file-button">
-                        画像を選択
-                      </p>
+                      <input
+                        v-if="isVisibleFileInput"
+                        id="image"
+                        type="file"
+                        accept="image/png,image/jpeg"
+                        name="写真"
+                        class="form-control-file mx-auto file-input"
+                        @change="handleChange"
+                      >
                     </template>
-                    <input
-                      id="image"
-                      type="file"
-                      accept="image/png,image/jpeg"
-                      name="写真"
-                      class="d-none"
-                      @change="handleChange"
-                    >
                   </label>
                 </div>
-                <span class="text-danger">{{ errors[0] }}</span>
+                <p class="text-center text-danger">
+                  {{ errors[0] }}
+                </p>
               </ValidationProvider>
             </div>
           </div>
@@ -438,6 +470,8 @@ export default {
       transportationsIndex: 0,
       height: '',
       previewImage: '',
+      image: '',
+      isVisibleFileInput: true,
       isMobile: isMobile
     }
   },
@@ -469,6 +503,7 @@ export default {
       this.blockEdit.block.transportations[i].index = i
     }
     this.transportationsIndex = this.blockEdit.block.transportations.length
+    this.image = this.block.image_url
     this.resize()
   },
   methods :{
@@ -523,6 +558,18 @@ export default {
         this.blockEdit.block.transportations[i].index = i
       }
       this.transportationsIndex = this.blockEdit.block.transportations.length
+    },
+    deleteImage() {
+      if (this.previewImage) {
+        this.previewImage = ''
+        this.blockEdit.uploadImage = ''
+        this.isVisibleFileInput = false
+        this.$nextTick(() => (this.isVisibleFileInput = true))
+      } else {
+        this.$axios.delete(`blocks/${this.block.id}/delete_image`)
+          .catch(err => console.log(err.response))
+        this.image = ''
+      }
     },
     resize(){
       this.height = 'auto'
@@ -636,6 +683,10 @@ export default {
   color: gray;
 }
 
+.file-input {
+  width: 85%;
+}
+
 .file-button {
   display: inline-block;
   background-color: #fff;
@@ -670,5 +721,15 @@ export default {
   width: 100%;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.icon {
+  color: gray;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #383838;
 }
 </style>

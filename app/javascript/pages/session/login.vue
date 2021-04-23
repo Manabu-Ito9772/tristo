@@ -51,7 +51,10 @@
                       </span>
                     </template>
                     <template v-else>
-                      <span @click="hidePassword">
+                      <span
+                        class="pointer"
+                        @click="hidePassword"
+                      >
                         <font-awesome-icon
                           :icon="['far', 'eye-slash']"
                           class="fa-lg"
@@ -144,7 +147,10 @@
                       </span>
                     </template>
                     <template v-else>
-                      <span @click="hidePassword">
+                      <span
+                        class="pointer"
+                        @click="hidePassword"
+                      >
                         <font-awesome-icon
                           :icon="['far', 'eye-slash']"
                           class="fa-lg"
@@ -298,5 +304,10 @@ export default {
 
 .eye-icon {
   width: 26.66px;
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>
