@@ -2,7 +2,6 @@ class User < ApplicationRecord
   include JwtToken
   authenticates_with_sorcery!
 
-  before_create :default_avatar
   before_save :null_to_nill
 
   has_one_attached :avatar
@@ -53,12 +52,6 @@ class User < ApplicationRecord
 
   def avatar_url
     avatar.attached? ? Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true) : nil
-  end
-
-  def default_avatar
-    return if avatar.attached?
-
-    avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.jpg')), filename: 'default-image.jpg', content_type: 'image/png')
   end
 
   private

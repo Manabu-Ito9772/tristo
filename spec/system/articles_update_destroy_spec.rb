@@ -972,6 +972,7 @@ RSpec.describe "記事編集/削除", type: :system do
           find('#edit-btn').click
           sleep 2
           find('.draft-button').click
+          sleep 2
           within('.post-changer') do
             expect(page).to have_content('非公開')
           end
@@ -1125,6 +1126,7 @@ RSpec.describe "記事編集/削除", type: :system do
           find('#edit-btn').click
           sleep 2
           find('.draft-button').click
+          sleep 2
           within('.post-changer') do
             expect(page).to have_content('非公開')
           end

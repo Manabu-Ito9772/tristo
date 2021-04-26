@@ -27,7 +27,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.start_date.strftime("%Y"))
         expect(page).to have_content(article_normal.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content(article_normal.tags.first.name)
         expect(page).to have_content(article_normal.user.name)
       end
@@ -100,7 +100,7 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_content(article_normal.start_date.strftime("%Y"))
         expect(page).to have_content(article_normal.start_date.strftime("%-m/%-d"))
         expect(page).to have_content(article_normal.end_date.strftime("%-m/%-d"))
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content(article_normal.tags.first.name)
         expect(page).to have_content(article_normal.description)
         expect(page).to have_content(article_normal.user.name)

@@ -100,11 +100,20 @@
         <div class="col-12 pt-3 pb-3 p-0">
           <div class="d-flex justify-content-center align-items-center">
             <div>
-              <img
-                :src="article.user.avatar_url"
-                class="user-icon pointer"
-                @click="toUserPage(article.user.id)"
-              >
+              <template v-if="article.user.avatar_url">
+                <img
+                  :src="article.user.avatar_url"
+                  class="user-icon pointer"
+                  @click="toUserPage(article.user.id)"
+                >
+              </template>
+              <template v-else>
+                <img
+                  src="~default.jpg"
+                  class="user-icon pointer"
+                  @click="toUserPage(article.user.id)"
+                >
+              </template>
             </div>
             <h5
               class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-name"
@@ -322,11 +331,21 @@
           <div class="col-12 pt-3 p-0">
             <div class="d-flex justify-content-center align-items-center user">
               <div>
-                <img
-                  :src="article.user.avatar_url"
-                  class="user-icon pointer"
-                  @click="toUserPage(article.user.id)"
-                >
+                <template v-if="article.user.avatar_url">
+                  <img
+                    :src="article.user.avatar_url"
+                    class="user-icon pointer"
+                    @click="toUserPage(article.user.id)"
+                  >
+                </template>
+                <template v-else>
+                  <img
+                    id="default-avatar"
+                    src="~default.jpg"
+                    class="user-icon pointer"
+                    @click="toUserPage(article.user.id)"
+                  >
+                </template>
               </div>
               <h5
                 :id="'article-user-' + article.user.id"
@@ -420,6 +439,7 @@
 </template>
 
 <script>
+import 'default.jpg'
 import { mapGetters } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 

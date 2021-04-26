@@ -86,11 +86,21 @@
 
       <div class="col-12 mb-1 p-0 d-flex justify-content-center align-items-center user-name">
         <div>
-          <img
-            :src="user.avatar_url"
-            class="user-icon"
-            @click="toUserPage(user.id)"
-          >
+          <template v-if="user.avatar_url">
+            <img
+              :src="user.avatar_url"
+              class="user-icon"
+              @click="toUserPage(user.id)"
+            >
+          </template>
+          <template v-else>
+            <img
+              id="default-avatar"
+              src="~default.jpg"
+              class="user-icon"
+              @click="toUserPage(user.id)"
+            >
+          </template>
         </div>
         <h5
           class="float-right mb-0 pl-3 text-dark font-weight-bold word-break user-link"
@@ -360,6 +370,7 @@
 </template>
 
 <script>
+import 'default.jpg'
 import { mapGetters } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 

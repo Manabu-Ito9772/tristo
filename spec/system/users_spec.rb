@@ -42,7 +42,7 @@ RSpec.describe 'ユーザー', type: :system do
           expect(page).to have_selector("img[src$='sample.png']")
         end
 
-        it 'プロフィール画像を設定しない場合はデフォルトの画像が設定される' do
+        it 'プロフィール画像を設定しない場合はデフォルトの画像が表示される' do
           fill_in 'ユーザーネーム', with: 'TestUser'
           fill_in 'メールアドレス', with: 'test@test.com'
           fill_in 'パスワード', with: 'password'
@@ -52,7 +52,7 @@ RSpec.describe 'ユーザー', type: :system do
           find('.fa-user').click
           expect(current_path).to eq('/mypage')
           expect(page).to have_content('TestUser')
-          expect(page).to have_selector("img[src$='default-image.jpg']")
+          expect(page).to have_css('#default-avatar')
         end
       end
 
@@ -273,7 +273,7 @@ RSpec.describe 'ユーザー', type: :system do
         sleep 2
         expect(page).to have_content(article_normal.user.name)
         expect(page).to have_content(article_normal.description)
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content('編集')
         expect(page).to have_content('投稿')
         expect(page).to have_content('フォロー')
@@ -553,7 +553,7 @@ RSpec.describe 'ユーザー', type: :system do
 
       it 'ユーザーページが表示される' do
         expect(current_path).to eq('/user')
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content(article_normal.user.name)
         expect(page).to have_content(article_normal.user.description)
         expect(page).to_not have_content('編集')

@@ -40,7 +40,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-unselected') do
           expect(page).to have_content('フォロワー')
         end
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content(another_user_article.user.name)
         expect(page).to have_css('.unfollow-button')
       end
@@ -117,7 +117,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-selected') do
           expect(page).to have_content('フォロワー')
         end
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content(another_user_article.user.name)
         expect(page).to have_css('.unfollow-button')
       end
@@ -172,6 +172,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
       context '「フォロー」をクリック' do
         it 'フォローしているユーザーを確認できる' do
           find('.follow-unselected').click
+          sleep 2
           within('.follow-selected') do
             expect(page).to have_content('フォロー')
           end
@@ -220,6 +221,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         expect(page).to have_css('.unfollow-button')
         find('.fa-user').click
         find('#following-count').click
+        sleep 2
         expect(page).to have_content(another_user_article.user.name)
         expect(page).to have_css('.unfollow-button')
       end
@@ -251,7 +253,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-unselected') do
           expect(page).to have_content('フォロワー')
         end
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content(article_normal.user.name)
       end
 
@@ -363,7 +365,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         within('.follow-selected') do
           expect(page).to have_content('フォロワー')
         end
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_css('#default-avatar')
         expect(page).to have_content(article_normal.user.name)
       end
 
@@ -403,7 +405,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
 
         it 'マイページに遷移' do
           visit '/trip_notes'
-          sleep 2
+          sleep 3
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
           find('.follow-button').click
