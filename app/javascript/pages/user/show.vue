@@ -190,14 +190,14 @@
             </template>
             <template v-else>
               <div class="col-12 mt-5 mb-5">
-                <h4 class="text-center font-weight-bold text-secondary">
+                <h5 class="text-center font-weight-bold text-secondary">
                   <template v-if="published">
                     投稿がありません
                   </template>
                   <template v-else>
                     いいねした投稿がありません
                   </template>
-                </h4>
+                </h5>
               </div>
             </template>
           </template>

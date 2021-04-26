@@ -161,6 +161,7 @@ export default {
   created() {
     this.loading = false
     this.$store.commit('pages/setCurrentPage', 'search')
+    this.scrollTop()
   },
   methods: {
     async infiniteHandler($state) {

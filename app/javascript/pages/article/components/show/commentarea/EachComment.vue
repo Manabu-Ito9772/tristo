@@ -20,12 +20,22 @@
           <div class="ml-3 d-flex align-items-center icon-all">
             <template v-if="$mq == 'xs'">
               <template v-if="comment.editable">
-                <p
-                  class="m-0 mr-2 pl-3 pr-3 text-white font-weight-bold save-button"
-                  @click="updateComment(comment.id)"
-                >
-                  保存
-                </p>
+                <template v-if="isMobile">
+                  <p
+                    class="m-0 mr-2 pl-3 pr-3 text-white font-weight-bold save-button-mobile"
+                    @click="updateComment(comment.id)"
+                  >
+                    保存
+                  </p>
+                </template>
+                <template v-else>
+                  <p
+                    class="m-0 mr-2 pl-3 pr-3 text-white font-weight-bold save-button"
+                    @click="updateComment(comment.id)"
+                  >
+                    保存
+                  </p>
+                </template>
               </template>
 
               <div class="p-0">
@@ -52,7 +62,7 @@
                   </template>
                   <div slot="dropdown">
                     <div
-                      class="dropdown-item "
+                      class="dropdown-item edit-comment"
                       @click="showEditFormXS"
                     >
                       コメントを編集
@@ -70,12 +80,22 @@
 
             <template v-else>
               <template v-if="comment.editable">
-                <p
-                  class="m-0 pl-2 pr-2 text-white font-weight-bold save-button"
-                  @click="updateComment(comment.id)"
-                >
-                  保存
-                </p>
+                <template v-if="isMobile">
+                  <p
+                    class="m-0 pl-3 pr-3 text-white font-weight-bold save-button-mobile"
+                    @click="updateComment(comment.id)"
+                  >
+                    保存
+                  </p>
+                </template>
+                <template v-else>
+                  <p
+                    class="m-0 pl-3 pr-3 text-white font-weight-bold save-button"
+                    @click="updateComment(comment.id)"
+                  >
+                    保存
+                  </p>
+                </template>
               </template>
 
               <template v-else>
@@ -132,14 +152,18 @@
 
       <template v-if="comment.editable">
         <template v-if="authUser">
-          <textarea
-            ref="area"
-            v-model="comment.body"
-            :style="styles"
-            name="コメント編集"
-            rows="1"
-            class="form-control mt-1"
-          />
+          <ValidationProvider
+            rules="input|max:500"
+          >
+            <textarea
+              ref="area"
+              v-model="comment.body"
+              :style="styles"
+              name="コメント"
+              rows="1"
+              class="form-control mt-1"
+            />
+          </ValidationProvider>
         </template>
       </template>
 
@@ -171,7 +195,7 @@ export default {
       commentsEdit: [],
       show: false,
       right: true,
-      interactive: false,
+      interactive: true,
       height: '',
       isMobile: isMobile
     }
@@ -214,9 +238,11 @@ export default {
       this.resize()
     },
     updateComment(comment_id) {
-      this.comment.editable = false
-      this.$axios.patch(`comments/${comment_id}`, this.comment)
-        .catch(err => console.log(err.response))
+      if (this.comment.body && this.comment.body.length <= 500) {
+        this.comment.editable = false
+        this.$axios.patch(`comments/${comment_id}`, this.comment)
+          .catch(err => console.log(err.response))
+      }
     },
     deleteComment(comment_id) {
       if (confirm('コメントを削除しますか？')) {
@@ -285,11 +311,6 @@ export default {
   cursor: pointer;
 }
 
-.icon:active {
-  color: #383838;
-  cursor: pointer;
-}
-
 .icon-mobile {
   color: gray;
   font-size: 14px;
@@ -298,13 +319,6 @@ export default {
 
 .icon-mobile:active {
   color: #383838;
-  cursor: pointer;
-}
-
-.save-button {
-  white-space: nowrap;
-  background-color: #FF990D;
-  border-radius: 30px;
   cursor: pointer;
 }
 
@@ -318,6 +332,7 @@ export default {
 
 .delete-comment {
   color: #dc3545;
+  cursor: pointer;
 }
 
 .delete-comment:hover {
@@ -326,5 +341,41 @@ export default {
 
 .delete-comment:active {
   color: white;
+}
+
+.edit-comment {
+  cursor: pointer;
+}
+
+.save-button {
+  font-size: 14px;
+  white-space: nowrap;
+  display: inline-block;
+  background-color: #FF990D;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+.save-button:hover {
+  background-color: #D37C04;
+  position: relative;
+}
+
+.save-button-mobile {
+  font-size: 14px;
+  white-space: nowrap;
+  display: inline-block;
+  background-color: #FF990D;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+.save-button-mobile:active {
+  background-color: #D37C04;
+  position: relative;
 }
 </style>

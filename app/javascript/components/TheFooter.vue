@@ -153,7 +153,7 @@ export default {
     setCurrentPage(page) {
       this.$store.commit('pages/setCurrentPage', page)
     },
-    scrollTop(){
+    scrollTop() {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'

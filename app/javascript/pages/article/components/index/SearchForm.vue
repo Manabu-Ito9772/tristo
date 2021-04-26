@@ -553,12 +553,6 @@ export default {
   border-radius: 20px;
 }
 
-.button:active {
-  background-color: #D37C04;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   background-color: #D37C04;
   position: relative;
@@ -577,7 +571,6 @@ export default {
 .button-mobile:active {
   background-color: #D37C04;
   position: relative;
-  top: 4px;
 }
 
 .v-select {

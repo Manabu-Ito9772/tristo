@@ -57,27 +57,29 @@
           @click.self="showMainColumn(day)"
         >
           {{ day.number }}日目&nbsp;
-          <template v-if="isMobile">
-            <div
-              class="p-0 m-0 icon-mobile"
-              @click="deleteDay(day)"
-            >
-              <font-awesome-icon
-                :icon="['far', 'times-circle']"
-                class="fa-lg"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <div
-              class="p-0 m-0 icon"
-              @click="deleteDay(day)"
-            >
-              <font-awesome-icon
-                :icon="['far', 'times-circle']"
-                class="fa-lg"
-              />
-            </div>
+          <template v-if="days.length > 1">
+            <template v-if="isMobile">
+              <div
+                class="p-0 m-0 icon-mobile"
+                @click="deleteDay(day)"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'times-circle']"
+                  class="fa-lg"
+                />
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="p-0 m-0 icon"
+                @click="deleteDay(day)"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'times-circle']"
+                  class="fa-lg"
+                />
+              </div>
+            </template>
           </template>
         </div>
       </template>
@@ -209,12 +211,7 @@ export default {
 }
 
 .icon:hover {
-  color: #383838;
-  cursor: pointer;
-}
-
-.icon:active {
-  color: #383838;
+  color: gray;
   cursor: pointer;
 }
 
@@ -224,7 +221,7 @@ export default {
 }
 
 .icon-mobile:active {
-  color: #383838;
+  color: gray;
   cursor: pointer;
 }
 
@@ -234,12 +231,7 @@ export default {
 }
 
 .icon-white:hover {
-  color: #383838;
-  cursor: pointer;
-}
-
-.icon-white:active {
-  color: #383838;
+  color: gray;
   cursor: pointer;
 }
 
@@ -249,7 +241,7 @@ export default {
 }
 
 .icon-white-mobile:active {
-  color: #383838;
+  color: gray;
   cursor: pointer;
 }
 
@@ -259,11 +251,6 @@ export default {
 }
 
 .add-button:hover {
-  color: #383838;
-  cursor: pointer;
-}
-
-.add-button:active {
   color: #383838;
   cursor: pointer;
 }

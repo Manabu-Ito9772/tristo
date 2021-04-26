@@ -2,19 +2,21 @@
   <div class="mb-4">
     <template v-if="authUser">
       <ValidationObserver v-slot="{ handleSubmit }">
-        <div class="d-flex justify-content-center align-items-end">
+        <div class="mt-3 d-flex justify-content-center align-items-top">
           <div class="form-group m-0 comment-input">
             <ValidationProvider
               rules="input|max:500"
             >
-              <textarea
-                ref="area"
-                v-model="comment.body"
-                :style="styles"
-                name="コメント"
-                rows="1"
-                class="form-control mt-3"
-              />
+              <div>
+                <textarea
+                  ref="area"
+                  v-model="comment.body"
+                  :style="styles"
+                  name="コメント"
+                  rows="1"
+                  class="form-control"
+                />
+              </div>
             </ValidationProvider>
           </div>
           <div class="ml-2">
@@ -53,10 +55,12 @@
                 @deleteComment="deleteComment"
               />
             </div>
-            <infinite-loading
-              spinner="circles"
-              @infinite="infiniteHandler"
-            />
+            <template v-if="infiniteLoader">
+              <infinite-loading
+                spinner="circles"
+                @infinite="infiniteHandler"
+              />
+            </template>
           </div>
         </div>
       </div>
@@ -97,6 +101,7 @@ export default {
       loading: true,
       isVisibleComment: true,
       show: false,
+      infiniteLoader: true,
       isMobile: isMobile
     }
   },
@@ -112,8 +117,14 @@ export default {
   },
   watch: {
     'comment.body'() {
-      this.resize()
+      if (this.comment.body) this.resize()
     },
+    comments() {
+      for (let comment of this.comments) {
+        if (comment.new) this.infiniteLoader = false
+        if (!comment.new) this.infiniteLoader = true
+      }
+    }
   },
   created() {
     this.infiniteHandler()
@@ -151,7 +162,8 @@ export default {
       this.$axios.post('comments', this.comment)
         .then(res => {
           this.comment.body = ''
-          this.comments.push(res.data)
+          res.data.new = true
+          this.comments.unshift(res.data)
           this.comments.forEach((comment, index) => {
             comment.editable = false
             comment.index = index
@@ -199,18 +211,11 @@ export default {
   white-space: nowrap;
   display: inline-block;
   background-color: #FF58F2;
-  padding: 6px 20px;
+  padding: 7px 20px;
   color: #fff;
   text-align: center;
   cursor: pointer;
   border-radius: 20px;
-}
-
-.button:active {
-  white-space: nowrap;
-  background-color: #C642BC;
-  position: relative;
-  top: 4px;
 }
 
 .button:hover {
@@ -223,7 +228,7 @@ export default {
   white-space: nowrap;
   display: inline-block;
   background-color: #FF58F2;
-  padding: 6px 20px;
+  padding: 7px 20px;
   color: #fff;
   text-align: center;
   cursor: pointer;
@@ -234,6 +239,5 @@ export default {
   white-space: nowrap;
   background-color: #C642BC;
   position: relative;
-  top: 4px;
 }
 </style>

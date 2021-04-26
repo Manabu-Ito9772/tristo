@@ -54,24 +54,8 @@
           </template>
         </template>
 
-        <div class="bg-white mt-3 mb-5 pt-3 pl-3 pr-3 info-block-form">
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="required|max:100"
-          >
-            <p class="mb-2 text-center text-white content-lavel m-0">
-              イベント（必須）
-            </p>
-            <input
-              v-model="blockAndCost.block.title"
-              name="イベント"
-              placeholder="例）食べ歩き"
-              class="form-control bg-light"
-            >
-            <span class="text-danger">{{ errors[0] }}</span>
-          </ValidationProvider>
-
-          <p class="p-0 mt-4 mb-2 text-center text-white content-lavel">
+        <div class="bg-white mt-3 pt-3 pl-3 pr-3 info-block-form">
+          <p class="p-0 mb-2 text-center text-white content-lavel">
             時間
           </p>
           <div class="d-flex justify-content-between align-items-center text-dark">
@@ -107,12 +91,26 @@
             rules="max:100"
           >
             <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
-              場所
+              イベント
+            </p>
+            <input
+              v-model="blockAndCost.block.title"
+              name="イベント"
+              class="form-control bg-light"
+            >
+            <span class="text-danger">{{ errors[0] }}</span>
+          </ValidationProvider>
+
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required|max:100"
+          >
+            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+              スポット（必須）
             </p>
             <input
               v-model="blockAndCost.block.place"
-              name="場所"
-              placeholder="例）〇〇通り"
+              name="スポット"
               class="mb-2 form-control bg-light"
             >
             <span class="text-danger">{{ errors[0] }}</span>
@@ -122,8 +120,8 @@
             v-slot="{ errors }"
             rules="max:500"
           >
-            <p class="m-0 text-center">
-              ホームページURL
+            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+              スポットのホームページURL
             </p>
             <input
               v-model="blockAndCost.block.place_info"
@@ -153,7 +151,6 @@
                     <input
                       v-model="spending.description"
                       name="内容"
-                      placeholder="例）ソフトクリーム"
                       class="form-control"
                     >
                     <span class="text-danger">{{ errors[0] }}</span>
@@ -197,22 +194,35 @@
                 </div>
               </div>
               <div class="mt-3 mb-2 text-right">
-                <div
-                  class="pt-3 pr-1 btn d-inline icon-color"
-                  @click="deleteSpending(spending)"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'trash-alt']"
-                    class="fa-lg"
-                  />
-                </div>
+                <template v-if="isMobile">
+                  <div
+                    class="pt-3 pr-1 d-inline-block icon-mobile"
+                    @click="deleteSpending(spending)"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'trash-alt']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
+                <template v-else>
+                  <div
+                    class="pt-3 pr-1 d-inline-block icon"
+                    @click="deleteSpending(spending)"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'trash-alt']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
               </div>
             </div>
           </div>
           <div class="mt-4 text-center">
             <template v-if="isMobile">
               <div
-                class="text-white font-weight-bold add-cost-button-mobile"
+                class="font-weight-bold add-cost-button-mobile"
                 @click="addSpendingForm"
               >
                 <font-awesome-icon
@@ -223,7 +233,7 @@
             </template>
             <template v-else>
               <div
-                class="text-white font-weight-bold add-cost-button"
+                class="font-weight-bold add-cost-button"
                 @click="addSpendingForm"
               >
                 <font-awesome-icon
@@ -233,6 +243,79 @@
               </div>
             </template>
           </div>
+
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="max:1000"
+          >
+            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+              メモ
+            </p>
+            <textarea
+              ref="area"
+              v-model="blockAndCost.block.comment"
+              :style="styles"
+              name="メモ"
+              class="mb-4 form-control bg-light"
+              rows="2"
+            />
+            <span class="text-danger">{{ errors[0] }}</span>
+          </ValidationProvider>
+
+          <ValidationProvider
+            v-slot="{ errors }"
+            ref="provider"
+            name="写真"
+            rules="image|size:5242.88"
+          >
+            <div class="mb-4">
+              <p class="mt-4 text-center text-white content-lavel m-0">
+                写真
+              </p>
+              <template v-if="previewImage">
+                <img
+                  :src="previewImage"
+                  class="mt-2 mb-1 image"
+                >
+                <div class="text-center">
+                  <div
+                    id="delete-btn"
+                    class="d-inline-block icon"
+                    @click="deleteImage"
+                  >
+                    <font-awesome-icon
+                      :icon="['far', 'times-circle']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </div>
+              </template>
+              <div class="text-center">
+                <label class="mt-2">
+                  <template v-if="isMobile">
+                    <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
+                      画像を選択
+                    </p>
+                  </template>
+                  <template v-else>
+                    <p class="mb-0 pl-3 pr-3 text-dark file-button">
+                      画像を選択
+                    </p>
+                  </template>
+                  <input
+                    v-if="isVisibleFileInput"
+                    id="image"
+                    type="file"
+                    accept="image/png,image/jpeg"
+                    name="写真"
+                    class="d-none"
+                    @change="handleChange"
+                  >
+                </label>
+              </div>
+              <span class="text-danger">{{ errors[0] }}</span>
+            </div>
+          </ValidationProvider>
 
           <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
             次のスポットまでの移動手段
@@ -254,7 +337,6 @@
                     <input
                       v-model="transportation.description"
                       name="内容"
-                      placeholder="例）原宿駅 〜 東京駅"
                       class="form-control"
                     >
                     <span class="text-danger">{{ errors[0] }}</span>
@@ -304,22 +386,35 @@
                 </div>
               </div>
               <div class="mt-3 mb-2 text-right">
-                <div
-                  class="pt-3 pr-1 btn d-inline icon-color"
-                  @click="deleteTransportation(transportation)"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'trash-alt']"
-                    class="fa-lg"
-                  />
-                </div>
+                <template v-if="isMobile">
+                  <div
+                    class="pt-3 pr-1 d-inline-block icon-mobile"
+                    @click="deleteTransportation(transportation)"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'trash-alt']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
+                <template v-else>
+                  <div
+                    class="pt-3 pr-1 d-inline-block icon"
+                    @click="deleteTransportation(transportation)"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'trash-alt']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
               </div>
             </div>
           </div>
-          <div class="mt-4 text-center">
+          <div class="mt-4 pb-4 text-center">
             <template v-if="isMobile">
               <div
-                class="text-white font-weight-bold add-cost-button-mobile"
+                class="font-weight-bold add-cost-button-mobile"
                 @click="addTransportationForm"
               >
                 <font-awesome-icon
@@ -330,7 +425,7 @@
             </template>
             <template v-else>
               <div
-                class="text-white font-weight-bold add-cost-button"
+                class="font-weight-bold add-cost-button"
                 @click="addTransportationForm"
               >
                 <font-awesome-icon
@@ -341,83 +436,10 @@
             </template>
           </div>
 
-          <ValidationProvider
-            v-slot="{ errors }"
-            rules="max:1000"
-          >
-            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
-              メモ
-            </p>
-            <textarea
-              ref="area"
-              v-model="blockAndCost.block.comment"
-              :style="styles"
-              name="メモ"
-              class="mb-4 form-control bg-light"
-              rows="2"
-            />
-            <span class="text-danger">{{ errors[0] }}</span>
-          </ValidationProvider>
-
-          <ValidationProvider
-            v-slot="{ errors }"
-            ref="provider"
-            name="写真"
-            rules="image|size:5242.88"
-          >
-            <div class="mb-4">
-              <p class="mt-4 text-center text-white content-lavel m-0">
-                写真
-              </p>
-              <template v-if="previewImage">
-                <img
-                  :src="previewImage"
-                  class="mt-2 mb-1 image"
-                >
-                <div class="text-center">
-                  <div
-                    @click="deleteImage"
-                    id="delete-btn"
-                    class="d-inline-block icon"
-                  >
-                    <font-awesome-icon
-                      :icon="['far', 'times-circle']"
-                      class="fa-lg"
-                    />
-                  </div>
-                </div>
-              </template>
-              <div class="text-center">
-                <label class="mt-2">
-                  <template v-if="isMobile">
-                    <p class="mb-0 pl-3 pr-3 text-dark file-button-mobile">
-                      画像を選択
-                    </p>
-                  </template>
-                  <template v-else>
-                    <p class="mb-0 pl-3 pr-3 text-dark file-button">
-                      画像を選択
-                    </p>
-                  </template>
-                  <input
-                    v-if="isVisibleFileInput"
-                    id="image"
-                    type="file"
-                    accept="image/png,image/jpeg"
-                    name="写真"
-                    class="d-none"
-                    @change="handleChange"
-                  >
-                </label>
-              </div>
-              <span class="text-danger">{{ errors[0] }}</span>
-            </div>
-          </ValidationProvider>
-
           <template v-if="$mq == 'lg'">
             <template v-if="isVisibleAddBlockButton">
               <template v-if="blockcount < 15">
-                <div class="pb-4 text-center">
+                <div class="mt-3 pb-4 text-center">
                   <template v-if="isMobile">
                     <div
                       class="d-inline-block text-white font-weight-bold add-button-mobile"
@@ -494,6 +516,7 @@ export default {
           comment: '',
           arriving_time: '',
           leaving_time: '',
+          position: 0,
           uploadImage: ''
         },
         spendings: [],
@@ -530,6 +553,7 @@ export default {
     addBlock() {
       if (this.dayid && this.blockcount < 15) {
         this.blockAndCost.block.day_id = this.dayid
+        this.blockAndCost.block.position = this.blockcount + 1
         this.$emit('addBlock', this.blockAndCost)
         this.spendingsIndex = 0
         this.transportationsIndex = 0
@@ -617,12 +641,6 @@ export default {
   border-radius: 6px;
 }
 
-.add-button:active {
-  background-color: #D37C04;
-  position: relative;
-  top: 4px;
-}
-
 .add-button:hover {
   background-color: #D37C04;
   position: relative;
@@ -641,39 +659,31 @@ export default {
 .add-button-mobile:active {
   background-color: #D37C04;
   position: relative;
-  top: 4px;
 }
 
 .add-cost-button {
   display: inline-block;
-  background-color: #FF990D;
-  padding: 8px 14px;
+  color: gray;
+  font-size: 20px;
   text-align: center;
   cursor: pointer;
-  border-radius: 6px;
 }
 
 .add-cost-button:hover {
-  background-color: #D37C04;
-  position: relative;
-}
-
-.add-cost-button:active {
-  background-color: #D37C04;
+  color: #383838;
   position: relative;
 }
 
 .add-cost-button-mobile {
   display: inline-block;
-  background-color: #FF990D;
-  padding: 8px 14px;
+  color: gray;
+  font-size: 20px;
   text-align: center;
   cursor: pointer;
-  border-radius: 6px;
 }
 
 .add-cost-button-mobile:active {
-  background-color: #D37C04;
+  color: #383838;
   position: relative;
 }
 
@@ -688,10 +698,6 @@ export default {
 .content-lavel {
   background-color: gray;
   border-radius: 4px;
-}
-
-.icon-color {
-  color: gray;
 }
 
 .cost-box {
@@ -744,10 +750,6 @@ export default {
   color: #383838;
 }
 
-.arrow-button:active {
-  color: #383838;
-}
-
 .arrow-button-mobile {
   font-size: 40px;
   color: gray;
@@ -768,6 +770,16 @@ export default {
 }
 
 .icon:hover {
+  color: #383838;
+}
+
+.icon-mobile {
+  color: gray;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.icon-mobile:active {
   color: #383838;
 }
 </style>

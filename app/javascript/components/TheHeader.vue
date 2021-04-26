@@ -15,10 +15,22 @@
                 :hover="hover"
                 :interactive="interactive"
               >
-                <font-awesome-icon
-                  :icon="['fas', 'bars']"
-                  class="fa-lg"
-                />
+                <template v-if="currentPage == 'menu'">
+                  <div class="icon-selected">
+                    <font-awesome-icon
+                      :icon="['fas', 'bars']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="icon-color">
+                    <font-awesome-icon
+                      :icon="['fas', 'bars']"
+                      class="fa-lg"
+                    />
+                  </div>
+                </template>
                 <div slot="dropdown">
                   <div
                     v-if="this.$route.path != '/account_settings'"
@@ -28,7 +40,7 @@
                     アカウント設定
                   </div>
                   <div
-                    v-if="this.$route.path != '/term_of_use'"
+                    v-if="this.$route.path != '/terms_of_use'"
                     class="dropdown-item"
                     @click="toTermOfUse"
                   >
@@ -336,7 +348,7 @@ export default {
       show: false,
       right: true,
       hover: false,
-      interactive: false,
+      interactive: true,
       isMobile: isMobile
     }
   },
@@ -376,10 +388,12 @@ export default {
       }
     },
     toTermOfUse() {
+      this.$store.commit('pages/setCurrentPage', 'menu')
       this.$router.push({ name: 'TermOfUse' })
       this.show = false
     },
     toPrivacyPolicy() {
+      this.$store.commit('pages/setCurrentPage', 'menu')
       this.$router.push({ name: 'PrivacyPolicy' })
       this.show = false
     }

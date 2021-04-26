@@ -186,8 +186,8 @@
                 </h5>
                 <template v-if="uploadAvatar">
                   <img
-                    :src="previewAvatar"
                     id="preview-avatar"
+                    :src="previewAvatar"
                     class="mt-2 mb-2 user-icon"
                   >
                 </template>
@@ -200,8 +200,8 @@
                   </template>
                   <template v-else>
                     <img
-                      src="~default.jpg"
                       id="default-avatar"
+                      src="~default.jpg"
                       class="mt-2 mb-2 user-icon"
                     >
                   </template>
@@ -431,12 +431,6 @@ export default {
   border-radius: 20px;
 }
 
-.button:active {
-  background-color: #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   background-color: #C642BC;
   position: relative;
@@ -455,7 +449,6 @@ export default {
 .button-mobile:active {
   background-color: #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .user-icon {

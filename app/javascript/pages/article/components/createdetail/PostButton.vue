@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4">
+  <div>
     <template v-if="isMobile">
       <h5
         class="p-2 mb-3 w-100 text-center text-white font-weight-bold post-button-mobile"
@@ -8,7 +8,7 @@
         投稿する
       </h5>
       <h5
-        class="p-2 w-100 text-center bg-white font-weight-bold draft-button-mobile"
+        class="m-0 p-2 w-100 text-center bg-white font-weight-bold draft-button-mobile"
         @click="saveDraft"
       >
         非公開一覧に追加する
@@ -22,7 +22,7 @@
         投稿する
       </h5>
       <h5
-        class="p-2 w-100 text-center bg-white font-weight-bold draft-button"
+        class="m-0 p-2 w-100 text-center bg-white font-weight-bold draft-button"
         @click="saveDraft"
       >
         非公開一覧に追加する
@@ -78,13 +78,6 @@ export default {
   border-radius: 6px;
 }
 
-.post-button:active {
-  background-color: #C642BC;
-  border: solid #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .post-button:hover {
   background-color: #C642BC;
   border: solid #C642BC;
@@ -96,13 +89,6 @@ export default {
   border: solid #FF58F2;
   border-radius: 6px;
   cursor: pointer;
-}
-
-.draft-button:active {
-  color: #C642BC;
-  border: solid #C642BC;
-  position: relative;
-  top: 4px;
 }
 
 .draft-button:hover {
@@ -123,7 +109,6 @@ export default {
   background-color: #C642BC;
   border: solid #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .draft-button-mobile {
@@ -137,6 +122,5 @@ export default {
   color: #C642BC;
   border: solid #C642BC;
   position: relative;
-  top: 4px;
 }
 </style>

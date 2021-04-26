@@ -10,6 +10,7 @@
             <BlockItem
               :block="block"
               :currency="currency"
+              class="row mt-4 mb-4 ml-0 mr-0 bg-white info-block"
               @fixPage="$listeners['fixPage']"
               @flowPage="$listeners['flowPage']"
             />
@@ -40,6 +41,7 @@
             <BlockItem
               :block="block"
               :currency="currency"
+              class="row mt-4 mb-4 ml-0 mr-0 bg-white info-block"
               @fixPage="$listeners['fixPage']"
               @flowPage="$listeners['flowPage']"
             />
@@ -69,6 +71,7 @@
           <BlockItem
             :block="block"
             :currency="currency"
+            class="row ml-0 mr-0 bg-white info-block"
           />
           <Transportation
             :block="block"
@@ -80,9 +83,9 @@
 
       <template v-else>
         <div class="d-flex align-items-center justify-content-center">
-          <h3 class="m-4 font-weight-bold text-secondary">
+          <h4 class="m-4 font-weight-bold text-secondary">
             ブロックがありません
-          </h3>
+          </h4>
         </div>
       </template>
     </template>
@@ -116,6 +119,11 @@ export default {
 .main-column {
   background-color: white;
   border: solid #00D320;
+  border-radius: 6px;
+}
+
+.info-block {
+  border: solid #FF58F2;
   border-radius: 6px;
 }
 </style>

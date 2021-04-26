@@ -272,6 +272,7 @@ export default {
   created() {
     this.preuser = Object.assign({}, this.authUser)
     this.user.email = this.preuser.email
+    this.scrollTop()
   },
   methods: {
     ...mapActions('users', [
@@ -305,6 +306,12 @@ export default {
     },
     hidePassword() {
       this.inputType = 'password'
+    },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
     }
   }
 }
@@ -341,12 +348,6 @@ export default {
   border-radius: 20px;
 }
 
-.button:active {
-  background-color: #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   background-color: #C642BC;
   position: relative;
@@ -365,7 +366,6 @@ export default {
 .button-mobile:active {
   background-color: #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .eye-icon {

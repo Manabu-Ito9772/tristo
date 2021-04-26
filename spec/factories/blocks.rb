@@ -6,6 +6,7 @@ FactoryBot.define do
     sequence(:comment) { |n| "TestComment#{n}" }
     arriving_time { Time.current }
     leaving_time { Time.current + 10.minutes }
+    position { 1 }
 
     trait :normal do
       after(:build) do |block|
@@ -20,7 +21,7 @@ FactoryBot.define do
     end
 
     trait :only_with_event do
-      place { nil }
+      title { nil }
       place_info { nil }
       comment { nil }
       arriving_time { nil }

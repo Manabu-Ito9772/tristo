@@ -31,38 +31,38 @@ const router = new Router({
       name: 'TopPage',
     },
     {
-      path: '/trips',
+      path: '/trip_notes',
       component: ArticleIndex,
       name: 'ArticleIndex',
       props: true
     },
     {
-      path: '/trip',
+      path: '/trip_note',
       component: ArticleShow,
       name: 'ArticleShow',
       props: true
     },
     {
-      path: '/create_trip',
+      path: '/create_trip_note',
       component: ArticleCreateOverview,
       name: 'ArticleCreateOverview',
       meta: { requiredAuth: true }
     },
     {
-      path: '/create_trip_detail',
+      path: '/create_trip_note_detail',
       component: ArticleCreateDetail,
       name: 'ArticleCreateDetail',
       props: true,
       meta: { requiredAuth: true },
     },
     {
-      path: '/edit_trip',
+      path: '/edit_trip_note',
       component: ArticleEdit,
       name: 'ArticleEdit',
       meta: { requiredAuth: true },
     },
     {
-      path: '/search_trips',
+      path: '/search_trip_notes',
       component: ArticleSearch,
       name: 'ArticleSearch',
       props: true
@@ -112,7 +112,7 @@ const router = new Router({
       name: 'Followers',
     },
     {
-      path: '/term_of_use',
+      path: '/terms_of_use',
       component: TermOfUse,
       name: 'TermOfUse',
     },

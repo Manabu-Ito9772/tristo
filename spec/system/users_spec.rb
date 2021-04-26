@@ -4,6 +4,7 @@ RSpec.describe 'ユーザー', type: :system do
   let(:user) { create(:user) }
   let(:country_japan) { create(:country, :japan_tokyo_kanagawa) }
   let(:article_normal) { create(:article, :normal) }
+  let(:article_draft) { create(:article, :draft) }
   let(:article_another_user) { create(:article, :another_user) }
 
   describe 'ユーザー登録' do
@@ -34,7 +35,7 @@ RSpec.describe 'ユーザー', type: :system do
           attach_file('プロフィール画像', 'public/images/sample.png')
           find('.button').click
           sleep 2
-          expect(current_path).to eq('/trips')
+          expect(current_path).to eq('/trip_notes')
           find('.fa-user').click
           expect(current_path).to eq('/mypage')
           expect(page).to have_content('TestUser')
@@ -47,7 +48,7 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'パスワード', with: 'password'
           find('.button').click
           sleep 2
-          expect(current_path).to eq('/trips')
+          expect(current_path).to eq('/trip_notes')
           find('.fa-user').click
           expect(current_path).to eq('/mypage')
           expect(page).to have_content('TestUser')
@@ -145,7 +146,7 @@ RSpec.describe 'ユーザー', type: :system do
           fill_in 'パスワード', with: 'password'
           find('.button').click
           sleep 2
-          expect(current_path).to eq('/trips')
+          expect(current_path).to eq('/trip_notes')
           find('.fa-user').click
           expect(page).to have_content(user.name)
         end
@@ -209,16 +210,16 @@ RSpec.describe 'ユーザー', type: :system do
     context 'ログインせずに記事一覧、記事詳細、ユーザーページにアクセス' do
       it 'アクセスできる' do
         article_normal
-        visit '/trips'
+        visit '/trip_notes'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2
-        expect(current_path).to eq('/trips')
+        expect(current_path).to eq('/trip_notes')
         expect(page).to have_content(article_normal.title)
         find("#article-item-#{article_normal.id}").click
-        expect(current_path).to eq('/trip')
+        expect(current_path).to eq('/trip_note')
         expect(page).to have_content(article_normal.title)
-        visit '/trips'
+        visit '/trip_notes'
         sleep 2
         find("#article-user-#{article_normal.user.id}").click
         expect(current_path).to eq('/user')
@@ -228,17 +229,17 @@ RSpec.describe 'ユーザー', type: :system do
 
     context 'ログインせずにログインが必要なページにアクセス' do
       it 'ログインページに遷移する' do
-        visit 'create_trip'
+        visit '/create_trip_note'
         expect(current_path).to eq('/login')
         within('.container-fluid') do
           expect(page).to have_content('ログイン')
         end
-        visit 'create_trip_detail'
+        visit 'create_trip_note_detail'
         expect(current_path).to eq('/login')
         within('.container-fluid') do
           expect(page).to have_content('ログイン')
         end
-        visit 'edit_trip'
+        visit 'edit_trip_note'
         expect(current_path).to eq('/login')
         within('.container-fluid') do
           expect(page).to have_content('ログイン')
@@ -263,37 +264,15 @@ RSpec.describe 'ユーザー', type: :system do
   end
 
   describe 'マイページ' do
-    before {
-      country_japan
-      article_normal
-      article_another_user
-      login_as(article_another_user.user)
-      sleep 2
-      find('.area-changer-unselected').click
-      sleep 2
-      page.all('.heart')[1].click
-      find('.fa-pen').click
-      fill_in 'タイトル', with: 'TestTitleDraft'
-      within('.prefecture') do
-        find('.vs__search').set('東京')
-        find('.vs__dropdown-menu').click
-      end
-      find('.button').click
-      sleep 2
-      find('.draft-button').click
-      sleep 2
-      visit '/trips'
-    }
-
     context 'ヘッダーのユーザーアイコンをクリック' do
-      before {
-        find('.fa-user').click
-        sleep 1
-      }
-
       it 'マイページが表示される' do
-        expect(page).to have_content(article_another_user.user.name)
-        expect(page).to have_content(article_another_user.description)
+        article_normal
+        login_as(article_normal.user)
+        sleep 2
+        find('.fa-user').click
+        sleep 2
+        expect(page).to have_content(article_normal.user.name)
+        expect(page).to have_content(article_normal.description)
         expect(page).to have_selector("img[src$='default-image.jpg']")
         expect(page).to have_content('編集')
         expect(page).to have_content('投稿')
@@ -304,77 +283,29 @@ RSpec.describe 'ユーザー', type: :system do
         expect(page).to have_content('いいね')
       end
 
-      it '自分の投稿一覧が表示される' do
-        within('.post-changer') do
-          expect(page).to have_content('投稿')
-        end
-        expect(page).to have_content('TestTitle')
-      end
-
-      context '自分の投稿一覧の投稿をクリック' do
-        before { find('.article-title').click }
-
-        it '記事詳細ページに遷移する' do
-          expect(current_path).to eq('/trip')
-          expect(page).to have_content('TestTitle')
-          expect(page).to have_content(article_another_user.user.name)
-        end
-
-        context 'メニューボタンをクリックし、「旅行記録を編集」をクリック' do
-          before {
-            find('#edit-menu').click
-            find('#edit-btn').click
-          }
-
-          it '記事編集ページに遷移する' do
-            expect(current_path).to eq('/edit_trip')
-          end
-
-          context '「保存する」をクリック' do
-            it '記事が保存され記事詳細ページに遷移' do
-              find('.post-button').click
-              sleep 2
-              expect(current_path).to eq('/trip')
-              expect(page).to have_content(article_another_user.user.name)
-              expect(page).to have_content('TestTitle')
-            end
-          end
-
-          context '「非公開にする」をクリック' do
-            it '記事が非公開になりマイページに遷移' do
-              find('.draft-button').click
-              sleep 2
-              within('.post-changer') do
-                expect(page).to have_content('非公開')
-              end
-              expect(current_path).to eq('/mypage')
-              expect(page).to have_content('TestTitle')
-              expect(page).to have_content(article_another_user.user.name)
-            end
-          end
-        end
-      end
-
-      context '「非公開」をクリック' do
+      describe '投稿一覧' do
         before {
-          page.all('.post-changer-unselect')[0].click
+          article_normal
+          login_as(article_normal.user)
+          sleep 2
+          find('.fa-user').click
           sleep 2
         }
 
-        it '自分の非公開記事一覧が表示される' do
+        it '自分の投稿一覧が表示される' do
           within('.post-changer') do
-            expect(page).to have_content('非公開')
+            expect(page).to have_content('投稿')
           end
-          expect(page).to have_content('TestTitleDraft')
+          expect(page).to have_content('TestTitle')
         end
 
-        context '自分の非公開一覧の記事をクリック' do
+        context '自分の投稿一覧の投稿をクリック' do
           before { find('.article-title').click }
 
           it '記事詳細ページに遷移する' do
-            expect(current_path).to eq('/trip')
-            expect(page).to have_content('TestTitleDraft')
-            expect(page).to have_content(article_another_user.user.name)
+            expect(current_path).to eq('/trip_note')
+            expect(page).to have_content('TestTitle')
+            expect(page).to have_content(article_normal.user.name)
           end
 
           context 'メニューボタンをクリックし、「旅行記録を編集」をクリック' do
@@ -384,16 +315,83 @@ RSpec.describe 'ユーザー', type: :system do
             }
 
             it '記事編集ページに遷移する' do
-              expect(current_path).to eq('/edit_trip')
+              expect(current_path).to eq('/edit_trip_note')
             end
 
-            context '「投稿する」をクリック' do
+            context '「保存する」をクリック' do
+              it '記事が保存され記事詳細ページに遷移' do
+                find('.post-button').click
+                sleep 2
+                expect(current_path).to eq('/trip_note')
+                expect(page).to have_content(article_normal.user.name)
+                expect(page).to have_content('TestTitle')
+              end
+            end
+
+            context '「非公開にする」をクリック' do
+              it '記事が非公開になりマイページに遷移' do
+                find('.draft-button').click
+                sleep 2
+                within('.post-changer') do
+                  expect(page).to have_content('非公開')
+                end
+                expect(current_path).to eq('/mypage')
+                expect(page).to have_content('TestTitle')
+                expect(page).to have_content(article_normal.user.name)
+              end
+            end
+          end
+        end
+      end
+
+      context '「非公開」をクリック' do
+        before {
+          article_draft
+          login_as(article_draft.user)
+          sleep 2
+          find('.fa-user').click
+          sleep 2
+          page.all('.post-changer-unselect')[0].click
+          sleep 2
+        }
+
+        it '自分の非公開記事一覧が表示される' do
+          within('.post-changer') do
+            expect(page).to have_content('非公開')
+          end
+          expect(page).to have_content(article_draft.title)
+        end
+
+        context '自分の非公開一覧の記事をクリック' do
+          before {
+            find("#article-item-#{article_draft.id}").click
+            sleep 2
+          }
+
+          it '記事詳細ページに遷移する' do
+            expect(current_path).to eq('/trip_note')
+            expect(page).to have_content(article_draft.title)
+            expect(page).to have_content(article_draft.user.name)
+          end
+
+          context 'メニューボタンをクリックし、「旅行記録を編集」をクリック' do
+            before {
+              find('#edit-menu').click
+              find('#edit-btn').click
+              sleep 2
+            }
+
+            it '記事編集ページに遷移する' do
+              expect(current_path).to eq('/edit_trip_note')
+            end
+
+            context '「公開する」をクリック' do
               it '記事が投稿され記事一覧ページに遷移' do
                 find('.post-button').click
                 sleep 2
-                expect(current_path).to eq('/trips')
-                expect(page).to have_content('TestTitleDraft')
-                expect(page).to have_content(article_another_user.user.name)
+                expect(current_path).to eq('/trip_notes')
+                expect(page).to have_content(article_draft.title)
+                expect(page).to have_content(article_draft.user.name)
               end
             end
 
@@ -405,8 +403,8 @@ RSpec.describe 'ユーザー', type: :system do
                   expect(page).to have_content('非公開')
                 end
                 expect(current_path).to eq('/mypage')
-                expect(page).to have_content('TestTitleDraft')
-                expect(page).to have_content(article_another_user.user.name)
+                expect(page).to have_content(article_draft.title)
+                expect(page).to have_content(article_draft.user.name)
               end
             end
           end
@@ -415,6 +413,14 @@ RSpec.describe 'ユーザー', type: :system do
 
       context '「いいね」をクリック' do
         before {
+          article_normal
+          login_as(article_normal.user)
+          sleep 2
+          find('.area-changer-unselected').click
+          sleep 2
+          find('.heart').click
+          find('.fa-user').click
+          sleep 2
           page.all('.post-changer-unselect')[1].click
           sleep 2
         }
@@ -428,13 +434,10 @@ RSpec.describe 'ユーザー', type: :system do
         end
 
         context 'いいね一覧の記事をクリック' do
-          before {
-            find('.article-title').click
-            sleep 2
-          }
-
           it '記事詳細ページに遷移する' do
-            expect(current_path).to eq('/trip')
+            find("#article-item-#{article_normal.id}").click
+            sleep 2
+            expect(current_path).to eq('/trip_note')
             expect(page).to have_content(article_normal.title)
             expect(page).to have_content(article_normal.description)
             expect(page).to have_content(article_normal.user.name)
@@ -443,20 +446,27 @@ RSpec.describe 'ユーザー', type: :system do
       end
 
       context '編集をクリック' do
-        before { find('.button').click }
+        before {
+          article_normal
+          login_as(article_normal.user)
+          sleep 2
+          find('.fa-user').click
+          sleep 2
+          find('.button').click
+        }
 
         it 'プロフィール編集フォームが表示される' do
           expect(page).to have_content('プロフィール編集')
           expect(page).to have_content('プロフィール画像')
-          expect(page).to have_selector("img[src$='default-image.jpg']")
+          expect(page).to have_css('#default-avatar')
           expect(page).to have_field('プロフィール画像')
           expect(page).to have_content('ユーザーネーム')
           expect(page).to have_field('ユーザーネーム')
           expect(page).to have_content('自己紹介')
           expect(page).to have_field('説明')
           expect(page).to have_css('.button')
-          expect(find_field('ユーザーネーム').value).to eq(article_another_user.user.name)
-          expect(find_field('説明').value).to eq(article_another_user.user.description)
+          expect(find_field('ユーザーネーム').value).to eq(article_normal.user.name)
+          expect(find_field('説明').value).to eq(article_normal.user.description)
         end
 
         context 'プロフィールを編集して「保存」をクリック' do
@@ -503,9 +513,14 @@ RSpec.describe 'ユーザー', type: :system do
 
     context '記事一覧の自分の記事のユーザー名をクリック' do
       it 'マイページに遷移' do
-        find("#article-user-#{article_another_user.user.id}").click
-        expect(page).to have_content(article_another_user.user.name)
-        expect(page).to have_content(article_another_user.description)
+        article_normal
+        login_as(article_normal.user)
+        sleep 2
+        find('.area-changer-unselected').click
+        sleep 2
+        find("#article-user-#{article_normal.user.id}").click
+        expect(page).to have_content(article_normal.user.name)
+        expect(page).to have_content(article_normal.user.description)
         expect(page).to have_content('編集')
         expect(page).to have_content('投稿')
         expect(page).to have_content('フォロー')
@@ -528,7 +543,7 @@ RSpec.describe 'ユーザー', type: :system do
         find('.heart').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
-        visit '/trips'
+        visit '/trip_notes'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2
@@ -557,7 +572,7 @@ RSpec.describe 'ユーザー', type: :system do
       context '投稿一覧の記事をクリック' do
         it '記事詳細が表示される' do
           find("#article-item-#{article_normal.id}").click
-          expect(current_path).to eq('/trip')
+          expect(current_path).to eq('/trip_note')
           expect(page).to have_content(article_normal.title)
         end
       end
@@ -573,7 +588,7 @@ RSpec.describe 'ユーザー', type: :system do
           it '記事詳細が表示される' do
             find("#article-item-#{article_normal.id}").click
             sleep 2
-            expect(current_path).to eq('/trip')
+            expect(current_path).to eq('/trip_note')
             expect(page).to have_content(article_normal.title)
           end
         end
@@ -670,7 +685,7 @@ RSpec.describe 'ユーザー', type: :system do
           page.accept_confirm do
             find('#delete-membership').click
           end
-          expect(current_path).to eq('/trips')
+          expect(current_path).to eq('/trip_notes')
           expect(page).to have_content('退会しました。ご利用ありがとうございました。')
           find('#login-button').click
           fill_in 'メールアドレス', with: user.email

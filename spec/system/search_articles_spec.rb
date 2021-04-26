@@ -9,7 +9,7 @@ RSpec.describe '記事検索', type: :system do
   let(:china) { create(:country, :china) }
 
   let(:create_article_tokyo) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     fill_in 'タイトル', with: 'Tokyo'
     within('.prefecture') do
       find('.vs__search').set('東京')
@@ -22,7 +22,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_osaka) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     fill_in 'タイトル', with: 'Osaka'
     within('.prefecture') do
       find('.vs__search').set('大阪')
@@ -35,7 +35,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_tokyo_osaka) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     fill_in 'タイトル', with: 'Tokio_And_Osaka'
     within('.prefecture') do
       find('.vs__search').set('東京')
@@ -52,7 +52,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_tokyo_with_tag) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     fill_in 'タイトル', with: 'Tokyo'
     within('.prefecture') do
       find('.vs__search').set('東京')
@@ -73,7 +73,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_osaka_with_tag) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     fill_in 'タイトル', with: 'Osaka'
     within('.prefecture') do
       find('.vs__search').set('大阪')
@@ -90,7 +90,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_fukuoka) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     fill_in 'タイトル', with: 'Fukuoka'
     within('.prefecture') do
       find('.vs__search').set('福岡')
@@ -103,7 +103,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_california) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     find('.domestic-btn-unselected').click
     fill_in 'タイトル', with: 'California'
     within('.country') do
@@ -121,7 +121,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_hawaii) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     find('.domestic-btn-unselected').click
     fill_in 'タイトル', with: 'Hawaii'
     within('.country') do
@@ -139,7 +139,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_california_hawaii) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     find('.domestic-btn-unselected').click
     fill_in 'タイトル', with: 'LaAloha'
     within('.country') do
@@ -161,7 +161,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_california_with_tag) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     find('.domestic-btn-unselected').click
     fill_in 'タイトル', with: 'California'
     within('.country') do
@@ -187,7 +187,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_hawaii_with_tag) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     find('.domestic-btn-unselected').click
     fill_in 'タイトル', with: 'Hawaii'
     within('.country') do
@@ -209,7 +209,7 @@ RSpec.describe '記事検索', type: :system do
   }
 
   let(:create_article_paris) {
-    visit '/create_trip'
+    visit '/create_trip_note'
     find('.domestic-btn-unselected').click
     fill_in 'タイトル', with: 'Paris'
     within('.country') do
@@ -232,6 +232,7 @@ RSpec.describe '記事検索', type: :system do
     france
     china
     login_as(user)
+    sleep 2
   }
 
   describe '国内記事' do

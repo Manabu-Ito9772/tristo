@@ -286,8 +286,8 @@
                   </p>
                   <template v-if="previewAvatar">
                     <img
-                      :src="previewAvatar"
                       id="preview-avatar"
+                      :src="previewAvatar"
                       class="mb-2 user-icon"
                     >
                     <div class="mb-3 text-center">
@@ -304,8 +304,8 @@
                   </template>
                   <template v-else>
                     <img
-                      src="~default.jpg"
                       id="default-avatar"
+                      src="~default.jpg"
                       class="mb-3 user-icon"
                     >
                   </template>
@@ -451,12 +451,6 @@ export default {
   border-radius: 20px;
 }
 
-.button:active {
-  background-color: #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   background-color: #C642BC;
   position: relative;
@@ -475,7 +469,6 @@ export default {
 .button-mobile:active {
   background-color: #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .eye-icon {

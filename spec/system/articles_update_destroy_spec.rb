@@ -6,7 +6,7 @@ RSpec.describe "記事編集/削除", type: :system do
   let(:country_japan) { create(:country, :japan_tokyo_kanagawa) }
   let(:create_article_japan) {
     country_japan
-    visit '/create_trip'
+    visit '/create_trip_note'
     fill_in 'タイトル', with: 'TestTitle'
     fill_in 'コメント', with: 'TestDescription'
     within('.prefecture') do
@@ -28,7 +28,7 @@ RSpec.describe "記事編集/削除", type: :system do
   }
   let(:create_article_overseas) {
     country
-    visit '/create_trip'
+    visit '/create_trip_note'
     find('.domestic-btn-unselected').click
     fill_in 'タイトル', with: 'TestTitle'
     fill_in 'コメント', with: 'TestDescription'
@@ -61,7 +61,7 @@ RSpec.describe "記事編集/削除", type: :system do
     find('.hours').click
     find('.minutes').click
     fill_in 'イベント', with: 'TestEvent'
-    fill_in '場所', with: 'TestPlace'
+    fill_in 'スポット', with: 'TestPlace'
     fill_in 'ホームページURL', with: 'TestPlaceURL'
     page.all('.add-cost-button')[0].click
     within('.spending') do
@@ -123,7 +123,7 @@ RSpec.describe "記事編集/削除", type: :system do
           end
 
           it 'データが保存されていない項目は表示されない' do
-            visit '/create_trip'
+            visit '/create_trip_note'
             fill_in 'タイトル', with: 'SmallData'
             find('.prefecture').click
             find('.vs__dropdown-menu').click
@@ -280,7 +280,7 @@ RSpec.describe "記事編集/削除", type: :system do
           end
 
           it 'データが保存されていない項目は表示されない' do
-            visit '/create_trip'
+            visit '/create_trip_note'
             find('.domestic-btn-unselected').click
             fill_in 'タイトル', with: 'SmallData'
             find('.country').click
@@ -424,7 +424,7 @@ RSpec.describe "記事編集/削除", type: :system do
           within('.info-block-form') do
             expect(page).to have_content('時間')
             expect(page).to have_content('イベント')
-            expect(page).to have_content('場所')
+            expect(page).to have_content('スポット')
             expect(page).to have_content('コスト')
             expect(page).to have_content('次のスポットまでの移動手段')
             expect(page).to have_content('メモ')
@@ -432,7 +432,7 @@ RSpec.describe "記事編集/削除", type: :system do
             expect(page).to have_css('.arriving_time')
             expect(page).to have_css('.leaving_time')
             expect(page).to have_field('イベント')
-            expect(page).to have_field('場所')
+            expect(page).to have_field('スポット')
             expect(page).to have_field('ホームページURL')
             page.all('.add-cost-button')[0].click
             within('.spending') do
@@ -459,7 +459,7 @@ RSpec.describe "記事編集/削除", type: :system do
             find('.hours').click
             find('.minutes').click
             fill_in 'イベント', with: 'TestEvent'
-            fill_in '場所', with: 'TestPlace'
+            fill_in 'スポット', with: 'TestPlace'
             fill_in 'ホームページURL', with: 'TestPlaceURL'
             page.all('.add-cost-button')[0].click
             within('.spending') do
@@ -484,7 +484,7 @@ RSpec.describe "記事編集/削除", type: :system do
             within('.info-block') {
               expect(page).to have_content('時間')
               expect(page).to have_content('イベント')
-              expect(page).to have_content('場所')
+              expect(page).to have_content('スポット')
               expect(page).to have_content('コスト')
               expect(page).to have_content('メモ')
               expect(page).to have_content('1:05')
@@ -512,6 +512,75 @@ RSpec.describe "記事編集/削除", type: :system do
               expect(page).to_not have_content('1000')
             end
           end
+
+          context 'ブロックを複数作成' do
+            before {
+              fill_in 'スポット', with: 'TestPlace2'
+              within('.info-block-form') do
+                find('.add-button').click
+              end
+              sleep 1
+              fill_in 'スポット', with: 'TestPlace3'
+              within('.info-block-form') do
+                find('.add-button').click
+              end
+              sleep 1
+            }
+
+            it 'ブロックに順番にナンバーが割り当てられる' do
+              expect(page.all('#number')[0].text).to eq('No.1')
+              expect(page.all('#number')[1].text).to eq('No.2')
+              expect(page.all('#number')[2].text).to eq('No.3')
+            end
+
+            context '編集フォームでブロックのナンバーを変更' do
+              it 'ブロックの順番が入れ替わる' do
+                page.all('.fa-edit')[0].click
+                within('.block-form-to-edit') do
+                  select 3, from: 'ナンバー'
+                  find('.add-button').click
+                  sleep 2
+                end
+                page.all('.fa-edit')[1].click
+                within('.block-form-to-edit') do
+                  select 1, from: 'ナンバー'
+                  find('.add-button').click
+                  sleep 2
+                end
+                expect(page.all('#place')[0].text).to eq('TestPlace3')
+                expect(page.all('#place')[1].text).to eq('TestPlace2')
+                expect(page.all('#place')[2].text).to eq('TestPlace')
+              end
+            end
+
+            context 'ブロックを削除' do
+              it 'ブロックのナンバーが振り直される' do
+                page.accept_confirm do
+                  page.all('.fa-trash-alt')[1].click
+                end
+                sleep 2
+                expect(page.all('#number')[0].text).to eq('No.1')
+                expect(page.all('#number')[1].text).to eq('No.2')
+                expect(page).to_not have_content('No.3')
+                expect(page.all('#place')[0].text).to eq('TestPlace')
+                expect(page.all('#place')[1].text).to eq('TestPlace3')
+                expect(page).to_not have_content('TestPlace2')
+              end
+            end
+          end
+
+          context 'ブロックを15個作成' do
+            it 'ブロック追加ボタンが非表示になりそれ以上ブロックを追加できない' do
+              14.times do |i|
+                fill_in 'スポット', with: 'TestPlace'
+                within('.info-block-form') do
+                  find('.add-button').click
+                end
+              end
+              sleep 2
+              expect(page).to_not have_css('.button')
+            end
+          end
         end
 
         context '必須項目を入力せずに「ブロックを追加」をクリック' do
@@ -521,7 +590,7 @@ RSpec.describe "記事編集/削除", type: :system do
             within('.info-block-form') do
               find('.add-button').click
             end
-            expect(page).to have_content('イベントは必須項目です')
+            expect(page).to have_content('スポットは必須項目です')
             expect(page).to have_content('内容を入力してください')
             expect(page).to have_content('価格を入力してください')
             expect(page).to have_content('手段を選択してください')
@@ -574,7 +643,7 @@ RSpec.describe "記事編集/削除", type: :system do
                 page.all('.clear-btn')[0].click
                 page.all('.clear-btn')[0].click
                 fill_in 'イベント', with: 'UpdatedTestEvent'
-                fill_in '場所', with: 'UpdatedTestPlace'
+                fill_in 'スポット', with: 'UpdatedTestPlace'
                 fill_in 'ホームページURL', with: 'UpdatedTestPlaceURL'
                 within('.spending') do
                   fill_in '内容', with: 'UpdatedTestSpending'
@@ -618,7 +687,7 @@ RSpec.describe "記事編集/削除", type: :system do
                 page.all('.clear-btn')[0].click
                 page.all('.clear-btn')[0].click
                 fill_in 'イベント', with: ' '
-                fill_in '場所', with: ' '
+                fill_in 'スポット', with: ' '
                 fill_in 'ホームページURL', with: ' '
                 within('.spending') do
                   fill_in '内容', with: ' '
@@ -632,7 +701,7 @@ RSpec.describe "記事編集/削除", type: :system do
                 end
                 fill_in 'メモ', with: ' '
                 find('.add-button').click
-                expect(page).to have_content('イベントは必須項目です')
+                expect(page).to have_content('スポットは必須項目です')
                 expect(page).to have_content('内容を入力してください')
                 expect(page).to have_content('価格を入力してください')
               end
@@ -687,7 +756,7 @@ RSpec.describe "記事編集/削除", type: :system do
           context 'ブロックフォームを入力して「ブロックを追加」をクリック' do
             it '選択中の日付のブロックリストにブロックが追加される' do
               fill_in 'イベント', with: 'TestEvent'
-              fill_in '場所', with: 'TestPlace'
+              fill_in 'スポット', with: 'TestPlace'
               fill_in 'ホームページURL', with: 'TestPlaceURL'
               page.all('.add-cost-button')[0].click
               within('.spending') do
@@ -812,7 +881,7 @@ RSpec.describe "記事編集/削除", type: :system do
         page.all('.clear-btn')[0].click
         page.all('.clear-btn')[0].click
         fill_in 'イベント', with: 'UpdatedEvent'
-        fill_in '場所', with: 'UpdatedPlace'
+        fill_in 'スポット', with: 'UpdatedPlace'
         fill_in 'ホームページURL', with: 'UpdatedPlaceURL'
         within('.spending') do
           fill_in '内容', with: 'UpdatedSpending'
@@ -883,7 +952,7 @@ RSpec.describe "記事編集/削除", type: :system do
           sleep 2
           find('.post-button').click
           sleep 2
-          expect(current_path).to eq('/trips')
+          expect(current_path).to eq('/trip_notes')
           expect(page).to have_content('UpdatedTitle')
           expect(page).to have_content('UpdatedDescription')
           expect(page).to have_content('神奈川')
@@ -962,7 +1031,7 @@ RSpec.describe "記事編集/削除", type: :system do
         page.all('.clear-btn')[0].click
         page.all('.clear-btn')[0].click
         fill_in 'イベント', with: 'UpdatedEvent'
-        fill_in '場所', with: 'UpdatedPlace'
+        fill_in 'スポット', with: 'UpdatedPlace'
         fill_in 'ホームページURL', with: 'UpdatedPlaceURL'
         within('.spending') do
           fill_in '内容', with: 'UpdatedSpending'
@@ -1025,7 +1094,6 @@ RSpec.describe "記事編集/削除", type: :system do
         expect(page).to have_selector("img[src$='sample2.png']")
         expect(page).to have_content('UpdatedTag')
         expect(page).to have_content(user.name)
-        page.save_screenshot 'screenshot.png'
       end
 
       context '下書き状態の記事編集ページで「投稿する」をクリック' do
@@ -1036,7 +1104,7 @@ RSpec.describe "記事編集/削除", type: :system do
           sleep 2
           find('.post-button').click
           sleep 2
-          expect(current_path).to eq('/trips')
+          expect(current_path).to eq('/trip_notes')
           expect(page).to have_content('UpdatedTitle')
           expect(page).to have_content('UpdatedDescription')
           expect(page).to have_content(country[2].name)

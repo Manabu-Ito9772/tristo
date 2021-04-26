@@ -38,16 +38,31 @@ RSpec.describe 'コメント', type: :system do
         before { find('.fa-edit').click }
 
         it '編集フォームが表示される' do
-          expect(page).to have_field('コメント編集')
-          expect(page).to have_content('保存')
+          within ('.comment-all') do
+            expect(page).to have_field('コメント')
+            expect(page).to have_content('保存')
+          end
         end
 
         context 'コメントを編集して保存をクリック' do
           it 'コメントがアップデートされる' do
-            fill_in 'コメント編集', with: 'UpdatedComment'
-            find('.save-button').click
+            within ('.comment-all') do
+              fill_in 'コメント', with: 'UpdatedComment'
+              find('.save-button').click
+            end
             expect(page).to have_content('UpdatedComment')
             expect(page).to_not have_content('保存')
+          end
+        end
+
+        context 'コメントを空欄にして保存をクリック' do
+          it 'コメントがアップデートされない' do
+            within ('.comment-all') do
+              fill_in 'コメント', with: ''
+              find('.save-button').click
+              expect(page).to have_field('コメント')
+              expect(page).to have_content('保存')
+            end
           end
         end
       end
@@ -136,7 +151,7 @@ RSpec.describe 'コメント', type: :system do
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       sleep 2
-      visit '/trips'
+      visit '/trip_notes'
       sleep 2
       find('.area-changer-unselected').click
       sleep 2
@@ -155,7 +170,7 @@ RSpec.describe 'コメント', type: :system do
       find('.fa-bars').click
       page.all('.dropdown-item')[1].click
       sleep 2
-      visit '/trips'
+      visit '/trip_notes'
       sleep 2
       find('.area-changer-unselected').click
       sleep 2
@@ -171,7 +186,7 @@ RSpec.describe 'コメント', type: :system do
         find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
-        visit '/trips'
+        visit '/trip_notes'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2
@@ -192,7 +207,7 @@ RSpec.describe 'コメント', type: :system do
         find('.button').click
         find('.fa-bars').click
         page.all('.dropdown-item')[1].click
-        visit '/trips'
+        visit '/trip_notes'
         sleep 2
         find('.area-changer-unselected').click
         sleep 2

@@ -157,7 +157,7 @@
           </div>
           <template v-if="!article.start_date && !article.end_date">
             <div class="text-center mt-3">
-              <p class="p-1 m-0 d-inline text-center text-dark font-weight-bold">
+              <p class="p-1 m-0 d-inline text-center text-muted font-weight-bold">
                 日数のみ入力
               </p>
             </div>
@@ -416,6 +416,7 @@ export default {
     this.getCountries()
     this.getPrefectures()
     this.countThirty()
+    this.scrollTop()
   },
   methods: {
     getCountries() {
@@ -457,12 +458,6 @@ export default {
         this.article.country_id = 1
       } else {
         this.article.country_id = this.country.id
-      }
-      if (this.article.start_date) {
-        this.article.start_date.setHours(this.article.start_date.getHours() + 9)
-      }
-      if (this.article.end_date) {
-        this.article.end_date.setHours(this.article.end_date.getHours() + 9)
       }
       await this.createArticle()
       await this.createRegions()
@@ -550,6 +545,12 @@ export default {
       this.$nextTick(()=>{
         this.height = this.$refs.area.scrollHeight + 'px'
       })
+    },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
     }
   }
 }
@@ -607,12 +608,6 @@ export default {
   border-radius: 4px;
 }
 
-.button:active {
-  background-color: #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   background-color: #C642BC;
   position: relative;
@@ -631,7 +626,6 @@ export default {
 .button-mobile:active {
   background-color: #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .font-small {

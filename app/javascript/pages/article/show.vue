@@ -336,7 +336,7 @@ export default {
 .main {
   max-height: 100vh;
   overflow: auto;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
 }
 
 .side-column {

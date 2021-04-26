@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4">
+  <div>
     <template v-if="state == 'published'">
       <template v-if="isMobile">
         <h5
@@ -9,7 +9,7 @@
           保存する
         </h5>
         <h5
-          class="p-2 text-center bg-white font-weight-bold draft-button-mobile"
+          class="m-0 p-2 text-center bg-white font-weight-bold draft-button-mobile"
           @click="unPublish"
         >
           非公開にする
@@ -23,7 +23,7 @@
           保存する
         </h5>
         <h5
-          class="p-2 text-center bg-white font-weight-bold draft-button"
+          class="m-0 p-2 text-center bg-white font-weight-bold draft-button"
           @click="unPublish"
         >
           非公開にする
@@ -40,7 +40,7 @@
           公開する
         </h5>
         <h5
-          class="p-2 text-center bg-white font-weight-bold draft-button-mobile"
+          class="m-0 p-2 text-center bg-white font-weight-bold draft-button-mobile"
           @click="saveDraft"
         >
           保存する
@@ -54,7 +54,7 @@
           公開する
         </h5>
         <h5
-          class="p-2 text-center bg-white font-weight-bold draft-button"
+          class="m-0 p-2 text-center bg-white font-weight-bold draft-button"
           @click="saveDraft"
         >
           保存する
@@ -132,13 +132,6 @@ export default {
   border-radius: 6px;
 }
 
-.post-button:active {
-  background-color: #C642BC;
-  border: solid #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .post-button:hover {
   background-color: #C642BC;
   border: solid #C642BC;
@@ -150,13 +143,6 @@ export default {
   border: solid #FF58F2;
   border-radius: 6px;
   cursor: pointer;
-}
-
-.draft-button:active {
-  color: #C642BC;
-  border: solid #C642BC;
-  position: relative;
-  top: 4px;
 }
 
 .draft-button:hover {
@@ -177,7 +163,6 @@ export default {
   background-color: #C642BC;
   border: solid #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .draft-button-mobile {
@@ -191,6 +176,5 @@ export default {
   color: #C642BC;
   border: solid #C642BC;
   position: relative;
-  top: 4px;
 }
 </style>

@@ -84,7 +84,7 @@
         </template>
       </div>
 
-      <div class="col-12 mb-3 p-0 d-flex justify-content-center align-items-center user-name">
+      <div class="col-12 mb-1 p-0 d-flex justify-content-center align-items-center user-name">
         <div>
           <img
             :src="user.avatar_url"
@@ -311,7 +311,7 @@
         </template>
       </div>
 
-      <div class="col-12 mb-2 p-0 text-muted text-center word-break article-info">
+      <div class="col-12 p-0 text-muted text-center word-break article-info">
         <p
           v-for="article_tag in article.article_tags"
           :id="'tag-' + article_tag.tag.name"
@@ -395,7 +395,7 @@ export default {
       show: false,
       right: true,
       hover: false,
-      interactive: false,
+      interactive: true,
       isMobile: isMobile
     }
   },
@@ -558,22 +558,12 @@ export default {
   cursor: pointer;
 }
 
-.heart:active {
-  color: #C400B5;
-  cursor: pointer;
-}
-
 .heart-favorited {
   color: #FF58F2;
   cursor: pointer;
 }
 
 .heart-favorited:hover {
-  color: #C400B5;
-  cursor: pointer;
-}
-
-.heart-favorited:active {
   color: #C400B5;
   cursor: pointer;
 }

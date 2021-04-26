@@ -1,9 +1,9 @@
 <template>
-  <div class="row mb-5">
+  <div class="row padding-bottom">
     <h3 class="col-12 p-2 m-0 text-center text-white font-weight-bold top-title">
       旅行記録作成
     </h3>
-    <div class="col-12 mb-5 overview bg-white">
+    <div class="col-12 overview bg-white">
       <div class="row pt-4 pb-4 pl-3 pr-3">
         <div class="col-6 pl-0 pr-2">
           <div
@@ -164,7 +164,7 @@
           </div>
           <template v-if="!article.start_date && !article.end_date">
             <div class="text-center mt-3">
-              <p class="p-1 m-0 d-inline text-center text-dark font-weight-bold">
+              <p class="p-1 m-0 d-inline text-center text-muted font-weight-bold">
                 日数のみ入力
               </p>
             </div>
@@ -225,14 +225,14 @@
             <template v-if="previewEyecatch">
               <div class="mb-1 image-trim">
                 <img
-                  :src="previewEyecatch"
                   id="preview-eyecatch"
+                  :src="previewEyecatch"
                 >
               </div>
               <div class="text-center">
                 <div
-                  @click="deleteEyecatch"
                   class="d-inline-block mb-2 icon"
+                  @click="deleteEyecatch"
                 >
                   <font-awesome-icon
                     :icon="['far', 'times-circle']"
@@ -418,6 +418,7 @@ export default {
     this.getCountries()
     this.getPrefectures()
     this.countThirty()
+    this.scrollTop()
   },
   methods: {
     getCountries() {
@@ -459,12 +460,12 @@ export default {
       } else {
         this.article.country_id = this.country.id
       }
-      if (this.article.start_date) {
-        this.article.start_date.setHours(this.article.start_date.getHours() + 9)
-      }
-      if (this.article.end_date) {
-        this.article.end_date.setHours(this.article.end_date.getHours() + 9)
-      }
+      // if (this.article.start_date) {
+      //   this.article.start_date.setHours(this.article.start_date.getHours() + 9)
+      // }
+      // if (this.article.end_date) {
+      //   this.article.end_date.setHours(this.article.end_date.getHours() + 9)
+      // }
       await this.createArticle()
       await this.createRegions()
       await this.createDays()
@@ -551,6 +552,12 @@ export default {
       this.$nextTick(()=>{
         this.height = this.$refs.area.scrollHeight + 'px'
       })
+    },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
     }
   }
 }
@@ -621,12 +628,6 @@ export default {
   border-radius: 4px;
 }
 
-.button:active {
-  background-color: #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   background-color: #C642BC;
   position: relative;
@@ -645,7 +646,6 @@ export default {
 .button-mobile:active {
   background-color: #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .font-small {
@@ -690,5 +690,9 @@ export default {
 
 .icon:hover {
   color: #383838;
+}
+
+.padding-bottom {
+  padding-bottom: 150px;
 }
 </style>

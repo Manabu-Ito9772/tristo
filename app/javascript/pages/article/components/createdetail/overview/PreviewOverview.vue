@@ -117,17 +117,29 @@
     </template>
 
     <div class="text-center">
-      <p
-        class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button"
-        @click="showOverviewEdit"
-      >
-        編集
-      </p>
+      <template v-if="isMobile">
+        <p
+          class="d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button-mobile"
+          @click="showOverviewEdit"
+        >
+          編集
+        </p>
+      </template>
+      <template v-else>
+        <p
+          class="d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button"
+          @click="showOverviewEdit"
+        >
+          編集
+        </p>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+import { isMobile } from 'mobile-device-detect'
+
 export default {
   name: 'PreviewOverview',
   props: {
@@ -139,6 +151,7 @@ export default {
   data() {
     return {
       countryName: '',
+      isMobile: isMobile
     }
   },
   methods:{
@@ -215,5 +228,29 @@ export default {
   height: 100%;
   object-fit: cover;
   border-radius: 4px;
+}
+
+.edit-button {
+  color: #6A6A6A;
+  border: solid thin #6A6A6A;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  color: #383838;
+  border: solid thin #383838;
+}
+
+.edit-button-mobile {
+  color: #6A6A6A;
+  border: solid thin #6A6A6A;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-button-mobile:active {
+  color: #383838;
+  border: solid thin #383838;
 }
 </style>

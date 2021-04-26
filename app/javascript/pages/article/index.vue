@@ -242,6 +242,7 @@ export default {
     }
     this.$store.commit('pages/setCurrentPage', 'home')
     this.showMsg()
+    this.scrollTop()
   },
   methods: {
     async infiniteHandler($state) {

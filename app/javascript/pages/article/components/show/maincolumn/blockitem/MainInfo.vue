@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="row">
+    <div
+      v-if="block.title"
+      class="row mb-3"
+    >
       <div class="col-12 text-white">
         <p class="pl-3 content-lavel m-0">
           イベント
@@ -11,19 +14,13 @@
       </p>
     </div>
 
-    <div
-      v-if="block.place || block.place_info"
-      class="row mt-3"
-    >
+    <div class="row">
       <div class="col-12 text-white">
         <p class="pl-3 content-lavel m-0">
-          場所
+          スポット
         </p>
       </div>
-      <p
-        v-if="block.place"
-        class="col-12 pl-4 pt-1 m-0 text-dark word-break"
-      >
+      <p class="col-12 pl-4 pt-1 m-0 text-dark word-break">
         {{ block.place }}
       </p>
       <div

@@ -220,6 +220,17 @@ export default {
   },
   computed: {
     ...mapGetters('users', ['authUser'])
+  },
+  created() {
+    this.scrollTop()
+  },
+  methods: {
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
+    }
   }
 }
 </script>

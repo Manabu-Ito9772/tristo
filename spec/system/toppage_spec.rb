@@ -24,7 +24,7 @@ RSpec.describe 'トップページ', type: :system do
       login_as(user)
       visit '/'
       sleep 3
-      expect(current_path).to eq('/trips')
+      expect(current_path).to eq('/trip_notes')
       find('.area-changer-unselected').click
       sleep 2
       expect(page).to have_content(article_normal.title)
@@ -71,7 +71,7 @@ RSpec.describe 'トップページ', type: :system do
       visit root_path
       find('.articles-btn').click
       sleep 2
-      expect(current_path).to eq('/trips')
+      expect(current_path).to eq('/trip_notes')
       find('.area-changer-unselected').click
       sleep 2
       expect(page).to have_content(article_normal.title)
