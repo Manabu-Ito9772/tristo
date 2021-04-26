@@ -86,6 +86,5 @@ test:
 production:
   <<: *default
   database: tristo_production
-  username: manabu
-  password: <%= Rails.application.credentials.db[:password] %>
-  host: tristo-postgres.cihb3itimmgw.ap-northeast-1.rds.amazonaws.com
+  username: tristo
+  password: <%= ENV['TRISTO_DATABASE_PASSWORD'] %>

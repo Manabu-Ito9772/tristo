@@ -46,8 +46,6 @@ gem 'kaminari'
 # admin
 gem 'rails_admin', '~> 2.0.0.beta'
 
-gem 'mini_racer', platforms: :ruby
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -75,15 +73,6 @@ group :development do
   gem 'spring'
 
   gem 'foreman'
-  gem 'capistrano'
-  gem 'ed25519'
-  gem 'bcrypt_pbkdf'
-  gem 'capistrano-rbenv'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails'
-  gem 'capistrano3-puma'
-  gem 'capistrano-nginx'
-  gem 'capistrano-yarn'
 end
 
 group :test do
