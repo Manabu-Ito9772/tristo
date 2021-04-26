@@ -6,7 +6,7 @@ class Api::CommentsController < ApplicationController
   include Pagination
 
   def show
-    comments = Article.find(params[:id]).comments.includes(:user).page(params[:page]).per(20).order(created_at: :asc)
+    comments = Article.find(params[:id]).comments.includes(:user).page(params[:page]).per(20).order(created_at: :desc)
     pagenation = resources_with_pagination(comments)
     @comments = Comment.change_to_json(comments)
     render json: { comments: @comments, kaminari: pagenation }

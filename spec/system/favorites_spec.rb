@@ -41,7 +41,7 @@ RSpec.describe 'いいね', type: :system do
         it '記事にクリック不可のハートボタンが表示される' do
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
-          visit '/trips'
+          visit '/trip_notes'
           sleep 2
           find('.area-changer-unselected').click
           sleep 2
@@ -91,7 +91,7 @@ RSpec.describe 'いいね', type: :system do
         it '記事にクリック不可のハートボタンが表示される' do
           find('.fa-bars').click
           page.all('.dropdown-item')[1].click
-          visit '/trips'
+          visit '/trip_notes'
           sleep 2
           find('.area-changer-unselected').click
           sleep 2
@@ -153,7 +153,7 @@ RSpec.describe 'いいね', type: :system do
           it '投稿記事にクリック不可のハートボタンが表示される' do
             find('.fa-bars').click
             page.all('.dropdown-item')[1].click
-            visit '/trips'
+            visit '/trip_notes'
             sleep 2
             find('.area-changer-unselected').click
             sleep 2
@@ -203,7 +203,7 @@ RSpec.describe 'いいね', type: :system do
           it 'いいねした記事にクリック不可のハートボタンが表示される' do
             find('.fa-bars').click
             page.all('.dropdown-item')[1].click
-            visit '/trips'
+            visit '/trip_notes'
             sleep 2
             find('.area-changer-unselected').click
             sleep 2
@@ -232,7 +232,7 @@ RSpec.describe 'いいね', type: :system do
       find('.area-changer-unselected').click
       sleep 2
       page.all('.heart')[0].click
-      visit '/create_trip'
+      visit '/create_trip_note'
       fill_in 'タイトル', with: 'TestTitle'
       within('.prefecture') do
         find('.vs__search').set('東京')

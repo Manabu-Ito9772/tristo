@@ -275,12 +275,6 @@ export default {
   border-radius: 20px;
 }
 
-.button:active {
-  background-color: #C642BC;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   background-color: #C642BC;
   position: relative;
@@ -299,7 +293,6 @@ export default {
 .button-mobile:active {
   background-color: #C642BC;
   position: relative;
-  top: 4px;
 }
 
 .eye-icon {

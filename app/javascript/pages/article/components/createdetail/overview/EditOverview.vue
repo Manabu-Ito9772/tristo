@@ -138,8 +138,8 @@
         <template v-if="previewEyecatch">
           <div class="mb-1 image-trim">
             <img
-              :src="previewEyecatch"
               id="preview-eyecatch"
+              :src="previewEyecatch"
             >
           </div>
         </template>
@@ -153,9 +153,9 @@
         <template v-if="previewEyecatch || eyecatch">
           <div class="text-center">
             <div
-              @click="deleteEyecatch"
               id="delete-btn"
               class="d-inline-block mb-2 icon"
+              @click="deleteEyecatch"
             >
               <font-awesome-icon
                 :icon="['far', 'times-circle']"
@@ -211,35 +211,60 @@
         <span slot="no-options">タグを登録できます</span>
       </v-select>
 
-      <h5 class="col-12 mt-4 p-1 text-center text-white font-weight-bold article-title word-break">
-        マップ
-      </h5>
-      <input
-        v-model="articleEdit.map"
-        name="マップ"
-        class="form-control bg-light"
-      >
-      <p class="text-center text-secondary font-small">
-        ※HTMLコードを入力することでGoogle my mapsを埋め込むことができます。詳しくはこちら。
-      </p>
+      <template v-if="$mq != 'xs' || !isMobile">
+        <h5 class="col-12 mt-4 p-1 text-center text-white font-weight-bold article-title word-break">
+          マップ
+        </h5>
+        <input
+          v-model="articleEdit.map"
+          name="マップ"
+          class="form-control bg-light"
+        >
+        <p class="m-0 text-center text-secondary font-small">
+          ※HTMLコードを入力することでGoogle my mapsを埋め込むことができます。詳しくは
+          <a
+            href="#"
+            @click="showModal"
+          >こちら</a>。
+        </p>
+      </template>
 
       <div class="text-center">
-        <p
-          class="btn d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button"
-          @click="handleSubmit(updateOverview)"
-        >
-          保存
-        </p>
+        <template v-if="isMobile">
+          <p
+            class="d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button-mobile"
+            @click="handleSubmit(updateOverview)"
+          >
+            保存
+          </p>
+        </template>
+        <template v-else>
+          <p
+            class="d-inline-block pt-1 pb-1 pl-4 pr-4 mt-4 mb-4 font-weight-bold edit-button"
+            @click="handleSubmit(updateOverview)"
+          >
+            保存
+          </p>
+        </template>
       </div>
     </ValidationObserver>
+
+    <HowToEmbedMap
+      ref="modal"
+    />
   </div>
 </template>
 
 <script>
 import {ja} from 'vuejs-datepicker/dist/locale'
+import HowToEmbedMap from '../../createoverview/form/HowToEmbedMap'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'EditOverview',
+  components: {
+    HowToEmbedMap
+  },
   props: {
     article: {
       type: Object,
@@ -282,7 +307,8 @@ export default {
       previewEyecatch: '',
       uploadEyecatch: '',
       eyecatch: '',
-      isVisibleFileInput: true
+      isVisibleFileInput: true,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -453,6 +479,9 @@ export default {
         this.eyecatch = ''
       }
     },
+    showModal() {
+      this.$refs.modal.showModal()
+    },
     resize(){
       this.height = 'auto'
       this.$nextTick(()=>{
@@ -498,12 +527,6 @@ export default {
 
 .article-info {
   font-size: 13px;
-}
-
-.edit-button {
-  color: #6A6A6A;
-  border: solid thin #6A6A6A;
-  border-radius: 6px;
 }
 
 .font-small {
@@ -574,5 +597,29 @@ export default {
 
 .icon:hover {
   color: #383838;
+}
+
+.edit-button {
+  color: #6A6A6A;
+  border: solid thin #6A6A6A;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  color: #383838;
+  border: solid thin #383838;
+}
+
+.edit-button-mobile {
+  color: #6A6A6A;
+  border: solid thin #6A6A6A;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-button-mobile:active {
+  color: #383838;
+  border: solid thin #383838;
 }
 </style>

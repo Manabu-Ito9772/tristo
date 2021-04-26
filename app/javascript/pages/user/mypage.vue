@@ -98,16 +98,16 @@
             </div>
           </div>
 
-          <div class="col-12 mt-3 mb-3">
+          <div class="col-12 pl-4 pr-4 mt-3 mb-3">
             <div class="row">
               <template v-if="published">
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
                     投稿
                   </h5>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -125,7 +125,7 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -145,7 +145,7 @@
               </template>
 
               <template v-if="draft">
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -163,13 +163,13 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
                     非公開
                   </h5>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -189,7 +189,7 @@
               </template>
 
               <template v-if="favorite">
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -207,7 +207,7 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -225,7 +225,7 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
                     いいね
                   </h5>
@@ -267,7 +267,7 @@
 
             <template v-else>
               <div class="col-12 mt-5 mb-5">
-                <h4 class="text-center font-weight-bold text-secondary">
+                <h5 class="text-center font-weight-bold text-secondary">
                   <template v-if="published">
                     投稿がありません
                   </template>
@@ -277,7 +277,7 @@
                   <template v-else>
                     いいねした投稿がありません
                   </template>
-                </h4>
+                </h5>
               </div>
             </template>
           </template>
@@ -385,16 +385,16 @@
             </div>
           </div>
 
-          <div class="col-12 mt-3 mb-3 p-0">
+          <div class="col-12 pl-2 pr-2 mt-3 mb-3 p-0">
             <div class="row">
               <template v-if="published">
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
                     投稿
                   </h5>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -412,7 +412,7 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -432,7 +432,7 @@
               </template>
 
               <template v-if="draft">
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -450,13 +450,13 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
                     非公開
                   </h5>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -476,7 +476,7 @@
               </template>
 
               <template v-if="favorite">
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -494,7 +494,7 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
                       class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
@@ -512,7 +512,7 @@
                   </template>
                 </div>
 
-                <div class="col-4">
+                <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
                     いいね
                   </h5>
@@ -619,6 +619,7 @@ export default {
     } else {
       this.infiniteHandler()
     }
+    this.scrollTop()
   },
   methods: {
     getFollowCount() {
@@ -706,6 +707,12 @@ export default {
     toFollowerPage() {
       this.$router.push({ name: 'Followers' })
     },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
+    }
   }
 }
 </script>
@@ -749,13 +756,6 @@ export default {
   border-radius: 20px;
 }
 
-.button:active {
-  white-space: nowrap;
-  background-color: #A5A5A5;
-  position: relative;
-  top: 4px;
-}
-
 .button:hover {
   white-space: nowrap;
   background-color: #A5A5A5;
@@ -777,7 +777,6 @@ export default {
   white-space: nowrap;
   background-color: #A5A5A5;
   position: relative;
-  top: 4px;
 }
 
 .post-changer {

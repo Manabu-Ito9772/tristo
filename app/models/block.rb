@@ -7,8 +7,8 @@ class Block < ApplicationRecord
   has_many :transportations, dependent: :destroy
   belongs_to :day
 
-  validates :title, presence: true, length: { maximum: 100 }
-  validates :place, length: { maximum: 100 }
+  validates :title, length: { maximum: 100 }
+  validates :place, presence: true, length: { maximum: 100 }
   validates :place_info, length: { maximum: 500 }
   validates :comment, length: { maximum: 1_000 }
   validates :image, attachment: { content_type: %r{\Aimage/(png|jpeg)\Z}, maximum: 5_242_880 }
@@ -20,7 +20,7 @@ class Block < ApplicationRecord
   private
 
   def null_to_nill
-    self.place = nil if place == 'null'
+    self.title = nil if title == 'null'
     self.place_info = nil if place_info == 'null'
     self.comment = nil if comment == 'null'
   end

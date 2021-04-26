@@ -255,7 +255,7 @@
                     class="d-inline-block pl-1 pr-1 text-primary article-tag"
                   >
                     <template v-if="$mq == 'lg'">
-                      <template v-if="$route.path == '/trips'">
+                      <template v-if="$route.path == '/trip_notes'">
                         <a
                           class="m-0 pointer"
                           href="#"
@@ -544,22 +544,12 @@ export default {
   cursor: pointer;
 }
 
-.heart:active {
-  color: #C400B5;
-  cursor: pointer;
-}
-
 .heart-favorited {
   color: #FF58F2;
   cursor: pointer;
 }
 
 .heart-favorited:hover {
-  color: #C400B5;
-  cursor: pointer;
-}
-
-.heart-favorited:active {
   color: #C400B5;
   cursor: pointer;
 }

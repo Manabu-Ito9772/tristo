@@ -80,12 +80,13 @@ ActiveRecord::Schema.define(version: 2021_04_11_125345) do
 
   create_table "blocks", force: :cascade do |t|
     t.bigint "day_id", null: false
-    t.string "title", null: false
-    t.string "place"
+    t.string "title"
+    t.string "place", null: false
     t.string "place_info"
     t.text "comment"
     t.datetime "arriving_time"
     t.datetime "leaving_time"
+    t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["day_id"], name: "index_blocks_on_day_id"

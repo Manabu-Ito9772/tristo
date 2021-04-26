@@ -18,10 +18,14 @@
                 <BlockEditForm
                   :block="block"
                   :currency="currency"
+                  :blockcount="blockcount"
                   @updateBlock="updateBlock"
                 />
               </template>
               <template v-else>
+                <p class="m-0 ml-2 text-dark">
+                  No.{{ block.position }}
+                </p>
                 <BlockItem
                   :block="block"
                   :currency="currency"
@@ -40,7 +44,7 @@
                     </div>
                     <div
                       class="pt-1 pb-0 pl-0 pr-2 icon-mobile-xs"
-                      @click="deleteBlock(block.id)"
+                      @click="deleteBlock(block.id, day.ordered_blocks)"
                     >
                       <font-awesome-icon
                         :icon="['fas', 'trash-alt']"
@@ -60,7 +64,7 @@
                     </div>
                     <div
                       class="pt-1 pb-0 pl-0 pr-2 icon-xs"
-                      @click="deleteBlock(block.id)"
+                      @click="deleteBlock(block.id, day.ordered_blocks)"
                     >
                       <font-awesome-icon
                         :icon="['fas', 'trash-alt']"
@@ -78,9 +82,9 @@
           </div>
           <div v-else>
             <div class="d-flex align-items-center justify-content-center">
-              <h3 class="m-4 font-weight-bold text-secondary">
+              <h4 class="m-4 font-weight-bold text-secondary">
                 ブロックを追加してください
-              </h3>
+              </h4>
             </div>
           </div>
         </template>
@@ -94,11 +98,18 @@
               <template v-if="block.id == blockId">
                 <BlockEditForm
                   :block="block"
+                  :blockcount="blockcount"
                   :currency="currency"
                   @updateBlock="updateBlock"
                 />
               </template>
               <template v-else>
+                <p
+                  id="number"
+                  class="m-0 ml-2 text-dark"
+                >
+                  No.{{ block.position }}
+                </p>
                 <BlockItem
                   :block="block"
                   :currency="currency"
@@ -117,7 +128,7 @@
                     </div>
                     <div
                       class="pt-1 pb-0 pl-0 pr-2 icon-mobile"
-                      @click="deleteBlock(block.id)"
+                      @click="deleteBlock(block.id, day.ordered_blocks)"
                     >
                       <font-awesome-icon
                         :icon="['fas', 'trash-alt']"
@@ -137,7 +148,7 @@
                     </div>
                     <div
                       class="pt-1 pb-0 pl-0 pr-2 icon"
-                      @click="deleteBlock(block.id)"
+                      @click="deleteBlock(block.id, day.ordered_blocks)"
                     >
                       <font-awesome-icon
                         :icon="['fas', 'trash-alt']"
@@ -158,7 +169,7 @@
 
           <div v-else>
             <div class="d-flex align-items-center justify-content-center">
-              <h3 class="mb-2 font-weight-bold text-secondary">
+              <h3 class="m-0 font-weight-bold text-secondary">
                 ブロックを追加してください
               </h3>
             </div>
@@ -190,6 +201,10 @@ export default {
     currency: {
       type: String,
       required: true
+    },
+    blockcount: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -200,16 +215,23 @@ export default {
       blockId: null,
       urgeMessage: false,
       blocksForCheck: [],
-      isMobile: isMobile
+      isMobile: isMobile,
     }
   },
   methods :{
-    async deleteBlock(block_id) {
+    async deleteBlock(block_id, blocks) {
       if (confirm(`ブロックを削除しますか？`)) {
+        let newBlocks = blocks.filter(block => block.id != block_id)
+        await newBlocks.forEach((newBlock, index) => {
+          this.$axios.patch(`blocks/${newBlock.id}`, { position: index + 1 })
+            .catch(err => console.log(err.response))
+        })
+
         await this.$axios.delete(`blocks/${block_id}`)
           .catch(err => console.log(err.response))
+
+        this.$emit('getArticle')
       }
-      this.$emit('getArticle')
     },
     async updateBlock(blockEdit) {
       const formData = new FormData()
@@ -219,9 +241,10 @@ export default {
       formData.append('block[comment]', blockEdit.block.comment)
       formData.append('block[arriving_time]', blockEdit.block.arriving_time)
       formData.append('block[leaving_time]', blockEdit.block.leaving_time)
+      formData.append('block[position]', blockEdit.block.position)
       if (blockEdit.uploadImage) formData.append('block[image]', blockEdit.uploadImage)
 
-      await this.$axios.patch(`blocks/${blockEdit.block.id}`,formData)
+      await this.$axios.patch(`blocks/${blockEdit.block.id}`, formData)
         .catch(err => console.log(err.response))
       for (let spending of blockEdit.block.spendings) {
         if (spending.id) {
@@ -288,11 +311,6 @@ export default {
   cursor: pointer;
 }
 
-.icon:active {
-  color: #383838;
-  cursor: pointer;
-}
-
 .icon-mobile {
   color: gray;
   font-size: 16px;
@@ -311,11 +329,6 @@ export default {
 }
 
 .icon-xs:hover {
-  color: #383838;
-  cursor: pointer;
-}
-
-.icon-xs:active {
   color: #383838;
   cursor: pointer;
 }

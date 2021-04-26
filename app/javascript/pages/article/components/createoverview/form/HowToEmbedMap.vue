@@ -23,7 +23,7 @@
             >
               マイマップ一覧ページ
             </a>
-            にアクセスしてください
+            にアクセスしてください。
           </p>
           <img
             src="~map.jpg"
@@ -31,7 +31,7 @@
           >
 
           <p class="mt-5 m-0 font-small">
-            ②埋め込みたいマップをクリックしてマイマップ編集ページにアクセスしてください
+            ②埋め込みたいマップをクリックしてマイマップ編集ページにアクセスしてください。
           </p>
           <img
             src="~map2.jpg"
@@ -39,7 +39,7 @@
           >
 
           <p class="mt-5 m-0 font-small">
-            ③編集ページのメニューボタンから「自分のサイトに埋め込む」をクリックしてください
+            ③編集ページのメニューボタンから「自分のサイトに埋め込む」をクリックしてください。
           </p>
           <img
             src="~map3.jpg"
@@ -47,35 +47,46 @@
           >
 
           <p class="mt-5 m-0 font-small">
-            ④表示されたHTMLをコピーしてください
+            ④表示されたHTMLをコピーしてください。
           </p>
           <img
             src="~map4.jpg"
             class="map-image"
           >
 
-          <p class="mt-5 m-0 font-small">
-            ⑤旅行概要作成フォームの「マップ」にコピーしたHTMLを貼り付け、旅行記録を作成・投稿してください
-          </p>
-          <img
-            src="~map5.jpg"
-            class="map-image"
-          >
+          <template v-if="this.$route.path == '/create_trip_note'">
+            <p class="mt-5 m-0 font-small">
+              ⑤旅行概要作成フォームの「マップ」にコピーしたHTMLを貼り付け、旅行記録を作成・投稿してください。
+            </p>
+            <img
+              src="~map5.jpg"
+              class="map-image"
+            >
+          </template>
+          <template v-else>
+            <p class="mt-5 m-0 font-small">
+              ⑤旅行概要編集フォームの「マップ」にコピーしたHTMLを貼り付け、旅行記録を投稿してください。
+            </p>
+            <img
+              src="~map7.jpg"
+              class="map-image"
+            >
+          </template>
 
           <p class="mt-5 m-0 font-small">
-            ⑥作成された旅行記録にマイマップが埋め込まれます
+            ⑥作成された旅行記録にマイマップが埋め込まれます。
           </p>
           <img
             src="~map6.jpg"
             class="map-image"
           >
 
-          <p class="mt-5 m-0 font-small">
-            ※本サービスで「Google My Maps」自体の作成や編集をすることはできません
+          <p class="mt-4 m-0 font-small">
+            ※本サービスで「Google My Maps」自体の作成や編集をすることはできません。
           </p>
 
           <div
-            class="mt-5 text-center button"
+            class="mt-4 mb-4 text-center button"
             @click="hideModal"
           >
             閉じる
@@ -83,6 +94,7 @@
         </div>
       </modal>
     </template>
+
     <template v-else>
       <modal
         name="how-to-embed-map"
@@ -105,7 +117,7 @@
             >
               マイマップ一覧ページ
             </a>
-            にアクセスしてください
+            にアクセスしてください。
           </p>
           <img
             src="~map.jpg"
@@ -113,7 +125,7 @@
           >
 
           <p class="mt-5 m-0">
-            ②埋め込みたいマップをクリックしてマイマップ編集ページに<br>アクセスしてください
+            ②埋め込みたいマップをクリックしてマイマップ編集ページに<br>アクセスしてください。
           </p>
           <img
             src="~map2.jpg"
@@ -121,7 +133,7 @@
           >
 
           <p class="mt-5 m-0">
-            ③編集ページのメニューボタンから「自分のサイトに埋め込む」を<br>クリックしてください
+            ③編集ページのメニューボタンから「自分のサイトに埋め込む」を<br>クリックしてください。
           </p>
           <img
             src="~map3.jpg"
@@ -129,35 +141,46 @@
           >
 
           <p class="mt-5 m-0">
-            ④表示されたHTMLをコピーしてください
+            ④表示されたHTMLをコピーしてください。
           </p>
           <img
             src="~map4.jpg"
             class="map-image"
           >
 
-          <p class="mt-5 m-0">
-            ⑤旅行概要作成フォームの「マップ」にコピーしたHTMLを貼り付け、<br>旅行記録を作成・投稿してください
-          </p>
-          <img
-            src="~map5.jpg"
-            class="map-image"
-          >
+          <template v-if="this.$route.path == '/create_trip_note'">
+            <p class="mt-5 m-0">
+              ⑤旅行概要作成フォームの「マップ」にコピーしたHTMLを貼り付け、<br>旅行記録を作成・投稿してください。
+            </p>
+            <img
+              src="~map5.jpg"
+              class="map-image"
+            >
+          </template>
+          <template v-else>
+            <p class="mt-5 m-0">
+              ⑤旅行概要編集フォームの「マップ」にコピーしたHTMLを貼り付け、<br>旅行記録を投稿してください。
+            </p>
+            <img
+              src="~map7.jpg"
+              class="map-image"
+            >
+          </template>
 
           <p class="mt-5 m-0">
-            ⑥作成された旅行記録にマイマップが埋め込まれます
+            ⑥作成された旅行記録にマイマップが埋め込まれます。
           </p>
           <img
             src="~map6.jpg"
             class="map-image"
           >
 
-          <p class="mt-5 m-0">
-            ※本サービスで「Google My Maps」自体の作成や編集を<br>することはできません
+          <p class="mt-4 m-0">
+            ※本サービスで「Google My Maps」自体の作成や編集を<br>することはできません。
           </p>
 
           <div
-            class="mt-5 text-center button"
+            class="mt-4 mb-4 text-center button"
             @click="hideModal"
           >
             閉じる
@@ -175,6 +198,7 @@ import 'map3.jpg'
 import 'map4.jpg'
 import 'map5.jpg'
 import 'map6.jpg'
+import 'map7.jpg'
 
 export default {
   name: 'HowToEmbedMap',

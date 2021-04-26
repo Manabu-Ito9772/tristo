@@ -35,7 +35,7 @@ RSpec.describe 'タグ', type: :system do
         sleep 2
         find("#tag-#{articles_normal.first.tags.first.name}").click
         sleep 2
-        expect(current_path).to eq('/trips')
+        expect(current_path).to eq('/trip_notes')
         expect(page).to have_content(articles_normal.first.title)
         expect(page).to_not have_content(articles_normal.second.title)
         within('.search') do
@@ -55,7 +55,7 @@ RSpec.describe 'タグ', type: :system do
         sleep 2
         find("#tag-#{articles_normal.first.tags.first.name}").click
         sleep 2
-        expect(current_path).to eq('/trips')
+        expect(current_path).to eq('/trip_notes')
         expect(page).to have_content(articles_normal.first.title)
         expect(page).to_not have_content(articles_normal.second.title)
         within('.search') do
@@ -80,7 +80,7 @@ RSpec.describe 'タグ', type: :system do
         sleep 2
         find("#tag-#{articles_normal.first.tags.first.name}").click
         sleep 2
-        expect(current_path).to eq('/trips')
+        expect(current_path).to eq('/trip_notes')
         expect(page).to_not have_content(articles_normal.first.title)
         expect(page).to_not have_content(articles_normal.second.title)
         within('.search') do
@@ -104,7 +104,7 @@ RSpec.describe 'タグ', type: :system do
         sleep 2
         find("#tag-#{articles_normal.first.tags.first.name}").click
         sleep 2
-        expect(current_path).to eq('/trips')
+        expect(current_path).to eq('/trip_notes')
         expect(page).to have_content(articles_normal.first.title)
         expect(page).to_not have_content(articles_normal.second.title)
         within('.search') do
@@ -154,7 +154,7 @@ RSpec.describe 'タグ', type: :system do
         sleep 2
         find("#tag-#{articles_normal.first.tags.first.name}").click
         sleep 2
-        expect(current_path).to eq('/trips')
+        expect(current_path).to eq('/trip_notes')
         expect(page).to have_content(articles_normal.first.title)
         expect(page).to_not have_content(articles_normal.second.title)
         within('.search') do

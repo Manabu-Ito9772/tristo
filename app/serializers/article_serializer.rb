@@ -42,7 +42,7 @@ class ArticleSerializer < ActiveModel::Serializer
     has_many :ordered_blocks
 
     class BlockSerializer < ActiveModel::Serializer
-      attributes :id, :day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, :image_url
+      attributes :id, :day_id, :title, :place, :place_info, :comment, :arriving_time, :leaving_time, :position, :image_url
       has_many :spendings
       has_many :transportations
 

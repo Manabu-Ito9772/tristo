@@ -265,7 +265,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         end
 
         it 'マイページに遷移' do
-          visit '/trips'
+          visit '/trip_notes'
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
@@ -305,7 +305,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         end
 
         it 'マイページに遷移' do
-          visit '/trips'
+          visit '/trip_notes'
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
@@ -377,7 +377,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         end
 
         it 'マイページに遷移' do
-          visit '/trips'
+          visit '/trip_notes'
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2
@@ -402,7 +402,7 @@ RSpec.describe 'フォロー/フォロワー', type: :system do
         end
 
         it 'マイページに遷移' do
-          visit '/trips'
+          visit '/trip_notes'
           sleep 2
           find("#article-user-#{another_user_article.user.id}").click
           sleep 2

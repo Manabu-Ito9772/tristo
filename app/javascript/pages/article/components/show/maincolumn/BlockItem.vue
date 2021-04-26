@@ -1,163 +1,159 @@
 <template>
   <div>
     <template v-if="$mq == 'lg'">
-      <div class="row mt-4 mb-4 ml-0 mr-0 bg-white info-block">
-        <template v-if="block.arriving_time || block.leaving_time">
-          <template v-if="block.image_url">
-            <div class="col-1 pt-3 pb-3 pl-1 pr-1 info-block-left">
-              <TimeInfo
-                :block="block"
-              />
-            </div>
+      <template v-if="block.arriving_time || block.leaving_time">
+        <template v-if="block.image_url">
+          <div class="col-1 pt-3 pb-3 pl-1 pr-1 info-block-left">
+            <TimeInfo
+              :block="block"
+            />
+          </div>
 
-            <div class="col-6 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
+          <div class="col-6 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
 
-            <div class="col-5 p-3 info-block-right">
-              <img
-                :src="block.image_url"
-                class="image"
-                @click="showImage"
-              >
-            </div>
-          </template>
-
-          <template v-else>
-            <div class="col-2 pt-3 pb-3 pl-1 pr-1 info-block-left">
-              <TimeInfo
-                :block="block"
-              />
-            </div>
-
-            <div class="col-10 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
-          </template>
+          <div class="col-5 p-3 info-block-right">
+            <img
+              :src="block.image_url"
+              class="image pointer"
+              @click="showImage"
+            >
+          </div>
         </template>
 
         <template v-else>
-          <template v-if="block.image_url">
-            <div class="col-7 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
+          <div class="col-2 pt-3 pb-3 pl-1 pr-1 info-block-left">
+            <TimeInfo
+              :block="block"
+            />
+          </div>
 
-            <div class="col-5 p-3 info-block-right">
-              <img
-                :src="block.image_url"
-                class="image"
-                @click="showImage"
-              >
-            </div>
-          </template>
-
-          <template v-else>
-            <div class="col-12 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
-          </template>
+          <div class="col-10 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
         </template>
-      </div>
+      </template>
+
+      <template v-else>
+        <template v-if="block.image_url">
+          <div class="col-7 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
+
+          <div class="col-5 p-3 info-block-right">
+            <img
+              :src="block.image_url"
+              class="image pointer"
+              @click="showImage"
+            >
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="col-12 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
+        </template>
+      </template>
     </template>
 
     <template v-else>
-      <div class="row mt-4 mb-4 ml-0 mr-0 bg-white info-block">
-        <template v-if="block.arriving_time || block.leaving_time">
-          <template v-if="block.image_url">
-            <div class="col-2 pt-3 pb-3 pl-2 pr-2 info-block-left">
-              <TimeInfo
-                :block="block"
-              />
-            </div>
+      <template v-if="block.arriving_time || block.leaving_time">
+        <template v-if="block.image_url">
+          <div class="col-2 pt-3 pb-3 pl-2 pr-2 info-block-left">
+            <TimeInfo
+              :block="block"
+            />
+          </div>
 
-            <div class="col-10 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
+          <div class="col-10 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
 
-            <div class="col-12 p-3 info-block-below">
-              <template v-if="$mq == 'sm'">
-                <img
-                  :src="block.image_url"
-                  class="image"
-                  @click="showImage"
-                >
-              </template>
-              <template v-else>
-                <img
-                  :src="block.image_url"
-                  class="image"
-                >
-              </template>
-            </div>
-          </template>
-
-          <template v-else>
-            <div class="col-2 pt-3 pb-3 pl-2 pr-2 info-block-left">
-              <TimeInfo
-                :block="block"
-              />
-            </div>
-
-            <div class="col-10 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
-          </template>
+          <div class="col-12 p-3 info-block-below">
+            <template v-if="$mq == 'sm'">
+              <img
+                :src="block.image_url"
+                class="image pointer"
+                @click="showImage"
+              >
+            </template>
+            <template v-else>
+              <img
+                :src="block.image_url"
+                class="image"
+              >
+            </template>
+          </div>
         </template>
 
         <template v-else>
-          <template v-if="block.image_url">
-            <div class="col-12 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
+          <div class="col-2 pt-3 pb-3 pl-2 pr-2 info-block-left">
+            <TimeInfo
+              :block="block"
+            />
+          </div>
 
-            <div class="col-12 pb-3 pl-3 pr-3">
-              <template v-if="$mq == 'sm'">
-                <img
-                  :src="block.image_url"
-                  class="image"
-                  @click="showImage"
-                >
-              </template>
-              <template v-else>
-                <img
-                  :src="block.image_url"
-                  class="image"
-                >
-              </template>
-            </div>
-          </template>
-
-          <template v-else>
-            <div class="col-12 p-3">
-              <MainInfo
-                :block="block"
-                :currency="currency"
-              />
-            </div>
-          </template>
+          <div class="col-10 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
         </template>
-      </div>
+      </template>
+
+      <template v-else>
+        <template v-if="block.image_url">
+          <div class="col-12 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
+
+          <div class="col-12 pb-3 pl-3 pr-3">
+            <template v-if="$mq == 'sm'">
+              <img
+                :src="block.image_url"
+                class="image pointer"
+                @click="showImage"
+              >
+            </template>
+            <template v-else>
+              <img
+                :src="block.image_url"
+                class="image"
+              >
+            </template>
+          </div>
+        </template>
+
+        <template v-else>
+          <div class="col-12 p-3">
+            <MainInfo
+              :block="block"
+              :currency="currency"
+            />
+          </div>
+        </template>
+      </template>
     </template>
 
     <ImageModal
@@ -209,11 +205,6 @@ export default {
 </script>
 
 <style scoped>
-.info-block {
-  border: solid #FF58F2;
-  border-radius: 6px;
-}
-
 .info-block-left {
   border-right: solid thin #FF58F2;
 }
@@ -233,6 +224,5 @@ export default {
 .image {
   width: 100%;
   border-radius: 4px;
-  cursor: pointer;
 }
 </style>

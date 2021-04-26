@@ -72,57 +72,29 @@
         <p class="mt-2 mb-0 pt-3 text-center text-muted font-weight-bold">
           - 旅行の概要を登録 -
         </p>
-        <div class="mb-3 ml-5 mr-5 d-flex justify-content-center image-trim-sm">
+        <div class="mb-5 d-flex justify-content-center image-trim">
           <img
-            src="~sample-sm.jpg"
+            src="~sample.jpg"
             class="sample-image"
           >
         </div>
 
-        <p class="mb-0 pt-3 text-center text-muted font-weight-bold">
+        <p class="mt-5 mb-0 pt-3 text-center text-muted font-weight-bold">
           - 旅行の詳細を登録して投稿 -
         </p>
-        <div class="mb-3 ml-5 mr-5 d-flex justify-content-center image-trim-xs">
+        <div class="mb-5 d-flex justify-content-center image-trim">
           <img
-            src="~sample-sm2.jpg"
-            class="sample-image"
-          >
-        </div>
-        <p class="p-0 m-0 font-weight-bold text-center">
-          ・<br>・<br>・
-        </p>
-        <div class="mb-3 ml-5 mr-5 d-flex justify-content-center image-trim-sm">
-          <img
-            src="~sample-sm3.jpg"
+            src="~sample2.jpg"
             class="sample-image"
           >
         </div>
 
-        <p class="mb-0 text-center text-muted font-weight-bold">
-          - 旅行記録が作成される -
+        <p class="mt-5 mb-0 pt-3 text-center text-muted font-weight-bold">
+          - 旅行記録が作成されタイムラインに投稿される -
         </p>
-        <div class="mb-3 ml-5 mr-5 d-flex justify-content-center image-trim-xs">
+        <div class="d-flex justify-content-center image-trim">
           <img
-            src="~sample-sm4.jpg"
-            class="sample-image"
-          >
-        </div>
-        <p class="p-0 m-0 font-weight-bold text-center">
-          ・<br>・<br>・
-        </p>
-        <div class="mb-3 ml-5 mr-5 d-flex justify-content-center image-trim-sm">
-          <img
-            src="~sample-sm5.jpg"
-            class="sample-image"
-          >
-        </div>
-
-        <p class="mb-0 pt-3 text-center text-muted font-weight-bold">
-          - 作成された旅行記録がタイムラインに投稿される -
-        </p>
-        <div class="ml-5 mr-5 d-flex justify-content-center image-trim-sm">
-          <img
-            src="~sample-sm6.jpg"
+            src="~sample3.jpg"
             class="sample-image"
           >
         </div>
@@ -131,7 +103,11 @@
           ※ 投稿は非公開にすることができます
         </p>
 
-        <div class="mt-5 mb-5 pb-3 d-flex justify-content-center">
+        <h3 class="pt-5 mb-5 mb-0 text-center font-weight-bold lets-use">
+          TriStoで旅行の全てを<br>記録しましょう！
+        </h3>
+
+        <div class="mb-5 pb-5 d-flex justify-content-center">
           <h5
             class="p-2 m-0 text-white text-center font-weight-bold register-btn"
             @click="toRegister"
@@ -230,18 +206,11 @@
         </div>
 
         <h5 class="mt-5 mb-0 pt-3 text-center text-muted font-weight-bold">
-          ー 旅行記録が作成され、タイムラインに投稿される ー
+          ー 旅行記録が作成されタイムラインに投稿される ー
         </h5>
-        <div class="mb-1 d-flex justify-content-center image-trim">
-          <img
-            src="~sample3.jpg"
-            class="sample-image"
-          >
-        </div>
-
         <div class="d-flex justify-content-center image-trim">
           <img
-            src="~sample4.jpg"
+            src="~sample3.jpg"
             class="sample-image"
           >
         </div>
@@ -250,9 +219,13 @@
           ※ 投稿は非公開にすることができます
         </p>
 
+        <h3 class="pt-5 mb-5 mb-0 text-center font-weight-bold lets-use">
+          TriStoで旅行の全てを記録しましょう！
+        </h3>
+
         <div
           id="click-now"
-          class="mt-5 mb-5 pt-1 pb-3 d-flex justify-content-center"
+          class="mb-5 pt-1 pb-5 d-flex justify-content-center"
         >
           <h5
             class="p-2 m-0 text-white text-center font-weight-bold register-btn"
@@ -275,13 +248,6 @@ import 'toptitle.png'
 import 'sample.jpg'
 import 'sample2.jpg'
 import 'sample3.jpg'
-import 'sample4.jpg'
-import 'sample-sm.jpg'
-import 'sample-sm2.jpg'
-import 'sample-sm3.jpg'
-import 'sample-sm4.jpg'
-import 'sample-sm5.jpg'
-import 'sample-sm6.jpg'
 import FooterTermAndPolicy from '../../components/FooterTermAndPolicy'
 import { mapGetters } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
@@ -301,10 +267,13 @@ export default {
     ...mapGetters('users', ['authUser']),
   },
   created() {
-    if (this.authUser) this.$router.push({ name: 'ArticleIndex' })
-    setTimeout(() => {
-      this.isVisibleTopPage = true
-    }, 500)
+    if (this.authUser) {
+      this.$router.push({ name: 'ArticleIndex' })
+    } else {
+      setTimeout(() => {
+        this.isVisibleTopPage = true
+      }, 500)
+    }
   },
   methods: {
     toRegister() {
@@ -407,6 +376,10 @@ export default {
   background-color: #C642BC;
 }
 
+.lets-use {
+  color: #FF58F2;
+}
+
 .image-trim {
   position: relative;
   overflow: hidden;
@@ -414,36 +387,6 @@ export default {
 }
 
 .image-trim img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  width: 100%;
-  object-fit: cover;
-}
-
-.image-trim-sm {
-  position: relative;
-  overflow: hidden;
-  padding-top: 141%;
-}
-
-.image-trim-sm img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  width: 100%;
-  object-fit: cover;
-}
-
-.image-trim-xs {
-  position: relative;
-  overflow: hidden;
-  padding-top: 128%;
-}
-
-.image-trim-xs img {
   position: absolute;
   top: 50%;
   left: 50%;
