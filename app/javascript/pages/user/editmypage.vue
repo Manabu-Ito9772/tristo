@@ -346,7 +346,7 @@ export default {
   },
   created() {
     this.user = Object.assign({}, this.authUser)
-    this.getAvatarUrl()
+    if (this.authUser.avatar_url) this.avatar = this.authUser.avatar_url
     this.resize()
   },
   methods: {
@@ -377,13 +377,6 @@ export default {
         .catch(err => console.log(err.response))
       this.$router.push({ name: 'MyPage' })
     },
-    getAvatarUrl() {
-      let avatar = this.authUser.avatar_url.split('/')
-      let avatar_url = avatar.slice(-1)[0]
-      if (avatar_url != 'default-image.jpg') {
-        this.avatar = this.authUser.avatar_url
-      }
-    },
     resetAvatar() {
       if (this.previewAvatar) {
         this.previewAvatar = ''
@@ -391,7 +384,10 @@ export default {
         this.isVisibleFileInput = false
         this.$nextTick(() => (this.isVisibleFileInput = true))
       } else {
-        this.$axios.patch(`users/${this.authUser.id}/reset_avatar`)
+        this.$axios.patch('users/reset_avatar')
+          .then(res => {
+            this.$store.commit('users/setUser', res.data)
+          })
           .catch(err => console.log(err.response))
         this.avatar = ''
       }

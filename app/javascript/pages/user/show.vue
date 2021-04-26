@@ -7,10 +7,18 @@
             <div class="m-0">
               <div class="pb-3 d-flex justify-content-center align-items-center">
                 <div>
-                  <img
-                    :src="user.avatar_url"
-                    class="user-icon mr-4"
-                  >
+                  <template v-if="user.avatar_url">
+                    <img
+                      :src="user.avatar_url"
+                      class="user-icon mr-4"
+                    >
+                  </template>
+                  <template v-else>
+                    <img
+                      src="~default.jpg"
+                      class="user-icon mr-4"
+                    >
+                  </template>
                 </div>
                 <div>
                   <div class="d-flex justify-content-center align-items-center">
@@ -212,10 +220,19 @@
             <div class="m-0">
               <div class="pb-3 d-flex justify-content-center align-items-center">
                 <div>
-                  <img
-                    :src="user.avatar_url"
-                    class="user-icon mr-4"
-                  >
+                  <template v-if="user.avatar_url">
+                    <img
+                      :src="user.avatar_url"
+                      class="user-icon mr-4"
+                    >
+                  </template>
+                  <template v-else>
+                    <img
+                      id="default-avatar"
+                      src="~default.jpg"
+                      class="user-icon mr-4"
+                    >
+                  </template>
                 </div>
                 <div>
                   <div class="d-flex justify-content-center align-items-center">
@@ -414,6 +431,7 @@
 </template>
 
 <script>
+import 'default.jpg'
 import ArticleItem from '../article/components/index/ArticleItem'
 import { mapGetters } from 'vuex'
 

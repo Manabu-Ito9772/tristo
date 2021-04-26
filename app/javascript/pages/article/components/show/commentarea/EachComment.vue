@@ -1,11 +1,21 @@
 <template>
   <div class="pt-2 pb-2 pl-3 pr-3 d-flex align-items-top comment-each">
     <div>
-      <img
-        :src="comment.user.avatar_url"
-        class="user-icon"
-        @click="toUserPage(comment.user.id)"
-      >
+      <template v-if="comment.user.avatar_url">
+        <img
+          :src="comment.user.avatar_url"
+          class="user-icon"
+          @click="toUserPage(comment.user.id)"
+        >
+      </template>
+      <template v-else>
+        <img
+          id="default-avatar"
+          src="~default.jpg"
+          class="user-icon"
+          @click="toUserPage(comment.user.id)"
+        >
+      </template>
     </div>
     <div class="ml-3 w-100">
       <div class="d-flex justify-content-between align-items-center">
@@ -177,6 +187,7 @@
 </template>
 
 <script>
+import 'default.jpg'
 import { mapGetters } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 

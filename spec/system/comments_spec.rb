@@ -29,7 +29,7 @@ RSpec.describe 'コメント', type: :system do
       }
 
       it 'コメントが投稿される' do
-        expect(page).to have_selector("img[src$='default-image.jpg']")
+        expect(page).to have_selector('#default-avatar')
         expect(page).to have_content(user.name)
         expect(page).to have_content('Comment')
       end
@@ -159,7 +159,7 @@ RSpec.describe 'コメント', type: :system do
       find('.comment').click
       expect(page).to_not have_field('コメント')
       expect(page).to_not have_button('投稿')
-      expect(page).to have_selector("img[src$='default-image.jpg']")
+      expect(page).to have_css('#default-avatar')
       expect(page).to have_content(user.name)
       expect(page).to have_content('Comment')
       expect(page).to_not have_content('.fa-edit')

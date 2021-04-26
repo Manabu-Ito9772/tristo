@@ -29,10 +29,19 @@
                   @click="toUserPage(relationship.follow.id)"
                 >
                   <div>
-                    <img
-                      :src="relationship.follow.avatar_url"
-                      class="user-icon"
-                    >
+                    <template v-if="relationship.follow.avatar_url">
+                      <img
+                        :src="relationship.follow.avatar_url"
+                        class="user-icon"
+                      >
+                    </template>
+                    <template v-else>
+                      <img
+                        id="default-avatar"
+                        src="~default.jpg"
+                        class="user-icon"
+                      >
+                    </template>
                   </div>
                   <h5 class="ml-3 mr-3 m-0 text-dark word-break font-weight-bold user-name">
                     {{ relationship.follow.name }}
@@ -69,6 +78,7 @@
 </template>
 
 <script>
+import 'default.jpg'
 import FollowButton from './components/following/FollowButton'
 import { mapGetters } from 'vuex'
 

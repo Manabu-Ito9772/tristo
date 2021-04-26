@@ -11,8 +11,6 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         get 'me'
-      end
-      member do
         patch 'reset_avatar'
       end
     end
