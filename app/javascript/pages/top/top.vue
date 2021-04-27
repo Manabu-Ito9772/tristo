@@ -7,7 +7,7 @@
       <template v-if="$mq == 'xs'">
         <div class="mt-5 d-flex justify-content-center image-trim">
           <img
-            src="~toptitle.png"
+            :src="require('../../../assets/images/toptitle.png')"
             class="top-title"
           >
         </div>
@@ -74,7 +74,7 @@
         </p>
         <div class="mb-5 d-flex justify-content-center image-trim">
           <img
-            src="~sample.jpg"
+            :src="require('../../../assets/images/sample.jpg')"
             class="sample-image"
           >
         </div>
@@ -84,7 +84,7 @@
         </p>
         <div class="mb-5 d-flex justify-content-center image-trim">
           <img
-            src="~sample2.jpg"
+            :src="require('../../../assets/images/sample2.jpg')"
             class="sample-image"
           >
         </div>
@@ -94,7 +94,7 @@
         </p>
         <div class="d-flex justify-content-center image-trim">
           <img
-            src="~sample3.jpg"
+            :src="require('../../../assets/images/sample3.jpg')"
             class="sample-image"
           >
         </div>
@@ -120,7 +120,7 @@
       <template v-else>
         <div class="d-flex justify-content-center image-trim">
           <img
-            src="~toptitle.png"
+            :src="require('../../../assets/images/toptitle.png')"
             class="top-title"
           >
         </div>
@@ -190,7 +190,7 @@
         </h5>
         <div class="mb-5 d-flex justify-content-center image-trim">
           <img
-            src="~sample.jpg"
+            :src="require('../../../assets/images/sample.jpg')"
             class="sample-image"
           >
         </div>
@@ -200,7 +200,7 @@
         </h5>
         <div class="mb-5 d-flex justify-content-center image-trim">
           <img
-            src="~sample2.jpg"
+            :src="require('../../../assets/images/sample2.jpg')"
             class="sample-image"
           >
         </div>
@@ -210,7 +210,7 @@
         </h5>
         <div class="d-flex justify-content-center image-trim">
           <img
-            src="~sample3.jpg"
+            :src="require('../../../assets/images/sample3.jpg')"
             class="sample-image"
           >
         </div>
@@ -244,10 +244,6 @@
 </template>
 
 <script>
-import 'toptitle.png'
-import 'sample.jpg'
-import 'sample2.jpg'
-import 'sample3.jpg'
 import FooterTermAndPolicy from '../../components/FooterTermAndPolicy'
 import { mapGetters } from 'vuex'
 import { isMobile } from 'mobile-device-detect'

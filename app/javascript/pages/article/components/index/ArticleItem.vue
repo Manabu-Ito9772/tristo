@@ -109,7 +109,7 @@
               </template>
               <template v-else>
                 <img
-                  src="~default.jpg"
+                  :src="require('../../../../../assets/images/default.jpg')"
                   class="user-icon pointer"
                   @click="toUserPage(article.user.id)"
                 >
@@ -341,7 +341,7 @@
                 <template v-else>
                   <img
                     id="default-avatar"
-                    src="~default.jpg"
+                    :src="require('../../../../../assets/images/default.jpg')"
                     class="user-icon pointer"
                     @click="toUserPage(article.user.id)"
                   >
@@ -439,7 +439,6 @@
 </template>
 
 <script>
-import 'default.jpg'
 import { mapGetters } from 'vuex'
 import { isMobile } from 'mobile-device-detect'
 

@@ -26,7 +26,7 @@
             にアクセスしてください。
           </p>
           <img
-            src="~map.jpg"
+            :src="require('../../../../../../assets/images/map.jpg')"
             class="map-image"
           >
 
@@ -34,7 +34,7 @@
             ②埋め込みたいマップをクリックしてマイマップ編集ページにアクセスしてください。
           </p>
           <img
-            src="~map2.jpg"
+            :src="require('../../../../../../assets/images/map2.jpg')"
             class="map-image"
           >
 
@@ -42,7 +42,7 @@
             ③編集ページのメニューボタンから「自分のサイトに埋め込む」をクリックしてください。
           </p>
           <img
-            src="~map3.jpg"
+            :src="require('../../../../../../assets/images/map3.jpg')"
             class="map-image"
           >
 
@@ -50,7 +50,7 @@
             ④表示されたHTMLをコピーしてください。
           </p>
           <img
-            src="~map4.jpg"
+            :src="require('../../../../../../assets/images/map4.jpg')"
             class="map-image"
           >
 
@@ -59,7 +59,7 @@
               ⑤旅行概要作成フォームの「マップ」にコピーしたHTMLを貼り付け、旅行記録を作成・投稿してください。
             </p>
             <img
-              src="~map5.jpg"
+              :src="require('../../../../../../assets/images/map5.jpg')"
               class="map-image"
             >
           </template>
@@ -68,7 +68,7 @@
               ⑤旅行概要編集フォームの「マップ」にコピーしたHTMLを貼り付け、旅行記録を投稿してください。
             </p>
             <img
-              src="~map7.jpg"
+              :src="require('../../../../../../assets/images/map7.jpg')"
               class="map-image"
             >
           </template>
@@ -77,7 +77,7 @@
             ⑥作成された旅行記録にマイマップが埋め込まれます。
           </p>
           <img
-            src="~map6.jpg"
+            :src="require('../../../../../../assets/images/map6.jpg')"
             class="map-image"
           >
 
@@ -120,7 +120,7 @@
             にアクセスしてください。
           </p>
           <img
-            src="~map.jpg"
+            :src="require('../../../../../../assets/images/map.jpg')"
             class="map-image"
           >
 
@@ -128,7 +128,7 @@
             ②埋め込みたいマップをクリックしてマイマップ編集ページに<br>アクセスしてください。
           </p>
           <img
-            src="~map2.jpg"
+            :src="require('../../../../../../assets/images/map2.jpg')"
             class="map-image"
           >
 
@@ -136,7 +136,7 @@
             ③編集ページのメニューボタンから「自分のサイトに埋め込む」を<br>クリックしてください。
           </p>
           <img
-            src="~map3.jpg"
+            :src="require('../../../../../../assets/images/map3.jpg')"
             class="map-image"
           >
 
@@ -144,7 +144,7 @@
             ④表示されたHTMLをコピーしてください。
           </p>
           <img
-            src="~map4.jpg"
+            :src="require('../../../../../../assets/images/map4.jpg')"
             class="map-image"
           >
 
@@ -153,7 +153,7 @@
               ⑤旅行概要作成フォームの「マップ」にコピーしたHTMLを貼り付け、<br>旅行記録を作成・投稿してください。
             </p>
             <img
-              src="~map5.jpg"
+              :src="require('../../../../../../assets/images/map5.jpg')"
               class="map-image"
             >
           </template>
@@ -162,7 +162,7 @@
               ⑤旅行概要編集フォームの「マップ」にコピーしたHTMLを貼り付け、<br>旅行記録を投稿してください。
             </p>
             <img
-              src="~map7.jpg"
+              :src="require('../../../../../../assets/images/map7.jpg')"
               class="map-image"
             >
           </template>
@@ -171,7 +171,7 @@
             ⑥作成された旅行記録にマイマップが埋め込まれます。
           </p>
           <img
-            src="~map6.jpg"
+            :src="require('../../../../../../assets/images/map6.jpg')"
             class="map-image"
           >
 
@@ -192,14 +192,6 @@
 </template>
 
 <script>
-import 'map.jpg'
-import 'map2.jpg'
-import 'map3.jpg'
-import 'map4.jpg'
-import 'map5.jpg'
-import 'map6.jpg'
-import 'map7.jpg'
-
 export default {
   name: 'HowToEmbedMap',
   methods: {

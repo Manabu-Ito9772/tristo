@@ -38,7 +38,7 @@
                     <template v-else>
                       <img
                         id="default-avatar"
-                        src="~default.jpg"
+                        :src="require('../../../assets/images/default.jpg')"
                         class="user-icon"
                       >
                     </template>
@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import 'default.jpg'
 import FollowButton from './components/following/FollowButton'
 import { mapGetters } from 'vuex'
 

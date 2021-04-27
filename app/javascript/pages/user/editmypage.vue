@@ -39,7 +39,7 @@
                       </template>
                       <template v-else>
                         <img
-                          src="~default.jpg"
+                          :src="require('../../../assets/images/default.jpg')"
                           class="user-icon"
                         >
                       </template>
@@ -201,7 +201,7 @@
                   <template v-else>
                     <img
                       id="default-avatar"
-                      src="~default.jpg"
+                      :src="require('../../../assets/images/default.jpg')"
                       class="mt-2 mb-2 user-icon"
                     >
                   </template>
@@ -303,7 +303,6 @@
 </template>
 
 <script>
-import 'default.jpg'
 import TermAndPolicyLink from '../../components/TermAndPolicyLink'
 import { mapGetters, mapActions } from 'vuex'
 import { isMobile } from 'mobile-device-detect'

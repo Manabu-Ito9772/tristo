@@ -15,7 +15,7 @@
                   </template>
                   <template v-else>
                     <img
-                      src="~default.jpg"
+                      :src="require('../../../assets/images/default.jpg')"
                       class="user-icon mr-4"
                     >
                   </template>
@@ -229,7 +229,7 @@
                   <template v-else>
                     <img
                       id="default-avatar"
-                      src="~default.jpg"
+                      :src="require('../../../assets/images/default.jpg')"
                       class="user-icon mr-4"
                     >
                   </template>
@@ -431,7 +431,6 @@
 </template>
 
 <script>
-import 'default.jpg'
 import ArticleItem from '../article/components/index/ArticleItem'
 import { mapGetters } from 'vuex'
 
