@@ -80,5 +80,9 @@ group :test do
   gem 'webdrivers'
 end
 
+group :production, :staging do
+  gem 'unicorn'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data'

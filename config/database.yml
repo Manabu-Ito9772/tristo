@@ -85,6 +85,7 @@ test:
 #
 production:
   <<: *default
-  database: tristo_production
-  username: tristo
-  password: <%= ENV['TRISTO_DATABASE_PASSWORD'] %>
+  database: <%= Rails.application.credentials.DB_NAME %>
+  username: <%= Rails.application.credentials.DB_USERNAME %>
+  password: <%= Rails.application.credentials.DB_PASSWORD %>
+  hostname: <%= Rails.application.credentials.DB_HOSTNAME %>
