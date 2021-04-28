@@ -18,7 +18,7 @@
               {{ transportation.description }}&nbsp;&nbsp;&nbsp;
             </template>
             <template v-if="transportation.cost">
-              {{ separateWithComma(transportation.cost) }}円
+              {{ separateWithComma(transportation.cost) }}&nbsp;{{ currency }}
             </template>
           </p>
         </template>
@@ -34,7 +34,7 @@
               {{ transportation.description }}&nbsp;&nbsp;&nbsp;
             </template>
             <template v-if="transportation.cost">
-              {{ separateWithComma(transportation.cost) }}{{ currency }}
+              {{ separateWithComma(transportation.cost) }}&nbsp;{{ currency }}
             </template>
           </p>
         </template>
@@ -59,7 +59,7 @@
               {{ transportation.description }}&nbsp;&nbsp;&nbsp;
             </template>
             <template v-if="transportation.cost">
-              {{ separateWithComma(transportation.cost) }}円
+              {{ separateWithComma(transportation.cost) }}&nbsp;{{ currency }}
             </template>
           </p>
         </template>
@@ -75,7 +75,7 @@
               {{ transportation.description }}&nbsp;&nbsp;&nbsp;
             </template>
             <template v-if="transportation.cost">
-              {{ separateWithComma(transportation.cost) }}{{ currency }}
+              {{ separateWithComma(transportation.cost) }}&nbsp;{{ currency }}
             </template>
           </p>
         </template>
@@ -101,7 +101,7 @@
                 {{ transportation.description }}&nbsp;&nbsp;&nbsp;
               </template>
               <template v-if="transportation.cost">
-                {{ separateWithComma(transportation.cost) }}円
+                {{ separateWithComma(transportation.cost) }}&nbsp;{{ currency }}
               </template>
             </p>
           </template>
@@ -117,7 +117,7 @@
                 {{ transportation.description }}&nbsp;&nbsp;&nbsp;
               </template>
               <template v-if="transportation.cost">
-                {{ separateWithComma(transportation.cost) }}{{ currency }}
+                {{ separateWithComma(transportation.cost) }}&nbsp;{{ currency }}
               </template>
             </p>
           </template>
