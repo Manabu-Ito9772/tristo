@@ -701,9 +701,9 @@ RSpec.describe "記事作成", type: :system do
           end
         end
 
-        context 'ブロックを15個作成' do
+        context 'ブロックを20個作成' do
           it 'ブロック追加ボタンが非表示になりそれ以上ブロックを追加できない' do
-            14.times do |i|
+            19.times do |i|
               fill_in 'スポット', with: 'TestPlace'
               within('.info-block-form') do
                 find('.add-button').click

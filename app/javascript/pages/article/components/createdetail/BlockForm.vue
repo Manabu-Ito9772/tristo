@@ -438,7 +438,7 @@
 
           <template v-if="$mq == 'lg'">
             <template v-if="isVisibleAddBlockButton">
-              <template v-if="blockcount < 15">
+              <template v-if="blockcount < 20">
                 <div class="mt-3 pb-4 text-center">
                   <template v-if="isMobile">
                     <div
@@ -551,7 +551,7 @@ export default {
       if (valid) this.blockAndCost.block.uploadImage = event.target.files[0]
     },
     addBlock() {
-      if (this.dayid && this.blockcount < 15) {
+      if (this.dayid && this.blockcount < 20) {
         this.blockAndCost.block.day_id = this.dayid
         this.blockAndCost.block.position = this.blockcount + 1
         this.$emit('addBlock', this.blockAndCost)

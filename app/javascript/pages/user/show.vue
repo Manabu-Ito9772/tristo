@@ -472,9 +472,9 @@ export default {
   },
   created() {
     this.getUserInfo()
-    this.checkFollowOrNot()
     this.getFollowCount()
     this.getNumOfArticles()
+    if (this.authUser) this.checkFollowOrNot()
     this.infiniteHandler()
   },
   methods: {
