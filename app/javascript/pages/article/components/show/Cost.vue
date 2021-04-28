@@ -30,8 +30,11 @@
                           </p>
                         </div>
                         <div class="col-4 p-0 text-right">
-                          <p class="m-0">
-                            {{ separateWithComma(costInfo.cost) }}{{ currency }}
+                          <p class="d-inline-block m-0 word-break">
+                            {{ separateWithComma(costInfo.cost) }}
+                          </p>
+                          <p class="d-inline-block m-0 no-wrap">
+                            {{ currency }}
                           </p>
                         </div>
                       </div>
@@ -39,8 +42,14 @@
                   </div>
                   <div class="row mt-2 ml-2 mr-2">
                     <div class="col-12 p-0 text-right">
-                      <p class="m-0 font-weight-bold">
-                        合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}{{ currency }}
+                      <p class="d-inline-block m-0 font-weight-bold no-wrap">
+                        合計：&nbsp;
+                      </p>
+                      <p class="d-inline-block m-0 font-weight-bold word-break">
+                        {{ labelOrCost(costByGenre[1][0].genre).cost }}
+                      </p>
+                      <p class="d-inline-block m-0 font-weight-bold no-wrap">
+                        {{ currency }}
                       </p>
                     </div>
                   </div>
@@ -64,16 +73,25 @@
                       </p>
                     </div>
                     <div class="col-4 p-0 text-right">
-                      <p class="m-0">
-                        {{ separateWithComma(costInfo.cost) }}{{ currency }}
+                      <p class="d-inline-block m-0 word-break">
+                        {{ separateWithComma(costInfo.cost) }}
+                      </p>
+                      <p class="d-inline-block m-0 no-wrap">
+                        {{ currency }}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div class="row mt-2 ml-2 mr-2">
                   <div class="col-12 p-0 text-right">
-                    <p class="m-0 font-weight-bold">
-                      合計：&nbsp;&nbsp;{{ labelOrCost(costByGenre[1][0].genre).cost }}{{ currency }}
+                    <p class="d-inline-block m-0 font-weight-bold no-wrap">
+                      合計：&nbsp;
+                    </p>
+                    <p class="d-inline-block m-0 font-weight-bold word-break">
+                      {{ labelOrCost(costByGenre[1][0].genre).cost }}
+                    </p>
+                    <p class="d-inline-block m-0 font-weight-bold no-wrap">
+                      {{ currency }}
                     </p>
                   </div>
                 </div>
@@ -82,8 +100,14 @@
           </div>
         </div>
         <div class="mt-5 mb-5 ml-2 mr-2 text-center">
+          <h4 class="d-inline text-dark font-weight-bold toatal-cost-border no-wrap">
+            総計：&nbsp;
+          </h4>
           <h4 class="d-inline text-dark font-weight-bold toatal-cost-border">
-            総計：&nbsp;{{ separateWithComma(totalCost) }}{{ currency }}
+            {{ separateWithComma(totalCost) }}
+          </h4>
+          <h4 class="d-inline text-dark font-weight-bold toatal-cost-border no-wrap">
+            {{ currency }}
           </h4>
         </div>
       </div>
@@ -273,5 +297,9 @@ export default {
 
 .toatal-cost-border {
   border-bottom: solid #1D51FF;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 </style>

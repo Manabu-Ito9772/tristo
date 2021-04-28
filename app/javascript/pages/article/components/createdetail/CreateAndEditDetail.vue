@@ -324,24 +324,28 @@ export default {
         .then(res => {
           this.block_id = res.data.id
         })
+        .then(async() => {
+          for (let spending of this.blockAndCost.spendings) {
+            if (spending.description) {
+              spending.block_id = this.block_id
+              await this.$axios.post('spendings', spending)
+                .catch(err => console.log(err.response))
+            }
+          }
+          for (let transportation of this.blockAndCost.transportations) {
+            if (transportation.means) {
+              transportation.block_id = this.block_id
+              await this.$axios.post('transportations', transportation)
+                .catch(err => console.log(err.response))
+            }
+          }
+        })
+        .then(() => {
+          this.getArticle()
+          this.isVisibleForm = false
+          this.$nextTick(() => (this.isVisibleForm = true))
+        })
         .catch(err => console.log(err.response))
-      for (let spending of this.blockAndCost.spendings) {
-        if (spending.description) {
-          spending.block_id = this.block_id
-          await this.$axios.post('spendings', spending)
-            .catch(err => console.log(err.response))
-        }
-      }
-      for (let transportation of this.blockAndCost.transportations) {
-        if (transportation.means) {
-          transportation.block_id = this.block_id
-          await this.$axios.post('transportations', transportation)
-            .catch(err => console.log(err.response))
-        }
-      }
-      this.getArticle()
-      this.isVisibleForm = false
-      this.$nextTick(() => (this.isVisibleForm = true))
     },
     async showMainColumnLg(day) {
       await this.getArticle()

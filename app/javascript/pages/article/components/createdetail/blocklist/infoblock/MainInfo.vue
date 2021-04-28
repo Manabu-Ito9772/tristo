@@ -61,8 +61,11 @@
             </p>
           </div>
           <div class="col-4 p-0 text-right">
-            <p class="m-0 word-break">
-              {{ separateWithComma(spending.cost) }}{{ currency }}
+            <p class="d-inline-block m-0 word-break">
+              {{ separateWithComma(spending.cost) }}
+            </p>
+            <p class="d-inline-block m-0 no-wrap">
+              {{ currency }}
             </p>
           </div>
         </div>
@@ -127,5 +130,9 @@ export default {
 
 .remove-first-line:first-line {
   line-height: 0px;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 </style>

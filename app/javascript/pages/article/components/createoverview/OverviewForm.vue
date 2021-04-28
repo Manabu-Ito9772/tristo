@@ -460,23 +460,7 @@ export default {
       } else {
         this.article.country_id = this.country.id
       }
-      // if (this.article.start_date) {
-      //   this.article.start_date.setHours(this.article.start_date.getHours() + 9)
-      // }
-      // if (this.article.end_date) {
-      //   this.article.end_date.setHours(this.article.end_date.getHours() + 9)
-      // }
-      await this.createArticle()
-      await this.createRegions()
-      await this.createDays()
-      await this.registerTags()
-      this.$store.commit('pages/setCurrentPage', 'create')
-      this.$router.push({
-        name: 'ArticleCreateDetail',
-        query: {id: this.day.article_id}
-      })
-    },
-    async createArticle() {
+
       const formData = new FormData()
       formData.append('article[country_id]', this.article.country_id)
       formData.append('article[title]', this.article.title)
@@ -491,6 +475,18 @@ export default {
           this.day.article_id = res.data.id
           this.article_region.article_id = res.data.id
           this.article_tag.article_id = res.data.id
+        })
+        .then(async() => {
+          await this.createRegions()
+          await this.createDays()
+          await this.registerTags()
+        })
+        .then(() => {
+          this.$store.commit('pages/setCurrentPage', 'create')
+          this.$router.push({
+            name: 'ArticleCreateDetail',
+            query: {id: this.day.article_id}
+          })
         })
         .catch(err => console.log(err.response))
     },

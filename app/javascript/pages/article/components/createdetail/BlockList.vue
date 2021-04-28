@@ -245,26 +245,30 @@ export default {
       if (blockEdit.uploadImage) formData.append('block[image]', blockEdit.uploadImage)
 
       await this.$axios.patch(`blocks/${blockEdit.block.id}`, formData)
+        .then(async () => {
+          for (let spending of blockEdit.block.spendings) {
+            if (spending.id) {
+              await this.$axios.patch(`spendings/${spending.id}`, spending)
+                .catch(err => console.log(err.response))
+            } else {
+              await this.$axios.post('spendings', spending)
+                .catch(err => console.log(err.response))
+            }
+          }
+          for (let transportation of blockEdit.block.transportations) {
+            if (transportation.id) {
+              await this.$axios.patch(`transportations/${transportation.id}`, transportation)
+                .catch(err => console.log(err.response))
+            } else {
+              await this.$axios.post('transportations', transportation)
+                .catch(err => console.log(err.response))
+            }
+          }
+        })
+        .then(() => {
+          this.$emit('getArticleAndCloseForm')
+        })
         .catch(err => console.log(err.response))
-      for (let spending of blockEdit.block.spendings) {
-        if (spending.id) {
-          await this.$axios.patch(`spendings/${spending.id}`, spending)
-            .catch(err => console.log(err.response))
-        } else {
-          await this.$axios.post('spendings', spending)
-            .catch(err => console.log(err.response))
-        }
-      }
-      for (let transportation of blockEdit.block.transportations) {
-        if (transportation.id) {
-          await this.$axios.patch(`transportations/${transportation.id}`, transportation)
-            .catch(err => console.log(err.response))
-        } else {
-          await this.$axios.post('transportations', transportation)
-            .catch(err => console.log(err.response))
-        }
-      }
-      this.$emit('getArticleAndCloseForm')
     },
     closeBlockEditForm() {
       this.blockId = null

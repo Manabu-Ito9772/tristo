@@ -541,7 +541,7 @@ RSpec.describe "記事編集/削除", type: :system do
                   find('.add-button').click
                   sleep 2
                 end
-                page.all('.fa-edit')[1].click
+                page.all('.fa-edit')[2].click
                 within('.block-form-to-edit') do
                   select 1, from: 'ナンバー'
                   find('.add-button').click

@@ -26,6 +26,11 @@
                   class="form-control mt-2"
                 >
                 <span class="text-danger">{{ errors[0] }}</span>
+                <template v-if="emailError">
+                  <span class="text-danger d-block">
+                    このメールアドレスは既に使われています
+                  </span>
+                </template>
               </ValidationProvider>
             </div>
 
@@ -145,6 +150,11 @@
                   class="form-control mt-2 bg-light"
                 >
                 <span class="text-danger">{{ errors[0] }}</span>
+                <template v-if="emailError">
+                  <span class="text-danger d-block">
+                    このメールアドレスは既に使われています
+                  </span>
+                </template>
               </ValidationProvider>
             </div>
 
@@ -261,6 +271,7 @@ export default {
         password: ''
       },
       inputType: 'password',
+      emailError: false,
       isMobile: isMobile
     }
   },
@@ -276,19 +287,26 @@ export default {
   },
   methods: {
     ...mapActions('users', [
-      'updateUser', 'deleteUser'
+      'deleteUser'
     ]),
-    updateCurrentUser() {
-      try {
-        if (this.user.password == '') {
-          delete this.user.password
-        }
-        this.updateUser(this.user)
-        this.$router.push({ name: 'MyPage' })
-        this.$store.commit('pages/setCurrentPage', 'user')
-      } catch (error) {
-        console.log(error)
+    async updateCurrentUser() {
+      if (this.user.password == '') {
+        delete this.user.password
       }
+      await this.$axios.patch(`users/${this.authUser.id}`, this.user)
+        .then(res => {
+          this.$store.commit('users/setUser', res.data)
+          this.$router.push({ name: 'MyPage' })
+          this.$store.commit('pages/setCurrentPage', 'user')
+        })
+        .catch(error => {
+          for (let err of error.response.data.email) {
+            if (err == 'has already been taken') {
+              this.emailError = true
+            }
+          }
+          console.log(error.response)
+        })
     },
     deleteCurrentUser() {
       if (confirm('本当に退会しますか？')) {

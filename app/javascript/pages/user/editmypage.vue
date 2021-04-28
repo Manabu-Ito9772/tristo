@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid mt-4 mb-4">
+  <div class="container-fluid mt-4">
     <template v-if="$mq == 'xs'">
-      <div class="row">
+      <div class="row padding-bottom">
         <div class="col-12 pt-3 pb-4 text-center">
           <h3 class="p-0 m-0 d-inline font-weight-bold text-muted">
             プロフィール編集
@@ -165,7 +165,7 @@
     </template>
 
     <template v-else>
-      <div class="row">
+      <div class="row padding-bottom">
         <h3 class="col-12 p-2 m-0 text-center text-white font-weight-bold top-title">
           プロフィール編集
         </h3>
@@ -347,6 +347,7 @@ export default {
     this.user = Object.assign({}, this.authUser)
     if (this.authUser.avatar_url) this.avatar = this.authUser.avatar_url
     this.resize()
+    this.scrollTop()
   },
   methods: {
     ...mapActions('users', [
@@ -373,8 +374,10 @@ export default {
         .then(res => {
           this.$store.commit('users/setUser', res.data)
         })
+        .then(() => {
+          this.$router.push({ name: 'MyPage' })
+        })
         .catch(err => console.log(err.response))
-      this.$router.push({ name: 'MyPage' })
     },
     resetAvatar() {
       if (this.previewAvatar) {
@@ -390,6 +393,12 @@ export default {
           .catch(err => console.log(err.response))
         this.avatar = ''
       }
+    },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
     }
   }
 }
@@ -499,5 +508,9 @@ export default {
 
 .file-margin {
   margin-bottom: 35px;
+}
+
+.padding-bottom {
+  padding-bottom: 150px;
 }
 </style>
