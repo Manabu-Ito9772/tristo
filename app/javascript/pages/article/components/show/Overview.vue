@@ -43,7 +43,7 @@
 
         <template v-if="article.start_date || article.end_date">
           <p class="mt-3 mb-1 p-1 text-center text-white font-weight-bold overview-label">
-            日程
+            期間
           </p>
           <div class="pl-2 pr-2 text-center text-dark word-break">
             <template v-if="article.start_date && article.end_date">
