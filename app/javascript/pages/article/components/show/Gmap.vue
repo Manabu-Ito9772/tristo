@@ -33,14 +33,14 @@ export default {
 .map {
   width: 100%;
   height: 480px;
-  border: solid #FF990D;
+  border: solid #EDA184;
   border-radius: 6px;
 }
 
 .map-xs {
   width: 100%;
   height: 400px;
-  border: solid #FF990D;
+  border: solid #EDA184;
   border-radius: 6px;
 }
 </style>

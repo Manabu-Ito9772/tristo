@@ -267,7 +267,7 @@
               <div class="col-12 mt-4 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF58F2"
+                  color="darkgray"
                   :size="{ width: '80px' }"
                 />
               </div>
@@ -561,7 +561,7 @@
               <div class="col-12 mt-5 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF58F2"
+                  color="darkgray"
                   :size="{ width: '100px' }"
                 />
               </div>
@@ -759,7 +759,7 @@ export default {
 }
 
 .self-intro {
-  border-top: solid thin #FF58F2;
+  border-top: solid thin #DF81A2;
 }
 
 .button {

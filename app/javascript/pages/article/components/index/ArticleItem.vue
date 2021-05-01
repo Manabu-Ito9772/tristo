@@ -519,17 +519,17 @@ export default {
 }
 
 .article {
-  border: solid #FF58F2;
+  border: solid #DF81A2;
   border-radius: 6px;
 }
 
 .article-title {
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   border-radius: 6px;
 }
 
 .article-description {
-  border: solid thin #FF58F2;
+  border: solid thin #DF81A2;
   border-radius: 6px;
 }
 
@@ -554,42 +554,42 @@ export default {
 }
 
 .heart {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart:hover {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 
 .heart-favorited {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart-favorited:hover {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 
 .heart-mobile {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart-mobile:active {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 
 .heart-favorited-mobile {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart-favorited-mobile:active {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 

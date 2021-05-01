@@ -1,26 +1,47 @@
 <template>
   <div>
     <template v-if="following">
-      <div
-        class="text-white font-weight-bold unfollow-button"
-        @click="unfollowUser"
-      >
-        フォロー中
-      </div>
+      <template v-if="isMobile">
+        <div
+          class="text-white font-weight-bold unfollow-button-mobile"
+          @click="unfollowUser"
+        >
+          フォロー中
+        </div>
+      </template>
+      <template v-else>
+        <div
+          class="text-white font-weight-bold unfollow-button"
+          @click="unfollowUser"
+        >
+          フォロー中
+        </div>
+      </template>
     </template>
     <template v-if="notFollowing">
-      <div
-        class="bg-white font-weight-bold follow-button"
-        @click="followUser"
-      >
-        フォロー
-      </div>
+      <template v-if="isMobile">
+        <div
+          class="bg-white font-weight-bold follow-button-mobile"
+          @click="followUser"
+        >
+          フォロー
+        </div>
+      </template>
+      <template v-else>
+        <div
+          class="bg-white font-weight-bold follow-button"
+          @click="followUser"
+        >
+          フォロー
+        </div>
+      </template>
     </template>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'FollowButton',
@@ -34,7 +55,8 @@ export default {
     return {
       following: null,
       notFollowing: null,
-      user: null
+      user: null,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -88,19 +110,59 @@ export default {
   white-space: nowrap;
   font-size: 13px;
   padding: 6px 14px;
-  color: #1D51FF;
-  border: solid thin #1D51FF;
+  color: #6EB7DB;
+  border: solid thin #6EB7DB;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.follow-button:hover {
+  color: #208DC3;
+  border: solid thin #208DC3;
 }
 
 .unfollow-button {
   white-space: nowrap;
   font-size: 13px;
   padding: 6px 14px;
-  border: solid thin #1D51FF;
+  border: solid thin #6EB7DB;
   border-radius: 20px;
-  background-color: #1D51FF;
+  background-color: #6EB7DB;
   cursor: pointer;
+}
+
+.unfollow-button:hover {
+  border: solid thin #208DC3;
+  background-color: #208DC3;
+}
+
+.follow-button-mobile {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 6px 14px;
+  color: #6EB7DB;
+  border: solid thin #6EB7DB;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.follow-button-mobile:active {
+  color: #208DC3;
+  border: solid thin #208DC3;
+}
+
+.unfollow-button-mobile {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 6px 14px;
+  border: solid thin #6EB7DB;
+  border-radius: 20px;
+  background-color: #6EB7DB;
+  cursor: pointer;
+}
+
+.unfollow-button-mobile:active {
+  border: solid thin #208DC3;
+  background-color: #208DC3;
 }
 </style>

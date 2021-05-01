@@ -10,7 +10,7 @@
             <template v-if="costByGenre[0] == '6'">
               <template v-if="checkTransportationCost(costByGenre[1])">
                 <div class="mb-3">
-                  <p class="mb-0 text-center text-white content-label">
+                  <p class="mb-0 text-center text-white font-weight-bold content-label">
                     {{ labelOrCost(costByGenre[1][0].genre).label }}
                   </p>
                   <div
@@ -59,7 +59,7 @@
 
             <template v-else>
               <div class="mb-3">
-                <p class="mb-0 text-center text-white content-label">
+                <p class="mb-0 text-center text-white font-weight-bold content-label">
                   {{ labelOrCost(costByGenre[1][0].genre).label }}
                 </p>
                 <div
@@ -282,12 +282,12 @@ export default {
 
 .cost-column {
   width: 400px;
-  border: solid #1D51FF;
+  border: solid #6EB7DB;
   border-radius: 6px;
 }
 
 .content-label {
-  background-color: #1D51FF;
+  background-color: #6EB7DB;
   border-radius: 8px;
 }
 
@@ -296,7 +296,7 @@ export default {
 }
 
 .toatal-cost-border {
-  border-bottom: solid #1D51FF;
+  border-bottom: solid #6EB7DB;
 }
 
 .no-wrap {

@@ -189,53 +189,53 @@ export default {
 
 <style scoped>
 .day-number {
-  border: solid #00D320;
+  border: solid #81D674;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .day-number-selected {
-  background-color: #00D320;
-  border: solid #00D320;
+  background-color: #81D674;
+  border: solid #81D674;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .total-cost {
-  border: solid #1D51FF;
+  border: solid #6EB7DB;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .total-cost-selected {
-  background-color: #1D51FF;
-  border: solid #1D51FF;
+  background-color: #6EB7DB;
+  border: solid #6EB7DB;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .map {
-  border: solid #FF990D;
+  border: solid #EDA184;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .map-selected {
-  background-color: #FF990D;
-  border: solid #FF990D;
+  background-color: #EDA184;
+  border: solid #EDA184;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .comment {
-  border: solid #6A6A6A;
+  border: solid gray;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .comment-selected {
-  background-color: #6A6A6A;
-  border: solid #6A6A6A;
+  background-color: gray;
+  border: solid gray;
   border-radius: 4px;
   cursor: pointer;
 }

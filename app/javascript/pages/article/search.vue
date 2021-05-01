@@ -36,7 +36,7 @@
               <div class="mt-5 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF00EB"
+                  color="darkgray"
                   :size="{ width: '100px' }"
                 />
               </div>
@@ -93,7 +93,7 @@
             <div class="col-12 mt-3">
               <vue-loading
                 type="spiningDubbles"
-                color="#FF58F2"
+                color="darkgray"
                 :size="{ width: '80px' }"
               />
             </div>

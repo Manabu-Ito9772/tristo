@@ -160,8 +160,8 @@ export default {
 
 <style scoped>
 .area-changer {
-  background-color: #6A6A6A;
-  border: solid #6A6A6A;
+  background-color: gray;
+  border: solid gray;
   border-radius: 6px;
   cursor: pointer;
 }

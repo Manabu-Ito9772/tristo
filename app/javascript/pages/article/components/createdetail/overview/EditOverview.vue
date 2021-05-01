@@ -5,9 +5,9 @@
         v-slot="{ errors }"
         rules="required|max:100"
       >
-        <h5 class="col-12 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+        <p class="col-12 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
           タイトル（必須）
-        </h5>
+        </p>
         <input
           v-model="articleEdit.title"
           name="タイトル"
@@ -21,9 +21,9 @@
           v-slot="{ errors }"
           rules="country"
         >
-          <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+          <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
             国（必須）
-          </h5>
+          </p>
           <v-select
             v-model="country"
             name="国"
@@ -38,9 +38,9 @@
           <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
-        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+        <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
           地域
-        </h5>
+        </p>
         <v-select
           v-model="regionIdArray"
           name="地域"
@@ -59,9 +59,9 @@
           v-slot="{ errors }"
           rules="prefecture"
         >
-          <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+          <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
             都道府県（必須）
-          </h5>
+          </p>
           <v-select
             v-model="regionIdArray"
             name="都道府県"
@@ -77,9 +77,9 @@
         </ValidationProvider>
       </template>
 
-      <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+      <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
         期間
-      </h5>
+      </p>
       <div class="d-flex align-items-center justify-content-between">
         <Datepicker
           v-model="articleEdit.start_date"
@@ -112,9 +112,9 @@
         v-slot="{ errors }"
         rules="max:500"
       >
-        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+        <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
           コメント
-        </h5>
+        </p>
         <textarea
           ref="area"
           v-model="articleEdit.description"
@@ -132,9 +132,9 @@
         name="アイキャッチ"
         rules="image|size:5242.88"
       >
-        <h5 class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
+        <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
           アイキャッチ
-        </h5>
+        </p>
         <template v-if="previewEyecatch">
           <div class="mb-1 image-trim">
             <img
@@ -199,9 +199,9 @@
         </p>
       </ValidationProvider>
 
-      <h5 class="col-12 mt-4 p-1 text-center text-white font-weight-bold article-title word-break">
+      <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
         タグ
-      </h5>
+      </p>
       <v-select
         v-model="tags"
         multiple
@@ -212,9 +212,9 @@
       </v-select>
 
       <template v-if="$mq != 'xs' || !isMobile">
-        <h5 class="col-12 mt-4 p-1 text-center text-white font-weight-bold article-title word-break">
+        <p class="col-12 mt-4 mb-2 p-1 text-center text-white font-weight-bold article-title word-break">
           マップ
-        </h5>
+        </p>
         <input
           v-model="articleEdit.map"
           name="マップ"
@@ -508,21 +508,8 @@ export default {
 }
 
 .article-title {
-  background-color: #6A6A6A;
-  border: solid thin #6A6A6A;
+  background-color: gray;
   border-radius: 4px;
-}
-
-.description-label {
-  background-color: #6A6A6A;
-  border-radius: 6px 6px 0px 0px / 6px 6px 0px 0px;
-}
-
-.description-main {
-  font-size: 14px;
-  border: solid thin #6A6A6A;
-  border-radius: 0px 0px 6px 6px / 0px 0px 6px 6px;
-  border-width: 0px 0.1px 0.1px 0.1px;
 }
 
 .article-info {

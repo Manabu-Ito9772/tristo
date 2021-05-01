@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <template v-if="$mq == 'lg'">
-      <div class="col-12 text-center text-white">
+      <div class="col-12 text-center text-white font-weight-bold">
         <p class="col-12 p-0 mb-1 info-block-time font-small">
           時間
         </p>
@@ -40,7 +40,7 @@
     </template>
 
     <template v-else>
-      <div class="col-12 text-center text-white">
+      <div class="col-12 text-center text-white font-weight-bold">
         <p class="col-12 p-0 mb-1 info-block-time">
           時間
         </p>
@@ -95,7 +95,7 @@ export default {
 <style scoped>
 .info-block-time {
   white-space: nowrap;
-  background-color: #00D320;
+  background-color: #81D674;
   border-radius: 8px;
 }
 

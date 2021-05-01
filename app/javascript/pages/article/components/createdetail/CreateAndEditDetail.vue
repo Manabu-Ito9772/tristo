@@ -397,18 +397,12 @@ export default {
 
 .main-column {
   background-color: white;
-  border: solid #00D320;
+  border: solid #81D674;
   border-radius: 6px;
 }
 
 .overview-column {
   width: 400px;
-}
-
-.block-list {
-  background-color: white;
-  border: solid #00D320;
-  border-radius: 6px;
 }
 
 .block-form {

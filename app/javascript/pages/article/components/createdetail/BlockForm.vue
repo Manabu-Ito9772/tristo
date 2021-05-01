@@ -55,7 +55,7 @@
         </template>
 
         <div class="bg-white mt-3 pt-3 pl-3 pr-3 info-block-form">
-          <p class="p-0 mb-2 text-center text-white content-lavel">
+          <p class="p-0 mb-2 text-center text-white font-weight-bold content-lavel">
             時間
           </p>
           <div class="d-flex justify-content-between align-items-center text-dark">
@@ -90,7 +90,7 @@
             v-slot="{ errors }"
             rules="max:100"
           >
-            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+            <p class="mt-4 mb-2 text-center text-white font-weight-bold content-lavel m-0">
               イベント
             </p>
             <input
@@ -105,7 +105,7 @@
             v-slot="{ errors }"
             rules="required|max:100"
           >
-            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+            <p class="mt-4 mb-2 text-center text-white font-weight-bold content-lavel m-0">
               スポット（必須）
             </p>
             <input
@@ -120,7 +120,7 @@
             v-slot="{ errors }"
             rules="max:500"
           >
-            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+            <p class="mt-4 mb-2 text-center text-white font-weight-bold content-lavel m-0">
               スポットのホームページURL
             </p>
             <input
@@ -131,7 +131,7 @@
             <span class="text-danger">{{ errors[0] }}</span>
           </ValidationProvider>
 
-          <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+          <p class="mt-4 mb-2 text-center text-white font-weight-bold content-lavel m-0">
             コスト
           </p>
           <div
@@ -248,7 +248,7 @@
             v-slot="{ errors }"
             rules="max:1000"
           >
-            <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+            <p class="mt-4 mb-2 text-center text-white font-weight-bold content-lavel m-0">
               メモ
             </p>
             <textarea
@@ -269,7 +269,7 @@
             rules="image|size:5242.88"
           >
             <div class="mb-4">
-              <p class="mt-4 text-center text-white content-lavel m-0">
+              <p class="mt-4 text-center text-white font-weight-bold content-lavel m-0">
                 写真
               </p>
               <template v-if="previewImage">
@@ -317,7 +317,7 @@
             </div>
           </ValidationProvider>
 
-          <p class="mt-4 mb-2 text-center text-white content-lavel m-0">
+          <p class="mt-4 mb-2 text-center text-white font-weight-bold content-lavel m-0">
             次のスポットまでの移動手段
           </p>
           <div
@@ -627,13 +627,13 @@ export default {
 
 <style scoped>
 .info-block-form {
-  border: solid #FF990D;
+  border: solid #EDA184;
   border-radius: 6px;
 }
 
 .add-button {
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -642,13 +642,13 @@ export default {
 }
 
 .add-button:hover {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 
 .add-button-mobile {
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -657,7 +657,7 @@ export default {
 }
 
 .add-button-mobile:active {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 
