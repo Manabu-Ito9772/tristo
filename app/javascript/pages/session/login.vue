@@ -255,19 +255,19 @@ export default {
 }
 
 .top-title {
-  background-color: #00D320;
+  background-color: #81D674;
   border-radius: 6px 6px 0px 0px / 6px 6px 0px 0px;
 }
 
 .overview {
-  border: solid #00D320;
+  border: solid #81D674;
   border-width: 0rem 0.3rem 0.3rem 0.3rem;
   border-radius: 0px 0px 6px 6px / 0px 0px 6px 6px;
 }
 
 .button {
   display: inline-block;
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -276,13 +276,13 @@ export default {
 }
 
 .button:hover {
-  background-color: #C642BC;
+  background-color: #BE6081;
   position: relative;
 }
 
 .button-mobile {
   display: inline-block;
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -291,7 +291,7 @@ export default {
 }
 
 .button-mobile:active {
-  background-color: #C642BC;
+  background-color: #BE6081;
   position: relative;
 }
 

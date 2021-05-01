@@ -118,12 +118,12 @@ export default {
 <style scoped>
 .main-column {
   background-color: white;
-  border: solid #00D320;
+  border: solid #81D674;
   border-radius: 6px;
 }
 
 .info-block {
-  border: solid #FF58F2;
+  border: solid #DF81A2;
   border-radius: 6px;
 }
 </style>

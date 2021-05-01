@@ -31,7 +31,7 @@
             <template v-if="loading">
               <vue-loading
                 type="spiningDubbles"
-                color="#FF58F2"
+                color="darkgray"
                 :size="{ width: '100px' }"
                 class="mt-4 pt-5"
               />
@@ -92,8 +92,8 @@
                 <div class="mt-5 mb-5">
                   <vue-loading
                     type="spiningDubbles"
-                    color="#FF58F2"
-                    :size="{ width: '80px' }"
+                    color="darkgray"
+                    :size="{ width: '100px' }"
                   />
                 </div>
               </template>
@@ -159,7 +159,7 @@
               <div class="col-12 mt-3">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF58F2"
+                  color="darkgray"
                   :size="{ width: '80px' }"
                 />
               </div>

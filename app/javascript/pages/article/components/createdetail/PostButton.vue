@@ -72,55 +72,54 @@ export default {
 
 <style scoped>
 .post-button {
-  background-color: #FF58F2;
-  border: solid #FF58F2;
+  background-color: #D95986;
+  border: solid #D95986;
   cursor: pointer;
   border-radius: 6px;
 }
 
 .post-button:hover {
-  background-color: #C642BC;
-  border: solid #C642BC;
+  background-color: #B14F71;
+  border: solid #B14F71;
   position: relative;
 }
 
 .draft-button {
-  color: #FF58F2;
-  border: solid #FF58F2;
+  color: #D95986;
+  border: solid #D95986;
   border-radius: 6px;
   cursor: pointer;
 }
 
 .draft-button:hover {
-  color: #C642BC;
-  background-color: #C642BC;
-  border: solid #C642BC;
+  color: #B14F71;
+  border: solid #B14F71;
   position: relative;
 }
 
 .post-button-mobile {
-  background-color: #FF58F2;
-  border: solid #FF58F2;
+  background-color: #D95986;
+  border: solid #D95986;
   cursor: pointer;
   border-radius: 6px;
 }
 
 .post-button-mobile:active {
-  background-color: #C642BC;
-  border: solid #C642BC;
+  background-color: #B14F71;
+  border: solid #B14F71;
   position: relative;
 }
 
 .draft-button-mobile {
-  color: #FF58F2;
-  border: solid #FF58F2;
+  color: #D95986;
+  border: solid #D95986;
   border-radius: 6px;
   cursor: pointer;
 }
 
 .draft-button-mobile:active {
-  color: #C642BC;
-  border: solid #C642BC;
+  color: #B14F71;
+  border: solid #B14F71;
   position: relative;
 }
 </style>

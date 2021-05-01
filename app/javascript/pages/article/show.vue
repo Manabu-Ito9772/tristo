@@ -61,7 +61,7 @@
       <template v-else>
         <vue-loading
           type="spiningDubbles"
-          color="#FF58F2"
+          color="darkgray"
           :size="{ width: '100px' }"
           class="mt-5 pt-5"
         />
@@ -135,7 +135,7 @@
       <template v-else>
         <vue-loading
           type="spiningDubbles"
-          color="#FF58F2"
+          color="darkgray"
           :size="{ width: '100px' }"
           class="mt-5 pt-5"
         />
@@ -206,7 +206,7 @@
       <template v-else>
         <vue-loading
           type="spiningDubbles"
-          color="#FF58F2"
+          color="darkgray"
           :size="{ width: '80px' }"
           class="mt-5 pt-5"
         />

@@ -66,7 +66,7 @@
             <div class="col-12 mt-5 mb-5">
               <vue-loading
                 type="spiningDubbles"
-                color="#FF58F2"
+                color="darkgray"
                 :size="{ width: '80px' }"
               />
             </div>
@@ -175,8 +175,8 @@ export default {
 }
 
 .follow-selected {
-  background-color: #FF58F2;
-  border: solid #FF58F2;
+  background-color: #DF81A2;
+  border: solid #DF81A2;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -203,21 +203,5 @@ export default {
 	height: 50px;
 	object-fit: cover;
 	border-radius: 50%;
-}
-
-.follow-button {
-  white-space: nowrap;
-  font-size: 12px;
-  color: #1D51FF;
-  border: solid thin #1D51FF;
-  border-radius: 20px;
-}
-
-.unfollow-button {
-  white-space: nowrap;
-  font-size: 12px;
-  border: solid thin #1D51FF;
-  border-radius: 20px;
-  background-color: #1D51FF;
 }
 </style>

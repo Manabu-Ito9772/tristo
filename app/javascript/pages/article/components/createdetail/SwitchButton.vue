@@ -162,51 +162,33 @@ export default {
 
 <style scoped>
 .overview {
-  border: solid #6A6A6A;
+  border: solid gray;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .overview-selected {
-  background-color: #6A6A6A;
-  border: solid #6A6A6A;
+  background-color: gray;
+  border: solid gray;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .day-number {
-  border: solid #00D320;
+  border: solid #81D674;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .day-number-selected {
-  background-color: #00D320;
-  border: solid #00D320;
+  background-color: #81D674;
+  border: solid #81D674;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.total-cost {
-  border: solid #1D51FF;
-}
-
-.total-cost-selected {
-  background-color: #1D51FF;
-  border: solid #1D51FF;
-}
-
-.map {
-  border: solid #FF990D;
-}
-
-.map-selected {
-  background-color: #FF990D;
-  border: solid #FF990D;
-}
-
 .icon {
-  color: #00D320;
+  color: #81D674;
   cursor: pointer;
 }
 
@@ -216,7 +198,7 @@ export default {
 }
 
 .icon-mobile {
-  color: #00D320;
+  color: #81D674;
   cursor: pointer;
 }
 

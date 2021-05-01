@@ -295,85 +295,85 @@ export default {
 }
 
 .sample-image {
-  border: solid #FF58F2;
+  border: solid #DF81A2;
   border-radius: 6px;
   width: 100%;
 }
 
 .create-flow {
-  color: #FF58F2;
-  border: solid #FF58F2;
+  color: #DF81A2;
+  border: solid #DF81A2;
   border-radius: 6px;
 }
 
 .register-btn {
   width: 150px;
   border-radius: 6px;
-  background-color: #1D51FF;
+  background-color: #6EB7DB;
   cursor: pointer;
 }
 
 .login-btn {
   width: 150px;
   border-radius: 6px;
-  background-color: #00C61E;
+  background-color: #81D674;
   cursor: pointer;
 }
 
 .articles-btn {
   width: 150px;
   border-radius: 6px;
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   cursor: pointer;
 }
 
 .register-btn:hover {
-  background-color: #173BB2;
+  background-color: #208DC3;
 }
 
 .login-btn:hover {
-  background-color: #008B15;
+  background-color: #3EBA2B;
 }
 
 .articles-btn:hover {
-  background-color: #C642BC;
+  background-color: #BE6081;
 }
 
 .register-btn-mobile {
   width: 150px;
   border-radius: 6px;
-  background-color: #1D51FF;
-  cursor: pointer;
-}
-
-.articles-btn-mobile {
-  width: 150px;
-  border-radius: 6px;
-  background-color: #FF58F2;
+  background-color: #6EB7DB;
   cursor: pointer;
 }
 
 .login-btn-mobile {
   width: 150px;
   border-radius: 6px;
-  background-color: #00C61E;
+  background-color: #81D674;
+  cursor: pointer;
+}
+
+.articles-btn-mobile {
+  width: 150px;
+  border-radius: 6px;
+  background-color: #DF81A2;
   cursor: pointer;
 }
 
 .register-btn-mobile:active {
-  background-color: #173BB2;
+  background-color: #208DC3;
 }
 
 .login-btn-mobile:active {
-  background-color: #008B15;
+  background-color: #3EBA2B;
 }
 
 .articles-btn-mobile:active {
-  background-color: #C642BC;
+  background-color: #BE6081;
 }
 
 .lets-use {
-  color: #FF58F2;
+  color: #DF81A2;
 }
 
 .image-trim {

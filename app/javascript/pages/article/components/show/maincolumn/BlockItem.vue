@@ -206,15 +206,15 @@ export default {
 
 <style scoped>
 .info-block-left {
-  border-right: solid thin #FF58F2;
+  border-right: solid thin #DF81A2;
 }
 
 .info-block-right {
-  border-left: solid thin #FF58F2;
+  border-left: solid thin #DF81A2;
 }
 
 .info-block-below {
-  border-top: solid thin #FF58F2;
+  border-top: solid thin #DF81A2;
 }
 
 .pointer {

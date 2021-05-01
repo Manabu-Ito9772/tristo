@@ -66,7 +66,7 @@
             <div class="col-12 mt-5 mb-5">
               <vue-loading
                 type="spiningDubbles"
-                color="#FF58F2"
+                color="darkgray"
                 :size="{ width: '80px' }"
               />
             </div>
@@ -188,8 +188,8 @@ export default {
 }
 
 .follow-selected {
-  background-color: #FF58F2;
-  border: solid #FF58F2;
+  background-color: #DF81A2;
+  border: solid #DF81A2;
   border-radius: 6px;
   cursor: pointer;
 }

@@ -70,7 +70,7 @@
       <template v-if="loading">
         <vue-loading
           type="spiningDubbles"
-          color="#FF58F2"
+          color="darkgray"
           :size="{ width: '60px' }"
           class="mt-5"
         />
@@ -210,7 +210,7 @@ export default {
 .button {
   white-space: nowrap;
   display: inline-block;
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   padding: 7px 20px;
   color: #fff;
   text-align: center;
@@ -220,14 +220,14 @@ export default {
 
 .button:hover {
   white-space: nowrap;
-  background-color: #C642BC;
+  background-color: #BE6081;
   position: relative;
 }
 
 .button-mobile {
   white-space: nowrap;
   display: inline-block;
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   padding: 7px 20px;
   color: #fff;
   text-align: center;
@@ -237,7 +237,7 @@ export default {
 
 .button-mobile:active {
   white-space: nowrap;
-  background-color: #C642BC;
+  background-color: #BE6081;
   position: relative;
 }
 </style>

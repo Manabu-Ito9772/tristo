@@ -205,12 +205,12 @@
             name="アイキャッチ"
             rules="image|size:5242.88"
           >
-            <h5
+            <p
               id="アイキャッチ"
-              class="p-1 text-center text-white font-weight-bold form-label"
+              class="p-1 mb-2 text-center text-white font-weight-bold form-label"
             >
               アイキャッチ
-            </h5>
+            </p>
             <template v-if="previewEyecatch">
               <div class="mb-1 image-trim">
                 <img :src="previewEyecatch">
@@ -560,39 +560,27 @@ export default {
 
 <style scoped>
 .top-title {
-  color: #FF58F2;
+  color: #DF81A2;
 }
 
 .domestic-btn {
   font-size: 20px;
-  background-color: #00D320;
-  border: solid #00D320;
+  background-color: #81D674;
+  border: solid #81D674;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .domestic-btn-unselected {
   font-size: 20px;
-  border: solid #00D320;
-  color: #00D320;
+  border: solid #81D674;
+  color: #81D674;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.overseas-btn {
-  font-size: 20px;
-  background-color: #00D320;
-  border: solid #00D320;
-}
-
-.overseas-btn-unselected {
-  font-size: 20px;
-  border: solid #00D320;
-  color: #00D320;
-}
-
 .form-label {
-  background-color: #6A6A6A;
+  background-color: gray;
   border-radius: 4px;
 }
 
@@ -602,7 +590,7 @@ export default {
 
 .button {
   display: inline-block;
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -611,13 +599,13 @@ export default {
 }
 
 .button:hover {
-  background-color: #C642BC;
+  background-color: #BE6081;
   position: relative;
 }
 
 .button-mobile {
   display: inline-block;
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -626,7 +614,7 @@ export default {
 }
 
 .button-mobile:active {
-  background-color: #C642BC;
+  background-color: #BE6081;
   position: relative;
 }
 

@@ -464,8 +464,8 @@ export default {
 }
 
 .article-title {
-  background-color: #6A6A6A;
-  border: solid thin #6A6A6A;
+  background-color: gray;
+  border: solid thin gray;
   border-radius: 6px;
 }
 
@@ -475,7 +475,7 @@ export default {
 }
 
 .overview-label {
-  background-color: #6A6A6A;
+  background-color: gray;
   border-radius: 4px;
 }
 
@@ -559,42 +559,42 @@ export default {
 }
 
 .heart {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart:hover {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 
 .heart-favorited {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart-favorited:hover {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 
 .heart-mobile {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart-mobile:active {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 
 .heart-favorited-mobile {
-  color: #FF58F2;
+  color: #DF81A2;
   cursor: pointer;
 }
 
 .heart-favorited-mobile:active {
-  color: #C400B5;
+  color: #CA3C6E;
   cursor: pointer;
 }
 

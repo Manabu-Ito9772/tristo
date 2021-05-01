@@ -5,7 +5,7 @@
       class="row mb-3"
     >
       <div class="col-12 text-white">
-        <p class="pl-3 content-lavel m-0">
+        <p class="pl-3 font-weight-bold content-lavel m-0">
           イベント
         </p>
       </div>
@@ -16,7 +16,7 @@
 
     <div class="row">
       <div class="col-12 text-white">
-        <p class="pl-3 content-lavel m-0">
+        <p class="pl-3 font-weight-bold content-lavel m-0">
           スポット
         </p>
       </div>
@@ -45,7 +45,7 @@
       class="row mt-3"
     >
       <div class="col-12 text-white">
-        <p class="pl-3 content-lavel m-0">
+        <p class="pl-3 font-weight-bold content-lavel m-0">
           コスト
         </p>
       </div>
@@ -77,7 +77,7 @@
       class="row mt-3"
     >
       <div class="col-12 text-white">
-        <p class="pl-3 content-lavel m-0">
+        <p class="pl-3 font-weight-bold content-lavel m-0">
           メモ
         </p>
       </div>
@@ -116,7 +116,7 @@ export default {
 }
 
 .content-lavel {
-  background-color: #FF58F2;
+  background-color: #DF81A2;
   border-radius: 8px;
 }
 

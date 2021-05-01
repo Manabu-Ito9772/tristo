@@ -361,7 +361,7 @@ export default {
   font-size: 14px;
   white-space: nowrap;
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   color: #fff;
   text-align: center;
   cursor: pointer;
@@ -369,7 +369,7 @@ export default {
 }
 
 .save-button:hover {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 
@@ -377,7 +377,7 @@ export default {
   font-size: 14px;
   white-space: nowrap;
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   color: #fff;
   text-align: center;
   cursor: pointer;
@@ -385,7 +385,7 @@ export default {
 }
 
 .save-button-mobile:active {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 </style>

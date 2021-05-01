@@ -27,20 +27,40 @@
                     </h4>
                     <template v-if="authUser">
                       <template v-if="notFollowing">
-                        <div
-                          class="bg-white font-weight-bold follow-button"
-                          @click="followUser"
-                        >
-                          フォロー
-                        </div>
+                        <template v-if="isMobile">
+                          <div
+                            class="bg-white font-weight-bold follow-button-mobile"
+                            @click="followUser"
+                          >
+                            フォロー
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div
+                            class="bg-white font-weight-bold follow-button"
+                            @click="followUser"
+                          >
+                            フォロー
+                          </div>
+                        </template>
                       </template>
                       <template v-if="following">
-                        <div
-                          class="text-white font-weight-bold unfollow-button"
-                          @click="unfollowUser"
-                        >
-                          フォロー中
-                        </div>
+                        <template v-if="isMobile">
+                          <div
+                            class="text-white font-weight-bold unfollow-button-mobile"
+                            @click="unfollowUser"
+                          >
+                            フォロー中
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div
+                            class="text-white font-weight-bold unfollow-button"
+                            @click="unfollowUser"
+                          >
+                            フォロー中
+                          </div>
+                        </template>
                       </template>
                     </template>
                   </div>
@@ -191,7 +211,7 @@
               <div class="col-12 mt-4 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF58F2"
+                  color="darkgray"
                   :size="{ width: '80px' }"
                 />
               </div>
@@ -241,20 +261,40 @@
                     </h3>
                     <template v-if="authUser">
                       <template v-if="notFollowing">
-                        <div
-                          class="bg-white font-weight-bold follow-button"
-                          @click="followUser"
-                        >
-                          フォロー
-                        </div>
+                        <template v-if="isMobile">
+                          <div
+                            class="bg-white font-weight-bold follow-button-mobile"
+                            @click="followUser"
+                          >
+                            フォロー
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div
+                            class="bg-white font-weight-bold follow-button"
+                            @click="followUser"
+                          >
+                            フォロー
+                          </div>
+                        </template>
                       </template>
                       <template v-if="following">
-                        <div
-                          class="text-white font-weight-bold unfollow-button"
-                          @click="unfollowUser"
-                        >
-                          フォロー中
-                        </div>
+                        <template v-if="isMobile">
+                          <div
+                            class="text-white font-weight-bold unfollow-button-mobile"
+                            @click="unfollowUser"
+                          >
+                            フォロー中
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div
+                            class="text-white font-weight-bold unfollow-button"
+                            @click="unfollowUser"
+                          >
+                            フォロー中
+                          </div>
+                        </template>
                       </template>
                     </template>
                   </div>
@@ -405,7 +445,7 @@
               <div class="col-12 mt-5 mb-5">
                 <vue-loading
                   type="spiningDubbles"
-                  color="#FF58F2"
+                  color="darkgray"
                   :size="{ width: '100px' }"
                 />
               </div>
@@ -433,13 +473,13 @@
 <script>
 import ArticleItem from '../article/components/index/ArticleItem'
 import { mapGetters } from 'vuex'
+import { isMobile } from 'mobile-device-detect'
 
 export default {
   name: 'UserShow',
   components: {
     ArticleItem
   },
-
   data() {
     return {
       user: {},
@@ -455,7 +495,8 @@ export default {
       page: 1,
       kaminariPage: null,
       loading: true,
-      presence: false
+      presence: false,
+      isMobile: isMobile
     }
   },
   computed: {
@@ -622,7 +663,7 @@ export default {
 }
 
 .self-intro {
-  border-top: solid thin #FF58F2;
+  border-top: solid thin #DF81A2;
 }
 
 .post-changer {
@@ -643,20 +684,60 @@ export default {
   white-space: nowrap;
   font-size: 13px;
   padding: 6px 14px;
-  color: #1D51FF;
-  border: solid thin #1D51FF;
+  color: #6EB7DB;
+  border: solid thin #6EB7DB;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.follow-button:hover {
+  color: #208DC3;
+  border: solid thin #208DC3;
 }
 
 .unfollow-button {
   white-space: nowrap;
   font-size: 13px;
   padding: 6px 14px;
-  border: solid thin #1D51FF;
+  border: solid thin #6EB7DB;
   border-radius: 20px;
-  background-color: #1D51FF;
+  background-color: #6EB7DB;
   cursor: pointer;
+}
+
+.unfollow-button:hover {
+  border: solid thin #208DC3;
+  background-color: #208DC3;
+}
+
+.follow-button-mobile {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 6px 14px;
+  color: #6EB7DB;
+  border: solid thin #6EB7DB;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.follow-button-mobile:active {
+  color: #208DC3;
+  border: solid thin #208DC3;
+}
+
+.unfollow-button-mobile {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 6px 14px;
+  border: solid thin #6EB7DB;
+  border-radius: 20px;
+  background-color: #6EB7DB;
+  cursor: pointer;
+}
+
+.unfollow-button-mobile:active {
+  border: solid thin #208DC3;
+  background-color: #208DC3;
 }
 
 .pointer {

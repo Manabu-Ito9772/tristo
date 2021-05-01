@@ -408,7 +408,7 @@ export default {
 }
 
 .header-title {
-  color: #FF58F2;
+  color: #DF81A2;
   font-size: 30px;
 }
 
@@ -424,54 +424,6 @@ export default {
 .icon-selected {
   color: #343a40;
   font-size: 19px;
-}
-
-.register-button {
-  background-color: #1D51FF;
-  width: 120px;
-  height: 25px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.login-button {
-  background-color: #00D320;
-  width: 120px;
-  height: 25px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.register-button:hover {
-  background-color: #173BB2;
-  width: 120px;
-  height: 25px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.login-button:hover {
-  background-color: #008B15;
-  width: 120px;
-  height: 25px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.register-button-mobile {
-  background-color: #1D51FF;
-  width: 120px;
-  height: 25px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.login-button-mobile {
-  background-color: #00D320;
-  width: 120px;
-  height: 25px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .menu-bar {

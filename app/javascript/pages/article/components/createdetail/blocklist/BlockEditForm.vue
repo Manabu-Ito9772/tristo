@@ -637,13 +637,13 @@ export default {
 
 <style scoped>
 .info-block-form {
-  border: solid #FF58F2;
+  border: solid #DF81A2;
   border-radius: 6px;
 }
 
 .add-button {
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -652,13 +652,13 @@ export default {
 }
 
 .add-button:hover {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 
 .add-button-mobile {
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -667,7 +667,7 @@ export default {
 }
 
 .add-button-mobile:active {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 

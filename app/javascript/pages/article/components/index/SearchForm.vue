@@ -516,8 +516,8 @@ export default {
 }
 
 .area-changer {
-  background-color: #6A6A6A;
-  border: solid #6A6A6A;
+  background-color: gray;
+  border: solid gray;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -545,7 +545,7 @@ export default {
 
 .button {
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -554,13 +554,13 @@ export default {
 }
 
 .button:hover {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 
 .button-mobile {
   display: inline-block;
-  background-color: #FF990D;
+  background-color: #FFAA34;
   padding: 8px 25px;
   color: #fff;
   text-align: center;
@@ -569,7 +569,7 @@ export default {
 }
 
 .button-mobile:active {
-  background-color: #D37C04;
+  background-color: #D68E2B;
   position: relative;
 }
 
