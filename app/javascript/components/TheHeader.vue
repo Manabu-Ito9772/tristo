@@ -2,9 +2,12 @@
   <header>
     <template v-if="$mq == 'xs'">
       <nav class="navbar navbar-expand bg-white justify-content-between fixed-top">
-        <router-link :to="{ name: 'TopPage' }">
-          <span class="navbar-brand header-title">TriSto</span>
-        </router-link>
+        <span
+          @click="toTopPage"
+          class="navbar-brand header-title"
+        >
+          TriSto
+        </span>
 
         <ul class="navbar-nav">
           <template v-if="authUser">
@@ -113,9 +116,12 @@
 
     <template v-else>
       <nav class="navbar navbar-expand bg-white justify-content-between fixed-top">
-        <router-link :to="{ name: 'TopPage' }">
-          <span class="navbar-brand header-title">TriSto</span>
-        </router-link>
+        <span
+          @click="toTopPage"
+          class="navbar-brand header-title"
+        >
+          TriSto
+        </span>
 
         <ul class="navbar-nav d-flex align-items-center">
           <!-- AUTH USER -->
@@ -123,21 +129,21 @@
             <!-- HOME ICON -->
             <li class="nav-item active">
               <template v-if="currentPage == 'home'">
-                <router-link
-                  :to="{ name: 'ArticleIndex' }"
-                  class="icon-selected"
+                <div
+                  @click="toTopPage"
+                  class="icon-selected pointer"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'home']"
                     class="fa-lg"
                   />
-                </router-link>
+                </div>
               </template>
 
               <template v-else>
-                <router-link
-                  :to="{ name: 'ArticleIndex' }"
-                  class="icon-color"
+                <div
+                  @click="toTopPage"
+                  class="icon-color pointer"
                 >
                   <div @click="setCurrentPage('home')">
                     <font-awesome-icon
@@ -145,7 +151,7 @@
                       class="fa-lg"
                     />
                   </div>
-                </router-link>
+                </div>
               </template>
             </li>
             <!-- HOME ICON -->
@@ -329,6 +335,20 @@
                 </p>
               </router-link>
             </li>
+
+            <template v-if="$mq == 'sm'">
+              <li class="nav-item active">
+                <router-link
+                  :to="{ name: 'ArticleSearch' }"
+                  class="pl-2 text-muted search-font-size"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'search']"
+                    class="fa-lg"
+                  />
+                </router-link>
+              </li>
+            </template>
           </template>
         <!-- NON AUTH USER -->
         </ul>
@@ -377,6 +397,14 @@ export default {
     setCurrentPage(page) {
       this.$store.commit('pages/setCurrentPage', page)
     },
+    toTopPage() {
+      if (this.$route.path != '/') {
+        this.$router.push({
+          name: 'TopPage',
+          params: { fromHeader: true }
+        })
+      }
+    },
     toRegister() {
       if (this.$route.path != '/register') {
         this.$router.push({ name: 'Register' })
@@ -396,7 +424,7 @@ export default {
       this.$store.commit('pages/setCurrentPage', 'menu')
       this.$router.push({ name: 'PrivacyPolicy' })
       this.show = false
-    }
+    },
   },
 }
 </script>
@@ -410,6 +438,7 @@ export default {
 .header-title {
   color: #DF81A2;
   font-size: 30px;
+  cursor: pointer;
 }
 
 .nav-item {
@@ -436,5 +465,9 @@ export default {
 
 .search-font-size {
   font-size: 16px;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>

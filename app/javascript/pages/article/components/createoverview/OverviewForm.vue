@@ -280,11 +280,18 @@
             class="form-control bg-light"
           >
           <p class="mb-0 text-center text-secondary font-small">
-            ※Google My MapsのHTMLを入力することで地図を埋め込むことができます。詳しくは
+            ※Google My MapsのHTMLを入力することで地図を埋め込むことができます。
+          </p>
+          <p class="text-center text-muted font-small">
+            （
             <a
               href="#"
               @click="showModal"
-            >こちら</a>。
+              class="d-inline-block"
+            >
+              地図の埋め込み方
+            </a>
+            ）
           </p>
         </div>
 
