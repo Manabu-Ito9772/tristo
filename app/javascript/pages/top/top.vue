@@ -1,9 +1,6 @@
 <template>
   <div class="min-vh-100 bg-white">
-    <div
-      v-show="isVisibleTopPage"
-      class="container-fluid w-100"
-    >
+    <div class="container-fluid w-100">
       <template v-if="$mq == 'xs'">
         <div class="mt-5 d-flex justify-content-center image-trim">
           <img
@@ -237,9 +234,7 @@
       </template>
     </div>
 
-    <template v-if="isVisibleTopPage">
-      <FooterTermAndPolicy />
-    </template>
+    <FooterTermAndPolicy />
   </div>
 </template>
 
@@ -255,7 +250,6 @@ export default {
   },
   data() {
     return {
-      isVisibleTopPage: false,
       isMobile: isMobile
     }
   },
@@ -263,12 +257,8 @@ export default {
     ...mapGetters('users', ['authUser']),
   },
   created() {
-    if (this.authUser) {
+    if (this.authUser || this.$route.params.fromHeader != true) {
       this.$router.push({ name: 'ArticleIndex' })
-    } else {
-      setTimeout(() => {
-        this.isVisibleTopPage = true
-      }, 500)
     }
   },
   methods: {

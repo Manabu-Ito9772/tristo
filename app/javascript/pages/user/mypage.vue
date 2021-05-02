@@ -118,7 +118,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
                       非公開
@@ -126,7 +126,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       非公開
                     </h5>
@@ -136,7 +136,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showFavorites"
                     >
                       いいね
@@ -144,7 +144,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       いいね
                     </h5>
@@ -156,7 +156,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showPublished"
                     >
                       投稿
@@ -164,7 +164,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       投稿
                     </h5>
@@ -180,7 +180,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showFavorites"
                     >
                       いいね
@@ -188,7 +188,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       いいね
                     </h5>
@@ -200,7 +200,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showPublished"
                     >
                       投稿
@@ -208,7 +208,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       投稿
                     </h5>
@@ -218,7 +218,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
                       非公開
@@ -226,7 +226,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       非公開
                     </h5>
@@ -316,9 +316,9 @@
                 </div>
                 <div>
                   <div class="d-flex justify-content-center align-items-center">
-                    <h3 class="mb-0 pr-3 text-dark font-weight-bold word-break">
+                    <h4 class="mb-0 pr-3 text-dark font-weight-bold word-break">
                       {{ authUser.name }}
-                    </h3>
+                    </h4>
                     <router-link
                       :to="{ name: 'EditMyPage' }"
                     >
@@ -414,7 +414,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
                       非公開
@@ -422,7 +422,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       非公開
                     </h5>
@@ -432,7 +432,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showFavorites"
                     >
                       いいね
@@ -440,7 +440,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       いいね
                     </h5>
@@ -452,7 +452,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showPublished"
                     >
                       投稿
@@ -460,7 +460,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       投稿
                     </h5>
@@ -476,7 +476,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showFavorites"
                     >
                       いいね
@@ -484,7 +484,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       いいね
                     </h5>
@@ -496,7 +496,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showPublished"
                     >
                       投稿
@@ -504,7 +504,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       投稿
                     </h5>
@@ -514,7 +514,7 @@
                 <div class="col-4 pl-2 pr-2">
                   <template v-if="presence || !loading">
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
                       非公開
@@ -522,7 +522,7 @@
                   </template>
                   <template v-else>
                     <h5
-                      class="p-1 m-0 text-center font-weight-bold post-changer-unselect"
+                      class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
                       非公開
                     </h5>
@@ -797,15 +797,14 @@ export default {
 }
 
 .post-changer {
-  border: solid #6A6A6A;
-  background-color: #6A6A6A;
+  border: solid gray;
+  background-color: gray;
   border-radius: 6px;
   cursor: pointer;
 }
 
 .post-changer-unselect {
-  color: #6A6A6A;
-  border: solid #6A6A6A;
+  border: solid gray;
   border-radius: 6px;
   cursor: pointer;
 }

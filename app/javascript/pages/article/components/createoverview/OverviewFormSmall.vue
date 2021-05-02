@@ -279,12 +279,16 @@
             v-model="article.map"
             class="form-control"
           >
-          <p class="mb-0 text-center text-secondary font-small">
-            ※Google My MapsのHTMLを入力することで地図を埋め込むことができます。詳しくは
+          <p class="pl-1 pr-1 mb-0 text-center text-secondary font-small">
+            ※Google My MapsのHTMLを入力することで地図を埋め込むことができます。（
             <a
               href="#"
               @click="showModal"
-            >こちら</a>。
+              class="d-inline-block"
+            >
+              地図の埋め込み方
+            </a>
+            ）
           </p>
         </div>
 

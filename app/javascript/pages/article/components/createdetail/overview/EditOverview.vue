@@ -221,11 +221,17 @@
           class="form-control bg-light"
         >
         <p class="m-0 text-center text-secondary font-small">
-          ※HTMLコードを入力することでGoogle my mapsを埋め込むことができます。詳しくは
-          <a
-            href="#"
-            @click="showModal"
-          >こちら</a>。
+          ※HTMLコードを入力することでGoogle my mapsを埋め込むことができます。
+          <a>
+            <a class="text-muted">（</a>
+            <a
+              href="#"
+              @click="showModal"
+            >
+              地図の埋め込み方
+            </a>
+            <a class="text-muted">）</a>
+          </a>
         </p>
       </template>
 

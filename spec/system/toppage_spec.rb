@@ -4,33 +4,6 @@ RSpec.describe 'トップページ', type: :system do
   let(:user) { create(:user) }
   let(:article_normal) { create(:article, :normal) }
 
-  context 'ルートにアクセス' do
-    it 'ログインしていない場合はトップページが表示される' do
-      visit root_path
-      expect(current_path).to eq('/')
-      within('#buttons') do
-        expect(page).to have_css('.register-btn')
-      end
-      expect(page).to have_css('.login-btn')
-      expect(page).to have_css('.articles-btn')
-      expect(page).to have_content('旅行記録作成の流れ')
-      within('#click-now') do
-        expect(page).to have_css('.register-btn')
-      end
-    end
-
-    it 'ログインしている場合は記事一覧ページに遷移する' do
-      article_normal
-      login_as(user)
-      visit '/'
-      sleep 3
-      expect(current_path).to eq('/trip_notes')
-      find('.area-changer-unselected').click
-      sleep 2
-      expect(page).to have_content(article_normal.title)
-    end
-  end
-
   context 'ユーザー登録ボタンをクリック' do
     it 'ユーザー登録フォームが表示される' do
       visit root_path
