@@ -58,7 +58,12 @@ class Api::ArticlesController < ApplicationController
 
   def show
     @article = Article.include_relations.find(params[:id])
-    render json: @article
+
+    if @article.published? || @article.user == current_user
+      render json: @article
+    else
+      render json: false, status: 404
+    end
   end
 
   def create

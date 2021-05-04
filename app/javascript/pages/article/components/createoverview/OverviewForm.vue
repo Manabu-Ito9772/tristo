@@ -286,8 +286,8 @@
             （
             <a
               href="#"
-              @click="showModal"
               class="d-inline-block"
+              @click="showModal"
             >
               地図の埋め込み方
             </a>

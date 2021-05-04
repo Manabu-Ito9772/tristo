@@ -352,7 +352,7 @@ export default {
 }
 
 .form-label {
-  background-color: #6A6A6A;
+  background-color: gray;
   border-radius: 4px;
 }
 

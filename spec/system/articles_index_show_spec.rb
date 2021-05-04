@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "記事一覧/詳細", type: :system do
-  # let(:user) { create(:user) }
+  let(:user) { create(:user) }
   let(:country_japan) { create(:country, :japan) }
   let(:article_normal) { create(:article, :normal) }
   let(:article_wihout_info) { create(:article, :without_info) }
@@ -17,65 +17,65 @@ RSpec.describe "記事一覧/詳細", type: :system do
     find('.area-changer-unselected').click
   }
 
-  # context 'ログインしていない状態でルートにアクセス' do
-  #   it '記事一覧ページに遷移する' do
-  #     article_normal
-  #     visit '/'
-  #     sleep 3
-  #     expect(current_path).to eq('/trip_notes')
-  #     find('.area-changer-unselected').click
-  #     sleep 2
-  #     expect(page).to have_content(article_normal.title)
-  #   end
-  # end
-  #
-  # context 'ログイン状態でルートにアクセス' do
-  #   it '記事一覧ページに遷移する' do
-  #     article_normal
-  #     login_as(user)
-  #     visit '/'
-  #     sleep 3
-  #     expect(current_path).to eq('/trip_notes')
-  #     find('.area-changer-unselected').click
-  #     sleep 2
-  #     expect(page).to have_content(article_normal.title)
-  #   end
-  # end
-  #
-  # context 'ログインしていない状態でヘッダーのタイトルをクリック' do
-  #   it 'トップページに遷移する' do
-  #     visit root_path
-  #     find('.header-title').click
-  #     expect(current_path).to eq('/')
-  #     within('#buttons') do
-  #       expect(page).to have_css('.register-btn')
-  #     end
-  #     expect(page).to have_css('.login-btn')
-  #     expect(page).to have_css('.articles-btn')
-  #     expect(page).to have_content('旅行記録作成の流れ')
-  #     within('#click-now') do
-  #       expect(page).to have_css('.register-btn')
-  #     end
-  #   end
-  # end
-  #
-  # context 'ログインしている状態でヘッダーのタイトルをクリック' do
-  #   it '記事一覧ページに遷移する' do
-  #     article_normal
-  #     login_as(user)
-  #     sleep 2
-  #     find('.header-title').click
-  #     sleep 2
-  #     expect(current_path).to eq('/trip_notes')
-  #     find('.area-changer-unselected').click
-  #     sleep 2
-  #     expect(page).to have_content(article_normal.title)
-  #   end
-  # end
+  context 'ログインしていない状態でルートにアクセス' do
+    it '記事一覧ページに遷移する' do
+      article_normal
+      visit '/'
+      sleep 3
+      expect(current_path).to eq('/trip_notes')
+      find('.area-changer-unselected').click
+      sleep 2
+      expect(page).to have_content(article_normal.title)
+    end
+  end
+
+  context 'ログイン状態でルートにアクセス' do
+    it '記事一覧ページに遷移する' do
+      article_normal
+      login_as(user)
+      visit '/'
+      sleep 3
+      expect(current_path).to eq('/trip_notes')
+      find('.area-changer-unselected').click
+      sleep 2
+      expect(page).to have_content(article_normal.title)
+    end
+  end
+
+  context 'ログインしていない状態でヘッダーのタイトルをクリック' do
+    it 'サービス紹介ページに遷移する' do
+      visit root_path
+      find('.header-title').click
+      expect(current_path).to eq('/')
+      within('#buttons') do
+        expect(page).to have_css('.register-btn')
+      end
+      expect(page).to have_css('.login-btn')
+      expect(page).to have_css('.articles-btn')
+      expect(page).to have_content('旅行記録作成の流れ')
+      within('#click-now') do
+        expect(page).to have_css('.register-btn')
+      end
+    end
+  end
+
+  context 'ログインしている状態でヘッダーのタイトルをクリック' do
+    it '記事一覧ページに遷移する' do
+      article_normal
+      login_as(user)
+      sleep 2
+      find('.header-title').click
+      sleep 2
+      expect(current_path).to eq('/trip_notes')
+      find('.area-changer-unselected').click
+      sleep 2
+      expect(page).to have_content(article_normal.title)
+    end
+  end
 
   describe '記事一覧画面' do
     context '記事一覧画面にアクセス' do
-      fit '記事が表示される' do
+      it '記事が表示される' do
         article_normal_set
         expect(page).to have_content(article_normal.title)
         expect(page).to have_content(article_normal.description)
@@ -87,7 +87,6 @@ RSpec.describe "記事一覧/詳細", type: :system do
         expect(page).to have_css('#default-avatar')
         expect(page).to have_content(article_normal.tags.first.name)
         expect(page).to have_content(article_normal.user.name)
-        page.save_screenshot 'screenshot.png'
       end
 
       it '記事の説明、地域、日付、タグ、写真はデータがなければ表示されない' do

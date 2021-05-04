@@ -5,19 +5,12 @@
   >
     <TheHeader />
 
-    <template v-if="this.$route.path == '/'">
-      <div ontouchstart="">
-        <router-view />
-      </div>
-    </template>
-    <template v-else>
-      <div
-        class="header-adjust"
-        ontouchstart=""
-      >
-        <router-view />
-      </div>
-    </template>
+    <div
+      :class="{ adjust: $route.path != '/' }"
+      ontouchstart=""
+    >
+      <router-view />
+    </div>
 
     <template v-if="$mq == 'xs'">
       <TheFooter />
@@ -33,7 +26,7 @@ export default {
   components: {
     TheHeader,
     TheFooter
-  }
+  },
 }
 </script>
 
@@ -42,7 +35,7 @@ export default {
   background-color: #F8F8F8;
 }
 
-.header-adjust {
+.adjust {
   padding-top: 30px;
 }
 </style>
