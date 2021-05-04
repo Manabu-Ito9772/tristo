@@ -283,8 +283,8 @@
             ※Google My MapsのHTMLを入力することで地図を埋め込むことができます。（
             <a
               href="#"
-              @click="showModal"
               class="d-inline-block"
+              @click="showModal"
             >
               地図の埋め込み方
             </a>

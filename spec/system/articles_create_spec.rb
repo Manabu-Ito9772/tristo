@@ -267,7 +267,7 @@ RSpec.describe "記事作成", type: :system do
     context 'マップの詳しくはこちらをクリック' do
       it 'マップ埋め込み説明のモーダルが表示さえる' do
         visit '/create_trip_note'
-        click_on 'こちら'
+        click_on '地図の埋め込み方'
         expect(page).to have_content('旅行記録に「Google My Maps」を埋め込む方法')
       end
     end
@@ -407,6 +407,13 @@ RSpec.describe "記事作成", type: :system do
             expect(page).to have_css('#preview-eyecatch')
             find('#delete-btn').click
             expect(page).to_not have_css('#preview-eyecatch')
+          end
+        end
+
+        context 'マップの詳しくはこちらをクリック' do
+          it 'マップ埋め込み説明のモーダルが表示さえる' do
+            click_on '地図の埋め込み方'
+            expect(page).to have_content('旅行記録に「Google My Maps」を埋め込む方法')
           end
         end
 

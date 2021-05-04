@@ -284,7 +284,10 @@ export default {
             }
           }
         })
-        .catch(err => console.log(err.response))
+        .catch(err => {
+          if (err.response.status == 404) this.$router.push({ name: 'NotFound' })
+          console.log(err.response)
+        })
     },
     showBlockList(dayNumber) {
       this.dayNumber = dayNumber

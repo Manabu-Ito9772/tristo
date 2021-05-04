@@ -221,6 +221,13 @@ RSpec.describe "記事編集/削除", type: :system do
               end
             end
 
+            context 'マップの詳しくはこちらをクリック' do
+              it 'マップ埋め込み説明のモーダルが表示さえる' do
+                click_on '地図の埋め込み方'
+                expect(page).to have_content('旅行記録に「Google My Maps」を埋め込む方法')
+              end
+            end
+
             context '必須項目を入力せずに保存をクリック' do
               it 'バリデーションメッセージが表示される' do
                 fill_in 'タイトル', with: ' '
@@ -384,6 +391,13 @@ RSpec.describe "記事編集/削除", type: :system do
                 expect(page).to have_css('#preview-eyecatch')
                 find('#delete-btn').click
                 expect(page).to_not have_css('#preview-eyecatch')
+              end
+            end
+
+            context 'マップの詳しくはこちらをクリック' do
+              it 'マップ埋め込み説明のモーダルが表示さえる' do
+                click_on '地図の埋め込み方'
+                expect(page).to have_content('旅行記録に「Google My Maps」を埋め込む方法')
               end
             end
 

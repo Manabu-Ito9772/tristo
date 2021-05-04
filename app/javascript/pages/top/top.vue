@@ -260,6 +260,7 @@ export default {
     if (this.authUser || this.$route.params.fromHeader != true) {
       this.$router.push({ name: 'ArticleIndex' })
     }
+    this.scrollTop()
   },
   methods: {
     toRegister() {
@@ -271,6 +272,12 @@ export default {
     toArticles() {
       this.$router.push({ name: 'ArticleIndex' })
     },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      })
+    }
   }
 }
 </script>

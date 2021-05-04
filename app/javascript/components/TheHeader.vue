@@ -3,8 +3,8 @@
     <template v-if="$mq == 'xs'">
       <nav class="navbar navbar-expand bg-white justify-content-between fixed-top">
         <span
-          @click="toTopPage"
           class="navbar-brand header-title"
+          @click="toTopPage"
         >
           TriSto
         </span>
@@ -117,8 +117,8 @@
     <template v-else>
       <nav class="navbar navbar-expand bg-white justify-content-between fixed-top">
         <span
-          @click="toTopPage"
           class="navbar-brand header-title"
+          @click="toTopPage"
         >
           TriSto
         </span>
@@ -130,8 +130,8 @@
             <li class="nav-item active">
               <template v-if="currentPage == 'home'">
                 <div
-                  @click="toTopPage"
                   class="icon-selected pointer"
+                  @click="toTopPage"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'home']"
@@ -142,8 +142,8 @@
 
               <template v-else>
                 <div
-                  @click="toTopPage"
                   class="icon-color pointer"
+                  @click="toTopPage"
                 >
                   <div @click="setCurrentPage('home')">
                     <font-awesome-icon

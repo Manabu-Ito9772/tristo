@@ -19,6 +19,7 @@ import Following from '../pages/user/following'
 import Followers from '../pages/user/followers'
 import TermOfUse from '../pages/policy/term'
 import PrivacyPolicy from '../pages/policy/policy'
+import NotFound from '../pages/notfound'
 
 Vue.use(Router)
 
@@ -121,6 +122,11 @@ const router = new Router({
       component: PrivacyPolicy,
       name: 'PrivacyPolicy',
     },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
+    }
   ]
 })
 
