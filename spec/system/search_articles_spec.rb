@@ -34,15 +34,11 @@ RSpec.describe '記事検索', type: :system do
     sleep 2
   }
 
-  let(:create_article_tokyo_osaka) {
+  let(:create_article_fukuoka) {
     visit '/create_trip_note'
-    fill_in 'タイトル', with: 'Tokio_And_Osaka'
+    fill_in 'タイトル', with: 'Fukuoka'
     within('.prefecture') do
-      find('.vs__search').set('東京')
-      find('.vs__dropdown-menu').click
-    end
-    within('.prefecture') do
-      find('.vs__search').set('大阪')
+      find('.vs__search').set('福岡')
       find('.vs__dropdown-menu').click
     end
     find('.button').click
@@ -62,10 +58,6 @@ RSpec.describe '記事検索', type: :system do
       find('.vs__search').set('Tag')
       find('.vs__dropdown-menu').click
     end
-    within('.tag') do
-      find('.vs__search').set('Tag2')
-      find('.vs__dropdown-menu').click
-    end
     find('.button').click
     sleep 2
     find('.post-button').click
@@ -80,20 +72,7 @@ RSpec.describe '記事検索', type: :system do
       find('.vs__dropdown-menu').click
     end
     within('.tag') do
-      find('.vs__search').set('Tag')
-      find('.vs__dropdown-menu').click
-    end
-    find('.button').click
-    sleep 2
-    find('.post-button').click
-    sleep 2
-  }
-
-  let(:create_article_fukuoka) {
-    visit '/create_trip_note'
-    fill_in 'タイトル', with: 'Fukuoka'
-    within('.prefecture') do
-      find('.vs__search').set('福岡')
+      find('.vs__search').set('Tag2')
       find('.vs__dropdown-menu').click
     end
     find('.button').click
@@ -138,28 +117,6 @@ RSpec.describe '記事検索', type: :system do
     sleep 2
   }
 
-  let(:create_article_california_hawaii) {
-    visit '/create_trip_note'
-    find('.domestic-btn-unselected').click
-    fill_in 'タイトル', with: 'LaAloha'
-    within('.country') do
-      find('.vs__search').set('アメリカ')
-      find('.vs__dropdown-menu').click
-    end
-    within('.region') do
-      find('.vs__search').set('カリフォルニア')
-      find('.vs__dropdown-menu').click
-    end
-    within('.region') do
-      find('.vs__search').set('ハワイ')
-      find('.vs__dropdown-menu').click
-    end
-    find('.button').click
-    sleep 2
-    find('.post-button').click
-    sleep 2
-  }
-
   let(:create_article_california_with_tag) {
     visit '/create_trip_note'
     find('.domestic-btn-unselected').click
@@ -174,10 +131,6 @@ RSpec.describe '記事検索', type: :system do
     end
     within('.tag') do
       find('.vs__search').set('Tag')
-      find('.vs__dropdown-menu').click
-    end
-    within('.tag') do
-      find('.vs__search').set('Tag2')
       find('.vs__dropdown-menu').click
     end
     find('.button').click
@@ -199,7 +152,7 @@ RSpec.describe '記事検索', type: :system do
       find('.vs__dropdown-menu').click
     end
     within('.tag') do
-      find('.vs__search').set('Tag')
+      find('.vs__search').set('Tag2')
       find('.vs__dropdown-menu').click
     end
     find('.button').click
@@ -277,7 +230,8 @@ RSpec.describe '記事検索', type: :system do
       context '都道府県を複数選択して検索' do
         it '記事がある場合は表示される' do
           create_article_tokyo
-          create_article_tokyo_osaka
+          create_article_osaka
+          create_article_fukuoka
           within('#prefecture') do
             find('.vs__search').set('東京')
             find('.vs__dropdown-menu').click
@@ -288,8 +242,9 @@ RSpec.describe '記事検索', type: :system do
           end
           find('.button').click
           sleep 2
-          expect(page).to have_content('Tokio_And_Osaka')
-          expect(page).to_not have_content('Tokyo')
+          expect(page).to have_content('Tokyo')
+          expect(page).to have_content('Osaka')
+          expect(page).to_not have_content('Fukuoka')
         end
       end
 
@@ -324,6 +279,7 @@ RSpec.describe '記事検索', type: :system do
         it '記事がある場合は表示される' do
           create_article_tokyo_with_tag
           create_article_osaka_with_tag
+          create_article_fukuoka
           within('#tag') do
             find('.vs__search').set('Tag')
             find('.vs__dropdown-menu').click
@@ -335,7 +291,8 @@ RSpec.describe '記事検索', type: :system do
           find('.button').click
           sleep 2
           expect(page).to have_content('Tokyo')
-          expect(page).to_not have_content('Osaka')
+          expect(page).to have_content('Osaka')
+          expect(page).to_not have_content('Fukuoka')
         end
       end
 
@@ -364,11 +321,13 @@ RSpec.describe '記事検索', type: :system do
         it '記事がある場合は表示される' do
           create_article_tokyo
           create_article_osaka
-          fill_in 'フリーワード', with: 'a s'
+          create_article_fukuoka
+          fill_in 'フリーワード', with: 'y s'
           find('.button').click
           sleep 2
+          expect(page).to have_content('Tokyo')
           expect(page).to have_content('Osaka')
-          expect(page).to_not have_content('Tokyo')
+          expect(page).to_not have_content('Fukuoka')
         end
       end
 
@@ -522,7 +481,8 @@ RSpec.describe '記事検索', type: :system do
         context '地域を複数選択して検索' do
           it '記事がある場合は表示される' do
             create_article_california
-            create_article_california_hawaii
+            create_article_hawaii
+            create_article_paris
             within('#country') do
               find('.vs__search').set('アメリカ')
               find('.vs__dropdown-menu').click
@@ -537,8 +497,9 @@ RSpec.describe '記事検索', type: :system do
             end
             find('.button').click
             sleep 2
-            expect(page).to have_content('LaAloha')
-            expect(page).to_not have_content('California')
+            expect(page).to have_content('California')
+            expect(page).to have_content('Hawaii')
+            expect(page).to_not have_content('Paris')
           end
         end
       end
@@ -574,6 +535,7 @@ RSpec.describe '記事検索', type: :system do
         it '記事がある場合は表示される' do
           create_article_california_with_tag
           create_article_hawaii_with_tag
+          create_article_paris
           within('#tag') do
             find('.vs__search').set('Tag')
             find('.vs__dropdown-menu').click
@@ -585,7 +547,8 @@ RSpec.describe '記事検索', type: :system do
           find('.button').click
           sleep 2
           expect(page).to have_content('California')
-          expect(page).to_not have_content('Hawaii')
+          expect(page).to have_content('Hawaii')
+          expect(page).to_not have_content('Paris')
         end
       end
 
@@ -614,11 +577,13 @@ RSpec.describe '記事検索', type: :system do
         it '記事がある場合は表示される' do
           create_article_california
           create_article_hawaii
-          fill_in 'フリーワード', with: 'l f'
+          create_article_paris
+          fill_in 'フリーワード', with: 'l w'
           find('.button').click
           sleep 2
           expect(page).to have_content('California')
-          expect(page).to_not have_content('Hawaii')
+          expect(page).to have_content('Hawaii')
+          expect(page).to_not have_content('Paris')
         end
       end
 

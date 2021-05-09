@@ -11,11 +11,9 @@ class SearchArticlesForm
   attribute :sort, :integer
 
   def search
-    published_articles = Article.distinct.published
-
-    relation = search_detail(published_articles)
-
-    relation = published_articles.where(id: relation.map(&:id))
+    relation = Article.distinct.published
+    relation = single_search(relation)
+    relation = multiple_search(relation)
 
     if sort.zero?
       relation.order(created_at: :desc).to_a
@@ -26,29 +24,54 @@ class SearchArticlesForm
     end
   end
 
-  def search_detail(published_articles)
-    relation = if japan.present?
-                 published_articles.japan
-               else
-                 published_articles.world
-               end
+  private
 
+  def single_search(relation)
+    relation = japan.present? ? relation.japan : relation.world
     relation = relation.where(user_id: [User.find(user_id).following_ids]) if user_id.present?
     relation = relation.by_country(country_id) if country_id.present?
-    words_split.each do |word|
-      relation = relation.keyword(word)
-    end
-    regions_split.each do |region_id|
-      relation &= published_articles.by_region(region_id)
-    end
-    tags_split.each do |tag|
-      relation &= published_articles.by_tag(tag)
+
+    relation
+  end
+
+  def multiple_search(relation)
+    if regions.present? || tags.present? || words.present?
+      relation_array = []
+      relation_array = search_regions(relation, relation_array) if regions.present?
+      relation_array = search_tags(relation, relation_array) if tags.present?
+      relation_array = search_words(relation, relation_array) if words.present?
+      relation = relation.where(id: relation_array.map(&:id))
     end
 
     relation
   end
 
-  private
+  def search_regions(relation, relation_array)
+    regions_split.each do |region_id|
+      relation_array += relation.by_region(region_id)
+    end
+    relation_array
+  end
+
+  def search_tags(relation, relation_array)
+    tags_array = []
+    tags_split.each do |tag|
+      tags_array += relation.by_tag(tag)
+    end
+    tags_array &= relation_array if relation_array.present?
+
+    tags_array
+  end
+
+  def search_words(relation, relation_array)
+    words_array = []
+    words_split.each do |word|
+      words_array += relation.keyword(word)
+    end
+    words_array &= relation_array if relation_array.present?
+
+    words_array
+  end
 
   def regions_split
     regions.present? ? regions.split(nil) : []

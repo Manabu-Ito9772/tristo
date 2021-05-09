@@ -67,7 +67,7 @@ Qiita記事：https://qiita.com/Manabu-Ito9772/items/5e2cad71cac90dd7b654
 - AWS
   - VPC
   - EC2
-    - Amazon Linux 2 
+    - Amazon Linux 2
   - RDS
     - MySQL 5.7.26
   - S3
