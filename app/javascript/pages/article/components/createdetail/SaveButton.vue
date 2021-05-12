@@ -12,7 +12,7 @@
           class="m-0 p-2 text-center bg-white font-weight-bold draft-button-mobile"
           @click="unPublish"
         >
-          非公開にする
+          下書き状態にする
         </h5>
       </template>
       <template v-else>
@@ -26,7 +26,7 @@
           class="m-0 p-2 text-center bg-white font-weight-bold draft-button"
           @click="unPublish"
         >
-          非公開にする
+          下書き状態にする
         </h5>
       </template>
     </template>

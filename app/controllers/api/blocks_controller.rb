@@ -1,5 +1,5 @@
 class Api::BlocksController < ApplicationController
-  # before_action :authenticate!
+  before_action :authenticate!
   before_action :set_block, only: %i[update destroy delete_image delete_image]
   skip_before_action :verify_authenticity_token
 

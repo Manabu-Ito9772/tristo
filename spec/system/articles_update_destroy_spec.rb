@@ -804,6 +804,7 @@ RSpec.describe "記事編集/削除", type: :system do
         context '日付追加ボタンをクリック' do
           it '日付が追加される' do
             find('#add-day-button').click
+            sleep 2
             expect(page).to have_content('4日目')
           end
         end
@@ -945,7 +946,7 @@ RSpec.describe "記事編集/削除", type: :system do
 
       it '記事が非公開になりマイページに遷移' do
         within('.post-changer') do
-          expect(page).to have_content('非公開')
+          expect(page).to have_content('下書き')
         end
         expect(page).to have_content('UpdatedTitle')
         expect(page).to have_content('UpdatedDescription')
@@ -988,7 +989,7 @@ RSpec.describe "記事編集/削除", type: :system do
           find('.draft-button').click
           sleep 2
           within('.post-changer') do
-            expect(page).to have_content('非公開')
+            expect(page).to have_content('下書き')
           end
           expect(page).to have_content('UpdatedTitle')
           expect(page).to have_content('UpdatedDescription')
@@ -1097,7 +1098,7 @@ RSpec.describe "記事編集/削除", type: :system do
 
       it '記事が非公開になりマイページに遷移' do
         within('.post-changer') do
-          expect(page).to have_content('非公開')
+          expect(page).to have_content('下書き')
         end
         expect(page).to have_content('UpdatedTitle')
         expect(page).to have_content('UpdatedDescription')
@@ -1142,7 +1143,7 @@ RSpec.describe "記事編集/削除", type: :system do
           find('.draft-button').click
           sleep 2
           within('.post-changer') do
-            expect(page).to have_content('非公開')
+            expect(page).to have_content('下書き')
           end
           expect(page).to have_content('UpdatedTitle')
           expect(page).to have_content('UpdatedDescription')

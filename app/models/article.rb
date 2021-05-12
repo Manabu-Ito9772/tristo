@@ -17,7 +17,7 @@ class Article < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 500 }
-  validates :map, length: { maximum: 300 }
+  validates :map, length: { maximum: 500 }
   validates :status, presence: true
   validates :eyecatch, attachment: { content_type: %r{\Aimage/(png|jpeg)\Z}, maximum: 5_242_880 }
 

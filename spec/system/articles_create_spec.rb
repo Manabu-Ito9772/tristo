@@ -1071,14 +1071,14 @@ RSpec.describe "記事作成", type: :system do
     end
   end
 
-  describe '記事非公開投稿' do
-    it 'マイページの非公開一覧に記事が保存される（国内）' do
+  describe '記事下書き保存' do
+    it 'マイページの下書き記事一覧に記事が保存される（国内）' do
       create_article_japan
       create_block
       find('.draft-button').click
       sleep 2
       within('.post-changer') do
-        expect(page).to have_content('非公開')
+        expect(page).to have_content('下書き')
       end
       expect(page).to have_content(country_japan.articles.first.title)
       expect(page).to have_content(country_japan.articles.first.description)
@@ -1091,11 +1091,14 @@ RSpec.describe "記事作成", type: :system do
       expect(page).to have_content(user.name)
     end
 
-    it 'マイページの非公開一欄に記事が保存される（海外）' do
+    it 'マイページの下書き記事一覧に記事が保存される（海外）' do
       create_article_overseas
       create_block
       find('.draft-button').click
       sleep 2
+      within('.post-changer') do
+        expect(page).to have_content('下書き')
+      end
       expect(page).to have_content(country[1].articles.first.title)
       expect(page).to have_content(country[1].articles.first.description)
       expect(page).to have_content(country[1].name)

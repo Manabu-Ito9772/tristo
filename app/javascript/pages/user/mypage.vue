@@ -121,14 +121,14 @@
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                 </div>
@@ -173,7 +173,7 @@
 
                 <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                    非公開
+                    下書き
                   </h5>
                 </div>
 
@@ -221,14 +221,14 @@
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                 </div>
@@ -280,7 +280,7 @@
                     投稿がありません
                   </template>
                   <template v-else-if="draft">
-                    非公開投稿がありません
+                    下書きがありません
                   </template>
                   <template v-else>
                     いいねした投稿がありません
@@ -417,14 +417,14 @@
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                 </div>
@@ -469,7 +469,7 @@
 
                 <div class="col-4 pl-2 pr-2">
                   <h5 class="p-1 m-0 text-center text-white font-weight-bold post-changer">
-                    非公開
+                    下書き
                   </h5>
                 </div>
 
@@ -517,14 +517,14 @@
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                       @click="showDrafts"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                   <template v-else>
                     <h5
                       class="p-1 m-0 text-center text-muted font-weight-bold post-changer-unselect"
                     >
-                      非公開
+                      下書き
                     </h5>
                   </template>
                 </div>
@@ -574,7 +574,7 @@
                     投稿がありません
                   </template>
                   <template v-else-if="draft">
-                    非公開投稿がありません
+                    下書きがありません
                   </template>
                   <template v-else>
                     いいねした投稿がありません
