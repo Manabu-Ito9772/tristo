@@ -279,7 +279,7 @@ RSpec.describe 'ユーザー', type: :system do
         expect(page).to have_content('フォロー')
         expect(page).to have_content('フォロワー')
         expect(page).to have_content('投稿')
-        expect(page).to have_content('非公開')
+        expect(page).to have_content('下書き')
         expect(page).to have_content('いいね')
       end
 
@@ -328,12 +328,12 @@ RSpec.describe 'ユーザー', type: :system do
               end
             end
 
-            context '「非公開にする」をクリック' do
+            context '「下書き状態にする」をクリック' do
               it '記事が非公開になりマイページに遷移' do
                 find('.draft-button').click
                 sleep 2
                 within('.post-changer') do
-                  expect(page).to have_content('非公開')
+                  expect(page).to have_content('下書き')
                 end
                 expect(current_path).to eq('/mypage')
                 expect(page).to have_content('TestTitle')
@@ -344,7 +344,7 @@ RSpec.describe 'ユーザー', type: :system do
         end
       end
 
-      context '「非公開」をクリック' do
+      context '「下書き」をクリック' do
         before {
           article_draft
           login_as(article_draft.user)
@@ -355,14 +355,14 @@ RSpec.describe 'ユーザー', type: :system do
           sleep 2
         }
 
-        it '自分の非公開記事一覧が表示される' do
+        it '自分の下書き記事一覧が表示される' do
           within('.post-changer') do
-            expect(page).to have_content('非公開')
+            expect(page).to have_content('下書き')
           end
           expect(page).to have_content(article_draft.title)
         end
 
-        context '自分の非公開一覧の記事をクリック' do
+        context '自分の下書き記事一覧の記事をクリック' do
           before {
             find("#article-item-#{article_draft.id}").click
             sleep 2
@@ -396,11 +396,11 @@ RSpec.describe 'ユーザー', type: :system do
             end
 
             context '「保存」をクリック' do
-              it '記事は非公開のままマイページに遷移' do
+              it '記事は下書き状態のままマイページに遷移' do
                 find('.draft-button').click
                 sleep 2
                 within('.post-changer') do
-                  expect(page).to have_content('非公開')
+                  expect(page).to have_content('下書き')
                 end
                 expect(current_path).to eq('/mypage')
                 expect(page).to have_content(article_draft.title)
@@ -526,7 +526,7 @@ RSpec.describe 'ユーザー', type: :system do
         expect(page).to have_content('フォロー')
         expect(page).to have_content('フォロワー')
         expect(page).to have_content('投稿')
-        expect(page).to have_content('非公開')
+        expect(page).to have_content('下書き')
         expect(page).to have_content('いいね')
       end
     end

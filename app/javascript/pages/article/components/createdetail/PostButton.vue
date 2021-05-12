@@ -11,7 +11,7 @@
         class="m-0 p-2 w-100 text-center bg-white font-weight-bold draft-button-mobile"
         @click="saveDraft"
       >
-        非公開一覧に追加する
+        下書き保存
       </h5>
     </template>
     <template v-else>
@@ -25,7 +25,7 @@
         class="m-0 p-2 w-100 text-center bg-white font-weight-bold draft-button"
         @click="saveDraft"
       >
-        非公開一覧に追加する
+        下書き保存
       </h5>
     </template>
   </div>

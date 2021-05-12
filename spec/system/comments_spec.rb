@@ -236,6 +236,7 @@ RSpec.describe 'コメント', type: :system do
     sleep 2
     find("#article-item-#{article_normal.id}").click
     find('.comment').click
+    sleep 2
     expect(page).to have_content(user.name)
     expect(page).to have_content('Comment')
     expect(page).to_not have_content('.fa-edit')
