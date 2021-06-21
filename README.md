@@ -1,4 +1,5 @@
 # Tristo
+[![Image from Gyazo](https://i.gyazo.com/014fff85f383e36d76494945dd835f41.png)](https://gyazo.com/014fff85f383e36d76494945dd835f41)<br><br>
 アプリURL：https://www.tristo.work/<br>
 Qiita記事：https://qiita.com/Manabu-Ito9772/items/5e2cad71cac90dd7b654
 <br><br>
