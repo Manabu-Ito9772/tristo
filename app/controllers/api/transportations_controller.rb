@@ -4,12 +4,12 @@ class Api::TransportationsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    @transportation = Transportation.new(transportation_params)
+    transportation = Transportation.new(transportation_params)
 
-    if @transportation.save
-      render json: @transportation
+    if transportation.save
+      render json: transportation
     else
-      render json: @transportation.errors, status: :bad_request
+      render json: transportation.errors, status: :bad_request
     end
   end
 

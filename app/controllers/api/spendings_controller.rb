@@ -1,15 +1,15 @@
 class Api::SpendingsController < ApplicationController
   before_action :authenticate!
-  before_action :set_spending, only: %i[show update destroy]
+  before_action :set_spending, only: %i[update destroy]
   skip_before_action :verify_authenticity_token
 
   def create
-    @spending = Spending.new(spending_params)
+    spending = Spending.new(spending_params)
 
-    if @spending.save
-      render json: @spending
+    if spending.save
+      render json: spending
     else
-      render json: @spending.errors, status: :bad_request
+      render json: spending.errors, status: :bad_request
     end
   end
 

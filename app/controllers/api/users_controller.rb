@@ -9,18 +9,19 @@ class Api::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    user = User.new(user_params)
 
-    if @user.save
-      token = @user.create_tokens
+    if user.save
+      token = user.create_tokens
       render json: { token: token }
     else
-      render json: @user.errors, status: :bad_request
+      render json: user.errors, status: :bad_request
     end
   end
 
   def update
     user = User.find(current_user.id)
+
     if user.update(user_params)
       render json: user, methods: [:avatar_url]
     else
@@ -30,6 +31,7 @@ class Api::UsersController < ApplicationController
 
   def destroy
     user = User.find(current_user.id)
+
     user.destroy!
     render json: user
   end

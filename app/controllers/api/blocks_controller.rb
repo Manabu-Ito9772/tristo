@@ -1,15 +1,15 @@
 class Api::BlocksController < ApplicationController
   before_action :authenticate!
-  before_action :set_block, only: %i[update destroy delete_image delete_image]
+  before_action :set_block, only: %i[update destroy delete_image]
   skip_before_action :verify_authenticity_token
 
   def create
-    @block = Block.new(block_params)
+    block = Block.new(block_params)
 
-    if @block.save
-      render json: @block
+    if block.save
+      render json: block
     else
-      render json: @block.errors, status: :bad_request
+      render json: block.errors, status: :bad_request
     end
   end
 
