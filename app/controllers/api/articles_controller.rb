@@ -8,29 +8,29 @@ class Api::ArticlesController < ApplicationController
   def index
     articles = Article.published.world.page(params[:page]).per(10).order(created_at: :desc)
     pagenation = resources_with_pagination(articles)
-    @articles = Article.change_to_json(articles)
-    render json: { articles: @articles, kaminari: pagenation }
+    articles = Article.change_to_json(articles)
+    render json: { articles: articles, kaminari: pagenation }
   end
 
   def japan
     articles = Article.published.japan.page(params[:page]).per(10).order(created_at: :desc)
     pagenation = resources_with_pagination(articles)
-    @articles = Article.change_to_json(articles)
-    render json: { articles: @articles, kaminari: pagenation }
+    articles = Article.change_to_json(articles)
+    render json: { articles: articles, kaminari: pagenation }
   end
 
   def user_articles
     articles = User.find(params[:id]).articles.published.page(params[:page]).per(10).order(created_at: :desc)
     pagenation = resources_with_pagination(articles)
-    @articles = Article.change_to_json(articles)
-    render json: { articles: @articles, kaminari: pagenation }
+    articles = Article.change_to_json(articles)
+    render json: { articles: articles, kaminari: pagenation }
   end
 
   def user_articles_draft
     articles = User.find(params[:id]).articles.draft.page(params[:page]).per(10).order(created_at: :desc)
     pagenation = resources_with_pagination(articles)
-    @articles = Article.change_to_json(articles)
-    render json: { articles: @articles, kaminari: pagenation }
+    articles = Article.change_to_json(articles)
+    render json: { articles: articles, kaminari: pagenation }
   end
 
   def user_favorites
@@ -38,41 +38,41 @@ class Api::ArticlesController < ApplicationController
     articles_array = Favorite.get_favorite_articles(favorites)
     articles = Kaminari.paginate_array(articles_array).page(params[:page]).per(10)
     pagenation = resources_with_pagination(articles)
-    @articles = Article.change_to_json(articles)
-    render json: { articles: @articles, kaminari: pagenation }
+    articles = Article.change_to_json(articles)
+    render json: { articles: articles, kaminari: pagenation }
   end
 
   def search
-    @search_articles_form = SearchArticlesForm.new(search_params)
-    articles_array = @search_articles_form.search
+    search_articles_form = SearchArticlesForm.new(search_params)
+    articles_array = search_articles_form.search
     articles = Kaminari.paginate_array(articles_array).page(params[:page]).per(10)
     pagenation = resources_with_pagination(articles)
-    @articles = Article.change_to_json(articles)
-    render json: { articles: @articles, kaminari: pagenation }
+    articles_json = Article.change_to_json(articles)
+    render json: { articles: articles_json, kaminari: pagenation }
   end
 
   def user_articles_count
-    @articles_count = User.find(params[:id]).articles.published.count
-    render json: @articles_count
+    articles_count = User.find(params[:id]).articles.published.count
+    render json: articles_count
   end
 
   def show
-    @article = Article.include_relations.find(params[:id])
+    article = Article.include_relations.find(params[:id])
 
-    if @article.published? || @article.user == current_user
-      render json: @article
+    if article.published? || article.user == current_user
+      render json: article
     else
       render json: false, status: 404
     end
   end
 
   def create
-    @article = current_user.articles.build(article_params)
+    article = current_user.articles.build(article_params)
 
-    if @article.save
-      render json: @article
+    if article.save
+      render json: article
     else
-      render json: @article.errors, status: :bad_request
+      render json: article.errors, status: :bad_request
     end
   end
 

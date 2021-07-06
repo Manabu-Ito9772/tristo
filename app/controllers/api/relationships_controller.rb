@@ -7,15 +7,15 @@ class Api::RelationshipsController < ApplicationController
   def following
     relationships = Relationship.includes(:follow).where(user_id: params[:id]).page(params[:page]).per(20).order(created_at: :desc)
     pagenation = resources_with_pagination(relationships)
-    @relationships = Relationship.change_following_to_json(relationships)
-    render json: { relationships: @relationships, kaminari: pagenation }
+    relationships_json = Relationship.change_following_to_json(relationships)
+    render json: { relationships: relationships_json, kaminari: pagenation }
   end
 
   def followers
     relationships = Relationship.includes(:user).where(follow_id: params[:id]).page(params[:page]).per(20).order(created_at: :desc)
     pagenation = resources_with_pagination(relationships)
-    @relationships = Relationship.change_followers_to_json(relationships)
-    render json: { relationships: @relationships, kaminari: pagenation }
+    relationships_json = Relationship.change_followers_to_json(relationships)
+    render json: { relationships: relationships_json, kaminari: pagenation }
   end
 
   def follow

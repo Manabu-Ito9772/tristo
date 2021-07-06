@@ -8,17 +8,17 @@ class Api::CommentsController < ApplicationController
   def show
     comments = Article.find(params[:id]).comments.includes(:user).page(params[:page]).per(20).order(created_at: :desc)
     pagenation = resources_with_pagination(comments)
-    @comments = Comment.change_to_json(comments)
-    render json: { comments: @comments, kaminari: pagenation }
+    comments_json = Comment.change_to_json(comments)
+    render json: { comments: comments_json, kaminari: pagenation }
   end
 
   def create
-    @comment = current_user.comments.build(comment_params)
+    comment = current_user.comments.build(comment_params)
 
-    if @comment.save
-      render json: @comment
+    if comment.save
+      render json: comment
     else
-      render json: @comment.errors, status: :bad_request
+      render json: comment.errors, status: :bad_request
     end
   end
 
