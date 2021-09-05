@@ -4,7 +4,7 @@ default: &default
   charset: utf8mb4
   collation: utf8mb4_general_ci
   username: root
-  password:
+  password: pineapple9772
   host: localhost
   pool: 5
   timeout: 5000
