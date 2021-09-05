@@ -44,7 +44,12 @@ const actions = {
       .catch((err) => {
         return null
       })
-    if (!userResponse) return null
+    if (!userResponse) {
+      localStorage.removeItem('auth_token')
+      axios.defaults.headers.common['Authorization'] = ''
+      commit('setUser', null)
+      return null
+    }
 
     const authUser = userResponse.data
     if (authUser) {

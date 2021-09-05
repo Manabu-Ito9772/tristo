@@ -34,9 +34,7 @@ class Api::ArticlesController < ApplicationController
   end
 
   def user_favorites
-    favorites = User.find(params[:id]).favorites.includes(:article).order(created_at: :desc)
-    articles_array = Favorite.get_favorite_articles(favorites)
-    articles = Kaminari.paginate_array(articles_array).page(params[:page]).per(10)
+    articles = User.find(params[:id]).favorite_articles.published.includes(:favorites).order("favorites.created_at DESC").page(params[:page]).per(10)
     pagenation = resources_with_pagination(articles)
     articles = Article.change_to_json(articles)
     render json: { articles: articles, kaminari: pagenation }
